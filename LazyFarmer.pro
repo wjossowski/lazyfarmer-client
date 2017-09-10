@@ -1,0 +1,23 @@
+QT       += core gui widgets network xml
+CONFIG   += c++14
+
+TARGET = LazyFarmer
+TEMPLATE = app
+
+DEFINES += QT_DEPRECATED_WARNINGS
+VERSION = 0.1.0.0
+
+COMPANY_NAME = "WololoPl"
+
+DEFINES += "CURRENT_VERSION=\\\"$${VERSION}\\\""
+DEFINES += "APPLICATION_NAME=\\\"$${TARGET}\\\""
+DEFINES += "COMPANY_NAME=\\\"$${COMPANY_NAME}\\\""
+DEFINES += "FUNCTION_NAME=__FUNCTION__"
+
+win32 {
+    QMAKE_TARGET_COMPANY = $${COMPANY_NAME}
+}
+
+SOURCES += *.cpp
+HEADERS += *.h
+FORMS += *.ui
