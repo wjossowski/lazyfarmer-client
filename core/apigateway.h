@@ -1,12 +1,13 @@
-#ifndef ACCOUNTMANAGER_H
-#define ACCOUNTMANAGER_H
+#pragma once
+
+#include "player.h"
 
 #include <QObject>
 #include <QtNetwork/QNetworkAccessManager>
 
 #include <functional>
 
-class AccountManager : public QObject
+class ApiGateway : public QObject
 {
     Q_OBJECT
 
@@ -26,7 +27,7 @@ public:
         QString server;
     };
 
-    explicit AccountManager(QObject *parent = nullptr);
+    explicit ApiGateway(QObject *parent = nullptr);
     inline void setOptions(const Options &options) { m_options = options; }
 
     void login();
@@ -38,7 +39,7 @@ public:
 
 signals:
     void loggedInChanged(bool changed);
-    void errorRaised(AccountManager::Errors error, const QString &message);
+    void errorRaised(ApiGateway::Errors error, const QString &message);
 
 public slots:
 
@@ -49,18 +50,18 @@ private:
 
     QUrl tokenUrl() const;
     QUrl endpointUrl(const QString &endpoint, const QList<QPair<QString, QString>> &data, bool includeRid = true) const;
+    QUrl endpointAjaxUrl(const QString &endpoint, const QList<QPair<QString, QString>> &data, bool includeRid = true) const;
 
     void setLoggedIn (bool loggedIn);
     bool handleNotLogged(const QString &operation);
 
-    void raiseError(AccountManager::Errors error, const QString &message);
+    void raiseError(ApiGateway::Errors error, const QString &message);
 
 private:
-    QNetworkAccessManager m_manager;
+    bool m_loggedIn;
     Options m_options;
     QString m_rid;
 
-    bool m_loggedIn;
+    QNetworkAccessManager m_manager;
+    Player m_player;
 };
-
-#endif // ACCOUNTMANAGER_H

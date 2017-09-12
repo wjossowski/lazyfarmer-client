@@ -1,5 +1,6 @@
 #include "mainwindow.h"
-#include "accountmanager.h"
+
+#include "apigateway.h"
 
 #include <ios>
 
@@ -46,7 +47,7 @@ int main(int argc, char *argv[])
         freopen("CONOUT$", "w", stdout);
         freopen("CONOUT$", "w", stderr);
         freopen("CONOUT$", "r", stdin );
-        qDebug() << ""; // add Empty line
+        qInfo() << ""; // add Empty line
     }
 #endif
 
@@ -70,7 +71,7 @@ int main(int argc, char *argv[])
           QApplication::translate("main", "Specifies password on startup."),
           QApplication::translate("main", "User's password.") },
         { { "d", "domain" },
-          QApplication::translate("main", "Specifies domain on startup."),
+          QApplication::translate("main", "Specifies game's domain on startup."),
           QApplication::translate("main", "Domain (myfreefarm.de / wolnifarmerzy.pl).") },
         { { "s", "server" },
           QApplication::translate("main", "Specifies server number on startup."),
@@ -101,18 +102,19 @@ int main(int argc, char *argv[])
         qCritical() << e.what();
     }
 
-    AccountManager accountManager;
-    accountManager.setOptions({
+    ApiGateway api;
+    api.setOptions({
         parser.value("login"),
         parser.value("password"),
         parser.value("domain"),
         parser.value("server")
     });
-    accountManager.login();
+    api.login();
 
+    QScopedPointer<MainWindow> mainWindow;
     if (!parser.isSet("no-gui")) {
-        MainWindow mainWindow;
-        mainWindow.show();
+        mainWindow.reset(new MainWindow);
+        mainWindow->show();
     }
 
     return lazyFarmerApp.exec();

@@ -1,11 +1,15 @@
-#include "accountmanager.h"
+#include "apigateway.h"
+#include "helpers/extractor.h"
 
 #include <QtCore/QUrl>
 #include <QtCore/QUrlQuery>
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
+#include <QtCore/QJsonObject>
 #include <QtCore/QMetaEnum>
 #include <QtCore/QRegularExpression>
+#include <QtCore/QSettings>
+#include <QtCore/QFile>
 
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkRequest>
@@ -13,19 +17,19 @@
 
 #include <QtDebug>
 
-AccountManager::AccountManager(QObject *parent)
+ApiGateway::ApiGateway(QObject *parent)
     : QObject(parent)
     , m_loggedIn(false)
 {
 
 }
 
-void AccountManager::login()
+void ApiGateway::login()
 {
     QNetworkRequest request(tokenUrl());
 
     QSslConfiguration config = QSslConfiguration::defaultConfiguration();
-    config.setProtocol(QSsl::TlsV1_2);
+    config.setProtocol(QSsl::TlsV1SslV3);
     request.setSslConfiguration(config);
 
     buildHeaders(request);
@@ -45,6 +49,7 @@ void AccountManager::login()
             recursiveRedirect(data.array().last().toString(), [this] (QNetworkReply *reply) {
                 if (extractRid(reply)) {
                     setLoggedIn(true);
+                    getFarmInfo();
                 } else {
                     raiseError(RidNotParsed, tr("Unable to extract `rid`. Login failed."));
                 }
@@ -55,15 +60,13 @@ void AccountManager::login()
     });
 }
 
-void AccountManager::logout()
+void ApiGateway::logout()
 {
     QNetworkRequest request(endpointUrl("main", {
         { "page", "logout" },
         { "logoutbutton", "1" }
     }, false));
     buildHeaders(request);
-
-    qDebug() << request.url();
 
     auto reply = m_manager.get(request);
     connect(reply, &QNetworkReply::finished, [this, reply] () {
@@ -72,13 +75,24 @@ void AccountManager::logout()
     });
 }
 
-void AccountManager::getFarmInfo()
+void ApiGateway::getFarmInfo()
 {
     if (handleNotLogged(FUNCTION_NAME))
         return;
+
+    QNetworkRequest request(endpointAjaxUrl("farm", {
+        { "mode", "getfarms" }
+    }));
+
+    auto reply = m_manager.get(request);
+    connect(reply, &QNetworkReply::finished, [this, reply] {
+        QFile f("D:\\chuj.json");
+        if (f.open(QFile::WriteOnly))
+            f.write(reply->readAll());
+    });
 }
 
-void AccountManager::recursiveRedirect(const QString &url, const std::function<void (QNetworkReply *)> &callback)
+void ApiGateway::recursiveRedirect(const QString &url, const std::function<void (QNetworkReply *)> &callback)
 {
     QNetworkRequest request(url);
     buildHeaders(request);
@@ -94,33 +108,51 @@ void AccountManager::recursiveRedirect(const QString &url, const std::function<v
     });
 }
 
-void AccountManager::buildHeaders(QNetworkRequest &request) const
+void ApiGateway::buildHeaders(QNetworkRequest &request) const
 {
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0");
 }
 
-bool AccountManager::extractRid(QNetworkReply *reply)
+bool ApiGateway::extractRid(QNetworkReply *reply)
 {
-    QString content = reply->read(1024);
+    QSettings settings;
+    settings.beginGroup("Lookup");
+
+    QString content =
+#ifdef DEBUG_MODE
+            reply->readAll();
+#else
+            reply->read(settings.value("RidExtractorDeep", 1024).toInt());
+#endif
     if (content.isEmpty())
         return false;
 
-    QRegularExpression ridRegex = QRegularExpression("var rid = '(?<rid>.*)'");
-    const QString rid = ridRegex.match(content).captured("rid");
+    QRegularExpression ridRegex("var rid = '(?<rid>.*)'");
+    m_rid = ridRegex.match(content).captured("rid");
 
-    m_rid = rid;
-    return !rid.isEmpty();
+#ifdef DEBUG_MODE
+    auto extractJsonObject = [&] (const QString &pattern, const QString &match) {
+        QRegularExpression regex(pattern);
+        return QJsonDocument::fromJson(forestryRegex.match(content).captured(match).toUtf8()).object();
+    };
+//    forestry "var produkt_name_forestry = (?<forestry>.*)"
+//    product "var produkt_name = (?<product>.*)"
+//    buildings "var buildinginfos = eval(?<buildings>.*)"
+
+#endif
+
+    return !m_rid.isEmpty();
 }
 
-QUrl AccountManager::tokenUrl() const
+QUrl ApiGateway::tokenUrl() const
 {
     return QUrl(QString("https://www.%1/ajax/createtoken2.php?n=%2")
                 .arg(m_options.domain)
                 .arg(QDateTime::currentMSecsSinceEpoch()));
 }
 
-QUrl AccountManager::endpointUrl(const QString &endpoint,
+QUrl ApiGateway::endpointUrl(const QString &endpoint,
                                  const QList<QPair<QString, QString> > &data,
                                  bool includeRid) const
 {
@@ -130,22 +162,32 @@ QUrl AccountManager::endpointUrl(const QString &endpoint,
         query.addQueryItem("rid", m_rid);
     }
 
-    return QUrl(QString("http://s%1.%2/%3.php?%4")
-                .arg(m_options.server)
-                .arg(m_options.domain)
-                .arg(endpoint)
-                .arg(query.toString()));
+    const QString url = QString("http://s%1.%2/%3.php?%4")
+            .arg(m_options.server)
+            .arg(m_options.domain)
+            .arg(endpoint)
+            .arg(query.toString());
+
+    return QUrl(url);
 }
 
-void AccountManager::setLoggedIn(bool loggedIn)
+QUrl ApiGateway::endpointAjaxUrl(const QString &endpoint, const QList<QPair<QString, QString> > &data, bool includeRid) const
+{
+    return endpointUrl(QString("ajax/%1").arg(endpoint), data, includeRid);
+}
+
+void ApiGateway::setLoggedIn(bool loggedIn)
 {
     if (m_loggedIn != loggedIn) {
         m_loggedIn = loggedIn;
+
+        qInfo() << (m_loggedIn ? tr("%1 successfully logged in, rid: '%2'").arg(m_options.login).arg(m_rid)
+                               : tr("Logged out"));
         emit loggedInChanged(m_loggedIn);
     }
 }
 
-bool AccountManager::handleNotLogged(const QString &operation)
+bool ApiGateway::handleNotLogged(const QString &operation)
 {
     bool notLogged = !m_loggedIn;
     if (notLogged) {
@@ -155,7 +197,7 @@ bool AccountManager::handleNotLogged(const QString &operation)
     return notLogged;
 }
 
-void AccountManager::raiseError(AccountManager::Errors error, const QString &message)
+void ApiGateway::raiseError(ApiGateway::Errors error, const QString &message)
 {
     emit errorRaised(error, message);
 

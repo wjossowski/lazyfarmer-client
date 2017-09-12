@@ -18,6 +18,26 @@ win32 {
     QMAKE_TARGET_COMPANY = $${COMPANY_NAME}
 }
 
-SOURCES += *.cpp
-HEADERS += *.h
-FORMS += *.ui
+INCLUDEPATH = $${PWD}/core $${PWD}/widgets
+
+SOURCES = \
+          $${PWD}/core/*.cpp \
+          $${PWD}/widgets/*.cpp \
+          main.cpp
+
+HEADERS = \
+          $${PWD}/core/*.h \
+          $${PWD}/widgets/*.h
+
+FORMS = \
+        $${PWD}/widgets/*.ui
+
+CONFIG(debug, debug|release) {
+    DEFINES += DEBUG_MODE
+    SOURCES += \
+              helpers/extractor.cpp
+    HEADERS += \
+              helpers/extractor.h
+} else {
+  message("release")
+}
