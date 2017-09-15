@@ -132,14 +132,7 @@ bool ApiGateway::extractRid(QNetworkReply *reply)
     m_rid = ridRegex.match(content).captured("rid");
 
 #ifdef DEBUG_MODE
-    auto extractJsonObject = [&] (const QString &pattern, const QString &match) {
-        QRegularExpression regex(pattern);
-        return QJsonDocument::fromJson(forestryRegex.match(content).captured(match).toUtf8()).object();
-    };
-//    forestry "var produkt_name_forestry = (?<forestry>.*)"
-//    product "var produkt_name = (?<product>.*)"
-//    buildings "var buildinginfos = eval(?<buildings>.*)"
-
+    Extractor extractor(content, m_options.domain);
 #endif
 
     return !m_rid.isEmpty();
