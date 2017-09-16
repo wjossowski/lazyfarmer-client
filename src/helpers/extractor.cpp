@@ -4,25 +4,28 @@
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonArray>
 #include <QtCore/QFile>
-#include <Qtcore/QSettings>
-
 #include <QtDebug>
 
 Extractor::Extractor(const QString &content, const QString &domain)
-    : m_domain(domain)
-    , m_filters({
-//        { "forestry", "var produkt_name_forestry = (?<forestry>.*);" },
-//        { "products", "var produkt_name = (?<products>.*);" },
+    : Extractor(content, {
+        { "forestry", "var produkt_name_forestry = (?<forestry>.*);" },
+        { "products", "var produkt_name = (?<products>.*);" },
         { "buildings", "var buildinginfos = eval\\(\\'(?<buildings>.*)\\'\\);" }
-    })
+    }, domain)
 {
-    QSettings settings;
-    settings.beginGroup("Extractor");
 
-    auto extractObject = [] (const QJsonDocument &document) -> QJsonValue {
+}
+
+Extractor::Extractor(const QString &content,
+                     const QMap<QString, QVariant> &filters,
+                     const QString &domain)
+    : m_filters(filters)
+    , m_domain(domain)
+{
+    auto extractObject = [this] (const QJsonDocument &document) -> QJsonValue {
         if (document.isArray()) {
             QJsonValue container(document.array().first());
-            return container.isObject() ? container : QJsonValue::Null;
+            return container.isObject() ? moveNameFromArray(container.toObject()) : QJsonValue::Null;
         } else if (document.isObject()) {
             return document.object();
         } else {
@@ -32,8 +35,12 @@ Extractor::Extractor(const QString &content, const QString &domain)
 
     auto extractJson = [&] (const QString &match, const QString &pattern) {
         const QRegularExpression regex(pattern);
-        const QString captured = regex.match(content).captured(match);
-        const auto &value = extractObject(QJsonDocument::fromJson(captured.toUtf8()));
+        const QString captured = regex.match(content).captured(match).replace(QRegularExpression("(,)(?!.*\\\\)"), "");
+        const auto value = extractObject(QJsonDocument::fromJson(captured.toUtf8()));
+
+#if DEBUG_MODE
+        m_regexMatches << captured;
+#endif
 
         m_results.insert(match, value);
     };
@@ -43,14 +50,41 @@ Extractor::Extractor(const QString &content, const QString &domain)
         filter.next();
         extractJson (filter.key(), filter.value().toString());
     }
-
-    settings.setValue("ExtractorFilters", m_filters);
 }
 
 Extractor::~Extractor()
 {
+    if (m_domain.isEmpty())
+        return;
+
     QFile file(QString("labels_%1.json").arg(m_domain));
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         file.write(QJsonDocument(m_results).toJson(QJsonDocument::Indented));
     }
+}
+
+
+QJsonValue Extractor::moveNameFromArray(QJsonObject &&object) {
+    for (const auto &key : object.keys()) {
+        QJsonArray array = object[key].toArray();
+
+        if (array.isEmpty())
+            continue;
+
+        for (const auto &item : array) {
+            if (!item.isString())
+                continue;
+
+            const QString &value = item.toString();
+            QRegularExpression re (".(png|gif|jpg|jpeg)$");
+
+            if (re.match(value).hasMatch())
+                continue;
+
+            object[key] = value;
+            break;
+        }
+    }
+
+    return QJsonValue(object);
 }

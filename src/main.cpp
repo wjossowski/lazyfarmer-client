@@ -8,7 +8,7 @@
 #include <QtCore/QStandardPaths>
 #include <QtCore/QMutex>
 #include <QtCore/QSettings>
-#include <Qtcore/QDir>
+#include <QtCore/QDir>
 #include <QtCore/QDateTime>
 #include <QtCore/QCommandLineParser>
 

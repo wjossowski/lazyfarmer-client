@@ -3,7 +3,8 @@ TEMPLATE = subdirs
 source.subdir = src
 source.target = LazyFarmer
 
-SUBDIRS = source \
-    tests
+unit_tests.subdir = tests
+unit_tests.target = LazyFarmerTests
+unit_tests.depends = source
 
-ROOT_PWD = $${PWD}
+SUBDIRS = source unit_tests

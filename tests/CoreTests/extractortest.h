@@ -11,6 +11,13 @@ public:
 
 private slots:
     void initTestCase();
-    void cleanupTestCase();
+
+    void extractProducts();
+    void extractForestry();
     void extractBuildings();
+
+    void cleanupTestCase();
+
+private:
+    QString m_siteContent;
 };

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "storage.h"
+
 #include <QtCore/QObject>
 
 class Player : public QObject
@@ -12,4 +14,5 @@ public:
 private:
     int m_level;
 
+    Storage m_storage;
 };
