@@ -30,9 +30,6 @@ public:
 #endif
 
 private:
-    QJsonValue moveNameFromArray(QJsonObject &&object);
-
-private:
     QMap<QString, QVariant> m_filters;
     QString m_domain;
     QJsonObject m_results;

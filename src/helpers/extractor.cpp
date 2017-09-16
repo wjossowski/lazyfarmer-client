@@ -22,20 +22,47 @@ Extractor::Extractor(const QString &content,
     : m_filters(filters)
     , m_domain(domain)
 {
-    auto extractObject = [this] (const QJsonDocument &document) -> QJsonValue {
+    auto extractNameFromObject = [] (QJsonObject &&object) -> QJsonValue {
+        for (const auto &key : object.keys()) {
+            QJsonArray array = object[key].toArray();
+
+            if (array.isEmpty())
+                continue;
+
+            for (const auto &item : array) {
+                if (!item.isString())
+                    continue;
+
+                const QString &value = item.toString();
+                QRegularExpression re (".(png|gif|jpg|jpeg)$");
+
+                if (re.match(value).hasMatch())
+                    continue;
+
+                object[key] = value;
+                break;
+            }
+        }
+
+        return QJsonValue(object);
+    };
+
+    auto extractObject = [&] (const QJsonDocument &&document) -> QJsonValue {
         if (document.isArray()) {
             QJsonValue container(document.array().first());
-            return container.isObject() ? moveNameFromArray(container.toObject()) : QJsonValue::Null;
+            return container.isObject() ? extractNameFromObject(container.toObject()) : QJsonValue::Null;
         } else if (document.isObject()) {
             return document.object();
         } else {
+            qDebug() << document;
             return QJsonValue::Null;
         }
     };
 
     auto extractJson = [&] (const QString &match, const QString &pattern) {
         const QRegularExpression regex(pattern);
-        const QString captured = regex.match(content).captured(match).replace(QRegularExpression("(,)(?!.*\\\\)"), "");
+        qDebug() << regex.match(content).captured(match);
+        const QString captured = regex.match(content).captured(match).replace(QRegularExpression(",\\s*\\}$"), "}");
         const auto value = extractObject(QJsonDocument::fromJson(captured.toUtf8()));
 
 #if DEBUG_MODE
@@ -61,30 +88,4 @@ Extractor::~Extractor()
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         file.write(QJsonDocument(m_results).toJson(QJsonDocument::Indented));
     }
-}
-
-
-QJsonValue Extractor::moveNameFromArray(QJsonObject &&object) {
-    for (const auto &key : object.keys()) {
-        QJsonArray array = object[key].toArray();
-
-        if (array.isEmpty())
-            continue;
-
-        for (const auto &item : array) {
-            if (!item.isString())
-                continue;
-
-            const QString &value = item.toString();
-            QRegularExpression re (".(png|gif|jpg|jpeg)$");
-
-            if (re.match(value).hasMatch())
-                continue;
-
-            object[key] = value;
-            break;
-        }
-    }
-
-    return QJsonValue(object);
 }
