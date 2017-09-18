@@ -14,7 +14,3 @@ CONFIG(debug, debug|release) {
 win32 {
     QMAKE_TARGET_COMPANY = $${COMPANY_NAME}
 }
-
-CONFIG(make_installer) {
-    DESTDIR = $${OUT_PWD}/../../bin
-}
