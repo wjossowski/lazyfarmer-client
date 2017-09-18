@@ -41,8 +41,6 @@ signals:
     void loggedInChanged(bool changed);
     void errorRaised(ApiGateway::Errors error, const QString &message);
 
-public slots:
-
 private:
     void recursiveRedirect(const QString &url, const std::function<void (QNetworkReply *)> &callback);
     void buildHeaders(QNetworkRequest &request) const;
@@ -64,4 +62,6 @@ private:
 
     QNetworkAccessManager m_manager;
     Player m_player;
+
+    static bool s_firstRun;
 };

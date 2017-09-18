@@ -47,6 +47,15 @@ Extractor::Extractor(const QString &content,
         return QJsonValue(object);
     };
 
+    auto addNamePrefix = [&] (QJsonObject &object) {
+        for (const auto &key : object.keys()) {
+            object[key] = QJsonObject({
+               { "name", object.value(key) },
+               { "duration", -1 }
+            });
+        }
+    };
+
     auto extractObject = [&] (const QJsonDocument &&document) -> QJsonValue {
         if (document.isArray()) {
             QJsonValue container(document.array().first());
@@ -54,21 +63,20 @@ Extractor::Extractor(const QString &content,
         } else if (document.isObject()) {
             return document.object();
         } else {
-            qDebug() << document;
             return QJsonValue::Null;
         }
     };
 
     auto extractJson = [&] (const QString &match, const QString &pattern) {
         const QRegularExpression regex(pattern);
-        qDebug() << regex.match(content).captured(match);
         const QString captured = regex.match(content).captured(match).replace(QRegularExpression(",\\s*\\}$"), "}");
-        const auto value = extractObject(QJsonDocument::fromJson(captured.toUtf8()));
+        auto value = extractObject(QJsonDocument::fromJson(captured.toUtf8())).toObject();
 
 #if DEBUG_MODE
         m_regexMatches << captured;
 #endif
 
+        addNamePrefix(value);
         m_results.insert(match, value);
     };
 

@@ -1,5 +1,7 @@
 COMPANY_NAME = "WololoPl"
 
+DEFINES += QT_DEPRECATED_WARNINGS
+
 DEFINES += "CURRENT_VERSION=\\\"$${VERSION}\\\""
 DEFINES += "APPLICATION_NAME=\\\"$${TARGET}\\\""
 DEFINES += "COMPANY_NAME=\\\"$${COMPANY_NAME}\\\""
@@ -7,4 +9,12 @@ DEFINES += "FUNCTION_NAME=__FUNCTION__"
 
 CONFIG(debug, debug|release) {
     DEFINES += DEBUG_MODE
+}
+
+win32 {
+    QMAKE_TARGET_COMPANY = $${COMPANY_NAME}
+}
+
+CONFIG(make_installer) {
+    DESTDIR = $${OUT_PWD}/../../bin
 }

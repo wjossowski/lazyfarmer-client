@@ -17,6 +17,8 @@
 
 #include <QtDebug>
 
+bool ApiGateway::s_firstRun = true;
+
 ApiGateway::ApiGateway(QObject *parent)
     : QObject(parent)
     , m_loggedIn(false)
@@ -119,21 +121,18 @@ bool ApiGateway::extractRid(QNetworkReply *reply)
     QSettings settings;
     settings.beginGroup("Lookup");
 
-    QString content =
-#ifdef DEBUG_MODE
-            reply->readAll();
-#else
-            reply->read(settings.value("RidExtractorDeep", 1024).toInt());
-#endif
+    QString content = s_firstRun ? reply->readAll()
+                                 : reply->read(settings.value("RidExtractorDeep", 1024).toInt());
+
     if (content.isEmpty())
         return false;
 
     QRegularExpression ridRegex("var rid = '(?<rid>.*)'");
     m_rid = ridRegex.match(content).captured("rid");
 
-#ifdef DEBUG_MODE
-    Extractor extractor(content, m_options.domain);
-#endif
+    if (s_firstRun) {
+        Extractor extractor(content, m_options.domain);
+    }
 
     return !m_rid.isEmpty();
 }

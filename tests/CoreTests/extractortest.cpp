@@ -19,10 +19,6 @@ void ExtractorTest::extractProducts()
     Extractor extractor(m_siteContent, { { "products", "var produkt_name = (?<products>.*);" } });
     const auto &output = extractor.results();
     QVERIFY2 (!output.isEmpty(), "Product object shouldn't be empty");
-
-    qDebug() << extractor.regexMatches();
-    qDebug() << output;
-
     QVERIFY2 (output["products"].isObject(), "Products object should be saved");
 }
 
@@ -31,10 +27,6 @@ void ExtractorTest::extractForestry()
     Extractor extractor(m_siteContent, { { "forestry", "var produkt_name_forestry = (?<forestry>.*);" } });
     const auto &output = extractor.results();
     QVERIFY2 (!output.isEmpty(), "Forestry object shouldn't be empty");
-
-//    qDebug() << extractor.regexMatches();
-    qDebug() << output;
-
     QVERIFY2 (output["forestry"].isObject(), "Forestry object should be saved");
 }
 
@@ -43,10 +35,6 @@ void ExtractorTest::extractBuildings()
     Extractor extractor(m_siteContent, { { "buildings", "var buildinginfos = eval\\(\\'(?<buildings>.*)\\'\\);" } });
     const auto &output = extractor.results();
     QVERIFY2 (!output.isEmpty(), "Buildings object shouldn't be empty");
-
-//    qDebug() << extractor.regexMatches();
-    qDebug() << output;
-
     QVERIFY2 (output["buildings"].isObject(), "Buildings object should be saved");
 }
 

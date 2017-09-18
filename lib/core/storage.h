@@ -3,6 +3,7 @@
 #include "product.h"
 
 #include <QtCore/QObject>
+#include <QtCore/QSharedPointer>
 
 class Storage : public QObject
 {
@@ -12,4 +13,5 @@ public:
     explicit Storage(QObject *parent = nullptr);
 
 private:
+    QList<QSharedPointer<Product> > m_products;
 };

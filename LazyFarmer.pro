@@ -1,10 +1,18 @@
 TEMPLATE = subdirs
 
-source.subdir = src
+corelib.subdir =$${PWD}/lib/core
+corelib.target = CoreLib
+
+source.file = $${PWD}/src/lazyfarmer.pro
 source.target = LazyFarmer
+source.depends = corelib
 
-unit_tests.subdir = tests
-unit_tests.target = LazyFarmerTests
-unit_tests.depends = source
+SUBDIRS += corelib source
 
-SUBDIRS = source unit_tests
+CONFIG(debug, debug|release) {
+    unit_tests.subdir = $${PWD}/tests
+    unit_tests.target = UnitTests
+    unit_tests.depends = corelib source
+
+    SUBDIRS += unit_tests
+}

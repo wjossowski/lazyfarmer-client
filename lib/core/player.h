@@ -12,7 +12,8 @@ public:
     explicit Player(QObject *parent = nullptr);
 
 private:
-    int m_level;
+    quint32 m_level;
+    QString m_levelDescription;
 
     Storage m_storage;
 };
