@@ -42,7 +42,8 @@ void ApiGateway::setOptions(const QVariantMap &options)
 void ApiGateway::login()
 {
     if (!m_configured) {
-        return raiseError(NotConfiguredError, tr("Unable to login with unspecified credentials."));
+        raiseError(Errors::NotConfigured, tr("Unable to login with unspecified credentials."));
+        return;
     }
 
     QNetworkRequest request(tokenUrl());
@@ -70,11 +71,11 @@ void ApiGateway::login()
                     setLoggedIn(true);
                     getFarmInfo();
                 } else {
-                    raiseError(RidNotParsed, tr("Unable to extract `rid`. Login failed."));
+                    raiseError(Errors::RidNotParsed, tr("Unable to extract `rid`. Login failed."));
                 }
             });
         } else {
-            raiseError(NotLogged, tr("Unable to login. Invalid credentials."));
+            raiseError(Errors::NotLogged, tr("Unable to login. Invalid credentials."));
         }
     });
 }
@@ -200,7 +201,7 @@ bool ApiGateway::handleNotLogged(const QString &operation)
 {
     bool notLogged = !m_loggedIn;
     if (notLogged) {
-        raiseError(NotLogged, tr("Action %1 requires to be logged in.").arg(operation));
+        raiseError(Errors::NotLogged, tr("Action %1 requires to be logged in.").arg(operation));
     }
 
     return notLogged;
