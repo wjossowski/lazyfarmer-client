@@ -22,8 +22,10 @@ int main(int argc, char *argv[])
     parser.process(coreTestsApp);
 
     ExtractorTest extractor;
-
     QTest::qExec(&extractor);
+
+    AccountInfoExtractorTest accountInfo;
+    QTest::qExec(&accountInfo);
 
     return 0;
 }
