@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Installer>
+    <Name>LazyFarmer</Name>
+    <Version>{VERSION}</Version>
+    <Title>LazyFarmer installer</Title>
+    <Title xml:lang="pl_pl">Instalator programu LazyFarmer</Title>
+    <Publisher>Mojtekosa</Publisher>
+    <StartMenuDir>LazyFarmer</StartMenuDir>
+    <TargetDir>@HomeDir@/LazyFarmer</TargetDir>
+</Installer>

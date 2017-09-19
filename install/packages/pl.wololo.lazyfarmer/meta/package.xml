@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package>
+    <DisplayName>LazyFarmer</DisplayName>
+    <Description>LazyFarmer installer</Description>
+    <Description xml:lang="pl_pl">Instalator programu LazyFarmer</Description>
+    <Version>{VERSION}</Version>
+    <ReleaseDate>{DATE}</ReleaseDate>
+    <Licenses>
+        <License name="Copyleft" file="license.txt" />
+    </Licenses>
+    <Default>script</Default>
+    <Script>installscript.qs</Script>
+    <UserInterfaces>
+        <UserInterface>page.ui</UserInterface>
+    </UserInterfaces>
+</Package>

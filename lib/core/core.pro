@@ -15,4 +15,3 @@ HEADERS += \
         $${PWD}/*.h
 
 include($${PWD}/../../common.pri)
-include($${PWD}/../lib_installs.pri)
