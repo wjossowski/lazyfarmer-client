@@ -22,12 +22,29 @@ bool ApiGateway::s_firstRun = true;
 ApiGateway::ApiGateway(QObject *parent)
     : QObject(parent)
     , m_loggedIn(false)
+    , m_configured(false)
 {
 
 }
 
+void ApiGateway::setOptions(const QVariantMap &options)
+{
+    m_options = {
+        options["login"].toString(),
+        options["password"].toString(),
+        options["domain"].toString(),
+        options["server"].toString()
+    };
+
+    m_configured = true;
+}
+
 void ApiGateway::login()
 {
+    if (!m_configured) {
+        return raiseError(NotConfiguredError, tr("Unable to login with unspecified credentials."));
+    }
+
     QNetworkRequest request(tokenUrl());
 
     QSslConfiguration config = QSslConfiguration::defaultConfiguration();

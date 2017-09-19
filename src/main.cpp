@@ -102,15 +102,6 @@ int main(int argc, char *argv[])
         qCritical() << e.what();
     }
 
-    ApiGateway api;
-    api.setOptions({
-        parser.value("login"),
-        parser.value("password"),
-        parser.value("domain"),
-        parser.value("server")
-    });
-    api.login();
-
     QScopedPointer<MainWindow> mainWindow;
     if (!parser.isSet("no-gui")) {
         mainWindow.reset(new MainWindow);

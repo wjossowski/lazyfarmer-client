@@ -15,20 +15,14 @@ public:
     static constexpr auto ErrorsName = "Errors";
 
     enum Errors {
+        NotConfigured,
         NotLogged,
         RidNotParsed
     };
     Q_ENUM(Errors)
 
-    struct Options {
-        QString login;
-        QString password;
-        QString domain;
-        QString server;
-    };
-
     explicit ApiGateway(QObject *parent = nullptr);
-    inline void setOptions(const Options &options) { m_options = options; }
+    void setOptions(const QVariantMap &options);
 
     void login();
     void logout();
@@ -36,6 +30,7 @@ public:
     void getFarmInfo();
 
     inline bool isLoggedIn() const { return m_loggedIn; }
+    inline bool isConfigured() const { return m_configured; }
 
 signals:
     void loggedInChanged(bool changed);
@@ -57,7 +52,14 @@ private:
 
 private:
     bool m_loggedIn;
-    Options m_options;
+    bool m_configured;
+
+    struct {
+        QString login;
+        QString password;
+        QString domain;
+        QString server;
+    } m_options;
     QString m_rid;
 
     QNetworkAccessManager m_manager;
