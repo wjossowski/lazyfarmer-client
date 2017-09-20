@@ -1,9 +1,26 @@
-#include "extractortest.h"
+#include <QtTest>
 
-#include "extractor.h"
+#include "core/helpers/extractor.h"
 
-#include <QtTest/QTest>
-#include <QtCore/QRegularExpression>
+class ExtractorTest : public QObject
+{
+    Q_OBJECT
+
+public:
+    ExtractorTest () {}
+
+private slots:
+    void initTestCase();
+
+    void extractProducts();
+    void extractForestry();
+    void extractBuildings();
+
+    void extractToFile();
+
+private:
+    QString m_siteContent;
+};
 
 void ExtractorTest::initTestCase()
 {
@@ -38,9 +55,14 @@ void ExtractorTest::extractBuildings()
     QVERIFY2 (output["buildings"].isObject(), "Buildings object should be saved");
 }
 
-void ExtractorTest::cleanupTestCase()
+void ExtractorTest::extractToFile()
 {
-    Extractor extractor(m_siteContent);
+    Extractor extractor(m_siteContent, {
+        { "forestry", "var produkt_name_forestry = (?<forestry>.*);" },
+        { "products", "var produkt_name = (?<products>.*);" },
+        { "buildings", "var buildinginfos = eval\\(\\'(?<buildings>.*)\\'\\);" }
+    });
+
     QFile file(QString("%1/labels.json").arg(TEST_OUT_PWD));
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         file.write(QJsonDocument(extractor.results()).toJson(QJsonDocument::Indented));
@@ -48,3 +70,7 @@ void ExtractorTest::cleanupTestCase()
         QFAIL("File should be opened");
     }
 }
+
+QTEST_MAIN(ExtractorTest)
+
+#include "tst_extractor.moc"

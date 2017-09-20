@@ -15,7 +15,7 @@ public:
                        const QString &domain = QString());
 
     Extractor(const QString &content,
-              const QMap<QString, QVariant> &filters,
+              const QVariantMap &filters,
               const QString &domain = QString());
 
     virtual ~Extractor();
@@ -28,6 +28,9 @@ public:
 #if DEBUG_MODE
     inline const QStringList &regexMatches() const { return m_regexMatches; }
 #endif
+
+private:
+    void extract(const QString &content);
 
 private:
     QMap<QString, QVariant> m_filters;
