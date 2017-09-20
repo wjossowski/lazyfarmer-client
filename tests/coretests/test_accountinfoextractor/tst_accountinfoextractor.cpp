@@ -29,7 +29,7 @@ void AccountInfoExtractor::initTestCase()
     if (!siteFile.open(QIODevice::ReadOnly)) {
         QFAIL ("Unable to open farminfo_small.json file");
     }
-    qDebug() << QObject::tr("Saving to") << QFileInfo(siteFile).absoluteFilePath();
+    qDebug() << QObject::tr("Reading from") << QFileInfo(siteFile).absoluteFilePath();
     m_accountInfoContent = QString::fromUtf8(siteFile.readAll());
 }
 
