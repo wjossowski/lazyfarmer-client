@@ -1,25 +1,22 @@
 #include "player.h"
 
+#include <QtCore/QJsonDocument>
+#include <QtCore/QJsonObject>
+#include <QtCore/QJsonArray>
+
 #include <QtDebug>
 
 Player::Player(QObject *parent)
     : QObject(parent)
+    , m_level(0)
+    , m_levelPercentage(0)
 {
-    qDebug() << "Budujem";
+
 }
 
-void Player::setLevel(const quint32 &level)
+void Player::setBasicInfo(const QVariantMap &basicInfo)
 {
-    if (m_level != level) {
-        m_level = level;
-        emit levelChanged(level);
-    }
-}
-
-void Player::setLevelDescription(const QString &levelDescription)
-{
-    if (m_levelDescription != levelDescription) {
-        m_levelDescription = levelDescription;
-        emit levelDescriptionChanged(levelDescription);
-    }
+    m_level = basicInfo["Level"].toInt();
+    m_levelDescription = basicInfo["LevelDescription"].toString();
+    m_levelPercentage = basicInfo["LevelPercentage"].toInt();
 }

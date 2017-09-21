@@ -1,3 +1,3 @@
 TEMPLATE = app
-SOURCES +=  tst_accountinfoextractor.cpp
+SOURCES +=  tst_playerinfoextractor.cpp
 include($${PWD}/../common_coretests.pri)

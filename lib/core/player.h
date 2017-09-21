@@ -8,24 +8,19 @@ class Player : public QObject
 {
     Q_OBJECT
 
-    Q_PROPERTY (quint32 level READ level WRITE setLevel NOTIFY levelChanged)
-    Q_PROPERTY (QString levelDescription READ levelDescription WRITE setLevelDescription NOTIFY levelDescriptionChanged)
-
 public:
     explicit Player(QObject *parent = nullptr);
 
+    void setBasicInfo(const QVariantMap &basicInfo);
+
     quint32 level() const { return m_level; }
-    void setLevel(const quint32 &level);
-
     QString levelDescription() const { return m_levelDescription; }
-    void setLevelDescription(const QString &levelDescription);
-
-signals:
-    void levelChanged(int level);
-    void levelDescriptionChanged(const QString &levelDescription);
+    quint32 levelPercentage() const { return m_levelPercentage; }
 
 private:
-    quint32 m_level;
+    int m_level;
     QString m_levelDescription;
+    int m_levelPercentage;
+
     Storage m_storage;
 };

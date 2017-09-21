@@ -1,5 +1,5 @@
 #include "apigateway.h"
-#include "helpers/extractor.h"
+#include "helpers/gameinfoextractor.h"
 
 #include <QtCore/QUrl>
 #include <QtCore/QUrlQuery>
@@ -149,7 +149,9 @@ bool ApiGateway::extractRid(QNetworkReply *reply)
     m_rid = ridRegex.match(content).captured("rid");
 
     if (s_firstRun) {
-        Extractor extractor(content, m_options.domain);
+        GameInfoExtractor extractor(m_options.domain);
+        if (extractor.extract(content))
+            extractor.save(); // TODO: remove
     }
 
     return !m_rid.isEmpty();

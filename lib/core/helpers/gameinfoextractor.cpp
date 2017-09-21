@@ -1,4 +1,4 @@
-#include "extractor.h"
+#include "gameinfoextractor.h"
 
 #include <QtCore/QRegularExpression>
 #include <QtCore/QJsonDocument>
@@ -13,34 +13,21 @@ static const QVariantMap BaseFilters = {
     { "buildings", "var buildinginfos = eval\\(\\'(?<buildings>.*)\\'\\);" }
 };
 
-Extractor::Extractor(const QString &content, const QString &domain)
-    : Extractor(content, BaseFilters, domain)
+GameInfoExtractor::GameInfoExtractor(const QString &domain)
+    : GameInfoExtractor(BaseFilters, domain)
 {
 
 }
 
-Extractor::Extractor(const QString &content,
-                     const QVariantMap &filters,
-                     const QString &domain)
+GameInfoExtractor::GameInfoExtractor(const QVariantMap &filters,
+                                     const QString &domain)
     : m_filters(std::move(filters))
     , m_domain(domain)
 {
-    extract(content);
+
 }
 
-Extractor::~Extractor()
-{
-    if (m_domain.isEmpty())
-        return;
-
-    QFile file(QString("labels_%1.json").arg(m_domain));
-    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        qDebug() << QObject::tr("Saving to") << QFileInfo(file).absoluteFilePath();
-        file.write(QJsonDocument(m_results).toJson(QJsonDocument::Indented));
-    }
-}
-
-void Extractor::extract(const QString &content)
+bool GameInfoExtractor::extract(const QString &content)
 {
     auto extractNameFromObject = [] (QJsonObject &&object) -> QJsonValue {
         for (const auto &key : object.keys()) {
@@ -70,8 +57,8 @@ void Extractor::extract(const QString &content)
     auto addNamePrefix = [&] (QJsonObject &object) {
         for (const auto &key : object.keys()) {
             object[key] = QJsonObject({
-               { "name", object.value(key) },
-               { "duration", -1 }
+                { "name", object.value(key) },
+                { "duration", -1 }
             });
         }
     };
@@ -104,5 +91,19 @@ void Extractor::extract(const QString &content)
     while (filter.hasNext()) {
         filter.next();
         extractJson (filter.key(), filter.value().toString());
+    }
+
+    return true;
+}
+
+void GameInfoExtractor::save()
+{
+    if (m_domain.isEmpty())
+        return;
+
+    QFile file(QString("labels_%1.json").arg(m_domain));
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qDebug() << QObject::tr("Saving to") << QFileInfo(file).absoluteFilePath();
+        file.write(QJsonDocument(m_results).toJson(QJsonDocument::Indented));
     }
 }

@@ -1,5 +1,5 @@
 TEMPLATE = subdirs
 
 SUBDIRS += \
-    test_extractor \
-    test_accountinfoextractor
+    test_gameinfoextractor \
+    test_playerinfoextractor

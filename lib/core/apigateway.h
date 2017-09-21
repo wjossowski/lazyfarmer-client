@@ -1,7 +1,5 @@
 #pragma once
 
-#include "player.h"
-
 #include <QObject>
 #include <QtNetwork/QNetworkAccessManager>
 
@@ -63,7 +61,6 @@ private:
     QString m_rid;
 
     QNetworkAccessManager m_manager;
-    Player m_player;
 
     static bool s_firstRun;
 };

@@ -1,13 +1,13 @@
 #include <QtTest>
 
-#include "core/helpers/extractor.h"
+#include "core/helpers/gameinfoextractor.h"
 
-class ExtractorTest : public QObject
+class GameInfoExtractorTest : public QObject
 {
     Q_OBJECT
 
 public:
-    ExtractorTest () {}
+    GameInfoExtractorTest () {}
 
 private slots:
     void initTestCase();
@@ -22,7 +22,7 @@ private:
     QString m_siteContent;
 };
 
-void ExtractorTest::initTestCase()
+void GameInfoExtractorTest::initTestCase()
 {
     QFile siteFile (QString("%1/assets/content.html").arg(TEST_PWD));
     if (!siteFile.open(QIODevice::ReadOnly)) {
@@ -31,37 +31,48 @@ void ExtractorTest::initTestCase()
     m_siteContent = QString::fromUtf8(siteFile.readAll());
 }
 
-void ExtractorTest::extractProducts()
+void GameInfoExtractorTest::extractProducts()
 {
-    Extractor extractor(m_siteContent, { { "products", "var produkt_name = (?<products>.*);" } });
+    GameInfoExtractor extractor({ { "products", "var produkt_name = (?<products>.*);" } });
+
+    QVERIFY2 (extractor.extract(m_siteContent), "GameInfoExtractor should extract");
     const auto &output = extractor.results();
+
     QVERIFY2 (!output.isEmpty(), "Product object shouldn't be empty");
     QVERIFY2 (output["products"].isObject(), "Products object should be saved");
 }
 
-void ExtractorTest::extractForestry()
+void GameInfoExtractorTest::extractForestry()
 {
-    Extractor extractor(m_siteContent, { { "forestry", "var produkt_name_forestry = (?<forestry>.*);" } });
+    GameInfoExtractor extractor({ { "forestry", "var produkt_name_forestry = (?<forestry>.*);" } });
+
+    QVERIFY2 (extractor.extract(m_siteContent), "GameInfoExtractor should extract");
     const auto &output = extractor.results();
+
     QVERIFY2 (!output.isEmpty(), "Forestry object shouldn't be empty");
     QVERIFY2 (output["forestry"].isObject(), "Forestry object should be saved");
 }
 
-void ExtractorTest::extractBuildings()
+void GameInfoExtractorTest::extractBuildings()
 {
-    Extractor extractor(m_siteContent, { { "buildings", "var buildinginfos = eval\\(\\'(?<buildings>.*)\\'\\);" } });
+    GameInfoExtractor extractor({ { "buildings", "var buildinginfos = eval\\(\\'(?<buildings>.*)\\'\\);" } });
+
+    QVERIFY2 (extractor.extract(m_siteContent), "GameInfoExtractor should extract");
     const auto &output = extractor.results();
+
     QVERIFY2 (!output.isEmpty(), "Buildings object shouldn't be empty");
     QVERIFY2 (output["buildings"].isObject(), "Buildings object should be saved");
 }
 
-void ExtractorTest::extractToFile()
+void GameInfoExtractorTest::extractToFile()
 {
-    Extractor extractor(m_siteContent, {
+    GameInfoExtractor extractor({
         { "forestry", "var produkt_name_forestry = (?<forestry>.*);" },
         { "products", "var produkt_name = (?<products>.*);" },
         { "buildings", "var buildinginfos = eval\\(\\'(?<buildings>.*)\\'\\);" }
     });
+
+    QVERIFY2 (extractor.extract(m_siteContent), "GameInfoExtractor should extract");
 
     QFile file(QString("%1/labels.json").arg(TEST_OUT_PWD));
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
@@ -71,6 +82,6 @@ void ExtractorTest::extractToFile()
     }
 }
 
-QTEST_MAIN(ExtractorTest)
+QTEST_MAIN(GameInfoExtractorTest)
 
-#include "tst_extractor.moc"
+#include "tst_gameinfoextractor.moc"
