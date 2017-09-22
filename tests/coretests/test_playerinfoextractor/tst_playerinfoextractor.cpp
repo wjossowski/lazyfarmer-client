@@ -4,54 +4,99 @@
 #include <QtCore/QFileInfo>
 #include <QtTest>
 
+Q_DECLARE_METATYPE(PlayerInfoExtractor*)
+
 class PlayerInfoExtractorTest : public QObject
 {
     Q_OBJECT
 
 public:
-    PlayerInfoExtractorTest () : m_extractor(new PlayerInfoExtractor) { }
+    PlayerInfoExtractorTest ()
+        : m_bigExtractor(new PlayerInfoExtractor)
+        , m_smallExtractor(new PlayerInfoExtractor)
+    { }
 
 private slots:
     void initTestCase();
 
-    void extract();
-
+    void extractBasicInfo_data();
     void extractBasicInfo();
+
+    void extractStorageInfo_data();
     void extractStorageInfo();
+
+    void extractFarmsInfo_data();
     void extractFarmsInfo();
 
 private:
-    QByteArray m_accountInfoContent;
-    QScopedPointer<PlayerInfoExtractor> m_extractor;
+    QSharedPointer<PlayerInfoExtractor> m_bigExtractor;
+    QSharedPointer<PlayerInfoExtractor> m_smallExtractor;
 };
 
 void PlayerInfoExtractorTest::initTestCase()
 {
-    QFile siteFile (QString("%1/assets/farminfo_big.json").arg(TEST_PWD));
-    if (!siteFile.open(QIODevice::ReadOnly)) {
-        QFAIL ("Unable to open farminfo_small.json file");
-    }
-    qDebug() << QObject::tr("Reading from") << QFileInfo(siteFile).absoluteFilePath();
-    m_accountInfoContent = std::move(siteFile.readAll());
+    const auto parseFromFile = [&] (const QString &filename, const QSharedPointer<PlayerInfoExtractor> &extractor) {
+        QFile siteFile (QString("%1/assets/%2.json").arg(TEST_PWD).arg(filename));
+        if (!siteFile.open(QIODevice::ReadOnly)) {
+            QFAIL ("Unable to open farminfo_small.json file");
+        }
+        qDebug() << QObject::tr("Reading from") << QFileInfo(siteFile).absoluteFilePath();
+        QVERIFY2(extractor->parseInfo(std::move(siteFile.readAll())), QString("PlayerInfoExtractor should extract information from %1").arg(filename).toLatin1().constData());
+    };
 
+    parseFromFile("farminfo_big", m_bigExtractor);
+    parseFromFile("farminfo_small", m_smallExtractor);
 }
 
-void PlayerInfoExtractorTest::extract()
+void PlayerInfoExtractorTest::extractBasicInfo_data()
 {
-    QVERIFY2(m_extractor->parseInfo(m_accountInfoContent), "PlayerInfoExtractor should extract information");
+    QTest::addColumn<PlayerInfoExtractor*>("extractor");
+    QTest::addColumn<int>("level");
+    QTest::addColumn<QString>("levelDescription");
+    QTest::addColumn<int>("levelPercentage");
+
+    QTest::addRow("Small File") << m_smallExtractor.data() << 1 << "Knecht" << 13;
+    QTest::addRow("Big File") << m_bigExtractor.data() << 23 << "Kurzy treser" << 84;
 }
 
 void PlayerInfoExtractorTest::extractBasicInfo()
 {
-    const auto &basicInfo = m_extractor->basicInfo();
-    QVERIFY2(basicInfo["Level"] == 23, "Level not parsed correctly");
-    QVERIFY2(basicInfo["LevelDescription"] == "Kurzy treser", "Level description not parsed correctly");
-    QVERIFY2(basicInfo["LevelPercentage"] == 84, "Invalid level percentage");
+    QFETCH(PlayerInfoExtractor*, extractor);
+    QFETCH(int, level);
+    QFETCH(QString, levelDescription);
+    QFETCH(int, levelPercentage);
+
+    const auto &basicInfo = extractor->basicInfo();
+    QVERIFY2(basicInfo["Level"] == level, "Level not parsed correctly");
+    QVERIFY2(basicInfo["LevelDescription"] == levelDescription, "Level description not parsed correctly");
+    QVERIFY2(basicInfo["LevelPercentage"] == levelPercentage, "Invalid level percentage");
+}
+
+void PlayerInfoExtractorTest::extractStorageInfo_data()
+{
+    QTest::addColumn<PlayerInfoExtractor*>("extractor");
+    QTest::addColumn<int>("farms");
+    QTest::addColumn<QList<int>>("buildingids");
+    QTest::addColumn<QList<int>>("buildingnames");
+
+    QTest::addRow("Small File");
+    QTest::addRow("Big File");
 }
 
 void PlayerInfoExtractorTest::extractStorageInfo()
 {
     QFAIL("Not Implemented yet!");
+}
+
+void PlayerInfoExtractorTest::extractFarmsInfo_data()
+{
+    QTest::addColumn<PlayerInfoExtractor*>("extractor");
+    QTest::addColumn<int>("farms");
+    QTest::addColumn<QList<int>>("buildingids");
+    QTest::addColumn<QList<int>>("buildingnames");
+
+    QTest::addRow("Small File");
+    QTest::addRow("Big File");
 }
 
 void PlayerInfoExtractorTest::extractFarmsInfo()
@@ -60,5 +105,4 @@ void PlayerInfoExtractorTest::extractFarmsInfo()
 }
 
 QTEST_APPLESS_MAIN(PlayerInfoExtractorTest)
-
 #include "tst_playerinfoextractor.moc"

@@ -7,7 +7,6 @@ class QJsonObject;
 
 class PlayerInfoExtractor
 {
-    Q_DISABLE_COPY (PlayerInfoExtractor)
 
 public:
     explicit PlayerInfoExtractor() { }

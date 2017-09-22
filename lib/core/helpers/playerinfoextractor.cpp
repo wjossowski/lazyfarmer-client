@@ -7,6 +7,12 @@
 
 #include <QtDebug>
 
+#ifdef DEBUG_MODE
+void printJson(const QJsonObject &obj) {
+    qDebug() << QJsonDocument(obj).toJson(QJsonDocument::Indented);
+}
+#endif
+
 struct PlayerParseException {
     enum Type {
         EmptyResponseObject,
@@ -23,7 +29,7 @@ struct PlayerParseException {
         case EmptyBasicInfo: return QObject::tr("Empty basic info");
         case EmptyStorageInfo: return QObject::tr("Empty storage info");
         case EmptyFarmsInfo: return QObject::tr("Empty farms info");
-        case TypeParsingError: return QObject::tr("Invalid parsing type");
+        case TypeParsingError: return QObject::tr("Invalid puarsing type");
         default: return QObject::tr("Unknown error");
         }
     }
@@ -68,10 +74,6 @@ int countPercentage(const QJsonValue &exp, const QJsonValue &levelExp, const QJs
     double nextLevelExpPoints = nextLevelExp.toDouble();
 
     return qRound(100.0 * ((expPoints - levelExpPoints) / (nextLevelExpPoints - levelExpPoints)));
-}
-
-void printJson(const QJsonObject &obj) {
-    qDebug() << QJsonDocument(obj).toJson(QJsonDocument::Indented);
 }
 
 void PlayerInfoExtractor::parseBasicInfo(const QJsonObject &basicInfo)
