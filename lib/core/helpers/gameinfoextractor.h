@@ -28,6 +28,10 @@ public:
     void save();
 
 private:
+    QJsonValue extractNameFromObject(QJsonObject &&object) const;
+    QJsonValue extractObject(QJsonDocument &&document) const;
+
+private:
     QVariantMap m_filters;
     QString m_domain;
     QJsonObject m_results;

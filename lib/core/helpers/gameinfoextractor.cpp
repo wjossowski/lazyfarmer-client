@@ -29,51 +29,6 @@ GameInfoExtractor::GameInfoExtractor(const QVariantMap &filters,
 
 bool GameInfoExtractor::extract(const QString &content)
 {
-    auto extractNameFromObject = [] (QJsonObject &&object) -> QJsonValue {
-        for (const auto &key : object.keys()) {
-            QJsonArray array = object[key].toArray();
-
-            if (array.isEmpty())
-                continue;
-
-            for (const auto &item : array) {
-                if (!item.isString())
-                    continue;
-
-                const QString &value = item.toString();
-                QRegularExpression re (".(png|gif|jpg|jpeg)$");
-
-                if (re.match(value).hasMatch())
-                    continue;
-
-                object[key] = value;
-                break;
-            }
-        }
-
-        return QJsonValue(object);
-    };
-
-    auto addNamePrefix = [&] (QJsonObject &object) {
-        for (const auto &key : object.keys()) {
-            object[key] = QJsonObject({
-                { "name", object.value(key) },
-                { "duration", -1 }
-            });
-        }
-    };
-
-    auto extractObject = [&] (const QJsonDocument &&document) -> QJsonValue {
-        if (document.isArray()) {
-            QJsonValue container(document.array().first());
-            return container.isObject() ? extractNameFromObject(container.toObject()) : QJsonValue::Null;
-        } else if (document.isObject()) {
-            return document.object();
-        } else {
-            return QJsonValue::Null;
-        }
-    };
-
     auto extractJson = [&] (const QString &match, const QString &pattern) {
         const QRegularExpression regex(pattern);
         const QString captured = regex.match(content).captured(match).replace(QRegularExpression(",\\s*\\}$"), "}");
@@ -83,7 +38,6 @@ bool GameInfoExtractor::extract(const QString &content)
         m_regexMatches << captured;
 #endif
 
-        addNamePrefix(value);
         m_results.insert(match, value);
     };
 
@@ -105,5 +59,43 @@ void GameInfoExtractor::save()
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         qDebug() << QObject::tr("Saving to") << QFileInfo(file).absoluteFilePath();
         file.write(QJsonDocument(m_results).toJson(QJsonDocument::Indented));
+    }
+}
+
+QJsonValue GameInfoExtractor::extractNameFromObject(QJsonObject &&object) const
+{
+    for (const auto &key : object.keys()) {
+        QJsonArray array = object[key].toArray();
+
+        if (array.isEmpty())
+            continue;
+
+        for (const auto &item : array) {
+            if (!item.isString())
+                continue;
+
+            const QString &value = item.toString();
+            QRegularExpression re (".(png|gif|jpg|jpeg)$");
+
+            if (re.match(value).hasMatch())
+                continue;
+
+            object[key] = value;
+            break;
+        }
+    }
+
+    return QJsonValue(object);
+}
+
+QJsonValue GameInfoExtractor::extractObject(QJsonDocument &&document) const
+{
+    if (document.isArray()) {
+        QJsonValue container(document.array().first());
+        return container.isObject() ? extractNameFromObject(container.toObject()) : QJsonValue::Null;
+    } else if (document.isObject()) {
+        return document.object();
+    } else {
+        return QJsonValue::Null;
     }
 }
