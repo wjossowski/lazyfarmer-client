@@ -54,7 +54,6 @@ bool PlayerInfoExtractor::parseInfo(const QByteArray &info)
         } else {
             throw PlayerParseException(PlayerParseException::EmptyResponseObject);
         }
-
     } catch (PlayerParseException &ex) {
         m_error = ex.toString();
         qWarning() << m_error;
@@ -80,16 +79,51 @@ void PlayerInfoExtractor::parseBasicInfo(const QJsonObject &basicInfo)
 {
     assertNotEmptyObject(basicInfo, PlayerParseException::EmptyBasicInfo);
 
+    m_basicInfo.clear();
+
     m_basicInfo["Level"] = basicInfo["levelnum"].toString().toInt();
     m_basicInfo["LevelDescription"] = basicInfo["level"].toString();
     m_basicInfo["LevelPercentage"] = countPercentage(basicInfo["points"], basicInfo["levelcurrentlimit"], basicInfo["levellimit"]);
+}
+
+QVariantMap extractProduct(const QJsonObject &product)
+{
+    QVariantMap productMap;
+    productMap["Id"] = product["pid"].toString().toInt();
+    productMap["Amount"] = product["amount"].toString().toInt();
+    return productMap;
+}
+
+QVariantList extractProductsFromRack(const QJsonObject &rack)
+{
+    QVariantList list;
+    // extract products
+    for (const auto &product : rack) {
+        list.append(extractProduct(product.toObject()));
+    }
+    // sort rack
+    std::sort(list.begin(), list.end(), [] (const QVariant &lhs, const QVariant &rhs) {
+        return lhs.toMap()["Id"].toInt() < rhs.toMap()["Id"].toInt();
+    });
+
+    return list;
 }
 
 void PlayerInfoExtractor::parseStorageInfo(const QJsonObject &storageInfo)
 {
     assertNotEmptyObject(storageInfo, PlayerParseException::EmptyStorageInfo);
 
-//    printJson(storageInfo);
+    m_storageInfo.clear();
+
+    for (const auto &node : storageInfo) {
+        if (node.isObject()) {
+            for (const auto &rack : node.toObject()) {
+                m_storageInfo.append(extractProductsFromRack(rack.toObject()));
+            }
+        } else {
+            // Todo
+        }
+    }
 }
 
 QVariantMap extractBuildingInfo(const QJsonObject &buildingObject)
@@ -130,6 +164,8 @@ QVariantMap extractFarmInfo(const QJsonObject &farmObject)
 void PlayerInfoExtractor::parseFarmsInfo(const QJsonObject &farmsInfo)
 {
     assertNotEmptyObject(farmsInfo);
+
+    m_farmsInfo.clear();
 
     foreach (const auto &key, farmsInfo.keys()) {
         m_farmsInfo[key] = extractFarmInfo(farmsInfo[key].toObject());

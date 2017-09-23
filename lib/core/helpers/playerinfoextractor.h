@@ -16,7 +16,7 @@ public:
     const QString &errorString() const { return m_error; }
 
     const QVariantMap &basicInfo() const { return m_basicInfo; }
-    const QVariantMap &storageInfo() const { return m_storageInfo; }
+    const QVariantList &storageInfo() const { return m_storageInfo; }
     const QVariantMap &farmsInfo() const { return m_farmsInfo; }
 
 private:
@@ -26,7 +26,7 @@ private:
 
 private:
     QVariantMap m_basicInfo;
-    QVariantMap m_storageInfo;
+    QVariantList m_storageInfo;
     QVariantMap m_farmsInfo;
 
     QString m_error;

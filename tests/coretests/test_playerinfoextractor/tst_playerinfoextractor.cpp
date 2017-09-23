@@ -75,14 +75,51 @@ void PlayerInfoExtractorTest::extractBasicInfo()
 void PlayerInfoExtractorTest::extractStorageInfo_data()
 {
     QTest::addColumn<PlayerInfoExtractor*>("extractor");
+    QTest::addColumn<int>("size");
+    QTest::addColumn<QVariantList>("ids");
+    QTest::addColumn<QVariantList>("amount");
 
-    QTest::addRow("Small File");
-    QTest::addRow("Big File");
+    QTest::addRow("Small File") << m_smallExtractor.data()
+                                   // Storage size
+                                << 1
+                                   // Storage ids
+                                << QVariantList({ 17 })
+                                   // Storage amount
+                                << QVariantList({ 6 });
+
+    QTest::addRow("Big File") << m_bigExtractor.data()
+                                 // Storage size
+                              << 19
+                                 // Storage ids
+                              << QVariantList({   1,   4,   7,  18,  20,  26,  93, 104, 107, 108,
+                                                109, 110, 111, 159, 172, 173, 174, 189, 202})
+                                 // Storage amount
+                              << QVariantList({1196, 157,  25, 789, 177,  22,   3,  50,  10, 8773,
+                                               1490,  81, 253,   1, 212, 828, 896,   1,  14});
 }
 
 void PlayerInfoExtractorTest::extractStorageInfo()
 {
-    QFAIL("Not Implemented yet!");
+    QFETCH(PlayerInfoExtractor*, extractor);
+    QFETCH(int, size);
+    QFETCH(QVariantList, ids);
+    QFETCH(QVariantList, amount);
+
+    const auto &storageInfo = extractor->storageInfo();
+    QVERIFY2(storageInfo.size() == size, "Invalid storage length");
+
+    int i = 0;
+    for (const auto &info : storageInfo) {
+        const auto &product = info.toMap();
+        if (product["Id"] != ids[i]) {
+            continue;
+        }
+
+        QVERIFY2(product["Id"] == ids[i], "Invalid product Id");
+        QVERIFY2(product["Amount"] == amount[i], "Invalid product amount");
+
+        i++;
+    }
 }
 
 void PlayerInfoExtractorTest::extractFarmsInfo_data()
@@ -152,9 +189,6 @@ void PlayerInfoExtractorTest::extractFarmsInfo()
             int level = getVariantMapValue(levels, farmKey, buildingKey);
             int animalsCount = getVariantMapValue(animals, farmKey, buildingKey);
             int remainingTime = getVariantMapValue(remaining, farmKey, buildingKey);
-
-            qDebug() << farmKey << buildingKey << buildingInfo;
-            qDebug() << animalsCount << id << level << remainingTime;
 
             QVERIFY2(buildingInfo["Id"] == id, "Building id doesn't match");
             QVERIFY2(buildingInfo["Level"] == level, "Building level doesn't  match");
