@@ -17,7 +17,6 @@
 
 #include <QtDebug>
 
-
 #ifdef Q_OS_WIN
     #include <windows.h>
 #endif
@@ -109,15 +108,6 @@ int main(int argc, char *argv[])
         mainWindow.reset(new MainWindow);
         mainWindow->show();
     }
-
-    ApiGateway g;
-    g.setOptions({
-                     { "login", "andzinsan9" },
-                     { "password", "penelopa" },
-                     { "domain", "wolnifarmerzy.pl" },
-                     { "server", "18" }
-                 });
-    g.login();
 
     return lazyFarmerApp.exec();
 }

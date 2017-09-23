@@ -109,9 +109,8 @@ QVariantMap extractBuildingInfo(const QJsonObject &buildingObject)
 
     QVariantMap building;
     building["Id"] = buildingObject["buildingid"].toString().toInt();
-    building["Name"] = buildingObject["name"].toString();
     building["Level"] = buildingObject["level"].toString().toInt();
-    building["Animals"] = buildingObject["animals"].toString();
+    building["Animals"] = buildingObject["animals"].toString().toInt();
     building["Remaining"] = remaining(buildingObject["production"]);
 
     return building;
