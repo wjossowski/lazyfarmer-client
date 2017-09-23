@@ -84,6 +84,7 @@ void PlayerInfoExtractor::parseBasicInfo(const QJsonObject &basicInfo)
     m_basicInfo["Level"] = basicInfo["levelnum"].toString().toInt();
     m_basicInfo["LevelDescription"] = basicInfo["level"].toString();
     m_basicInfo["LevelPercentage"] = countPercentage(basicInfo["points"], basicInfo["levelcurrentlimit"], basicInfo["levellimit"]);
+    m_basicInfo["Money"] = basicInfo["bar"].toString().toDouble();
 }
 
 QVariantMap extractProduct(const QJsonObject &product)

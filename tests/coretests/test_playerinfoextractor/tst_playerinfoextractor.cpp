@@ -54,9 +54,10 @@ void PlayerInfoExtractorTest::extractBasicInfo_data()
     QTest::addColumn<int>("level");
     QTest::addColumn<QString>("levelDescription");
     QTest::addColumn<int>("levelPercentage");
+    QTest::addColumn<double>("money");
 
-    QTest::addRow("Small File") << m_smallExtractor.data() << 1 << "Knecht" << 13;
-    QTest::addRow("Big File") << m_bigExtractor.data() << 23 << "Kurzy treser" << 84;
+    QTest::addRow("Small File") << m_smallExtractor.data() << 1 << "Knecht" << 13 << 1.5;
+    QTest::addRow("Big File") << m_bigExtractor.data() << 23 << "Kurzy treser" << 84 << 112997.20;
 }
 
 void PlayerInfoExtractorTest::extractBasicInfo()
@@ -65,11 +66,13 @@ void PlayerInfoExtractorTest::extractBasicInfo()
     QFETCH(int, level);
     QFETCH(QString, levelDescription);
     QFETCH(int, levelPercentage);
+    QFETCH(double, money);
 
     const auto &basicInfo = extractor->basicInfo();
     QVERIFY2(basicInfo["Level"] == level, "Level not parsed correctly");
     QVERIFY2(basicInfo["LevelDescription"] == levelDescription, "Level description not parsed correctly");
     QVERIFY2(basicInfo["LevelPercentage"] == levelPercentage, "Invalid level percentage");
+    QVERIFY2(qFuzzyCompare(basicInfo["Money"].toDouble(), money), "Invalid amount of money");
 }
 
 void PlayerInfoExtractorTest::extractStorageInfo_data()
