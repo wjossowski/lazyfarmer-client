@@ -2,7 +2,7 @@
 
 Product::Product(quint32 id,
                  quint32 amount,
-                 std::chrono::duration<quint32, std::giga> &&duration,
+                 std::chrono::milliseconds &&duration,
                  QObject *parent)
     : QObject(parent)
     , m_id(id)

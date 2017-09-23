@@ -6,21 +6,15 @@
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonValue>
 
-class Extractor
+class GameInfoExtractor
 {
-    Q_DISABLE_COPY(Extractor)
+    Q_DISABLE_COPY(GameInfoExtractor)
 
 public:
-    explicit Extractor(const QString &content,
-                       const QString &domain = QString());
+    explicit GameInfoExtractor(const QString &domain = QString());
 
-    Extractor(const QString &content,
-              const QVariantMap &filters,
-              const QString &domain = QString());
-
-    virtual ~Extractor();
-
-    inline const QJsonObject &results() const { return m_results; }
+    GameInfoExtractor(const QVariantMap &filters,
+                      const QString &domain = QString());
 
     inline QString domain() const { return m_domain; }
     inline void setDomain(const QString &domain) { m_domain = domain; }
@@ -29,11 +23,16 @@ public:
     inline const QStringList &regexMatches() const { return m_regexMatches; }
 #endif
 
-private:
-    void extract(const QString &content);
+    bool extract(const QString &content);
+    const QJsonObject &results() { return m_results; }
+    void save();
 
 private:
-    QMap<QString, QVariant> m_filters;
+    QJsonValue extractNameFromObject(QJsonObject &&object) const;
+    QJsonValue extractObject(QJsonDocument &&document) const;
+
+private:
+    QVariantMap m_filters;
     QString m_domain;
     QJsonObject m_results;
 
