@@ -57,7 +57,6 @@ void GameInfoExtractorTest::extractProducts()
     const auto &output = extractor.results();
 
     QVERIFY2 (!output.isEmpty(), "Product object shouldn't be empty");
-    qDebug() << output["products"].typeName();
     QVERIFY2 (output["products"].isValid(), "Products object should be saved");
 }
 

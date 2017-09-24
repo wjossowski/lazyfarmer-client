@@ -181,8 +181,8 @@ QUrl ApiGateway::tokenUrl() const
 }
 
 QUrl ApiGateway::endpointUrl(const QString &endpoint,
-                                 const QList<QPair<QString, QString> > &data,
-                                 bool includeRid) const
+                             const QList<QPair<QString, QString> > &data,
+                             bool includeRid) const
 {
     QUrlQuery query;
     query.setQueryItems(data);
@@ -199,7 +199,8 @@ QUrl ApiGateway::endpointUrl(const QString &endpoint,
     return QUrl(url);
 }
 
-QUrl ApiGateway::endpointAjaxUrl(const QString &endpoint, const QList<QPair<QString, QString> > &data, bool includeRid) const
+QUrl ApiGateway::endpointAjaxUrl(const QString &endpoint,
+                                 const QList<QPair<QString, QString> > &data, bool includeRid) const
 {
     return endpointUrl(QString("ajax/%1").arg(endpoint), data, includeRid);
 }
@@ -220,7 +221,8 @@ bool ApiGateway::handleNotLogged(const QString &operation)
 {
     bool notLogged = !m_loggedIn;
     if (notLogged) {
-        raiseError(ApiGatewayError::NotLogged, { tr("Action %1 requires to be logged in.").arg(operation) });
+        raiseError(ApiGatewayError::NotLogged,
+                   { tr("Action %1 requires to be logged in.").arg(operation) });
     }
 
     return notLogged;
