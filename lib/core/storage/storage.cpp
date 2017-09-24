@@ -31,14 +31,11 @@ void Storage::update(const QVariantList &storage)
     m_products.clear();
 
     for (const auto &item : storage) {
-        const auto product = Product(item.toMap());
+        const auto product = QSharedPointer<Product>(new Product(item.toMap()));
         m_products.push_back(std::move(product));
     }
 
     std::sort(std::begin(m_products), std::end(m_products),
-              [] (const Product &lhs, const Product &rhs)
-    {
-        qDebug () << "Porównanie" << lhs.id() << rhs.id();
-        return lhs.id() < rhs.id();
-    });
+              [] (const auto &lhs, const auto &rhs)
+        { return lhs->id() < rhs->id(); });
 }

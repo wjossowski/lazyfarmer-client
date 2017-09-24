@@ -83,8 +83,8 @@ void StorageTest::update()
 
     const auto &products = m_storage->products();
     for (const auto &product : products) {
-        QVERIFY2 (product.id() == indexes[i], "Invalid Product index");
-        QVERIFY2 (product.amount() == amounts[i], "Invalid Product amount");
+        QVERIFY2 (product->id() == indexes[i], "Invalid Product index");
+        QVERIFY2 (product->amount() == amounts[i], "Invalid Product amount");
         i++;
     }
 }

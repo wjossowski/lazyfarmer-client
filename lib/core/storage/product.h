@@ -31,17 +31,6 @@ public:
 
     Product (const Product &another) : m_id(another.id()) , m_amount(another.amount()) { }
 
-    ~Product() { qDebug() << Q_FUNC_INFO << m_id; }
-
-    inline Product operator =(const Product &another)
-        { m_amount = another.amount(); return *this; }
-
-    inline bool operator ==(const Product &another)
-        { return m_id == another.id(); }
-
-    inline bool operator <(const Product &another)
-        { qDebug() << Q_FUNC_INFO; return m_id < another.id(); }
-
     inline quint32 id() const { return m_id; }
     inline void setId(const quint32 &value) { m_id = value; }
     inline quint32 amount() const { return m_amount; }
