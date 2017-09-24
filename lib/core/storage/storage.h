@@ -18,20 +18,23 @@
 
 #pragma once
 
-#include <QtWidgets/QMainWindow>
+#include "product.h"
 
-namespace Ui {
-class MainWindow;
-}
+#include <QtCore/QObject>
+#include <QtCore/QSharedPointer>
+#include <QtCore/QVariantMap>
 
-class MainWindow : public QMainWindow
+class Storage : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    explicit Storage(QObject *parent = nullptr);
+    void update(const QVariantList &storage);
+
+    inline int size() const { return m_products.size(); }
+    inline const QList<QSharedPointer<Product>> &products () const { return m_products; }
 
 private:
-    Ui::MainWindow *ui;
+    QList<QSharedPointer<Product>> m_products;
 };

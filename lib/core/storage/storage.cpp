@@ -16,22 +16,35 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#pragma once
+#include "storage.h"
 
-#include <QtWidgets/QMainWindow>
+#include <QtDebug>
 
-namespace Ui {
-class MainWindow;
+Storage::Storage(QObject *parent)
+    : QObject(parent)
+{
+
 }
 
-class MainWindow : public QMainWindow
+void Storage::update(const QVariantList &storage)
 {
-    Q_OBJECT
+    for (const auto &item : storage) {
+        const auto &product = QSharedPointer<Product>(new Product(item.toMap()));
+        const auto &stored = std::find(m_products.begin(), m_products.end(), product);
 
-public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+        if (stored == std::end(m_products)) {
 
-private:
-    Ui::MainWindow *ui;
-};
+            m_products.push_back(product);
+        } else {
+//            stored = product;
+        }
+    }
+}
+
+
+
+
+
+
+
+

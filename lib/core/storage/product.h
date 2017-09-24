@@ -18,20 +18,36 @@
 
 #pragma once
 
-#include <QtWidgets/QMainWindow>
+#include <QtCore/QtGlobal>
+#include <QtCore/QVariantMap>
 
-namespace Ui {
-class MainWindow;
-}
-
-class MainWindow : public QMainWindow
+class Product
 {
-    Q_OBJECT
-
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    explicit Product(const QVariantMap &info)
+        : m_id(info["Id"].toInt())
+        , m_amount(info["Amount"].toInt())
+    {
+
+    }
+
+    Product (const Product &another)
+    {
+        if (m_id == another.id())
+            m_amount = another.amount();
+    }
+
+    inline Product operator =(const Product &rhs)
+        { m_amount = rhs.amount(); return *this; }
+    inline bool operator ==(const Product &rhs)
+        { return m_id == rhs.id(); }
+
+    inline quint32 id() const { return m_id; }
+    inline void setId(const quint32 &value) { m_id = value; }
+    inline quint32 amount() const { return m_amount; }
+    inline void setAmount(const quint32 &value) { m_amount = value; }
 
 private:
-    Ui::MainWindow *ui;
+    quint32 m_id;
+    quint32 m_amount;
 };

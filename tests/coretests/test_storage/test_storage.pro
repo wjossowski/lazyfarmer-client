@@ -15,5 +15,5 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 TEMPLATE = app
-SOURCES +=  tst_playerinfoextractor.cpp
+SOURCES +=  tst_storagetest.cpp
 include($${PWD}/../common_coretests.pri)
