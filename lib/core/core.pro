@@ -26,12 +26,15 @@ SOURCES += \
         $${PWD}/helpers/*.cpp \
         $${PWD}/fields/*.cpp \
         $${PWD}/storage/*.cpp \
+        $${PWD}/api/*.cpp \
         $${PWD}/*.cpp
 
 HEADERS += \
         $${PWD}/helpers/*.h \
         $${PWD}/fields/*.h \
         $${PWD}/storage/*.h \
-        $${PWD}/*.h
+        $${PWD}/api/*.h \
+        $${PWD}/*.h \
+    api/apigatewayerror.h
 
 include($${PWD}/../../common.pri)

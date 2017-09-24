@@ -42,7 +42,7 @@ public:
 #endif
 
     bool extract(const QString &content);
-    const QJsonObject &results() { return m_results; }
+    const QVariantMap &results() { return m_results; }
     void save();
 
 private:
@@ -51,8 +51,9 @@ private:
 
 private:
     QVariantMap m_filters;
+    QVariantMap m_results;
+
     QString m_domain;
-    QJsonObject m_results;
 
 #if DEBUG_MODE
     QStringList m_regexMatches;

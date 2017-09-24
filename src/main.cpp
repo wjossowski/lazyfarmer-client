@@ -19,7 +19,6 @@
 #include "mainwindow.h"
 
 #include "logindialog.h"
-#include "core/apigateway.h"
 
 #include <ios>
 

@@ -76,7 +76,7 @@ void GameInfoExtractor::save()
     QFile file(QString("labels_%1.json").arg(m_domain));
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         qDebug() << QObject::tr("Saving to") << QFileInfo(file).absoluteFilePath();
-        file.write(QJsonDocument(m_results).toJson(QJsonDocument::Indented));
+        file.write(QJsonDocument::fromVariant(m_results).toJson(QJsonDocument::Indented));
     }
 }
 

@@ -35,10 +35,9 @@
 
 #include <QtDebug>
 
-bool ApiGateway::s_firstRun = true;
-
 ApiGateway::ApiGateway(QObject *parent)
     : QObject(parent)
+    , m_firstRun(true)
     , m_loggedIn(false)
     , m_configured(false)
 {
@@ -60,7 +59,7 @@ void ApiGateway::setOptions(const QVariantMap &options)
 void ApiGateway::login()
 {
     if (!m_configured) {
-        raiseError(Errors::NotConfigured, tr("Unable to login with unspecified credentials."));
+        raiseError(ApiGatewayError::NotConfigured);
         return;
     }
 
@@ -89,11 +88,11 @@ void ApiGateway::login()
                     setLoggedIn(true);
                     getFarmInfo();
                 } else {
-                    raiseError(Errors::RidNotParsed, tr("Unable to extract `rid`. Login failed."));
+                    raiseError(ApiGatewayError::RidNotParsed);
                 }
             });
         } else {
-            raiseError(Errors::NotLogged, tr("Unable to login. Invalid credentials."));
+            raiseError(ApiGatewayError::InvalidCredentials);
         }
     });
 }
@@ -157,7 +156,7 @@ bool ApiGateway::extractRid(QNetworkReply *reply)
     QSettings settings;
     settings.beginGroup("Lookup");
 
-    QString content = s_firstRun ? reply->readAll()
+    QString content = m_firstRun ? reply->readAll()
                                  : reply->read(settings.value("RidExtractorDeep", 1024).toInt());
 
     if (content.isEmpty())
@@ -166,10 +165,9 @@ bool ApiGateway::extractRid(QNetworkReply *reply)
     QRegularExpression ridRegex("var rid = '(?<rid>.*)'");
     m_rid = ridRegex.match(content).captured("rid");
 
-    if (s_firstRun) {
+    if (m_firstRun) {
         GameInfoExtractor extractor(m_options.domain);
-        if (extractor.extract(content))
-            extractor.save(); // TODO: remove
+        extractor.extract(content);
     }
 
     return !m_rid.isEmpty();
@@ -213,6 +211,7 @@ void ApiGateway::setLoggedIn(bool loggedIn)
 
         qInfo() << (m_loggedIn ? tr("%1 successfully logged in, rid: '%2'").arg(m_options.login).arg(m_rid)
                                : tr("Logged out"));
+
         emit loggedInChanged(m_loggedIn);
     }
 }
@@ -221,18 +220,25 @@ bool ApiGateway::handleNotLogged(const QString &operation)
 {
     bool notLogged = !m_loggedIn;
     if (notLogged) {
-        raiseError(Errors::NotLogged, tr("Action %1 requires to be logged in.").arg(operation));
+        raiseError(ApiGatewayError::NotLogged, { tr("Action %1 requires to be logged in.").arg(operation) });
     }
 
     return notLogged;
 }
 
-void ApiGateway::raiseError(ApiGateway::Errors error, const QString &message)
+void ApiGateway::raiseError(ApiGatewayError::Type errorType, const QStringList &args)
 {
-    emit errorRaised(error, message);
+    ApiGatewayError error(errorType);
 
-    const QMetaEnum errorEnumerator = staticMetaObject.enumerator(staticMetaObject.indexOfEnumerator(ErrorsName));
-    const QString errorMessage = tr("Error `%1` raised. %2").arg(errorEnumerator.key(error)).arg(message);
+    auto message = error.message();
+    if (!args.isEmpty()) {
+        for (const auto arg : args) {
+            message.arg(arg);
+        }
+    }
 
+    const QString errorMessage = tr("Error `%1` raised. %2").arg(error.toString()).arg(message);
+
+    emit errorRaised(errorMessage);
     qCritical() << errorMessage;
 }

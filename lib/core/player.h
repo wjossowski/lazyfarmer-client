@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include "apigateway.h"
+#include "api/apigateway.h"
 #include "storage/storage.h"
 
 #include <QtCore/QObject>
@@ -46,4 +46,5 @@ private:
 
     QScopedPointer<Storage> m_storage;
     QScopedPointer<ApiGateway> m_gateway;
+    QVariantMap m_gamedata;
 };

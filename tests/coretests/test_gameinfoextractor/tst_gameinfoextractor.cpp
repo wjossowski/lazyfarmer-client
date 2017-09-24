@@ -57,7 +57,8 @@ void GameInfoExtractorTest::extractProducts()
     const auto &output = extractor.results();
 
     QVERIFY2 (!output.isEmpty(), "Product object shouldn't be empty");
-    QVERIFY2 (output["products"].isObject(), "Products object should be saved");
+    qDebug() << output["products"].typeName();
+    QVERIFY2 (output["products"].isValid(), "Products object should be saved");
 }
 
 void GameInfoExtractorTest::extractForestry()
@@ -68,7 +69,7 @@ void GameInfoExtractorTest::extractForestry()
     const auto &output = extractor.results();
 
     QVERIFY2 (!output.isEmpty(), "Forestry object shouldn't be empty");
-    QVERIFY2 (output["forestry"].isObject(), "Forestry object should be saved");
+    QVERIFY2 (output["forestry"].isValid(), "Forestry object should be saved");
 }
 
 void GameInfoExtractorTest::extractBuildings()
@@ -79,7 +80,7 @@ void GameInfoExtractorTest::extractBuildings()
     const auto &output = extractor.results();
 
     QVERIFY2 (!output.isEmpty(), "Buildings object shouldn't be empty");
-    QVERIFY2 (output["buildings"].isObject(), "Buildings object should be saved");
+    QVERIFY2 (output["buildings"].isValid(), "Buildings object should be saved");
 }
 
 void GameInfoExtractorTest::extractToFile()
@@ -94,7 +95,7 @@ void GameInfoExtractorTest::extractToFile()
 
     QFile file(QString("%1/labels.json").arg(TEST_OUT_PWD));
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        file.write(QJsonDocument(extractor.results()).toJson(QJsonDocument::Indented));
+        file.write(QJsonDocument::fromVariant(extractor.results()).toJson(QJsonDocument::Indented));
     } else {
         QFAIL("File should be opened");
     }

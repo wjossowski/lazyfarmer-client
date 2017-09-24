@@ -18,6 +18,8 @@
 
 #pragma once
 
+#include "apigatewayerror.h"
+
 #include <QObject>
 #include <QtNetwork/QNetworkAccessManager>
 
@@ -29,13 +31,6 @@ class ApiGateway : public QObject
 
 public:
     static constexpr auto ErrorsName = "Errors";
-
-    enum Errors {
-        NotConfigured,
-        NotLogged,
-        RidNotParsed
-    };
-    Q_ENUM(Errors)
 
     explicit ApiGateway(QObject *parent = nullptr);
     void setOptions(const QVariantMap &options);
@@ -50,7 +45,7 @@ public:
 
 signals:
     void loggedInChanged(bool changed);
-    void errorRaised(ApiGateway::Errors error, const QString &message);
+    void errorRaised(const QString &message);
 
 private:
     void recursiveRedirect(const QString &url, const std::function<void (QNetworkReply *)> &callback);
@@ -64,9 +59,10 @@ private:
     void setLoggedIn (bool loggedIn);
     bool handleNotLogged(const QString &operation);
 
-    void raiseError(ApiGateway::Errors error, const QString &message);
+    void raiseError(ApiGatewayError::Type errorType, const QStringList &args = QStringList());
 
 private:
+    bool m_firstRun;
     bool m_loggedIn;
     bool m_configured;
 
@@ -76,9 +72,8 @@ private:
         QString domain;
         QString server;
     } m_options;
+
     QString m_rid;
 
     QNetworkAccessManager m_manager;
-
-    static bool s_firstRun;
 };
