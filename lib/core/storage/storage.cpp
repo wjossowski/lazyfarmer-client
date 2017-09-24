@@ -38,4 +38,6 @@ void Storage::update(const QVariantList &storage)
     std::sort(std::begin(m_products), std::end(m_products),
               [] (const auto &lhs, const auto &rhs)
         { return lhs->id() < rhs->id(); });
+
+    emit storageUpdated();
 }
