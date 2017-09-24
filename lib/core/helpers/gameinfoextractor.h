@@ -46,8 +46,8 @@ public:
     void save();
 
 private:
-    QJsonValue extractNameFromObject(QJsonObject &&object) const;
-    QJsonValue extractObject(QJsonDocument &&document) const;
+    QVariantMap extractNameFromObject(QJsonObject &&object) const;
+    QVariantMap extractObject(QJsonDocument &&document) const;
 
 private:
     QVariantMap m_filters;
