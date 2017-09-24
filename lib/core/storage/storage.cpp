@@ -20,8 +20,6 @@
 
 #include <QtDebug>
 
-int Product::IDENTIFIER = 0;
-
 Storage::Storage(QObject *parent)
     : QObject(parent)
 {
@@ -30,16 +28,17 @@ Storage::Storage(QObject *parent)
 
 void Storage::update(const QVariantList &storage)
 {
+    m_products.clear();
+
     for (const auto &item : storage) {
         const auto product = Product(item.toMap());
-        const auto stored = std::find(std::begin(m_products), std::end(m_products), product);
-
-        if (stored == std::end(m_products)) {
-            qDebug() << "Not contains";
-            m_products.push_back(std::move(product));
-        } else {
-            qDebug() << "Contains";
-            *stored = std::move(product);
-        }
+        m_products.push_back(std::move(product));
     }
+
+    std::sort(std::begin(m_products), std::end(m_products),
+              [] (const Product &lhs, const Product &rhs)
+    {
+        qDebug () << "Porównanie" << lhs.id() << rhs.id();
+        return lhs.id() < rhs.id();
+    });
 }

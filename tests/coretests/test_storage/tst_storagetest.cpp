@@ -28,38 +28,65 @@ public:
     StorageTest() : m_storage(new Storage) { }
 
 private slots:
-    void insertOne();
-    void insertExisting();
+    void update_data();
+    void update();
 
 private:
     friend class Storage;
     QScopedPointer<Storage> m_storage;
 };
 
-void StorageTest::insertOne()
+void StorageTest::update_data()
 {
-    m_storage->update({
-        QVariantMap({ {"Id", 1}, { "Amount", 12 } })
-    });
+    QTest::addColumn<QVariantList>("storage");
+    QTest::addColumn<QList<quint32>>("indexes");
+    QTest::addColumn<QList<quint32>>("amounts");
 
-    QVERIFY2(m_storage->size() == 1, "Product should be appended to empty storage");
-    const auto &last = m_storage->products().last();
-    QVERIFY2(last.id() == 1, "Invalid Id");
-    QVERIFY2(last.amount() == 12, "Amount should be updated to latest value");
+    QTest::addRow("Single row")
+            << QVariantList({
+                   QVariantMap({ { "Id", 1 }, { "Amount", 1 } })
+               })
+            << QList<quint32>({ 1 })
+            << QList<quint32>({ 1 });
+
+    QTest::addRow("Multiple ordered rows")
+            << QVariantList({
+                   QVariantMap({ { "Id", 1 }, { "Amount", 1 } }),
+                   QVariantMap({ { "Id", 2 }, { "Amount", 2 } }),
+                   QVariantMap({ { "Id", 3 }, { "Amount", 3 } }),
+                   QVariantMap({ { "Id", 4 }, { "Amount", 4 } }),
+               })
+            << QList<quint32>({ 1, 2, 3, 4 })
+            << QList<quint32>({ 1, 2, 3, 4 });
+
+    QTest::addRow("Multiple unordered rows")
+            << QVariantList({
+                   QVariantMap({ { "Id", 4 }, { "Amount", 4 } }),
+                   QVariantMap({ { "Id", 2 }, { "Amount", 2 } }),
+                   QVariantMap({ { "Id", 3 }, { "Amount", 3 } }),
+                   QVariantMap({ { "Id", 1 }, { "Amount", 1 } }),
+               })
+            << QList<quint32>({ 1, 2, 3, 4 })
+            << QList<quint32>({ 1, 2, 3, 4 });
 }
 
-void StorageTest::insertExisting()
+void StorageTest::update()
 {
-    m_storage->update({
-        QVariantMap({ {"Id", 1}, { "Amount", 21 } })
-    });
+    QFETCH(QVariantList, storage);
+    QFETCH(QList<quint32>, indexes);
+    QFETCH(QList<quint32>, amounts);
 
-    qDebug() << m_storage->size();
+    m_storage->update(storage);
+    QVERIFY2 (m_storage->size() == storage.size(), "Storage sizes must be equal");
 
-    QVERIFY2(m_storage->size() == 1, "Product with the same ID should be updated");
-    const auto &last = m_storage->products().last();
-    QVERIFY2(last.id() == 1, "Invalid Id");
-    QVERIFY2(last.amount() == 21, "Amount should be updated to latest value");
+    int i = 0;
+
+    const auto &products = m_storage->products();
+    for (const auto &product : products) {
+        QVERIFY2 (product.id() == indexes[i], "Invalid Product index");
+        QVERIFY2 (product.amount() == amounts[i], "Invalid Product amount");
+        i++;
+    }
 }
 
 QTEST_APPLESS_MAIN(StorageTest)

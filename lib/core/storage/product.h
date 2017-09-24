@@ -25,45 +25,22 @@
 class Product
 {
 public:
-    int m_identifier;
     explicit Product(const QVariantMap &info)
         : m_id(info["Id"].toInt())
-        , m_amount(info["Amount"].toInt())
-    {
-        qDebug() << Q_FUNC_INFO << m_id << m_amount;
+        , m_amount(info["Amount"].toInt()) { }
 
-        m_identifier = IDENTIFIER++;
-    }
+    Product (const Product &another) : m_id(another.id()) , m_amount(another.amount()) { }
 
-    Product (const Product &&another) : m_id(another.id()) , m_amount(another.amount())
-    {
-        qDebug() << Q_FUNC_INFO << m_id << another.id() << m_identifier << another.m_identifier;
-    }
+    ~Product() { qDebug() << Q_FUNC_INFO << m_id; }
 
-    Product (const Product &another) : m_id(another.id()) , m_amount(another.amount())
-    {
-        qDebug() << Q_FUNC_INFO << m_id << another.id() << m_identifier << another.m_identifier;
-    }
+    inline Product operator =(const Product &another)
+        { m_amount = another.amount(); return *this; }
 
-    ~Product()
-    {
-        qDebug() << Q_FUNC_INFO << m_identifier;
-    }
+    inline bool operator ==(const Product &another)
+        { return m_id == another.id(); }
 
-    Product operator =(const Product &another)
-    {
-        qDebug() << Q_FUNC_INFO << m_id << another.id() << m_identifier << another.m_identifier;
-        m_amount = another.amount();
-        return *this;
-    }
-
-    bool operator ==(const Product &another)
-    {
-        qDebug() << Q_FUNC_INFO << m_id << another.id() << m_identifier << another.m_identifier;
-        return m_id == another.id();
-    }
-
-    static int IDENTIFIER;
+    inline bool operator <(const Product &another)
+        { qDebug() << Q_FUNC_INFO; return m_id < another.id(); }
 
     inline quint32 id() const { return m_id; }
     inline void setId(const quint32 &value) { m_id = value; }
