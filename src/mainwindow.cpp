@@ -19,14 +19,55 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "logindialog.h"
+#include "aboutdialog.h"
+
+#include <QtWidgets/QMessageBox>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    initialize();
+    initializeConnections();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::initialize()
+{
+    insertNewPlayer();
+}
+
+void MainWindow::initializeConnections() const
+{
+    connect(ui->actionAbout_Qt,     &QAction::triggered,
+            qApp,                   &QApplication::aboutQt);
+
+    connect(ui->actionAbout,        &QAction::triggered,
+            this,                   &MainWindow::showAboutDialog);
+
+    connect(ui->tabWidgetAccounts,  &QTabWidget::tabCloseRequested,
+            this,                   &MainWindow::removePlayer);
+}
+
+void MainWindow::showAboutDialog() const
+{
+    AboutDialog about;
+    about.exec();
+}
+
+void MainWindow::insertNewPlayer()
+{
+    ui->tabWidgetAccounts->insertTab(ui->tabWidgetAccounts->count(), new LoginDialog(QSharedPointer<Player>(), this), "LD");
+}
+
+void MainWindow::removePlayer(int tabNumber)
+{
+
 }

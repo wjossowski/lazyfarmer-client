@@ -18,41 +18,24 @@
 
 #pragma once
 
-#include <QtCore/QVariantMap>
-#include <QtWidgets/QDialog>
+#include "player.h"
 
-#include "core/player.h"
+#include <QtCore/QObject>
 
-namespace Ui {
-class LoginDialog;
-}
-
-class LoginDialog : public QDialog
+class PlayerFactory : public QObject
 {
     Q_OBJECT
 
-    static constexpr auto DefaultLogin = "DefaultLogin";
-
-    static constexpr auto Login = "Login";
-    static constexpr auto Domain = "Domain";
-    static constexpr auto Server = "Server";
-    static constexpr auto SaveDefaults = "SaveDefaults";
-
 public:
-    explicit LoginDialog(const QSharedPointer<Player> &player, QWidget *parent = 0);
-    ~LoginDialog();
+    explicit PlayerFactory(QObject *parent = nullptr);
 
-    QVariantMap loginInfo() const;
-
-public slots:
-    void accept();
-
-private:
-    void initializeConnections() const;
-    void loadDefaultData();
-    void storeDefaultData() const;
+    QSharedPointer<Player> create()
+    {
+        QSharedPointer<Player> player(new Player());
+        m_players.append(player);
+        return player;
+    }
 
 private:
-    Ui::LoginDialog *ui;
-    QSharedPointer<Player> m_player;
+    QList<QSharedPointer<Player>> m_players;
 };

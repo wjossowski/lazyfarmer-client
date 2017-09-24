@@ -21,9 +21,10 @@
 
 #include <QtCore/QSettings>
 
-LoginDialog::LoginDialog(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::LoginDialog)
+LoginDialog::LoginDialog(const QSharedPointer<Player> &player, QWidget *parent)
+    : QDialog(parent)
+    , ui(new Ui::LoginDialog)
+    , m_player(player)
 {
     ui->setupUi(this);
     loadDefaultData();
@@ -41,7 +42,7 @@ QVariantMap LoginDialog::loginInfo() const
         { "password", ui->lineEdit_password->text() },
         { "domain", ui->lineEdit_domain->text() },
         { "server", ui->spinBox_server->text() }
-                       });
+    });
 }
 
 void LoginDialog::accept()

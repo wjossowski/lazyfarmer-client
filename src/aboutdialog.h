@@ -16,43 +16,20 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#pragma once
-
-#include <QtCore/QVariantMap>
 #include <QtWidgets/QDialog>
 
-#include "core/player.h"
-
 namespace Ui {
-class LoginDialog;
+class AboutDialog;
 }
 
-class LoginDialog : public QDialog
+class AboutDialog : public QDialog
 {
     Q_OBJECT
 
-    static constexpr auto DefaultLogin = "DefaultLogin";
-
-    static constexpr auto Login = "Login";
-    static constexpr auto Domain = "Domain";
-    static constexpr auto Server = "Server";
-    static constexpr auto SaveDefaults = "SaveDefaults";
-
 public:
-    explicit LoginDialog(const QSharedPointer<Player> &player, QWidget *parent = 0);
-    ~LoginDialog();
-
-    QVariantMap loginInfo() const;
-
-public slots:
-    void accept();
+    explicit AboutDialog(QWidget *parent = 0);
+    ~AboutDialog();
 
 private:
-    void initializeConnections() const;
-    void loadDefaultData();
-    void storeDefaultData() const;
-
-private:
-    Ui::LoginDialog *ui;
-    QSharedPointer<Player> m_player;
+    Ui::AboutDialog *ui;
 };

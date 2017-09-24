@@ -34,7 +34,6 @@ HEADERS += \
         $${PWD}/fields/*.h \
         $${PWD}/storage/*.h \
         $${PWD}/api/*.h \
-        $${PWD}/*.h \
-    api/apigatewayerror.h
+        $${PWD}/*.h
 
 include($${PWD}/../../common.pri)

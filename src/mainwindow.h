@@ -32,6 +32,15 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    void initialize();
+    void initializeConnections() const;
+
+private slots:
+    void showAboutDialog() const;
+    void insertNewPlayer();
+    void removePlayer(int tabNumber);
+
 private:
     Ui::MainWindow *ui;
+
 };

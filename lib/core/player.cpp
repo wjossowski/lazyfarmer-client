@@ -43,3 +43,7 @@ void Player::update(const QVariantMap &basicInfo)
     m_money = basicInfo["Money"].toDouble();
 }
 
+void Player::initializeConnections() const
+{
+
+}

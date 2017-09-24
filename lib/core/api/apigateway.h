@@ -44,8 +44,13 @@ public:
     inline bool isConfigured() const { return m_configured; }
 
 signals:
-    void loggedInChanged(bool changed);
-    void errorRaised(const QString &message);
+    void loggedInChanged(bool changed) const;
+    void errorRaised(const QString &message) const;
+
+    void gameInfoChanged(const QVariantMap &gameInfo) const;
+    void basicInfoChanged(const QVariantMap &basicInfo) const;
+    void storageInfoChanged(const QVariantList &storageInfo) const;
+    void farmInfoChanged(const QVariantMap &farmInfo) const;
 
 private:
     void recursiveRedirect(const QString &url, const std::function<void (QNetworkReply *)> &callback);

@@ -167,7 +167,9 @@ bool ApiGateway::extractRid(QNetworkReply *reply)
 
     if (m_firstRun) {
         GameInfoExtractor extractor(m_options.domain);
-        extractor.extract(content);
+        if (extractor.extract(content)) {
+            emit gameInfoChanged(extractor.results());
+        }
     }
 
     return !m_rid.isEmpty();
