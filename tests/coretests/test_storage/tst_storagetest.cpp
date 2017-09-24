@@ -31,6 +31,8 @@ private slots:
     void update_data();
     void update();
 
+    void cleanupTestCase() { m_storage->clear(); }
+
 private:
     friend class Storage;
     QScopedPointer<Storage> m_storage;

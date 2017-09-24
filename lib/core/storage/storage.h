@@ -34,6 +34,7 @@ public:
 
     inline int size() const { return m_products.size(); }
     inline const QList<QSharedPointer<Product>> &products () const { return m_products; }
+    inline void clear() { m_products.clear(); }
 
 signals:
     void storageChanged();
