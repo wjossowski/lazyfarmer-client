@@ -20,27 +20,50 @@
 
 #include <QtCore/QtGlobal>
 #include <QtCore/QVariantMap>
+#include <QtDebug>
 
 class Product
 {
 public:
+    int m_identifier;
     explicit Product(const QVariantMap &info)
         : m_id(info["Id"].toInt())
         , m_amount(info["Amount"].toInt())
     {
+        qDebug() << Q_FUNC_INFO << m_id << m_amount;
 
+        m_identifier = IDENTIFIER++;
     }
 
-    Product (const Product &another)
+    Product (const Product &&another) : m_id(another.id()) , m_amount(another.amount())
     {
-        if (m_id == another.id())
-            m_amount = another.amount();
+        qDebug() << Q_FUNC_INFO << m_id << another.id() << m_identifier << another.m_identifier;
     }
 
-    inline Product operator =(const Product &rhs)
-        { m_amount = rhs.amount(); return *this; }
-    inline bool operator ==(const Product &rhs)
-        { return m_id == rhs.id(); }
+    Product (const Product &another) : m_id(another.id()) , m_amount(another.amount())
+    {
+        qDebug() << Q_FUNC_INFO << m_id << another.id() << m_identifier << another.m_identifier;
+    }
+
+    ~Product()
+    {
+        qDebug() << Q_FUNC_INFO << m_identifier;
+    }
+
+    Product operator =(const Product &another)
+    {
+        qDebug() << Q_FUNC_INFO << m_id << another.id() << m_identifier << another.m_identifier;
+        m_amount = another.amount();
+        return *this;
+    }
+
+    bool operator ==(const Product &another)
+    {
+        qDebug() << Q_FUNC_INFO << m_id << another.id() << m_identifier << another.m_identifier;
+        return m_id == another.id();
+    }
+
+    static int IDENTIFIER;
 
     inline quint32 id() const { return m_id; }
     inline void setId(const quint32 &value) { m_id = value; }

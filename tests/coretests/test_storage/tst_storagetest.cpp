@@ -43,9 +43,9 @@ void StorageTest::insertOne()
     });
 
     QVERIFY2(m_storage->size() == 1, "Product should be appended to empty storage");
-    const QSharedPointer<Product> &last = m_storage->products().last();
-    QVERIFY2(last->id() == 1, "Invalid Id");
-    QVERIFY2(last->amount() == 12, "Amount should be updated to latest value");
+    const auto &last = m_storage->products().last();
+    QVERIFY2(last.id() == 1, "Invalid Id");
+    QVERIFY2(last.amount() == 12, "Amount should be updated to latest value");
 }
 
 void StorageTest::insertExisting()
@@ -54,10 +54,12 @@ void StorageTest::insertExisting()
         QVariantMap({ {"Id", 1}, { "Amount", 21 } })
     });
 
+    qDebug() << m_storage->size();
+
     QVERIFY2(m_storage->size() == 1, "Product with the same ID should be updated");
-    const QSharedPointer<Product> &last = m_storage->products().last();
-    QVERIFY2(last->id() == 1, "Invalid Id");
-    QVERIFY2(last->amount() == 21, "Amount should be updated to latest value");
+    const auto &last = m_storage->products().last();
+    QVERIFY2(last.id() == 1, "Invalid Id");
+    QVERIFY2(last.amount() == 21, "Amount should be updated to latest value");
 }
 
 QTEST_APPLESS_MAIN(StorageTest)

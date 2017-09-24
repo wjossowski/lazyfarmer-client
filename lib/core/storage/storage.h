@@ -33,8 +33,8 @@ public:
     void update(const QVariantList &storage);
 
     inline int size() const { return m_products.size(); }
-    inline const QList<QSharedPointer<Product>> &products () const { return m_products; }
+    inline const QList<Product> &products () const { return m_products; }
 
 private:
-    QList<QSharedPointer<Product>> m_products;
+    QList<Product> m_products;
 };
