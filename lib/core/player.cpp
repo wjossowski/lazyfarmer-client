@@ -32,7 +32,8 @@ Player::Player(QObject *parent)
     , m_storage(new Storage)
     , m_gateway(new ApiGateway)
 {
-
+    initialize();
+    initializeConnections();
 }
 
 void Player::update(const QVariantMap &basicInfo)
@@ -41,6 +42,11 @@ void Player::update(const QVariantMap &basicInfo)
     m_levelDescription = basicInfo["LevelDescription"].toString();
     m_levelPercentage = basicInfo["LevelPercentage"].toInt();
     m_money = basicInfo["Money"].toDouble();
+}
+
+void Player::initialize()
+{
+
 }
 
 void Player::initializeConnections() const

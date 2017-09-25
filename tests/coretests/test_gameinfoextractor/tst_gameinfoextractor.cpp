@@ -24,9 +24,6 @@ class GameInfoExtractorTest : public QObject
 {
     Q_OBJECT
 
-public:
-    GameInfoExtractorTest () {}
-
 private slots:
     void initTestCase();
 

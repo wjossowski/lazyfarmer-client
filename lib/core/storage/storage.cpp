@@ -35,9 +35,7 @@ void Storage::update(const QVariantList &storage)
         m_products.push_back(std::move(product));
     }
 
-    std::sort(std::begin(m_products), std::end(m_products),
-              [] (const auto &lhs, const auto &rhs)
-        { return lhs->id() < rhs->id(); });
+    std::sort(std::begin(m_products), std::end(m_products));
 
     emit storageChanged();
 }

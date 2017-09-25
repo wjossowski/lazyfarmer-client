@@ -36,6 +36,10 @@ public:
     inline quint32 amount() const { return m_amount; }
     inline void setAmount(const quint32 &value) { m_amount = value; }
 
+    friend bool operator <(const QSharedPointer<Product> &lhs,
+                           const QSharedPointer<Product> &rhs)
+        { return lhs->id() < rhs->id(); }
+
 private:
     quint32 m_id;
     quint32 m_amount;

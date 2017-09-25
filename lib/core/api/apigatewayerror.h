@@ -62,5 +62,5 @@ struct ApiGatewayError
         }
     }
 
-    ApiGatewayError (Type exceptionType) : type(exceptionType) {}
+    ApiGatewayError (Type exceptionType) : type(exceptionType) { }
 };

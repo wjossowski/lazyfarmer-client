@@ -29,7 +29,7 @@ class PlayerInfoExtractorTest : public QObject
     Q_OBJECT
 
 public:
-    PlayerInfoExtractorTest ()
+    explicit PlayerInfoExtractorTest ()
         : m_bigExtractor(new PlayerInfoExtractor)
         , m_smallExtractor(new PlayerInfoExtractor)
     { }
@@ -74,8 +74,8 @@ void PlayerInfoExtractorTest::extractBasicInfo_data()
     QTest::addColumn<int>("levelPercentage");
     QTest::addColumn<double>("money");
 
-    QTest::addRow("Small File") << m_smallExtractor.data() << 1 << "Knecht" << 13 << 1.5;
-    QTest::addRow("Big File") << m_bigExtractor.data() << 23 << "Kurzy treser" << 84 << 112997.20;
+    QTest::newRow("Small File") << m_smallExtractor.data() << 1 << "Knecht" << 13 << 1.5;
+    QTest::newRow("Big File") << m_bigExtractor.data() << 23 << "Kurzy treser" << 84 << 112997.20;
 }
 
 void PlayerInfoExtractorTest::extractBasicInfo()
@@ -100,7 +100,7 @@ void PlayerInfoExtractorTest::extractStorageInfo_data()
     QTest::addColumn<QVariantList>("ids");
     QTest::addColumn<QVariantList>("amount");
 
-    QTest::addRow("Small File") << m_smallExtractor.data()
+    QTest::newRow("Small File") << m_smallExtractor.data()
                                    // Storage size
                                 << 1
                                    // Storage ids
@@ -108,7 +108,7 @@ void PlayerInfoExtractorTest::extractStorageInfo_data()
                                    // Storage amount
                                 << QVariantList({ 6 });
 
-    QTest::addRow("Big File") << m_bigExtractor.data()
+    QTest::newRow("Big File") << m_bigExtractor.data()
                                  // Storage size
                               << 19
                                  // Storage ids
@@ -149,7 +149,7 @@ void PlayerInfoExtractorTest::extractFarmsInfo_data()
     QTest::addColumn<QVariantMap>("animals");
     QTest::addColumn<QVariantMap>("remaining");
 
-    QTest::addRow("Small File") << m_smallExtractor.data()
+    QTest::newRow("Small File") << m_smallExtractor.data()
                                    // amount of farms
                                 << 1
                                    // building ids
@@ -162,7 +162,7 @@ void PlayerInfoExtractorTest::extractFarmsInfo_data()
                                 << QVariantMap({{"1", QList<QVariant>({0, 0, 0, 0, 0, 0})}});
 
 
-    QTest::addRow("Big File") << m_bigExtractor.data()
+    QTest::newRow("Big File") << m_bigExtractor.data()
                                  // amount of farms
                               << 2
                                  // building ids

@@ -44,14 +44,14 @@ void StorageTest::update_data()
     QTest::addColumn<QList<quint32>>("indexes");
     QTest::addColumn<QList<quint32>>("amounts");
 
-    QTest::addRow("Single row")
+    QTest::newRow("Single row")
             << QVariantList({
                    QVariantMap({ { "Id", 1 }, { "Amount", 1 } })
                })
             << QList<quint32>({ 1 })
             << QList<quint32>({ 1 });
 
-    QTest::addRow("Multiple ordered rows")
+    QTest::newRow("Multiple ordered rows")
             << QVariantList({
                    QVariantMap({ { "Id", 1 }, { "Amount", 1 } }),
                    QVariantMap({ { "Id", 2 }, { "Amount", 2 } }),
@@ -61,7 +61,7 @@ void StorageTest::update_data()
             << QList<quint32>({ 1, 2, 3, 4 })
             << QList<quint32>({ 1, 2, 3, 4 });
 
-    QTest::addRow("Multiple unordered rows")
+    QTest::newRow("Multiple unordered rows")
             << QVariantList({
                    QVariantMap({ { "Id", 4 }, { "Amount", 4 } }),
                    QVariantMap({ { "Id", 2 }, { "Amount", 2 } }),

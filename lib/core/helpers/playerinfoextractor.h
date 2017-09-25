@@ -25,10 +25,7 @@ class QJsonObject;
 
 class PlayerInfoExtractor
 {
-
 public:
-    explicit PlayerInfoExtractor() { }
-
     bool parseInfo(const QByteArray &info);
 
     const QString &errorString() const { return m_error; }

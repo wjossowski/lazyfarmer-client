@@ -39,6 +39,7 @@ public:
 
 private:
     void update(const QVariantMap &basicInfo);
+    void initialize();
     void initializeConnections() const;
 
 private:

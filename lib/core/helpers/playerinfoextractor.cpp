@@ -52,10 +52,11 @@ struct PlayerParseException {
         }
     }
 
-    PlayerParseException(Type exceptionType) : type(exceptionType) {}
+    PlayerParseException(Type exceptionType) : type(exceptionType) { }
 };
 
-void assertNotEmptyObject (const QJsonObject &object, PlayerParseException::Type error = PlayerParseException::TypeParsingError) {
+void assertNotEmptyObject (const QJsonObject &object, PlayerParseException::Type error = PlayerParseException::TypeParsingError)
+{
     if (object.isEmpty())
         throw PlayerParseException(error);
 }
