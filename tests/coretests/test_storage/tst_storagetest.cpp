@@ -25,17 +25,11 @@ class StorageTest : public QObject
     Q_OBJECT
 
 public:
-    StorageTest() : m_storage(new Storage) { }
+    StorageTest() { }
 
 private slots:
     void update_data();
     void update();
-
-    void cleanupTestCase() { m_storage->clear(); }
-
-private:
-    friend class Storage;
-    QScopedPointer<Storage> m_storage;
 };
 
 void StorageTest::update_data()
@@ -53,23 +47,23 @@ void StorageTest::update_data()
 
     QTest::newRow("Multiple ordered rows")
             << QVariantList({
-                   QVariantMap({ { "Id", 1 }, { "Amount", 1 } }),
-                   QVariantMap({ { "Id", 2 }, { "Amount", 2 } }),
-                   QVariantMap({ { "Id", 3 }, { "Amount", 3 } }),
-                   QVariantMap({ { "Id", 4 }, { "Amount", 4 } }),
+                   QVariantMap({ { "Id", 1 }, { "Amount", 10 } }),
+                   QVariantMap({ { "Id", 2 }, { "Amount", 20 } }),
+                   QVariantMap({ { "Id", 3 }, { "Amount", 30 } }),
+                   QVariantMap({ { "Id", 4 }, { "Amount", 40 } }),
                })
-            << QList<quint32>({ 1, 2, 3, 4 })
-            << QList<quint32>({ 1, 2, 3, 4 });
+            << QList<quint32>({  1,  2,  3,  4 })
+            << QList<quint32>({ 10, 20, 30, 40 });
 
     QTest::newRow("Multiple unordered rows")
             << QVariantList({
-                   QVariantMap({ { "Id", 4 }, { "Amount", 4 } }),
-                   QVariantMap({ { "Id", 2 }, { "Amount", 2 } }),
-                   QVariantMap({ { "Id", 3 }, { "Amount", 3 } }),
-                   QVariantMap({ { "Id", 1 }, { "Amount", 1 } }),
+                   QVariantMap({ { "Id", 4 }, { "Amount", 40 } }),
+                   QVariantMap({ { "Id", 2 }, { "Amount", 20 } }),
+                   QVariantMap({ { "Id", 3 }, { "Amount", 30 } }),
+                   QVariantMap({ { "Id", 1 }, { "Amount", 10 } }),
                })
-            << QList<quint32>({ 1, 2, 3, 4 })
-            << QList<quint32>({ 1, 2, 3, 4 });
+            << QList<quint32>({  1,  2,  3,  4 })
+            << QList<quint32>({ 10, 20, 30, 40 });
 }
 
 void StorageTest::update()
@@ -77,6 +71,8 @@ void StorageTest::update()
     QFETCH(QVariantList, storage);
     QFETCH(QList<quint32>, indexes);
     QFETCH(QList<quint32>, amounts);
+
+    QScopedPointer<Storage> m_storage (new Storage);
 
     m_storage->update(storage);
     QVERIFY2 (m_storage->size() == storage.size(), "Storage sizes must be equal");

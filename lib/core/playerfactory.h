@@ -36,6 +36,11 @@ public:
         return player;
     }
 
+    bool remove()
+    {
+        return false;
+    }
+
 private:
     QList<QSharedPointer<Player>> m_players;
 };

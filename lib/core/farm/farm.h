@@ -18,13 +18,13 @@
 
 #pragma once
 
-#include <QtCore/QObject>
+#include <QObject>
 
-class Building : public QObject
+class Farm : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit Building(QObject *parent = nullptr);
-
+    explicit Farm(QObject *parent = nullptr);
+    void update(const QVariantMap &farmInfo);
 };

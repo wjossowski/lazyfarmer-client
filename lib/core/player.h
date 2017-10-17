@@ -30,15 +30,16 @@ class Player : public QObject
 public:
     explicit Player(QObject *parent = nullptr);
 
-    inline quint32 level() const { return m_level; }
-    inline QString levelDescription() const { return m_levelDescription; }
-    inline quint32 levelPercentage() const { return m_levelPercentage; }
-    inline qreal money() const { return m_money; }
-    inline QSharedPointer<Storage> storage() const { return m_storage; }
-    inline QSharedPointer<ApiGateway> gateway() const { return m_gateway; }
+    Q_INVOKABLE inline quint32 level() const { return m_level; }
+    Q_INVOKABLE inline QString levelDescription() const { return m_levelDescription; }
+    Q_INVOKABLE inline quint32 levelPercentage() const { return m_levelPercentage; }
+    Q_INVOKABLE inline qreal money() const { return m_money; }
+
+protected slots:
+    void update(const QByteArray &info);
 
 private:
-    void update(const QVariantMap &basicInfo);
+    void updateBasicInfo(const QVariantMap &basicInfo);
     void initialize();
     void initializeConnections() const;
 
@@ -50,5 +51,4 @@ private:
 
     QSharedPointer<Storage> m_storage;
     QSharedPointer<ApiGateway> m_gateway;
-    QVariantMap m_gamedata;
 };

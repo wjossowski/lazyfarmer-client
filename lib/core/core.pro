@@ -24,16 +24,18 @@ INCLUDEPATH += $${PWD}/helpers
 
 SOURCES += \
         $${PWD}/helpers/*.cpp \
-        $${PWD}/fields/*.cpp \
         $${PWD}/storage/*.cpp \
         $${PWD}/api/*.cpp \
-        $${PWD}/*.cpp
+        $${PWD}/*.cpp \
+    farm/farm.cpp \
+    farm/building.cpp
 
 HEADERS += \
         $${PWD}/helpers/*.h \
-        $${PWD}/fields/*.h \
         $${PWD}/storage/*.h \
         $${PWD}/api/*.h \
-        $${PWD}/*.h
+        $${PWD}/*.h \
+    farm/farm.h \
+    farm/building.h
 
 include($${PWD}/../../common.pri)

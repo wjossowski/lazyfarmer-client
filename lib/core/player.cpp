@@ -17,6 +17,7 @@
  **/
 
 #include "player.h"
+#include "helpers/playerinfoextractor.h"
 
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
@@ -36,7 +37,17 @@ Player::Player(QObject *parent)
     initializeConnections();
 }
 
-void Player::update(const QVariantMap &basicInfo)
+void Player::update(const QByteArray &info)
+{
+    PlayerInfoExtractor extractor;
+
+    if (extractor.parseInfo(info)) {
+        updateBasicInfo(extractor.basicInfo());
+        m_storage->update(extractor.storageInfo());
+    }
+}
+
+void Player::updateBasicInfo(const QVariantMap &basicInfo)
 {
     m_level = basicInfo["Level"].toInt();
     m_levelDescription = basicInfo["LevelDescription"].toString();

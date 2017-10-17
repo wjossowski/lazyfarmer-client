@@ -16,10 +16,18 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "building.h"
+#pragma once
 
-Building::Building(QObject *parent)
-    : QObject(parent)
+#include <QObject>
+
+class Building : public QObject
 {
+    Q_OBJECT
 
-}
+public:
+    explicit Building(QObject *parent = nullptr);
+
+signals:
+
+public slots:
+};
