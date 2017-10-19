@@ -36,7 +36,6 @@ public:
     Q_INVOKABLE inline quint32 levelPercentage() const { return m_levelPercentage; }
     Q_INVOKABLE inline qreal money() const { return m_money; }
 
-protected slots:
     void update(const QByteArray &info);
 
 private:

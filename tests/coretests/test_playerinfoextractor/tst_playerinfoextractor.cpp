@@ -17,6 +17,7 @@
  **/
 
 #include "core/helpers/playerinfoextractor.h"
+#include "core/player.h"
 
 #include <QtCore/QRegularExpression>
 #include <QtCore/QFileInfo>
@@ -46,9 +47,14 @@ private slots:
     void extractFarmsInfo_data();
     void extractFarmsInfo();
 
+    void playerInfo_data();
+    void playerInfo();
+
 private:
     QSharedPointer<PlayerInfoExtractor> m_bigExtractor;
     QSharedPointer<PlayerInfoExtractor> m_smallExtractor;
+
+    friend class Player;
 };
 
 void PlayerInfoExtractorTest::initTestCase()
@@ -213,6 +219,32 @@ void PlayerInfoExtractorTest::extractFarmsInfo()
         QVERIFY2(buildingInfo["Animals"] == animalsCount, "Animals count doesn't match");
         QVERIFY2(buildingInfo["Remaining"] == remainingTime, "Remaining time doesn't match");
     }
+}
+
+void PlayerInfoExtractorTest::playerInfo_data()
+{
+    QTest::addColumn<QString>("filename");
+
+    QTest::newRow("Small File") << "farminfo_small";
+    QTest::newRow("Big File") << "farminfo_big";
+}
+
+void PlayerInfoExtractorTest::playerInfo()
+{
+    QFETCH(QString, filename);
+
+    QFile siteFile (QString("%1/assets/%2.json").arg(TEST_PWD).arg(filename));
+
+    if (!siteFile.open(QIODevice::ReadOnly)) {
+        QFAIL ("Unable to open farminfo_small.json file");
+    }
+
+
+    Player player;
+    QBENCHMARK {
+        player.update(siteFile.readAll());
+    }
+
 }
 
 QTEST_APPLESS_MAIN(PlayerInfoExtractorTest)
