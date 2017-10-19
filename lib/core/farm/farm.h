@@ -18,7 +18,10 @@
 
 #pragma once
 
-#include <QObject>
+#include "building.h"
+
+#include <QtCore/QObject>
+#include <QtCore/QSharedPointer>
 
 class Farm : public QObject
 {
@@ -26,5 +29,9 @@ class Farm : public QObject
 
 public:
     explicit Farm(QObject *parent = nullptr);
-    void update(const QVariantMap &farmInfo);
+
+    void update(const QVariantList &);
+
+private:
+    QList<QSharedPointer<Building>> m_buildings;
 };

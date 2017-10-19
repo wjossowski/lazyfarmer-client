@@ -162,7 +162,9 @@ QVariantMap extractBuildingInfo(const QJsonObject &buildingObject)
     };
 
     QVariantMap building;
-    building["Id"] = buildingObject["buildingid"].toString().toInt();
+    building["Type"] = buildingObject["buildingid"].toString().toInt();
+    building["FarmId"] = buildingObject["farm"].toString().toInt();
+    building["Position"] = buildingObject["position"].toString().toInt();
     building["Level"] = buildingObject["level"].toString().toInt();
     building["Animals"] = buildingObject["animals"].toString().toInt();
     building["Remaining"] = remaining(buildingObject["production"]);
@@ -170,15 +172,13 @@ QVariantMap extractBuildingInfo(const QJsonObject &buildingObject)
     return building;
 }
 
-QVariantMap extractFarmInfo(const QJsonObject &farmObject)
+void extractFarmInfo(const QJsonObject &farmObject, QVariantList &farmsInfo)
 {
     assertNotEmptyObject(farmObject);
 
-    QVariantMap buildings;
-    foreach (const auto &key, farmObject.keys()) {
-        buildings[key] = extractBuildingInfo(farmObject[key].toObject());
+    for (const auto &building : farmObject) {
+        farmsInfo.append(extractBuildingInfo(building.toObject()));
     }
-    return buildings;
 }
 
 void PlayerInfoExtractor::parseFarmsInfo(const QJsonObject &farmsInfo)
@@ -187,7 +187,7 @@ void PlayerInfoExtractor::parseFarmsInfo(const QJsonObject &farmsInfo)
 
     m_farmsInfo.clear();
 
-    foreach (const auto &key, farmsInfo.keys()) {
-        m_farmsInfo[key] = extractFarmInfo(farmsInfo[key].toObject());
+    for (const auto &value : farmsInfo) {
+        extractFarmInfo(value.toObject(), m_farmsInfo);
     }
 }

@@ -32,7 +32,7 @@ public:
 
     const QVariantMap &basicInfo() const { return m_basicInfo; }
     const QVariantList &storageInfo() const { return m_storageInfo; }
-    const QVariantMap &farmsInfo() const { return m_farmsInfo; }
+    const QVariantList &farmsInfo() const { return m_farmsInfo; }
 
 private:
     void parseBasicInfo(const QJsonObject &basicInfo);
@@ -42,7 +42,7 @@ private:
 private:
     QVariantMap m_basicInfo;
     QVariantList m_storageInfo;
-    QVariantMap m_farmsInfo;
+    QVariantList m_farmsInfo;
 
     QString m_error;
 };

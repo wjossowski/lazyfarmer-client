@@ -27,7 +27,13 @@ class Building : public QObject
 public:
     explicit Building(QObject *parent = nullptr);
 
-signals:
+    void update(const QVariantMap &buildingData);
 
-public slots:
+private:
+    int m_type;
+    int m_position;
+    int m_farmId;
+    int m_level;
+    int m_animals;
+    int m_remaining;
 };

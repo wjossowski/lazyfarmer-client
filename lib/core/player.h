@@ -20,6 +20,7 @@
 
 #include "api/apigateway.h"
 #include "storage/storage.h"
+#include "farm/farm.h"
 
 #include <QtCore/QObject>
 
@@ -49,6 +50,7 @@ private:
     int m_levelPercentage;
     qreal m_money;
 
-    QSharedPointer<Storage> m_storage;
-    QSharedPointer<ApiGateway> m_gateway;
+    Storage m_storage;
+    Farm m_farm;
+    ApiGateway m_gateway;
 };

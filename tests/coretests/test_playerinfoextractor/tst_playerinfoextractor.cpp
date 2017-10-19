@@ -151,7 +151,7 @@ void PlayerInfoExtractorTest::extractFarmsInfo_data()
 
     QTest::newRow("Small File") << m_smallExtractor.data()
                                    // amount of farms
-                                << 1
+                                << 1 * 6
                                    // building ids
                                 << QVariantMap({{"1", QList<QVariant>({1, 0, 0, 0, 0, 0})}})
                                    // levels
@@ -164,7 +164,7 @@ void PlayerInfoExtractorTest::extractFarmsInfo_data()
 
     QTest::newRow("Big File") << m_bigExtractor.data()
                                  // amount of farms
-                              << 2
+                              << 2 * 6
                                  // building ids
                               << QVariantMap({{"1", QList<QVariant>({1, 8,        8, 12, 0, 12})},
                                               {"2", QList<QVariant>({8, 0,        8,  0, 8,  8})}})
@@ -190,29 +190,28 @@ void PlayerInfoExtractorTest::extractFarmsInfo()
 
     const auto &farmInfo = extractor->farmsInfo();
 
-    auto getVariantMapValue = [&] (const QVariantMap &source, const QString &farmId, const QString &buildingId) {
-        return source[farmId].toList()[buildingId.toInt() - 1].toInt();
+    auto getVariantMapValue = [&] (const QVariantMap &source, int farmId, int buildingId) {
+        return source[QString::number(farmId)].toList()[buildingId - 1].toInt();
     };
 
     // Compare farms availability amount
     QVERIFY2(farmInfo.size() == farms, "Wrong amount of farms");
 
-    for (const auto &farmKey : farmInfo.keys()) {
-        const auto &buildings = farmInfo[farmKey].toMap();
+    for (const auto &building : farmInfo) {
+        const auto buildingInfo = building.toMap();
 
-        for (const auto &buildingKey : buildings.keys()) {
-            const auto &buildingInfo = buildings[buildingKey].toMap();
+        int farmId = buildingInfo["FarmId"].toInt();
+        int position = buildingInfo["Position"].toInt();
 
-            int id = getVariantMapValue(buildingids, farmKey, buildingKey);
-            int level = getVariantMapValue(levels, farmKey, buildingKey);
-            int animalsCount = getVariantMapValue(animals, farmKey, buildingKey);
-            int remainingTime = getVariantMapValue(remaining, farmKey, buildingKey);
+        int id = getVariantMapValue(buildingids, farmId, position);
+        int level = getVariantMapValue(levels, farmId, position);
+        int animalsCount = getVariantMapValue(animals, farmId, position);
+        int remainingTime = getVariantMapValue(remaining, farmId, position);
 
-            QVERIFY2(buildingInfo["Id"] == id, "Building id doesn't match");
-            QVERIFY2(buildingInfo["Level"] == level, "Building level doesn't  match");
-            QVERIFY2(buildingInfo["Animals"] == animalsCount, "Animals count doesn't match");
-            QVERIFY2(buildingInfo["Remaining"] == remainingTime, "Remaining time doesn't match");
-        }
+        QVERIFY2(buildingInfo["Type"] == id, "Building type doesn't match");
+        QVERIFY2(buildingInfo["Level"] == level, "Building level doesn't  match");
+        QVERIFY2(buildingInfo["Animals"] == animalsCount, "Animals count doesn't match");
+        QVERIFY2(buildingInfo["Remaining"] == remainingTime, "Remaining time doesn't match");
     }
 }
 

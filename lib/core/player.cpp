@@ -30,8 +30,6 @@ Player::Player(QObject *parent)
     , m_level(0)
     , m_levelPercentage(0)
     , m_money(0.0)
-    , m_storage(new Storage)
-    , m_gateway(new ApiGateway)
 {
     initialize();
     initializeConnections();
@@ -43,7 +41,8 @@ void Player::update(const QByteArray &info)
 
     if (extractor.parseInfo(info)) {
         updateBasicInfo(extractor.basicInfo());
-        m_storage->update(extractor.storageInfo());
+        m_storage.update(extractor.storageInfo());
+        m_farm.update(extractor.farmsInfo());
     }
 }
 
