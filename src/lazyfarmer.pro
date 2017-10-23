@@ -30,11 +30,15 @@ else:unix: LIBS += -L$$OUT_PWD/../lib/core/ -lCoreLib
 INCLUDEPATH += $$PWD/../lib
 
 SOURCES += *.cpp
-HEADERS += *.h
 
 include($${PWD}/../common.pri)
 include($${PWD}/../installs.pri)
 
-DISTFILES += qml/*.qml
+DISTFILES += \
+    Dialogs/*.qml \
+    Views/*.qml \
+    Items/*.qml \
+    *.qml \
+    Views/qmldir
 
 RESOURCES += resources.qrc

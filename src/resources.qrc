@@ -1,5 +1,11 @@
 <RCC>
-    <qresource prefix="/">
-        <file>qml/main.qml</file>
+    <qresource prefix="/qml">
+        <file>main.qml</file>
+        <file>Dialogs/LoginDialog.qml</file>
+        <file>Items/Product.qml</file>
+        <file>Items/Account.qml</file>
+        <file>Views/AccountsView.qml</file>
+        <file>Views/FarmView.qml</file>
+        <file>Views/StorageView.qml</file>
     </qresource>
 </RCC>

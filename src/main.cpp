@@ -121,7 +121,8 @@ int main(int argc, char *argv[])
 
     QSharedPointer<QQmlApplicationEngine> engine;
     if (!parser.isSet("no-gui")) {
-        engine.reset(new QQmlApplicationEngine);
+        engine.reset(new QQmlApplicationEngine());
+        engine->addImportPath(":/qml");
         engine->load(QUrl(QLatin1String("qrc:/qml/main.qml")));
         if (engine->rootObjects().isEmpty())
             return -1;
