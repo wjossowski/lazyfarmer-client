@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-QT       += core gui widgets network
+QT       += core gui widgets network qml quick
 CONFIG   += c++14
 
 TARGET = LazyFarmer
@@ -31,7 +31,10 @@ INCLUDEPATH += $$PWD/../lib
 
 SOURCES += *.cpp
 HEADERS += *.h
-FORMS += *.ui
 
 include($${PWD}/../common.pri)
 include($${PWD}/../installs.pri)
+
+DISTFILES += qml/*.qml
+
+RESOURCES += resources.qrc

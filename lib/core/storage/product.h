@@ -31,16 +31,16 @@ public:
 
     Product (const Product &another) : m_id(another.id()) , m_amount(another.amount()) { }
 
-    inline quint32 id() const { return m_id; }
-    inline void setId(const quint32 &value) { m_id = value; }
-    inline quint32 amount() const { return m_amount; }
-    inline void setAmount(const quint32 &value) { m_amount = value; }
+    inline int id() const { return m_id; }
+    inline void setId(const int value) { m_id = value; }
+    inline int amount() const { return m_amount; }
+    inline void setAmount(const int value) { m_amount = value; }
 
     friend bool operator <(const QSharedPointer<Product> &lhs,
                            const QSharedPointer<Product> &rhs)
         { return lhs->id() < rhs->id(); }
 
 private:
-    quint32 m_id;
-    quint32 m_amount;
+    int m_id;
+    int m_amount;
 };

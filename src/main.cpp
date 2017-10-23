@@ -16,10 +16,6 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "mainwindow.h"
-
-#include "logindialog.h"
-
 #include <ios>
 
 #include <QtCore/QFile>
@@ -30,7 +26,9 @@
 #include <QtCore/QDateTime>
 #include <QtCore/QCommandLineParser>
 
-#include <QtWidgets/QApplication>
+#include <QtGui/QGuiApplication>
+
+#include <QtQml/QQmlApplicationEngine>
 
 #include <QtDebug>
 
@@ -70,7 +68,8 @@ int main(int argc, char *argv[])
 #endif
 
     // Initialize Application
-    QApplication lazyFarmerApp(argc, argv);
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QGuiApplication lazyFarmerApp(argc, argv);
     lazyFarmerApp.setApplicationVersion(CURRENT_VERSION);
     lazyFarmerApp.setApplicationName(APPLICATION_NAME);
     lazyFarmerApp.setOrganizationName(COMPANY_NAME);
@@ -78,41 +77,41 @@ int main(int argc, char *argv[])
     QSettings::setDefaultFormat(QSettings::IniFormat);
 
     QCommandLineParser parser;
-    parser.setApplicationDescription(QApplication::translate("main", "Lazy farmer - My Free Farm bot"));
+    parser.setApplicationDescription(QGuiApplication::translate("main", "Lazy farmer - My Free Farm bot"));
     parser.addHelpOption();
     parser.addVersionOption();
     parser.addOptions({
         { { "l", "login" },
-          QApplication::translate("main", "Specifies login on startup."),
-          QApplication::translate("main", "User's login.") },
+          QGuiApplication::translate("main", "Specifies login on startup."),
+          QGuiApplication::translate("main", "User's login.") },
         { { "p", "password" },
-          QApplication::translate("main", "Specifies password on startup."),
-          QApplication::translate("main", "User's password.") },
+          QGuiApplication::translate("main", "Specifies password on startup."),
+          QGuiApplication::translate("main", "User's password.") },
         { { "d", "domain" },
-          QApplication::translate("main", "Specifies game's domain on startup."),
-          QApplication::translate("main", "Domain (myfreefarm.de / wolnifarmerzy.pl).") },
+          QGuiApplication::translate("main", "Specifies game's domain on startup."),
+          QGuiApplication::translate("main", "Domain (myfreefarm.de / wolnifarmerzy.pl).") },
         { { "s", "server" },
-          QApplication::translate("main", "Specifies server number on startup."),
-          QApplication::translate("main", "Server number.") },
+          QGuiApplication::translate("main", "Specifies server number on startup."),
+          QGuiApplication::translate("main", "Server number.") },
         { { "c", "config" },
-          QApplication::translate("main", "Specifies config file on startup."),
-          QApplication::translate("main", "Task manager's configuration file.") },
+          QGuiApplication::translate("main", "Specifies config file on startup."),
+          QGuiApplication::translate("main", "Task manager's configuration file.") },
         { { "n", "no-gui" },
-          QApplication::translate("main", "Disables UI Mode.") }
+          QGuiApplication::translate("main", "Disables UI Mode.") }
     });
     parser.process(lazyFarmerApp);
 
     try {
         QDir applicationDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
         if (!applicationDir.mkpath("."))
-            throw std::ios_base::failure(QApplication::translate("main", "Unable to create path to application data.").toStdString());
+            throw std::ios_base::failure(QGuiApplication::translate("main", "Unable to create path to application data.").toStdString());
 
         const QString fileName = QDateTime::currentDateTime().toString("yyyy_MM_dd-HH_mm.log");
         debugFile.setFileName(applicationDir.absoluteFilePath(fileName));
 
         debugStream.setDevice(&debugFile);
         if (!debugFile.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Unbuffered))
-            throw std::ios_base::failure(QApplication::translate("main", "Unable to open logging file.").toStdString());
+            throw std::ios_base::failure(QGuiApplication::translate("main", "Unable to open logging file.").toStdString());
 
         qSetMessagePattern("[%{time HH:mm:ss.zzz}] %{type}: %{message} (%{function}, %{file}, %{line})");
         qInstallMessageHandler(handleMessage);
@@ -120,10 +119,12 @@ int main(int argc, char *argv[])
         qCritical() << e.what();
     }
 
-    QScopedPointer<MainWindow> mainWindow;
+    QSharedPointer<QQmlApplicationEngine> engine;
     if (!parser.isSet("no-gui")) {
-        mainWindow.reset(new MainWindow);
-        mainWindow->show();
+        engine.reset(new QQmlApplicationEngine);
+        engine->load(QUrl(QLatin1String("qrc:/qml/main.qml")));
+        if (engine->rootObjects().isEmpty())
+            return -1;
     }
 
     return lazyFarmerApp.exec();

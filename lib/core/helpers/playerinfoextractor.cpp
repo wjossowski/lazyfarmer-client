@@ -146,7 +146,7 @@ void PlayerInfoExtractor::parseStorageInfo(const QJsonObject &storageInfo)
     }
 }
 
-QVariantMap extractBuildingInfo(const QJsonObject &buildingObject)
+QVariantMap extractBuildingInfo(int type, const QJsonObject &buildingObject)
 {
     assertNotEmptyObject(buildingObject);
 
@@ -162,7 +162,7 @@ QVariantMap extractBuildingInfo(const QJsonObject &buildingObject)
     };
 
     QVariantMap building;
-    building["Type"] = buildingObject["buildingid"].toString().toInt();
+    building["Type"] = type;
     building["FarmId"] = buildingObject["farm"].toString().toInt();
     building["Position"] = buildingObject["position"].toString().toInt();
     building["Level"] = buildingObject["level"].toString().toInt();
@@ -177,7 +177,12 @@ void extractFarmInfo(const QJsonObject &farmObject, QVariantList &farmsInfo)
     assertNotEmptyObject(farmObject);
 
     for (const auto &building : farmObject) {
-        farmsInfo.append(extractBuildingInfo(building.toObject()));
+        const auto &buildingObject = building.toObject();
+        int type = buildingObject["buildingid"].toString().toInt();
+        if (type == 0)
+            continue;
+
+        farmsInfo.append(extractBuildingInfo(type, buildingObject));
     }
 }
 

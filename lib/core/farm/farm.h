@@ -20,17 +20,14 @@
 
 #include "building.h"
 
-#include <QtCore/QObject>
 #include <QtCore/QSharedPointer>
 
-class Farm : public QObject
+class Farm
 {
-    Q_OBJECT
-
 public:
-    explicit Farm(QObject *parent = nullptr);
+    QSharedPointer<Building> buildingAt(int farm, int position);
 
-    void update(const QVariantList &);
+    void update(const QVariantList &farmInfo);
 
 private:
     QList<QSharedPointer<Building>> m_buildings;

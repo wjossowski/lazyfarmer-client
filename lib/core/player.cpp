@@ -35,6 +35,11 @@ Player::Player(QObject *parent)
     initializeConnections();
 }
 
+void Player::setup(const QVariantMap &options)
+{
+    m_gateway.setOptions(options);
+}
+
 void Player::update(const QByteArray &info)
 {
     PlayerInfoExtractor extractor;

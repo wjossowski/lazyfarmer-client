@@ -157,7 +157,7 @@ void PlayerInfoExtractorTest::extractFarmsInfo_data()
 
     QTest::newRow("Small File") << m_smallExtractor.data()
                                    // amount of farms
-                                << 1 * 6
+                                << 1
                                    // building ids
                                 << QVariantMap({{"1", QList<QVariant>({1, 0, 0, 0, 0, 0})}})
                                    // levels
@@ -170,7 +170,7 @@ void PlayerInfoExtractorTest::extractFarmsInfo_data()
 
     QTest::newRow("Big File") << m_bigExtractor.data()
                                  // amount of farms
-                              << 2 * 6
+                              << 9
                                  // building ids
                               << QVariantMap({{"1", QList<QVariant>({1, 8,        8, 12, 0, 12})},
                                               {"2", QList<QVariant>({8, 0,        8,  0, 8,  8})}})
@@ -239,12 +239,11 @@ void PlayerInfoExtractorTest::playerInfo()
         QFAIL ("Unable to open farminfo_small.json file");
     }
 
-
     Player player;
-    QBENCHMARK {
-        player.update(siteFile.readAll());
-    }
-
+    const auto contents = siteFile.readAll();
+    player.update(contents);
+    qDebug() << "ASDF";
+    player.update(contents);
 }
 
 QTEST_APPLESS_MAIN(PlayerInfoExtractorTest)

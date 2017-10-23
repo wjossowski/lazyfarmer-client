@@ -31,11 +31,12 @@ class Player : public QObject
 public:
     explicit Player(QObject *parent = nullptr);
 
-    Q_INVOKABLE inline quint32 level() const { return m_level; }
+    Q_INVOKABLE inline int level() const { return m_level; }
     Q_INVOKABLE inline QString levelDescription() const { return m_levelDescription; }
-    Q_INVOKABLE inline quint32 levelPercentage() const { return m_levelPercentage; }
+    Q_INVOKABLE inline int levelPercentage() const { return m_levelPercentage; }
     Q_INVOKABLE inline qreal money() const { return m_money; }
 
+    void setup(const QVariantMap &options);
     void update(const QByteArray &info);
 
 private:

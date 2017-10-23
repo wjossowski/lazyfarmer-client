@@ -35,15 +35,15 @@ private slots:
 void StorageTest::update_data()
 {
     QTest::addColumn<QVariantList>("storage");
-    QTest::addColumn<QList<quint32>>("indexes");
-    QTest::addColumn<QList<quint32>>("amounts");
+    QTest::addColumn<QList<int>>("indexes");
+    QTest::addColumn<QList<int>>("amounts");
 
     QTest::newRow("Single row")
             << QVariantList({
                    QVariantMap({ { "Id", 1 }, { "Amount", 1 } })
                })
-            << QList<quint32>({ 1 })
-            << QList<quint32>({ 1 });
+            << QList<int>({ 1 })
+            << QList<int>({ 1 });
 
     QTest::newRow("Multiple ordered rows")
             << QVariantList({
@@ -52,8 +52,8 @@ void StorageTest::update_data()
                    QVariantMap({ { "Id", 3 }, { "Amount", 30 } }),
                    QVariantMap({ { "Id", 4 }, { "Amount", 40 } }),
                })
-            << QList<quint32>({  1,  2,  3,  4 })
-            << QList<quint32>({ 10, 20, 30, 40 });
+            << QList<int>({  1,  2,  3,  4 })
+            << QList<int>({ 10, 20, 30, 40 });
 
     QTest::newRow("Multiple unordered rows")
             << QVariantList({
@@ -62,15 +62,15 @@ void StorageTest::update_data()
                    QVariantMap({ { "Id", 3 }, { "Amount", 30 } }),
                    QVariantMap({ { "Id", 1 }, { "Amount", 10 } }),
                })
-            << QList<quint32>({  1,  2,  3,  4 })
-            << QList<quint32>({ 10, 20, 30, 40 });
+            << QList<int>({  1,  2,  3,  4 })
+            << QList<int>({ 10, 20, 30, 40 });
 }
 
 void StorageTest::update()
 {
     QFETCH(QVariantList, storage);
-    QFETCH(QList<quint32>, indexes);
-    QFETCH(QList<quint32>, amounts);
+    QFETCH(QList<int>, indexes);
+    QFETCH(QList<int>, amounts);
 
     QScopedPointer<Storage> m_storage (new Storage);
 
@@ -78,7 +78,6 @@ void StorageTest::update()
     QVERIFY2 (m_storage->size() == storage.size(), "Storage sizes must be equal");
 
     int i = 0;
-
     const auto &products = m_storage->products();
     for (const auto &product : products) {
         QVERIFY2 (product->id() == indexes[i], "Invalid Product index");
