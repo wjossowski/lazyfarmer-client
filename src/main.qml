@@ -2,8 +2,8 @@ import QtQuick 2.7
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
 
-import "Views" 1.0 as Views
-import "Dialogs" 1.0 as Dialogs
+import "Views" as Views
+import "Dialogs" as Dialogs
 
 ApplicationWindow {
     visible: true
@@ -14,10 +14,6 @@ ApplicationWindow {
     title: Qt.application.name + ' v. ' + Qt.application.version
 
     header: ToolBar {
-
-    }
-
-    footer: ToolBar {
         RowLayout {
             anchors.fill: parent
             ToolButton {
@@ -25,7 +21,6 @@ ApplicationWindow {
             }
             Item { Layout.fillWidth: true }
             Switch {
-                checked: true
                 text: qsTr("Notifications")
             }
         }
@@ -36,4 +31,7 @@ ApplicationWindow {
         anchors.fill: parent
     }
 
+    footer: ToolBar {
+
+    }
 }

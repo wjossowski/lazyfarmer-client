@@ -20,8 +20,14 @@
 
 #include "apigatewayerror.h"
 
-#include <QObject>
+#include <QtCore/QObject>
+
+#include <QtCore/QUrl>
+#include <QtCore/QUrlQuery>
+
 #include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QNetworkRequest>
+#include <QtNetwork/QNetworkReply>
 
 #include <functional>
 
@@ -30,53 +36,34 @@ class ApiGateway : public QObject
     Q_OBJECT
 
 public:
-    static constexpr auto ErrorsName = "Errors";
-
     explicit ApiGateway(QObject *parent = nullptr);
-    void setOptions(const QVariantMap &options);
 
-    void login();
-    void logout();
-
-    void getFarmInfo();
+    const QMap<QString, QString> &options () { return m_options; }
+    void setOptions(const QMap<QString, QString> &options) { m_options = options; }
+    inline bool isConfigured() const { return !m_options.isEmpty(); }
 
     inline bool isLoggedIn() const { return m_loggedIn; }
-    inline bool isConfigured() const { return m_configured; }
+    void setLoggedIn (bool loggedIn);
+
+    const QString &rid() const { return m_rid; }
+    void extractRid(QNetworkReply *reply);
+
+    void raiseError(ApiGatewayError::Type errorType, const QStringList &args = QStringList());
+
+    QNetworkAccessManager *accessManager() { return &m_manager; }
 
 signals:
     void loggedInChanged(bool changed) const;
     void errorRaised(const QString &message) const;
 
-    void gameInfoChanged(const QVariantMap &gameInfo) const;
-    void basicInfoChanged(const QVariantMap &basicInfo) const;
-    void storageInfoChanged(const QVariantList &storageInfo) const;
-    void farmInfoChanged(const QVariantMap &farmInfo) const;
-
 private:
-    void recursiveRedirect(const QString &url, const std::function<void (QNetworkReply *)> &callback);
-    void buildHeaders(QNetworkRequest &request) const;
-    bool extractRid(QNetworkReply *reply);
-
-    QUrl tokenUrl() const;
-    QUrl endpointUrl(const QString &endpoint, const QList<QPair<QString, QString>> &data, bool includeRid = true) const;
-    QUrl endpointAjaxUrl(const QString &endpoint, const QList<QPair<QString, QString>> &data, bool includeRid = true) const;
-
-    void setLoggedIn (bool loggedIn);
     bool handleNotLogged(const QString &operation);
-
-    void raiseError(ApiGatewayError::Type errorType, const QStringList &args = QStringList());
 
 private:
     bool m_firstRun;
     bool m_loggedIn;
-    bool m_configured;
 
-    struct {
-        QString login;
-        QString password;
-        QString domain;
-        QString server;
-    } m_options;
+    QMap<QString, QString> m_options;
 
     QString m_rid;
 

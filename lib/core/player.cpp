@@ -35,7 +35,7 @@ Player::Player(QObject *parent)
     initializeConnections();
 }
 
-void Player::setup(const QVariantMap &options)
+void Player::setup(const QMap<QString, QString> &options)
 {
     m_gateway.setOptions(options);
 }

@@ -36,7 +36,7 @@ public:
     Q_INVOKABLE inline int levelPercentage() const { return m_levelPercentage; }
     Q_INVOKABLE inline qreal money() const { return m_money; }
 
-    void setup(const QVariantMap &options);
+    void setup(const QMap<QString, QString> &options);
     void update(const QByteArray &info);
 
 private:
