@@ -23,9 +23,10 @@
 class GetFarmInfoMessage : public ApiMessage
 {
 public:
-    explicit GetFarmInfoMessage(ApiGateway *gateway) : ApiMessage (gateway) { }
+    explicit GetFarmInfoMessage(ApiGateway *gateway)
+        : ApiMessage (gateway, MessageType::MessageGetFarmInfo) { }
 
 public slots:
-    void send();
+    void sendMessage();
 };
 

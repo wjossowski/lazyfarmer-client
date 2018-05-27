@@ -23,8 +23,9 @@
 class LogoutMessage : public ApiMessage
 {
 public:
-    explicit LogoutMessage(ApiGateway *gateway) : ApiMessage (gateway) { }
+    explicit LogoutMessage(ApiGateway *gateway)
+        : ApiMessage (gateway, MessageType::MessageLogout) { }
 
 public slots:
-    void send();
+    void sendMessage();
 };

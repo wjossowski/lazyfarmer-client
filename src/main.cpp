@@ -16,6 +16,11 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
+#ifdef DEBUG_MODE
+#include "core/api/apigateway.h"
+#include "core/api/messages.h"
+#endif
+
 #include <ios>
 
 #include <QtCore/QFile>
@@ -55,6 +60,28 @@ void handleMessage(QtMsgType type, const QMessageLogContext &context,
     }
 }
 
+#ifdef DEBUG_MODE
+void createDebugEnvironment(ApiGateway &gateway, const QCommandLineParser &parser)
+{
+    qDebug() << "Entering" << APPLICATION_NAME << " v." << CURRENT_VERSION << "debug mode";
+    qDebug() << "Selected following configuration:";
+    qDebug() << "Domain:  " << parser.value("domain");
+    qDebug() << "Server:  " << parser.value("server");
+    qDebug() << "Login:   " << parser.value("login");
+    qDebug() << "Password:" << parser.value("password");
+
+    gateway.setApiOptions({
+        parser.value("server"),
+        parser.value("domain"),
+        parser.value("login"),
+        parser.value("password")
+    });
+
+    qDebug() << "Account" << (gateway.isConfigured() ? "configured!" : "unconfigured ;(");
+}
+#endif
+
+
 int main(int argc, char *argv[])
 {
 #ifdef Q_OS_WIN
@@ -74,8 +101,10 @@ int main(int argc, char *argv[])
     lazyFarmerApp.setApplicationName(APPLICATION_NAME);
     lazyFarmerApp.setOrganizationName(COMPANY_NAME);
 
+    // Set default configuration format
     QSettings::setDefaultFormat(QSettings::IniFormat);
 
+    // Initialize command-line parser
     QCommandLineParser parser;
     parser.setApplicationDescription(QGuiApplication::translate("main", "Lazy farmer - My Free Farm bot"));
     parser.addHelpOption();
@@ -99,26 +128,43 @@ int main(int argc, char *argv[])
         { { "n", "no-gui" },
           QGuiApplication::translate("main", "Disables UI Mode.") }
     });
+    // Execute CLI Parser
     parser.process(lazyFarmerApp);
 
     try {
+        // Inilialize cache directory
         QDir applicationDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
         if (!applicationDir.mkpath("."))
             throw std::ios_base::failure(QGuiApplication::translate("main", "Unable to create path to application data.").toStdString());
 
+        // Initalize log directory
         const QString fileName = QDateTime::currentDateTime().toString("yyyy_MM_dd-HH_mm.log");
         debugFile.setFileName(applicationDir.absoluteFilePath(fileName));
 
+        // Create debug prompt device
         debugStream.setDevice(&debugFile);
         if (!debugFile.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Unbuffered))
             throw std::ios_base::failure(QGuiApplication::translate("main", "Unable to open logging file.").toStdString());
 
+        // Initialize message handler
         qSetMessagePattern("[%{time HH:mm:ss.zzz}] %{type}: %{message} (%{function}, %{file}, %{line})");
         qInstallMessageHandler(handleMessage);
+
     } catch (std::exception &e) {
         qCritical() << e.what();
     }
 
+#ifdef DEBUG_MODE
+    qDebug() << "Debug storage located in:" << QFileInfo(debugFile).absoluteFilePath();
+
+    ApiGateway debugGateway;
+    createDebugEnvironment(debugGateway, parser);
+    debugGateway.queueMessage(ApiMessage::create<LoginMessage>(&debugGateway));
+    debugGateway.queueMessage(ApiMessage::create<GetFarmInfoMessage>(&debugGateway));
+
+    debugGateway.start();
+
+#else
     QSharedPointer<QQmlApplicationEngine> engine;
     if (!parser.isSet("no-gui")) {
         engine.reset(new QQmlApplicationEngine());
@@ -126,6 +172,7 @@ int main(int argc, char *argv[])
         if (engine->rootObjects().isEmpty())
             return -1;
     }
+#endif
 
     return lazyFarmerApp.exec();
 }

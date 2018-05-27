@@ -19,8 +19,10 @@
 #pragma once
 
 #include "apigatewayerror.h"
+#include "apimessage.h"
 
 #include <QtCore/QObject>
+#include <QtCore/QQueue>
 
 #include <QtCore/QUrl>
 #include <QtCore/QUrlQuery>
@@ -31,24 +33,36 @@
 
 #include <functional>
 
+struct ApiOptions {
+    QString serverId, serverDomain, login, password;
+};
+
 class ApiGateway : public QObject
 {
     Q_OBJECT
 
-public:
+public:    
     explicit ApiGateway(QObject *parent = nullptr);
 
-    const QMap<QString, QString> &options () { return m_options; }
-    void setOptions(const QMap<QString, QString> &options) { m_options = options; }
-    inline bool isConfigured() const { return !m_options.isEmpty(); }
+    bool isConfigured() const;
 
-    inline bool isLoggedIn() const { return m_loggedIn; }
+    bool isLoggedIn() const { return m_loggedIn; }
     void setLoggedIn (bool loggedIn);
 
     const QString &rid() const { return m_rid; }
     void extractRid(QNetworkReply *reply);
 
-    void raiseError(ApiGatewayError::Type errorType, const QStringList &args = QStringList());
+    const QString &serverId() const { return m_serverId; }
+    const QString &serverDomain() const { return m_serverDomain; }
+    const QString &login() const { return m_login; }
+    const QString &password() const { return m_password; }
+
+    void setApiOptions(const ApiOptions &options);
+
+    void queueMessage(QSharedPointer<ApiMessage> message);
+    void start();
+
+    void handleError(ApiGatewayError::ErrorType errorType, const QStringList &args = QStringList());
 
     QNetworkAccessManager *accessManager() { return &m_manager; }
 
@@ -63,9 +77,13 @@ private:
     bool m_firstRun;
     bool m_loggedIn;
 
-    QMap<QString, QString> m_options;
+    QString m_serverId;
+    QString m_serverDomain;
+    QString m_login;
+    QString m_password;
 
     QString m_rid;
 
+    QQueue<QSharedPointer<ApiMessage>> m_messageQueue;
     QNetworkAccessManager m_manager;
 };

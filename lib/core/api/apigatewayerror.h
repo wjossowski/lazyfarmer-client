@@ -21,9 +21,13 @@
 #include <QtCore/QString>
 #include <QtCore/QCoreApplication>
 
+/**
+ * @brief The ApiGatewayError struct
+ * Defines API gateway error and specifies error massage
+ */
 struct ApiGatewayError
 {
-    enum Type {
+    enum class ErrorType {
         NotConfigured,
         InvalidCredentials,
         NotLogged,
@@ -33,10 +37,10 @@ struct ApiGatewayError
     QString toString() const
     {
         switch (type) {
-        case NotConfigured: return "NotConfigured";
-        case InvalidCredentials: return "InvalidCredentials";
-        case NotLogged: return "Action %1 requires to be logged in.";
-        case RidNotParsed: return "Unable to extract `rid`. Login failed.";
+        case ErrorType::NotConfigured: return "NotConfigured";
+        case ErrorType::InvalidCredentials: return "InvalidCredentials";
+        case ErrorType::NotLogged: return "Action %1 requires to be logged in.";
+        case ErrorType::RidNotParsed: return "Unable to extract `rid`. Login failed.";
         default: return "Unknown error";
         }
     }
@@ -44,16 +48,16 @@ struct ApiGatewayError
     QString message() const
     {
         switch (type) {
-        case NotConfigured:
+        case ErrorType::NotConfigured:
             return qApp->translate("ApiGatewayError",
                                    "Unable to login with unspecified credentials.");
-        case InvalidCredentials:
+        case ErrorType::InvalidCredentials:
             return qApp->translate("ApiGatewayError",
                                    "Unable to extract `rid`. Login failed.");
-        case NotLogged:
+        case ErrorType::NotLogged:
             return qApp->translate("ApiGatewayError",
                                    "Action %1 requires to be logged in.");
-        case RidNotParsed:
+        case ErrorType::RidNotParsed:
             return qApp->translate("ApiGatewayError",
                                    "Unable to extract `rid`. Login failed.");
         default:
@@ -62,5 +66,5 @@ struct ApiGatewayError
         }
     }
 
-    ApiGatewayError (Type exceptionType) : type(exceptionType) { }
+    ApiGatewayError (ErrorType exceptionType) : type(exceptionType) { }
 };

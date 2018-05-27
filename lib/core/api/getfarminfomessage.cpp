@@ -21,9 +21,9 @@
 
 #include <QtCore/QFile>
 
-void GetFarmInfoMessage::send()
+void GetFarmInfoMessage::sendMessage()
 {
-    QNetworkRequest request(endpointAjaxUrl("farm", {
+    QNetworkRequest request(buildEndpointAjaxUrl("farm", {
         { "mode", "getfarms" }
     }));
 

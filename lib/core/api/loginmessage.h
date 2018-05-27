@@ -27,12 +27,14 @@ class QNetworkReply;
 class LoginMessage : public ApiMessage
 {
 public:
-    explicit LoginMessage(ApiGateway *gateway) : ApiMessage (gateway, LoginRequired::No) { }
+    explicit LoginMessage(ApiGateway *gateway)
+        : ApiMessage (gateway, MessageType::MessageLogin, false) { }
 
 public slots:
-    void send();
+    void sendMessage();
 
 private:
     QUrl tokenUrl() const;
-    void recursiveRedirect(const QString &url, const std::function<void (QNetworkReply *)> &callback);
+    void recursiveRedirect(const QString &url,
+                           const std::function<void (QNetworkReply *)> &callback);
 };

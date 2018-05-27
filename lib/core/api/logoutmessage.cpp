@@ -20,9 +20,9 @@
 #include "logoutmessage.h"
 #include "apigateway.h"
 
-void LogoutMessage::send()
+void LogoutMessage::sendMessage()
 {
-    QNetworkRequest request(endpointUrl("main", {
+    QNetworkRequest request(buildEndpointUrl("main", {
         { "page", "logout" },
         { "logoutbutton", "1" }
     }, false));

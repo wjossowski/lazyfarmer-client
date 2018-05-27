@@ -19,10 +19,10 @@
 #include "loginmessage.h"
 #include "apigateway.h"
 
-void LoginMessage::send()
+void LoginMessage::sendMessage()
 {
     if (!m_gateway->isConfigured()) {
-        m_gateway->raiseError(ApiGatewayError::NotConfigured);
+        m_gateway->handleError(ApiGatewayError::ErrorType::NotConfigured);
         return;
     }
 
@@ -34,14 +34,13 @@ void LoginMessage::send()
 
     buildHeaders(request);
 
-    const auto &options = m_gateway->options();
-
     QUrlQuery credentials;
     credentials.setQueryItems({
-        { "server", options["server"] },
-        { "username", options["login"] },
-        { "password", options["password"] },
-        { "ref", "" }, { "retid", "" }
+        { "server", m_gateway->serverId() },
+        { "username", m_gateway->login() },
+        { "password", m_gateway->password() },
+        { "ref", "" },
+        { "retid", "" }
     });
 
     auto reply = m_manager->post(request, credentials.toString().toLocal8Bit());
@@ -50,19 +49,20 @@ void LoginMessage::send()
         if (data.isArray()) {
             recursiveRedirect(data.array().last().toString(), [this] (QNetworkReply *reply) {
                 m_gateway->extractRid(reply);
+                this->deleteLater();
             });
         } else {
-            raiseError(ApiGatewayError::InvalidCredentials);
+            raiseError(ApiGatewayError::ErrorType::InvalidCredentials);
+            this->deleteLater();
         }
     });
 }
 
 QUrl LoginMessage::tokenUrl() const
 {
-    const auto &loginOptions = m_gateway->options();
     return QUrl(QString("https://www.%1/ajax/createtoken2.php?n=%2")
-                .arg(loginOptions["domain"])
-            .arg(QDateTime::currentMSecsSinceEpoch()));
+                .arg(m_gateway->serverDomain())
+                .arg(QDateTime::currentMSecsSinceEpoch()));
 }
 
 void LoginMessage::recursiveRedirect(const QString &url, const std::function<void (QNetworkReply *)> &callback)
