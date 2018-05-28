@@ -19,6 +19,7 @@
 #ifdef DEBUG_MODE
 #include "core/api/apigateway.h"
 #include "core/api/messages.h"
+#include <QTimer>
 #endif
 
 #include <ios>
@@ -160,9 +161,20 @@ int main(int argc, char *argv[])
     ApiGateway debugGateway;
     createDebugEnvironment(debugGateway, parser);
     debugGateway.queueMessage(ApiMessage::create<LoginMessage>(&debugGateway));
-    debugGateway.queueMessage(ApiMessage::create<GetFarmInfoMessage>(&debugGateway));
+//    debugGateway.queueMessage(ApiMessage::create<GetFarmInfoMessage>(&debugGateway));
+    debugGateway.queueMessage(ApiMessage::create<SetPlant>(&debugGateway));
+    debugGateway.queueMessage(ApiMessage::create<SetPour>(&debugGateway));
 
     debugGateway.start();
+
+    QTimer::singleShot(5000, [&](){
+       debugGateway.start();
+
+       QTimer::singleShot(1000, [&](){
+          debugGateway.start();
+       });
+    });
+
 
 #else
     QSharedPointer<QQmlApplicationEngine> engine;

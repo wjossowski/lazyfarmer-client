@@ -34,7 +34,25 @@ class QNetworkAccessManager;
 enum class MessageType {
     MessageLogin,
     MessageLogout,
+
     MessageGetFarmInfo,
+
+    MessageSetPlant,
+    MessageSetPour,
+    MessageGetCollect,
+
+    MessageSetFeed,
+    MessageGetFeed,
+
+    MessageSetProduction,
+    MessageGetProduction,
+
+    MessageSetBuyer,
+    MessageGetBuyer,
+
+    MessageGetPricesOnMarket,
+    MessageSetOfferOnMarket,
+
     MessageUnknown
 };
 

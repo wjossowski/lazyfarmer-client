@@ -19,7 +19,11 @@
 #include "getfarminfomessage.h"
 #include "apigateway.h"
 
+#include "playerinfoextractor.h"
+
 #include <QtCore/QFile>
+#include <QtCore/QJsonDocument>
+#include <QtCore/QJsonObject>
 
 void GetFarmInfoMessage::sendMessage()
 {
@@ -29,8 +33,14 @@ void GetFarmInfoMessage::sendMessage()
 
     auto reply = m_manager->get(request);
     connect(reply, &QNetworkReply::finished, [this, reply] {
-        QFile f("D:\\chuj.json");
-        if (f.open(QFile::WriteOnly))
-            f.write(reply->readAll());
+        const auto contents = reply->readAll();
+
+        PlayerInfoExtractor extractor;
+        bool ok = extractor.parseInfo(contents);
+        qDebug() << ok;
+
+        qDebug() << QJsonDocument::fromVariant(extractor.basicInfo()).toJson();
+        qDebug() << QJsonDocument::fromVariant(extractor.farmsInfo()).toJson();
+        qDebug() << QJsonDocument::fromVariant(extractor.storageInfo()).toJson();
     });
 }

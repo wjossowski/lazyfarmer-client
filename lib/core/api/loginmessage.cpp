@@ -49,11 +49,9 @@ void LoginMessage::sendMessage()
         if (data.isArray()) {
             recursiveRedirect(data.array().last().toString(), [this] (QNetworkReply *reply) {
                 m_gateway->extractRid(reply);
-                this->deleteLater();
             });
         } else {
             raiseError(ApiGatewayError::ErrorType::InvalidCredentials);
-            this->deleteLater();
         }
     });
 }

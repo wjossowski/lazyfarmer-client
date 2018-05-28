@@ -26,6 +26,7 @@ void LogoutMessage::sendMessage()
         { "page", "logout" },
         { "logoutbutton", "1" }
     }, false));
+
     buildHeaders(request);
 
     auto reply = m_manager->get(request);

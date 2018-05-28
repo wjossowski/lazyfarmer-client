@@ -27,6 +27,7 @@
 #include <QtCore/QRegularExpression>
 #include <QtCore/QSettings>
 #include <QtCore/QFile>
+#include <QtCore/QTimer>
 
 #include <QtDebug>
 
@@ -95,7 +96,7 @@ void ApiGateway::setApiOptions(const ApiOptions &options)
     m_password = options.password;
 }
 
-void ApiGateway::queueMessage(QSharedPointer<ApiMessage> message)
+void ApiGateway::queueMessage(const QSharedPointer<ApiMessage> &message)
 {
     m_messageQueue.push_back(message);
 
@@ -107,8 +108,13 @@ void ApiGateway::queueMessage(QSharedPointer<ApiMessage> message)
 
 void ApiGateway::start()
 {
-    auto message = m_messageQueue.first();
-    message->sendMessage();
+    if (m_messageQueue.size() == 0)
+        return;
+
+    m_currentMessage = m_messageQueue.first();
+    m_messageQueue.pop_front();
+
+    m_currentMessage->sendMessage();
 }
 
 void ApiGateway::handleError(ApiGatewayError::ErrorType errorType, const QStringList &args)

@@ -59,7 +59,7 @@ public:
 
     void setApiOptions(const ApiOptions &options);
 
-    void queueMessage(QSharedPointer<ApiMessage> message);
+    void queueMessage(const QSharedPointer<ApiMessage> &message);
     void start();
 
     void handleError(ApiGatewayError::ErrorType errorType, const QStringList &args = QStringList());
@@ -85,5 +85,6 @@ private:
     QString m_rid;
 
     QQueue<QSharedPointer<ApiMessage>> m_messageQueue;
+    QSharedPointer<ApiMessage> m_currentMessage;
     QNetworkAccessManager m_manager;
 };

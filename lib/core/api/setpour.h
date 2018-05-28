@@ -1,6 +1,6 @@
 /**
  ** This file is part of the LazyFarmer project.
- ** Copyright 2017 Wojciech Ossowski <w.j.ossowski@gmail.com>.
+ ** Copyright 2018 Wojciech Ossowski <w.j.ossowski@gmail.com>.
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU Lesser General Public License as
@@ -18,13 +18,20 @@
 
 #pragma once
 
-// Account management
-#include "loginmessage.h"
-#include "logoutmessage.h"
+#include "apimessage.h"
 
-// Getters
-#include "getfarminfomessage.h"
+class SetPour : public ApiMessage
+{
+public:
+    explicit SetPour(ApiGateway *gateway);
 
-// Setters
-#include "setplant.h"
-#include "setpour.h"
+public slots:
+    void sendMessage();
+
+private:
+    int m_farmId;
+    int m_positionId;
+    int m_plantId;
+    int m_size;
+};
+
