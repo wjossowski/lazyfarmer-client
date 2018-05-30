@@ -16,17 +16,19 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "storage.h"
+#include "playerstorage.h"
 
 #include <QtDebug>
 
-Storage::Storage(QObject *parent)
+using namespace Storage;
+
+PlayerStorage::PlayerStorage(QObject *parent)
     : QObject(parent)
 {
 
 }
 
-void Storage::update(const QVariantList &storage)
+void PlayerStorage::update(const QVariantList &storage)
 {
     m_products.clear();
 

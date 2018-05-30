@@ -25,6 +25,8 @@
 
 #include <QtDebug>
 
+using namespace Helpers;
+
 Player::Player(QObject *parent)
     : QObject(parent)
     , m_level(0)

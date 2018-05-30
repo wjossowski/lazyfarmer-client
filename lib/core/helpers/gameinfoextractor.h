@@ -24,40 +24,42 @@
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonValue>
 
-class GameInfoExtractor
-{
-    Q_DISABLE_COPY(GameInfoExtractor)
+namespace Helpers {
 
-public:
-    explicit GameInfoExtractor(const QString &domain = QString());
+    class GameInfoExtractor
+    {
+        Q_DISABLE_COPY(GameInfoExtractor)
 
-    GameInfoExtractor(const QVariantMap &filters,
-                      const QString &domain = QString());
+    public:
+        explicit GameInfoExtractor(const QString &domain = QString());
 
-    inline QString domain() const { return m_domain; }
-    inline void setDomain(const QString &domain) { m_domain = domain; }
+        GameInfoExtractor(const QVariantMap &filters,
+                          const QString &domain = QString());
 
-#if DEBUG_MODE
-    inline const QStringList &regexMatches() const { return m_regexMatches; }
-#endif
+        inline QString domain() const { return m_domain; }
+        inline void setDomain(const QString &domain) { m_domain = domain; }
 
-    bool extract(const QString &content);
-    const QVariantMap &results() { return m_results; }
-    void save();
+    #if DEBUG_MODE
+        inline const QStringList &regexMatches() const { return m_regexMatches; }
+    #endif
 
-private:
-    QVariantMap extractNameFromObject(QJsonObject &&object) const;
-    QVariantMap extractObject(QJsonDocument &&document) const;
+        bool extract(const QString &content);
+        const QVariantMap &results() { return m_results; }
+        void save();
 
-private:
-    QVariantMap m_filters;
-    QVariantMap m_results;
+    private:
+        QVariantMap extractNameFromObject(QJsonObject &&object) const;
+        QVariantMap extractObject(QJsonDocument &&document) const;
 
-    QString m_domain;
+    private:
+        QVariantMap m_filters;
+        QVariantMap m_results;
 
-#if DEBUG_MODE
-    QStringList m_regexMatches;
-#endif
-};
+        QString m_domain;
 
+    #if DEBUG_MODE
+        QStringList m_regexMatches;
+    #endif
+    };
 
+}

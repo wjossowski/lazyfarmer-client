@@ -20,25 +20,30 @@
 
 #include <QtCore/QVariant>
 
-class Building
-{
-public:
-    explicit Building();
+namespace Farm {
 
-    inline int type() const { return m_type; }
-    inline int farmId() const { return m_farmId; }
-    inline int position() const { return m_position; }
-    inline int level() const { return m_level; }
-    inline int animals() const { return m_animals; }
-    inline int remaining() const { return m_remaining; }
+    class Building
+    {
+    public:
+        explicit Building();
 
-    void update(const QVariantMap &buildingInfo);
+        inline int type() const { return m_type; }
+        inline int farmId() const { return m_farmId; }
+        inline int position() const { return m_position; }
+        inline int level() const { return m_level; }
+        inline int animals() const { return m_animals; }
+        inline int remaining() const { return m_remaining; }
 
-private:
-    int m_type;
-    int m_farmId;
-    int m_position;
-    int m_level;
-    int m_animals;
-    int m_remaining;
-};
+        void update(const QVariantMap &buildingInfo);
+
+    private:
+        int m_type;
+        int m_farmId;
+        int m_position;
+        int m_level;
+        int m_animals;
+        int m_remaining;
+    };
+
+}
+

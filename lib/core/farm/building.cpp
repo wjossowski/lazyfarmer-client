@@ -1,5 +1,7 @@
 #include "building.h"
 
+using namespace Farm;
+
 Building::Building()
     : m_type(0)
     , m_farmId(0)

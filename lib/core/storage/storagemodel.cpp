@@ -18,9 +18,12 @@
 
 #include "storagemodel.h"
 
+using namespace Storage;
+
 StorageModel::StorageModel(QObject *parent)
     : QAbstractItemModel(parent)
 {
+
 }
 
 QVariant StorageModel::headerData(int section, Qt::Orientation orientation, int role) const

@@ -30,6 +30,7 @@
 
 using namespace Api;
 using namespace Messages;
+using namespace Helpers;
 
 void GetFarmInfo::sendMessage()
 {

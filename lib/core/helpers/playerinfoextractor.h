@@ -23,26 +23,31 @@
 
 class QJsonObject;
 
-class PlayerInfoExtractor
-{
-public:
-    bool parseInfo(const QByteArray &info);
+namespace Helpers {
 
-    const QString &errorString() const { return m_error; }
+    class PlayerInfoExtractor
+    {
+    public:
+        bool parseInfo(const QByteArray &info);
 
-    const QVariantMap &basicInfo() const { return m_basicInfo; }
-    const QVariantList &storageInfo() const { return m_storageInfo; }
-    const QVariantList &farmsInfo() const { return m_farmsInfo; }
+        const QString &errorString() const { return m_error; }
 
-private:
-    void parseBasicInfo(const QJsonObject &basicInfo);
-    void parseStorageInfo(const QJsonObject &storageInfo);
-    void parseFarmsInfo(const QJsonObject &farmsInfo);
+        const QVariantMap &basicInfo() const { return m_basicInfo; }
+        const QVariantList &storageInfo() const { return m_storageInfo; }
+        const QVariantList &farmsInfo() const { return m_farmsInfo; }
 
-private:
-    QVariantMap m_basicInfo;
-    QVariantList m_storageInfo;
-    QVariantList m_farmsInfo;
+    private:
+        void parseBasicInfo(const QJsonObject &basicInfo);
+        void parseStorageInfo(const QJsonObject &storageInfo);
+        void parseFarmsInfo(const QJsonObject &farmsInfo);
 
-    QString m_error;
-};
+    private:
+        QVariantMap m_basicInfo;
+        QVariantList m_storageInfo;
+        QVariantList m_farmsInfo;
+
+        QString m_error;
+    };
+
+}
+

@@ -24,9 +24,6 @@
 
 #include <QtCore/QObject>
 
-using namespace Api;
-using namespace Messages;
-
 class Player : public QObject
 {
     Q_OBJECT
@@ -48,11 +45,11 @@ private:
 
 private:
     int m_level;
-    QString m_levelDescription;
     int m_levelPercentage;
     qreal m_money;
+    QString m_levelDescription;
 
-    Storage m_storage;
-    Farm m_farm;
-    ApiGateway m_gateway;
+    Storage::PlayerStorage m_storage;
+    Farm::PlayerFarm m_farm;
+    Api::ApiGateway m_gateway;
 };

@@ -25,6 +25,8 @@
 #include <QtCore/QFileInfo>
 #include <QtDebug>
 
+using namespace Helpers;
+
 static const QVariantMap BaseFilters = {
     { "forestry", "var produkt_name_forestry = (?<forestry>.*);" },
     { "products", "var produkt_name = (?<products>.*);" },

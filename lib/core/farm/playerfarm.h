@@ -22,13 +22,18 @@
 
 #include <QtCore/QSharedPointer>
 
-class Farm
-{
-public:
-    QSharedPointer<Building> buildingAt(int farm, int position);
+namespace Farm {
 
-    void update(const QVariantList &farmInfo);
+    class PlayerFarm
+    {
+    public:
+        QSharedPointer<Building> buildingAt(int farm, int position);
 
-private:
-    QList<QSharedPointer<Building>> m_buildings;
-};
+        void update(const QVariantList &farmInfo);
+
+    private:
+        QList<QSharedPointer<Building>> m_buildings;
+    };
+
+}
+

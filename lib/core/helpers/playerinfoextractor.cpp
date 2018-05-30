@@ -25,6 +25,8 @@
 
 #include <QtDebug>
 
+using namespace Helpers;
+
 #ifdef DEBUG_MODE
 void printJson(const QJsonObject &obj) {
     qDebug() << QJsonDocument(obj).toJson(QJsonDocument::Indented);

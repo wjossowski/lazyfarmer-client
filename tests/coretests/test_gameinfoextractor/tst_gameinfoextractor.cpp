@@ -20,6 +20,8 @@
 
 #include "core/helpers/gameinfoextractor.h"
 
+using namespace Helpers;
+
 class GameInfoExtractorTest : public QObject
 {
     Q_OBJECT

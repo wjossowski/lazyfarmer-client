@@ -36,6 +36,7 @@
 
 using namespace Api;
 using namespace Messages;
+using namespace Helpers;
 
 ApiGateway::ApiGateway(QObject *parent)
     : QObject(parent)
