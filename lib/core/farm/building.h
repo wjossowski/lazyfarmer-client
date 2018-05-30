@@ -22,27 +22,31 @@
 
 namespace Farm {
 
-    class Building
+    struct Building
     {
-    public:
-        explicit Building();
+        int type;
+        int farmId;
+        int position;
+        int level;
+        int animals;
+        int remaining;
 
-        inline int type() const { return m_type; }
-        inline int farmId() const { return m_farmId; }
-        inline int position() const { return m_position; }
-        inline int level() const { return m_level; }
-        inline int animals() const { return m_animals; }
-        inline int remaining() const { return m_remaining; }
+        Building(): type(0), farmId(0),
+            position(0), level(0),
+            animals(0), remaining(0)
+        {
 
-        void update(const QVariantMap &buildingInfo);
+        }
 
-    private:
-        int m_type;
-        int m_farmId;
-        int m_position;
-        int m_level;
-        int m_animals;
-        int m_remaining;
+        void update(const QVariantMap &buildingInfo)
+        {
+            type = buildingInfo["Type"].toInt();
+            farmId = buildingInfo["FarmId"].toInt();
+            position = buildingInfo["Position"].toInt();
+            level = buildingInfo["Level"].toInt();
+            animals = buildingInfo["Animals"].toInt();
+            remaining = buildingInfo["Remaining"].toInt();
+        }
     };
 
 }

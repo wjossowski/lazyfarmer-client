@@ -7,7 +7,7 @@ using namespace Farm;
 QSharedPointer<Building> PlayerFarm::buildingAt(int farm, int position)
 {
     for (auto building : m_buildings) {
-        if (building->farmId() == farm && building->position() == position) {
+        if (building->farmId == farm && building->position == position) {
             return building;
         }
     }
