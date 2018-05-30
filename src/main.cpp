@@ -160,7 +160,7 @@ int main(int argc, char *argv[])
 
     Api::ApiGateway debugGateway;
     createDebugEnvironment(debugGateway, parser);
-    debugGateway.queueMessage(Api::Messages::ApiMessage::create<Api::Messages::LoginMessage>(&debugGateway));
+    debugGateway.queueMessage(Api::Messages::ApiMessage::create<Api::Messages::Login>(&debugGateway));
 //    debugGateway.queueMessage(ApiMessage::create<GetFarmInfoMessage>(&debugGateway));
     debugGateway.queueMessage(Api::Messages::ApiMessage::create<Api::Messages::SetPlant>(&debugGateway));
     debugGateway.queueMessage(Api::Messages::ApiMessage::create<Api::Messages::SetPour>(&debugGateway));

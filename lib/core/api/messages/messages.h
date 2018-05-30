@@ -19,11 +19,11 @@
 #pragma once
 
 // Account management
-#include "loginmessage.h"
-#include "logoutmessage.h"
+#include "login.h"
+#include "logout.h"
 
 // Getters
-#include "getfarminfomessage.h"
+#include "getfarminfo.h"
 
 // Setters
 #include "setplant.h"

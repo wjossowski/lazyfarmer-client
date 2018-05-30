@@ -21,17 +21,17 @@
 #include "../apimessage.h"
 
 namespace Api {
-namespace Messages {
+    namespace Messages {
 
-class GetFarmInfoMessage : public ApiMessage
-{
-public:
-    explicit GetFarmInfoMessage(ApiGateway *gateway)
-        : ApiMessage (gateway, MessageType::MessageGetFarmInfo) { }
+        class Logout : public ApiMessage
+        {
+        public:
+            explicit Logout(ApiGateway *gateway)
+                : ApiMessage (gateway, MessageType::MessageLogout) { }
 
-public slots:
-    virtual void sendMessage();
-};
+        public slots:
+            virtual void sendMessage();
+        };
 
-}
+    }
 }

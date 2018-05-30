@@ -16,14 +16,8 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "getfarminfomessage.h"
+#include "logout.h"
 #include "../apigateway.h"
-
-#include "playerinfoextractor.h"
-
-#include <QtCore/QFile>
-#include <QtCore/QJsonDocument>
-#include <QtCore/QJsonObject>
 
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
@@ -31,22 +25,17 @@
 using namespace Api;
 using namespace Messages;
 
-void GetFarmInfoMessage::sendMessage()
+void Logout::sendMessage()
 {
-    QNetworkRequest request(buildEndpointAjaxUrl("farm", {
-        { "mode", "getfarms" }
-    }));
+    QNetworkRequest request(buildEndpointUrl("main", {
+        { "page", "logout" },
+        { "logoutbutton", "1" }
+    }, false));
+
+    buildHeaders(request);
 
     auto reply = m_manager->get(request);
-    connect(reply, &QNetworkReply::finished, [this, reply] {
-        const auto contents = reply->readAll();
-
-        PlayerInfoExtractor extractor;
-        bool ok = extractor.parseInfo(contents);
-        qDebug() << ok;
-
-        qDebug() << QJsonDocument::fromVariant(extractor.basicInfo()).toJson();
-        qDebug() << QJsonDocument::fromVariant(extractor.farmsInfo()).toJson();
-        qDebug() << QJsonDocument::fromVariant(extractor.storageInfo()).toJson();
+    connect(reply, &QNetworkReply::finished, [this, reply] () {
+        m_gateway->setLoggedIn(false);
     });
 }

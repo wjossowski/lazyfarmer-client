@@ -27,11 +27,10 @@ class QNetworkReply;
 namespace Api {
     namespace Messages {
 
-
-        class LoginMessage : public ApiMessage
+        class Login : public ApiMessage
         {
         public:
-            explicit LoginMessage(ApiGateway *gateway)
+            explicit Login(ApiGateway *gateway)
                 : ApiMessage (gateway, MessageType::MessageLogin, false) { }
 
         public slots:

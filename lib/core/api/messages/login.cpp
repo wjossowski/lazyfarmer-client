@@ -16,7 +16,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "loginmessage.h"
+#include "login.h"
 #include "../apigateway.h"
 
 #include <QtNetwork/QNetworkRequest>
@@ -25,7 +25,7 @@
 using namespace Api;
 using namespace Messages;
 
-void LoginMessage::sendMessage()
+void Login::sendMessage()
 {
     if (!m_gateway->isConfigured()) {
         m_gateway->handleError(ApiGatewayError::ErrorType::NotConfigured);
@@ -62,14 +62,14 @@ void LoginMessage::sendMessage()
     });
 }
 
-QUrl LoginMessage::tokenUrl() const
+QUrl Login::tokenUrl() const
 {
     return QUrl(QString("https://www.%1/ajax/createtoken2.php?n=%2")
                 .arg(m_gateway->serverDomain())
                 .arg(QDateTime::currentMSecsSinceEpoch()));
 }
 
-void LoginMessage::recursiveRedirect(const QString &url, const std::function<void (QNetworkReply *)> &callback)
+void Login::recursiveRedirect(const QString &url, const std::function<void (QNetworkReply *)> &callback)
 {
     QNetworkRequest request(url);
     buildHeaders(request);
