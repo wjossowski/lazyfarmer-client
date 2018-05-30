@@ -1,6 +1,6 @@
 /**
  ** This file is part of the LazyFarmer project.
- ** Copyright 2017 Wojciech Ossowski <w.j.ossowski@gmail.com>.
+ ** Copyright 2018 Wojciech Ossowski <w.j.ossowski@gmail.com>.
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU Lesser General Public License as
@@ -16,17 +16,18 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#pragma once
-
 #include "apimessage.h"
 
-class GetFarmInfoMessage : public ApiMessage
+class OneWayMessage : public ApiMessage
 {
 public:
-    explicit GetFarmInfoMessage(ApiGateway *gateway)
-        : ApiMessage (gateway, MessageType::MessageGetFarmInfo) { }
-
+    explicit OneWayMessage (ApiGateway *gateway,
+                            MessageType type,
+                            const QString &endpoint);
 public slots:
-    void sendMessage();
-};
+    virtual void sendMessage();
 
+private:
+    virtual const QList<QPair<QString, QString>> constructedMessageData() = 0;
+    QString m_endpointUrl;
+};

@@ -16,16 +16,20 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#pragma once
+#include "logoutmessage.h"
+#include "../apigateway.h"
 
-#include "apimessage.h"
-
-class LogoutMessage : public ApiMessage
+void LogoutMessage::sendMessage()
 {
-public:
-    explicit LogoutMessage(ApiGateway *gateway)
-        : ApiMessage (gateway, MessageType::MessageLogout) { }
+    QNetworkRequest request(buildEndpointUrl("main", {
+        { "page", "logout" },
+        { "logoutbutton", "1" }
+    }, false));
 
-public slots:
-    void sendMessage();
-};
+    buildHeaders(request);
+
+    auto reply = m_manager->get(request);
+    connect(reply, &QNetworkReply::finished, [this, reply] () {
+        m_gateway->setLoggedIn(false);
+    });
+}

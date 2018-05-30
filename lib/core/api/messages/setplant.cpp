@@ -16,22 +16,24 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#pragma once
+#include "setplant.h"
+#include "../apigateway.h"
 
-#include "apimessage.h"
-
-class SetPlant : public ApiMessage
+SetPlant::SetPlant(ApiGateway *gateway, const PlantData &plantData)
+    : OneWayMessage(gateway, MessageType::MessageSetPlant, "farm"),
+      m_plantData(plantData)
 {
-public:
-    explicit SetPlant(ApiGateway *gateway);
 
-public slots:
-    void sendMessage();
+}
 
-private:
-    int m_farmId;
-    int m_positionId;
-    int m_plantId;
-    int m_size;
-};
-
+const QList<QPair<QString, QString> > SetPlant::constructedMessageData()
+{
+    return {
+        { "mode", "garden_plant" },
+        { "farm", QString::number(m_plantData.farmId) },
+        { "position", QString::number(m_plantData.positionId) },
+        { "pflanze[]", QString::number(m_plantData.plantId) },
+        { "feld[]", "1" }, // TODO: Create function to get valid positions
+        { "felder[]", "1,2"}
+    };
+}

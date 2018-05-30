@@ -1,6 +1,6 @@
 /**
  ** This file is part of the LazyFarmer project.
- ** Copyright 2017 Wojciech Ossowski <w.j.ossowski@gmail.com>.
+ ** Copyright 2018 Wojciech Ossowski <w.j.ossowski@gmail.com>.
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU Lesser General Public License as
@@ -16,31 +16,32 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "getfarminfomessage.h"
-#include "apigateway.h"
+#include "setpour.h"
+#include "../apigateway.h"
 
-#include "playerinfoextractor.h"
+SetPour::SetPour(ApiGateway *gateway)
+    : ApiMessage (gateway, MessageType::MessageSetPour),
+      m_farmId(1),
+      m_positionId(1)
+{
 
-#include <QtCore/QFile>
-#include <QtCore/QJsonDocument>
-#include <QtCore/QJsonObject>
+}
 
-void GetFarmInfoMessage::sendMessage()
+void SetPour::sendMessage()
 {
     QNetworkRequest request(buildEndpointAjaxUrl("farm", {
-        { "mode", "getfarms" }
+        { "mode", "garden_water" },
+        { "farm", QString::number(m_farmId) },
+        { "position", QString::number(m_positionId) },
+        { "feld[]", "1" },
+        { "felder[]", "1,2"}
     }));
 
+    buildHeaders(request);
+
     auto reply = m_manager->get(request);
-    connect(reply, &QNetworkReply::finished, [this, reply] {
-        const auto contents = reply->readAll();
+    connect(reply, &QNetworkReply::finished, this, &SetPour::finished);
+    connect(reply, &QNetworkReply::finished, this, &SetPour::deleteLater);
 
-        PlayerInfoExtractor extractor;
-        bool ok = extractor.parseInfo(contents);
-        qDebug() << ok;
-
-        qDebug() << QJsonDocument::fromVariant(extractor.basicInfo()).toJson();
-        qDebug() << QJsonDocument::fromVariant(extractor.farmsInfo()).toJson();
-        qDebug() << QJsonDocument::fromVariant(extractor.storageInfo()).toJson();
-    });
 }
+

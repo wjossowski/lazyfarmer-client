@@ -17,7 +17,7 @@
  **/
 
 #include "loginmessage.h"
-#include "apigateway.h"
+#include "../apigateway.h"
 
 void LoginMessage::sendMessage()
 {

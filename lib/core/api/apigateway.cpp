@@ -18,7 +18,7 @@
 
 #include "apigateway.h"
 #include "helpers/gameinfoextractor.h"
-#include "messages.h"
+#include "messages/messages.h"
 
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>

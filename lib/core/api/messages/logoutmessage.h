@@ -18,23 +18,14 @@
 
 #pragma once
 
-#include "apimessage.h"
+#include "../apimessage.h"
 
-#include <functional>
-
-class QNetworkReply;
-
-class LoginMessage : public ApiMessage
+class LogoutMessage : public ApiMessage
 {
 public:
-    explicit LoginMessage(ApiGateway *gateway)
-        : ApiMessage (gateway, MessageType::MessageLogin, false) { }
+    explicit LogoutMessage(ApiGateway *gateway)
+        : ApiMessage (gateway, MessageType::MessageLogout) { }
 
 public slots:
-    void sendMessage();
-
-private:
-    QUrl tokenUrl() const;
-    void recursiveRedirect(const QString &url,
-                           const std::function<void (QNetworkReply *)> &callback);
+    virtual void sendMessage();
 };

@@ -16,7 +16,6 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "loginmessage.h"
 #include "apigateway.h"
 
 #include <QtCore/QUrl>
@@ -73,7 +72,7 @@ QUrl ApiMessage::buildEndpointUrl(const QString &endpoint,
 }
 
 QUrl ApiMessage::buildEndpointAjaxUrl(const QString &endpoint,
-                                      const QList<QPair<QString, QString> > &data,
+                                      const QList<QPair<QString, QString>> &data,
                                       bool includeRid) const
 {
     return buildEndpointUrl(QString("ajax/%1").arg(endpoint), data, includeRid);

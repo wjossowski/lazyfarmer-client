@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include "apimessage.h"
+#include "../apimessage.h"
 
 class SetPour : public ApiMessage
 {
@@ -26,7 +26,7 @@ public:
     explicit SetPour(ApiGateway *gateway);
 
 public slots:
-    void sendMessage();
+    virtual void sendMessage();
 
 private:
     int m_farmId;

@@ -18,7 +18,7 @@
 
 #ifdef DEBUG_MODE
 #include "core/api/apigateway.h"
-#include "core/api/messages.h"
+#include "core/api/messages/messages.h"
 #include <QTimer>
 #endif
 

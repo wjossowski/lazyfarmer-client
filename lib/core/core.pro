@@ -26,6 +26,7 @@ SOURCES += \
         $${PWD}/helpers/*.cpp \
         $${PWD}/storage/*.cpp \
         $${PWD}/farm/*.cpp  \
+        $${PWD}/api/messages/*.cpp \
         $${PWD}/api/*.cpp \
         $${PWD}/*.cpp
 
@@ -33,7 +34,9 @@ HEADERS += \
         $${PWD}/helpers/*.h \
         $${PWD}/storage/*.h \
         $${PWD}/farm/*.h \
+        $${PWD}/api/helpers/*.h \
+        $${PWD}/api/messages/*.h \
         $${PWD}/api/*.h \
-        $${PWD}/*.h
+        $${PWD}/*.h \
 
 include($${PWD}/../../common.pri)

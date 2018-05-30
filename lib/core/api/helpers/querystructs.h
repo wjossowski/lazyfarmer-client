@@ -1,6 +1,6 @@
 /**
  ** This file is part of the LazyFarmer project.
- ** Copyright 2017 Wojciech Ossowski <w.j.ossowski@gmail.com>.
+ ** Copyright 2018 Wojciech Ossowski <w.j.ossowski@gmail.com>.
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU Lesser General Public License as
@@ -16,21 +16,15 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
+#pragma once
 
-#include "logoutmessage.h"
-#include "apigateway.h"
-
-void LogoutMessage::sendMessage()
+struct PlantData
 {
-    QNetworkRequest request(buildEndpointUrl("main", {
-        { "page", "logout" },
-        { "logoutbutton", "1" }
-    }, false));
+    explicit PlantData ()
+        : farmId(0), positionId(0), plantId(0), plantSize(0) {}
 
-    buildHeaders(request);
-
-    auto reply = m_manager->get(request);
-    connect(reply, &QNetworkReply::finished, [this, reply] () {
-        m_gateway->setLoggedIn(false);
-    });
-}
+    unsigned char farmId;
+    unsigned char positionId;
+    unsigned char plantId;
+    unsigned char plantSize;
+};
