@@ -21,7 +21,7 @@
 struct PlantData
 {
     explicit PlantData ()
-        : farmId(0), positionId(0), plantId(0), plantSize(0) {}
+        : farmId(1), positionId(1), plantId(1), plantSize(2) {}
 
     unsigned char farmId;
     unsigned char positionId;

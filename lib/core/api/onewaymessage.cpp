@@ -16,6 +16,6 @@ void OneWayMessage::sendMessage()
     buildHeaders(request);
 
     auto reply = m_manager->get(request);
-    connect(reply, &QNetworkReply::finished, this, &OneWayMessage::finished);
+    connect(reply, &QNetworkReply::finished, this,  &OneWayMessage::finished);
     connect(reply, &QNetworkReply::finished, reply, &QNetworkReply::deleteLater);
 }

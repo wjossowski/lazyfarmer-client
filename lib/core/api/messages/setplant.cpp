@@ -26,7 +26,7 @@ SetPlant::SetPlant(ApiGateway *gateway, const PlantData &plantData)
 
 }
 
-const QList<QPair<QString, QString> > SetPlant::constructedMessageData()
+const QList<QPair<QString, QString> > SetPlant::constructedMessageData() const
 {
     return {
         { "mode", "garden_plant" },

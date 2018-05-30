@@ -18,20 +18,21 @@
 
 #pragma once
 
-#include "../apimessage.h"
+#include "../onewaymessage.h"
+#include "../helpers/querystructs.h"
 
-class SetPour : public ApiMessage
+class SetPour : public OneWayMessage
 {
 public:
-    explicit SetPour(ApiGateway *gateway);
+    explicit SetPour(ApiGateway *gateway,
+                     const PlantData &plantData = PlantData());
 
-public slots:
-    virtual void sendMessage();
+    void setPlantData(const PlantData &plantData) { m_plantData = plantData; }
 
 private:
-    int m_farmId;
-    int m_positionId;
-    int m_plantId;
-    int m_size;
+    virtual const QList<QPair<QString, QString> > constructedMessageData() const;
+
+private:
+    PlantData m_plantData;
 };
 

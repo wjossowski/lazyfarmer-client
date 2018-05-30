@@ -30,7 +30,7 @@ public:
     void setPlantData(const PlantData &plantData) { m_plantData = plantData; }
 
 private:
-    const QList<QPair<QString, QString> > constructedMessageData();
+    virtual const QList<QPair<QString, QString> > constructedMessageData() const;
 
 private:
     PlantData m_plantData;

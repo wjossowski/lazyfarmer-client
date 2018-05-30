@@ -19,29 +19,20 @@
 #include "setpour.h"
 #include "../apigateway.h"
 
-SetPour::SetPour(ApiGateway *gateway)
-    : ApiMessage (gateway, MessageType::MessageSetPour),
-      m_farmId(1),
-      m_positionId(1)
+SetPour::SetPour(ApiGateway *gateway, const PlantData &plantData)
+    : OneWayMessage(gateway, MessageType::MessageSetPour, "farm"),
+      m_plantData(plantData)
 {
 
 }
 
-void SetPour::sendMessage()
+const QList<QPair<QString, QString> > SetPour::constructedMessageData() const
 {
-    QNetworkRequest request(buildEndpointAjaxUrl("farm", {
+    return {
         { "mode", "garden_water" },
-        { "farm", QString::number(m_farmId) },
-        { "position", QString::number(m_positionId) },
-        { "feld[]", "1" },
+        { "farm", QString::number(m_plantData.farmId) },
+        { "position", QString::number(m_plantData.positionId) },
+        { "feld[]", "1" }, // TODO: Create function to get valid positions
         { "felder[]", "1,2"}
-    }));
-
-    buildHeaders(request);
-
-    auto reply = m_manager->get(request);
-    connect(reply, &QNetworkReply::finished, this, &SetPour::finished);
-    connect(reply, &QNetworkReply::finished, this, &SetPour::deleteLater);
-
+    };
 }
-

@@ -16,6 +16,8 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
+#pragma once
+
 #include "apimessage.h"
 
 class OneWayMessage : public ApiMessage
@@ -28,6 +30,6 @@ public slots:
     virtual void sendMessage();
 
 private:
-    virtual const QList<QPair<QString, QString>> constructedMessageData() = 0;
+    virtual const QList<QPair<QString, QString>> constructedMessageData() const = 0;
     QString m_endpointUrl;
 };
