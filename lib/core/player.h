@@ -24,6 +24,9 @@
 
 #include <QtCore/QObject>
 
+using namespace Api;
+using namespace Messages;
+
 class Player : public QObject
 {
     Q_OBJECT

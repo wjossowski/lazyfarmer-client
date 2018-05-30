@@ -20,6 +20,9 @@
 
 #include "../apimessage.h"
 
+namespace Api {
+namespace Messages {
+
 class GetFarmInfoMessage : public ApiMessage
 {
 public:
@@ -30,3 +33,5 @@ public slots:
     virtual void sendMessage();
 };
 
+}
+}

@@ -20,6 +20,9 @@
 #include "helpers/gameinfoextractor.h"
 #include "messages/messages.h"
 
+#include <QtNetwork/QNetworkRequest>
+#include <QtNetwork/QNetworkReply>
+
 #include <QtCore/QJsonArray>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
@@ -30,6 +33,9 @@
 #include <QtCore/QTimer>
 
 #include <QtDebug>
+
+using namespace Api;
+using namespace Messages;
 
 ApiGateway::ApiGateway(QObject *parent)
     : QObject(parent)

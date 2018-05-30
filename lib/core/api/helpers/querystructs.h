@@ -18,13 +18,17 @@
 
 #pragma once
 
-struct PlantData
-{
-    explicit PlantData ()
-        : farmId(1), positionId(1), plantId(1), plantSize(2) {}
+namespace Api {
 
-    unsigned char farmId;
-    unsigned char positionId;
-    unsigned char plantId;
-    unsigned char plantSize;
-};
+    struct PlantData
+    {
+        explicit PlantData ()
+            : farmId(1), positionId(1), plantId(1), plantSize(2) {}
+
+        unsigned char farmId;
+        unsigned char positionId;
+        unsigned char plantId;
+        unsigned char plantSize;
+    };
+
+}

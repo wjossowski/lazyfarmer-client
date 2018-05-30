@@ -19,6 +19,9 @@
 #include "setpour.h"
 #include "../apigateway.h"
 
+using namespace Api;
+using namespace Messages;
+
 SetPour::SetPour(ApiGateway *gateway, const PlantData &plantData)
     : OneWayMessage(gateway, MessageType::MessageSetPour, "farm"),
       m_plantData(plantData)

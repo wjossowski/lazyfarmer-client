@@ -20,16 +20,23 @@
 
 #include "apimessage.h"
 
-class OneWayMessage : public ApiMessage
-{
-public:
-    explicit OneWayMessage (ApiGateway *gateway,
-                            MessageType type,
-                            const QString &endpoint);
-public slots:
-    virtual void sendMessage();
+namespace Api{
+    namespace Messages {
 
-private:
-    virtual const QList<QPair<QString, QString>> constructedMessageData() const = 0;
-    QString m_endpointUrl;
-};
+        class OneWayMessage : public ApiMessage
+        {
+        public:
+            explicit OneWayMessage (ApiGateway *gateway,
+                                    MessageType type,
+                                    const QString &endpoint);
+        public slots:
+            virtual void sendMessage();
+
+        private:
+            virtual const QList<QPair<QString, QString>> constructedMessageData() const = 0;
+            QString m_endpointUrl;
+        };
+
+    }
+}
+

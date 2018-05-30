@@ -20,12 +20,18 @@
 
 #include "../apimessage.h"
 
-class LogoutMessage : public ApiMessage
-{
-public:
-    explicit LogoutMessage(ApiGateway *gateway)
-        : ApiMessage (gateway, MessageType::MessageLogout) { }
+namespace Api {
+    namespace Messages {
 
-public slots:
-    virtual void sendMessage();
-};
+        class LogoutMessage : public ApiMessage
+        {
+        public:
+            explicit LogoutMessage(ApiGateway *gateway)
+                : ApiMessage (gateway, MessageType::MessageLogout) { }
+
+        public slots:
+            virtual void sendMessage();
+        };
+
+    }
+}

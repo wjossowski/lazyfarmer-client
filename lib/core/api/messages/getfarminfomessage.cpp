@@ -25,6 +25,12 @@
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
 
+#include <QtNetwork/QNetworkRequest>
+#include <QtNetwork/QNetworkReply>
+
+using namespace Api;
+using namespace Messages;
+
 void GetFarmInfoMessage::sendMessage()
 {
     QNetworkRequest request(buildEndpointAjaxUrl("farm", {

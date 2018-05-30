@@ -24,17 +24,24 @@
 
 class QNetworkReply;
 
-class LoginMessage : public ApiMessage
-{
-public:
-    explicit LoginMessage(ApiGateway *gateway)
-        : ApiMessage (gateway, MessageType::MessageLogin, false) { }
+namespace Api {
+    namespace Messages {
 
-public slots:
-    virtual void sendMessage();
 
-private:
-    QUrl tokenUrl() const;
-    void recursiveRedirect(const QString &url,
-                           const std::function<void (QNetworkReply *)> &callback);
-};
+        class LoginMessage : public ApiMessage
+        {
+        public:
+            explicit LoginMessage(ApiGateway *gateway)
+                : ApiMessage (gateway, MessageType::MessageLogin, false) { }
+
+        public slots:
+            virtual void sendMessage();
+
+        private:
+            QUrl tokenUrl() const;
+            void recursiveRedirect(const QString &url,
+                                   const std::function<void (QNetworkReply *)> &callback);
+        };
+
+    }
+}

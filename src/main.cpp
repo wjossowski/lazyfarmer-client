@@ -62,7 +62,7 @@ void handleMessage(QtMsgType type, const QMessageLogContext &context,
 }
 
 #ifdef DEBUG_MODE
-void createDebugEnvironment(ApiGateway &gateway, const QCommandLineParser &parser)
+void createDebugEnvironment(Api::ApiGateway &gateway, const QCommandLineParser &parser)
 {
     qDebug() << "Entering" << APPLICATION_NAME << " v." << CURRENT_VERSION << "debug mode";
     qDebug() << "Selected following configuration:";
@@ -158,12 +158,12 @@ int main(int argc, char *argv[])
 #ifdef DEBUG_MODE
     qDebug() << "Debug storage located in:" << QFileInfo(debugFile).absoluteFilePath();
 
-    ApiGateway debugGateway;
+    Api::ApiGateway debugGateway;
     createDebugEnvironment(debugGateway, parser);
-    debugGateway.queueMessage(ApiMessage::create<LoginMessage>(&debugGateway));
+    debugGateway.queueMessage(Api::Messages::ApiMessage::create<Api::Messages::LoginMessage>(&debugGateway));
 //    debugGateway.queueMessage(ApiMessage::create<GetFarmInfoMessage>(&debugGateway));
-    debugGateway.queueMessage(ApiMessage::create<SetPlant>(&debugGateway));
-    debugGateway.queueMessage(ApiMessage::create<SetPour>(&debugGateway));
+    debugGateway.queueMessage(Api::Messages::ApiMessage::create<Api::Messages::SetPlant>(&debugGateway));
+    debugGateway.queueMessage(Api::Messages::ApiMessage::create<Api::Messages::SetPour>(&debugGateway));
 
     debugGateway.start();
 

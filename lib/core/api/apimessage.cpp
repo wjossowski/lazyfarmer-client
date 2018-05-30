@@ -21,6 +21,9 @@
 #include <QtCore/QUrl>
 #include <QtCore/QUrlQuery>
 
+using namespace Api;
+using namespace Messages;
+
 ApiMessage::ApiMessage(ApiGateway *gateway, MessageType messageType, bool isLoginRequired)
     : QObject(gateway),
 

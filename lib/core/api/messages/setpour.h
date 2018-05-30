@@ -21,18 +21,25 @@
 #include "../onewaymessage.h"
 #include "../helpers/querystructs.h"
 
-class SetPour : public OneWayMessage
-{
-public:
-    explicit SetPour(ApiGateway *gateway,
-                     const PlantData &plantData = PlantData());
+namespace Api {
+    namespace Messages {
 
-    void setPlantData(const PlantData &plantData) { m_plantData = plantData; }
+        class SetPour : public OneWayMessage
+        {
+        public:
+            explicit SetPour(ApiGateway *gateway,
+                             const PlantData &plantData = PlantData());
 
-private:
-    virtual const QList<QPair<QString, QString> > constructedMessageData() const;
+            void setPlantData(const PlantData &plantData) { m_plantData = plantData; }
 
-private:
-    PlantData m_plantData;
-};
+        private:
+            virtual const QList<QPair<QString, QString> > constructedMessageData() const;
+
+        private:
+            PlantData m_plantData;
+        };
+
+
+    }
+}
 

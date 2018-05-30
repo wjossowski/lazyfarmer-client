@@ -28,77 +28,85 @@
 
 #include <QtNetwork/QNetworkRequest>
 
-class ApiGateway;
 class QNetworkAccessManager;
 
-enum class MessageType {
-    MessageLogin,
-    MessageLogout,
+namespace Api {
 
-    MessageGetFarmInfo,
+    class ApiGateway;
 
-    MessageSetPlant,
-    MessageSetPour,
-    MessageGetCollect,
+    namespace Messages {
 
-    MessageSetFeed,
-    MessageGetFeed,
+        enum class MessageType {
+            MessageLogin,
+            MessageLogout,
 
-    MessageSetProduction,
-    MessageGetProduction,
+            MessageGetFarmInfo,
 
-    MessageSetBuyer,
-    MessageGetBuyer,
+            MessageSetPlant,
+            MessageSetPour,
+            MessageGetCollect,
 
-    MessageGetPricesOnMarket,
-    MessageSetOfferOnMarket,
+            MessageSetFeed,
+            MessageGetFeed,
 
-    MessageUnknown
-};
+            MessageSetProduction,
+            MessageGetProduction,
 
-class ApiMessage : public QObject
-{
-    Q_OBJECT
+            MessageSetBuyer,
+            MessageGetBuyer,
 
-public:
-    explicit ApiMessage(ApiGateway *gateway,
-                        MessageType messageType = MessageType::MessageUnknown,
-                        bool isLoginRequired = true);
+            MessageGetPricesOnMarket,
+            MessageSetOfferOnMarket,
 
-    virtual ~ApiMessage();
+            MessageUnknown
+        };
 
-    template <typename T>
-    static QSharedPointer <ApiMessage> create (ApiGateway *gateway) { return QSharedPointer<T> (new T(gateway)); }
+        class ApiMessage : public QObject
+        {
+            Q_OBJECT
 
-    bool isSent() const { return m_isSent; }
-    void setIsSent(bool isSent) { m_isSent = isSent; }
+        public:
+            explicit ApiMessage(ApiGateway *gateway,
+                                MessageType messageType = MessageType::MessageUnknown,
+                                bool isLoginRequired = true);
 
-    bool isResponseReceived() const { return m_isResponseReceived; }
-    void setIsResponseReceived(bool isResponseReceived) { m_isResponseReceived = isResponseReceived; }
+            virtual ~ApiMessage();
 
-public slots:
-    virtual void sendMessage() = 0;
+            template <typename T>
+            static QSharedPointer <ApiMessage> create (ApiGateway *gateway) { return QSharedPointer<T> (new T(gateway)); }
 
-signals:
-    void raiseError(ApiGatewayError::ErrorType errorType, const QStringList &args = QStringList());
-    void finished();
+            bool isSent() const { return m_isSent; }
+            void setIsSent(bool isSent) { m_isSent = isSent; }
 
-protected:
-    void buildHeaders(QNetworkRequest &request) const;
-    QUrl buildEndpointUrl(const QString &endpoint,
-                     const QList<QPair<QString, QString>> &data,
-                     bool includeRid = true) const;
-    QUrl buildEndpointAjaxUrl(const QString &endpoint,
-                         const QList<QPair<QString, QString>> &data,
-                         bool includeRid = true) const;
-    bool handleNotLogged(const QString &operation);
+            bool isResponseReceived() const { return m_isResponseReceived; }
+            void setIsResponseReceived(bool isResponseReceived) { m_isResponseReceived = isResponseReceived; }
 
-protected:
-    MessageType m_messageType;
-    ApiGateway *m_gateway;
-    QNetworkAccessManager *m_manager;
+        public slots:
+            virtual void sendMessage() = 0;
 
-    bool m_isLoginRequired;
-    bool m_isSent;
-    bool m_isResponseReceived;
-};
+        signals:
+            void raiseError(ApiGatewayError::ErrorType errorType, const QStringList &args = QStringList());
+            void finished();
+
+        protected:
+            void buildHeaders(QNetworkRequest &request) const;
+            QUrl buildEndpointUrl(const QString &endpoint,
+                                  const QList<QPair<QString, QString>> &data,
+                                  bool includeRid = true) const;
+            QUrl buildEndpointAjaxUrl(const QString &endpoint,
+                                      const QList<QPair<QString, QString>> &data,
+                                      bool includeRid = true) const;
+            bool handleNotLogged(const QString &operation);
+
+        protected:
+            MessageType m_messageType;
+            ApiGateway *m_gateway;
+            QNetworkAccessManager *m_manager;
+
+            bool m_isLoginRequired;
+            bool m_isSent;
+            bool m_isResponseReceived;
+        };
+    }
+
+}

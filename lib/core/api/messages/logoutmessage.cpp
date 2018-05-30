@@ -19,6 +19,12 @@
 #include "logoutmessage.h"
 #include "../apigateway.h"
 
+#include <QtNetwork/QNetworkRequest>
+#include <QtNetwork/QNetworkReply>
+
+using namespace Api;
+using namespace Messages;
+
 void LogoutMessage::sendMessage()
 {
     QNetworkRequest request(buildEndpointUrl("main", {

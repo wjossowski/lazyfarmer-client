@@ -19,6 +19,9 @@
 #include "setplant.h"
 #include "../apigateway.h"
 
+using namespace Api;
+using namespace Messages;
+
 SetPlant::SetPlant(ApiGateway *gateway, const PlantData &plantData)
     : OneWayMessage(gateway, MessageType::MessageSetPlant, "farm"),
       m_plantData(plantData)
