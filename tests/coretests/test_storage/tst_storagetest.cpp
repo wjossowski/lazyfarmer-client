@@ -18,7 +18,7 @@
 
 #include <QtTest>
 
-#include "core/storage/storage.h"
+#include "core/storage/playerstorage.h"
 
 using namespace Storage;
 

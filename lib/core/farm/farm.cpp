@@ -1,4 +1,4 @@
-#include "farm.h"
+#include "playerfarm.h"
 
 #include <QtDebug>
 
