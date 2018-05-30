@@ -33,7 +33,7 @@ namespace Api {
             void setPlantData(const PlantData &plantData) { m_plantData = plantData; }
 
         private:
-            virtual const QList<QPair<QString, QString> > constructedMessageData() const;
+            const QList<QPair<QString, QString> > constructedMessageData() const override;
 
         private:
             PlantData m_plantData;

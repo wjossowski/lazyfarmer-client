@@ -30,7 +30,7 @@ namespace Api {
                 : ApiMessage (gateway, MessageType::MessageLogout) { }
 
         public slots:
-            virtual void sendMessage();
+            void sendMessage() override;
         };
 
     }

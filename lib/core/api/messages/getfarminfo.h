@@ -30,7 +30,7 @@ public:
         : ApiMessage (gateway, MessageType::MessageGetFarmInfo) { }
 
 public slots:
-    virtual void sendMessage();
+    void sendMessage() override;
 };
 
 }

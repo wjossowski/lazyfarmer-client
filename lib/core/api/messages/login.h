@@ -34,7 +34,7 @@ namespace Api {
                 : ApiMessage (gateway, MessageType::MessageLogin, false) { }
 
         public slots:
-            virtual void sendMessage();
+            void sendMessage() override;
 
         private:
             QUrl tokenUrl() const;

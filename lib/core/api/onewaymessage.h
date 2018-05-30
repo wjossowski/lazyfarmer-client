@@ -30,7 +30,7 @@ namespace Api{
                                     MessageType type,
                                     const QString &endpoint);
         public slots:
-            virtual void sendMessage();
+            void sendMessage() override;
 
         private:
             virtual const QList<QPair<QString, QString>> constructedMessageData() const = 0;

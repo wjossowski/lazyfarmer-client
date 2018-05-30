@@ -29,17 +29,14 @@ class PlayerFactory : public QObject
 public:
     explicit PlayerFactory(QObject *parent = nullptr);
 
-    QSharedPointer<Player> create()
-    {
-        QSharedPointer<Player> player(new Player());
-        m_players.append(player);
-        return player;
-    }
+    Q_PROPERTY(int size READ size NOTIFY sizeChanged)
+    Q_INVOKABLE int size() { return m_players.size(); }
 
-    bool remove()
-    {
-        return false;
-    }
+    QSharedPointer<Player> create();
+    void remove(int i);
+
+signals:
+    void sizeChanged(int size);
 
 private:
     QList<QSharedPointer<Player>> m_players;
