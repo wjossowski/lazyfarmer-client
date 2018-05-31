@@ -27,9 +27,10 @@
 
 using namespace Helpers;
 
-static const QVariantMap BaseFilters = {
+const QVariantMap GameInfoExtractor::BaseFilters = {
     { "forestry", "var produkt_name_forestry = (?<forestry>.*);" },
     { "products", "var produkt_name = (?<products>.*);" },
+    { "products_prices", "var produkt_price = (?<products_prices>.*);" },
     { "buildings", "var buildinginfos = eval\\(\\'(?<buildings>.*)\\'\\);" }
 };
 
@@ -44,7 +45,18 @@ GameInfoExtractor::GameInfoExtractor(const QVariantMap &filters,
     : m_filters(std::move(filters))
     , m_domain(domain)
 {
+#ifdef DEBUG_MODE
+    qDebug() << "Constructing GameInfoExtractor";
+    qDebug() << "Domain: " << domain;
+    qDebug() << "Filters:"<< filters;
+#endif
+}
 
+GameInfoExtractor::~GameInfoExtractor()
+{
+#ifdef DEBUG_MODE
+    qDebug() << "Destructing GameInfoExtractor" << m_filters;
+#endif
 }
 
 bool GameInfoExtractor::extract(const QString &content)

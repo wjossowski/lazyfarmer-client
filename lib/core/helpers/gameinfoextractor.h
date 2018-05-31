@@ -24,6 +24,10 @@
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonValue>
 
+#ifdef DEBUG_MODE
+#include <QtCore/QDebug>
+#endif
+
 namespace Helpers {
 
     class GameInfoExtractor
@@ -36,12 +40,16 @@ namespace Helpers {
         GameInfoExtractor(const QVariantMap &filters,
                           const QString &domain = QString());
 
+        virtual ~GameInfoExtractor();
+
         inline QString domain() const { return m_domain; }
         inline void setDomain(const QString &domain) { m_domain = domain; }
 
     #if DEBUG_MODE
         inline const QStringList &regexMatches() const { return m_regexMatches; }
     #endif
+
+        static const QVariantMap BaseFilters;
 
         bool extract(const QString &content);
         const QVariantMap &results() { return m_results; }

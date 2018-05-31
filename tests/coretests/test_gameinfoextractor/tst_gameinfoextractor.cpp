@@ -16,9 +16,9 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include <QtTest>
-
 #include "core/helpers/gameinfoextractor.h"
+
+#include <QtTest>
 
 using namespace Helpers;
 
@@ -29,11 +29,17 @@ class GameInfoExtractorTest : public QObject
 private slots:
     void initTestCase();
 
-    void extractProducts();
-    void extractForestry();
-    void extractBuildings();
+    void extractorTest_data();
+    void extractorTest();
 
     void extractToFile();
+
+private:
+    QVariantMap constructFilter (const QString &key) {
+        return {
+            { key, GameInfoExtractor::BaseFilters[key] }
+        };
+    }
 
 private:
     QString m_siteContent;
@@ -48,46 +54,32 @@ void GameInfoExtractorTest::initTestCase()
     m_siteContent = QString::fromUtf8(siteFile.readAll());
 }
 
-void GameInfoExtractorTest::extractProducts()
+void GameInfoExtractorTest::extractorTest_data()
 {
-    GameInfoExtractor extractor({ { "products", "var produkt_name = (?<products>.*);" } });
+    QTest::addColumn<QString>("key");
+
+    QTest::newRow("Products") << "products";
+    QTest::newRow("Products Prices") << "products_prices";
+    QTest::newRow("Forestry") << "forestry";
+    QTest::newRow("Buildings") << "buildings";
+}
+
+void GameInfoExtractorTest::extractorTest()
+{
+    QFETCH(QString, key);
+
+    GameInfoExtractor extractor(constructFilter(key));
 
     QVERIFY2 (extractor.extract(m_siteContent), "GameInfoExtractor should extract");
     const auto &output = extractor.results();
 
     QVERIFY2 (!output.isEmpty(), "Product object shouldn't be empty");
-    QVERIFY2 (output["products"].isValid(), "Products object should be saved");
-}
-
-void GameInfoExtractorTest::extractForestry()
-{
-    GameInfoExtractor extractor({ { "forestry", "var produkt_name_forestry = (?<forestry>.*);" } });
-
-    QVERIFY2 (extractor.extract(m_siteContent), "GameInfoExtractor should extract");
-    const auto &output = extractor.results();
-
-    QVERIFY2 (!output.isEmpty(), "Forestry object shouldn't be empty");
-    QVERIFY2 (output["forestry"].isValid(), "Forestry object should be saved");
-}
-
-void GameInfoExtractorTest::extractBuildings()
-{
-    GameInfoExtractor extractor({ { "buildings", "var buildinginfos = eval\\(\\'(?<buildings>.*)\\'\\);" } });
-
-    QVERIFY2 (extractor.extract(m_siteContent), "GameInfoExtractor should extract");
-    const auto &output = extractor.results();
-
-    QVERIFY2 (!output.isEmpty(), "Buildings object shouldn't be empty");
-    QVERIFY2 (output["buildings"].isValid(), "Buildings object should be saved");
+    QVERIFY2 (output[key].isValid(), "Products object should be saved");
 }
 
 void GameInfoExtractorTest::extractToFile()
 {
-    GameInfoExtractor extractor({
-        { "forestry", "var produkt_name_forestry = (?<forestry>.*);" },
-        { "products", "var produkt_name = (?<products>.*);" },
-        { "buildings", "var buildinginfos = eval\\(\\'(?<buildings>.*)\\'\\);" }
-    });
+    GameInfoExtractor extractor;
 
     QVERIFY2 (extractor.extract(m_siteContent), "GameInfoExtractor should extract");
 
