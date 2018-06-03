@@ -34,12 +34,14 @@ OneWayMessage::OneWayMessage(ApiGateway *gateway,
 
 }
 
-void OneWayMessage::sendMessage()
+const QUrl OneWayMessage::url() const
 {
-    QNetworkRequest request(buildEndpointAjaxUrl(m_endpointUrl, this->constructedMessageData()));
-    buildHeaders(request);
+    return m_gateway->buildEndpointAjaxUrl(m_endpointUrl,
+                                           this->constructedMessageData());
+}
 
-    auto reply = m_manager->get(request);
-    connect(reply, &QNetworkReply::finished, this,  &OneWayMessage::finished);
-    connect(reply, &QNetworkReply::finished, reply, &QNetworkReply::deleteLater);
+void OneWayMessage::handleResponse(QNetworkReply *reply)
+{
+    Q_UNUSED (reply)
+    emit finished();
 }

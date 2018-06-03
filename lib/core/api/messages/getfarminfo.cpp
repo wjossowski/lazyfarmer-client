@@ -32,22 +32,24 @@ using namespace Api;
 using namespace Messages;
 using namespace Helpers;
 
-void GetFarmInfo::sendMessage()
+const QUrl GetFarmInfo::url() const
 {
-    QNetworkRequest request(buildEndpointAjaxUrl("farm", {
+    return m_gateway->buildEndpointAjaxUrl("farm", {
         { "mode", "getfarms" }
-    }));
-
-    auto reply = m_manager->get(request);
-    connect(reply, &QNetworkReply::finished, [this, reply] {
-        const auto contents = reply->readAll();
-
-        PlayerInfoExtractor extractor;
-        bool ok = extractor.parseInfo(contents);
-        qDebug() << ok;
-
-        qDebug() << QJsonDocument::fromVariant(extractor.basicInfo()).toJson();
-        qDebug() << QJsonDocument::fromVariant(extractor.farmsInfo()).toJson();
-        qDebug() << QJsonDocument::fromVariant(extractor.storageInfo()).toJson();
     });
+}
+
+void GetFarmInfo::handleResponse(QNetworkReply *reply)
+{
+    const auto contents = reply->readAll();
+
+    PlayerInfoExtractor extractor;
+    bool ok = extractor.parseInfo(contents);
+    qDebug() << ok;
+
+    qDebug() << QJsonDocument::fromVariant(extractor.basicInfo()).toJson();
+    qDebug() << QJsonDocument::fromVariant(extractor.farmsInfo()).toJson();
+    qDebug() << QJsonDocument::fromVariant(extractor.storageInfo()).toJson();
+
+    emit this->finished();
 }

@@ -22,65 +22,76 @@
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
 
+#include <QtCore/QJsonDocument>
+#include <QtCore/QJsonArray>
+
 using namespace Api;
 using namespace Messages;
 
-void Login::sendMessage()
-{
-    if (!m_gateway->isConfigured()) {
-        m_gateway->handleError(ApiGatewayError::ErrorType::NotConfigured);
-        return;
-    }
+//void Login::sendMessage()
+//{
+//    if (!m_gateway->isConfigured()) {
+//        m_gateway->handleError(ApiGatewayError::ErrorType::NotConfigured);
+//        return;
+//    }
 
-    QNetworkRequest request(tokenUrl());
+//    QNetworkRequest request(tokenUrl());
 
-    QSslConfiguration config = QSslConfiguration::defaultConfiguration();
-    config.setProtocol(QSsl::TlsV1SslV3);
-    request.setSslConfiguration(config);
+//    QSslConfiguration config = QSslConfiguration::defaultConfiguration();
+//    config.setProtocol(QSsl::TlsV1SslV3);
+//    request.setSslConfiguration(config);
 
-    buildHeaders(request);
+//    buildHeaders(request);
 
-    QUrlQuery credentials;
-    credentials.setQueryItems({
-        { "server", m_gateway->serverId() },
-        { "username", m_gateway->login() },
-        { "password", m_gateway->password() },
-        { "ref", "" },
-        { "retid", "" }
-    });
+//    QUrlQuery credentials;
+//    credentials.setQueryItems({
+//                                  { "server", m_gateway->serverId() },
+//                                  { "username", m_gateway->login() },
+//                                  { "password", m_gateway->password() },
+//                                  { "ref", "" },
+//                                  { "retid", "" }
+//                              });
 
-    auto reply = m_manager->post(request, credentials.toString().toLocal8Bit());
-    connect(reply, &QNetworkReply::finished, [this, reply] () {
-        const auto data = QJsonDocument::fromJson(reply->readAll());
-        if (data.isArray()) {
-            recursiveRedirect(data.array().last().toString(), [this] (QNetworkReply *reply) {
-                m_gateway->extractRid(reply);
-            });
-        } else {
-            raiseError(ApiGatewayError::ErrorType::InvalidCredentials);
-        }
-    });
-}
+//    auto reply = m_manager->post(request, credentials.toString().toLocal8Bit());
+//    connect(reply, &QNetworkReply::finished, [this, reply] () {
 
-QUrl Login::tokenUrl() const
+//    });
+//}
+
+const QUrl Login::url() const
 {
     return QUrl(QString("https://www.%1/ajax/createtoken2.php?n=%2")
                 .arg(m_gateway->serverDomain())
                 .arg(QDateTime::currentMSecsSinceEpoch()));
 }
 
-void Login::recursiveRedirect(const QString &url, const std::function<void (QNetworkReply *)> &callback)
+void Login::configureRequest(QNetworkRequest &request) const
 {
-    QNetworkRequest request(url);
-    buildHeaders(request);
+    QSslConfiguration config = QSslConfiguration::defaultConfiguration();
+    config.setProtocol(QSsl::TlsV1SslV3);
+    request.setSslConfiguration(config);
+}
 
-    auto reply = m_manager->get(request);
-    connect(reply, &QNetworkReply::finished, [this, reply, callback] () {
-        const auto redirectUrl = reply->header(QNetworkRequest::LocationHeader);
-        if (redirectUrl.isValid()) {
-            recursiveRedirect(redirectUrl.toString(), callback);
-        } else {
-            callback(reply);
-        }
-    });
+const QList<QPair<QString, QString> > Login::postData() const
+{
+    return {
+        { "server", m_gateway->serverId() },
+        { "username", m_gateway->login() },
+        { "password", m_gateway->password() },
+        { "ref", "" },
+        { "retid", "" }
+    };
+}
+
+void Login::handleResponse(QNetworkReply *reply)
+{
+    const auto data = QJsonDocument::fromJson(reply->readAll());
+    if (data.isArray()) {
+        m_gateway->recursiveRedirect(data.array().last().toString(), [this] (QNetworkReply *reply) {
+            m_gateway->extractRid(reply);
+            emit finished();
+        });
+    } else {
+        emit raiseError(ApiGatewayError::ErrorType::InvalidCredentials);
+    }
 }

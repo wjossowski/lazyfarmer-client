@@ -64,9 +64,23 @@ namespace Api {
         void queueMessage(const QSharedPointer<Messages::ApiMessage> &message);
         void start();
 
-        void handleError(ApiGatewayError::ErrorType errorType, const QStringList &args = QStringList());
+
+        QUrl buildEndpointUrl(const QString &endpoint,
+                              const QList<QPair<QString, QString>> &data,
+                              bool includeRid = true) const;
+
+        QUrl buildEndpointAjaxUrl(const QString &endpoint,
+                                  const QList<QPair<QString, QString>> &data,
+                                  bool includeRid = true) const;
+
+        void buildHeaders(QNetworkRequest &request) const;
+        void recursiveRedirect(const QString &url,
+                               const std::function<void (QNetworkReply *)> &callback);
+        void sendMessage(Messages::ApiMessage *message);
 
         QNetworkAccessManager *accessManager() { return &m_manager; }
+
+        void handleError(ApiGatewayError::ErrorType errorType, const QStringList &args = QStringList());
 
     signals:
         void loggedInChanged(bool changed) const;

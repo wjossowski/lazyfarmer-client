@@ -18,76 +18,28 @@
 
 #include "apigateway.h"
 
-#include <QtCore/QUrl>
-#include <QtCore/QUrlQuery>
-
 using namespace Api;
 using namespace Messages;
 
-ApiMessage::ApiMessage(ApiGateway *gateway, MessageType messageType, bool isLoginRequired)
+ApiMessage::ApiMessage(ApiGateway *gateway,
+                       MessageType messageType,
+                       Api::Messages::QueryType queryType,
+                       bool isLoginRequired)
     : QObject(gateway),
 
-      m_messageType(messageType),
-
       m_gateway(gateway),
-      m_manager(gateway->accessManager()),
+
+      m_messageType(messageType),
+      m_queryType(queryType),
 
       m_isLoginRequired(isLoginRequired),
-      m_isSent(false),
-      m_isResponseReceived(false)
+      m_isSent(false)
 {
 
 }
 
 ApiMessage::~ApiMessage() {
 #if DEBUG_MODE
-    qDebug() << "Destroying API Message" << this->metaObject()->className() << this;
+    qDebug() << "Destroying API Message" << (quint8) this->m_messageType << this;
 #endif
-}
-
-void ApiMessage::buildHeaders(QNetworkRequest &request) const
-{
-    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
-    request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0");
-}
-
-QUrl ApiMessage::buildEndpointUrl(const QString &endpoint,
-                                  const QList<QPair<QString, QString> > &data,
-                                  bool includeRid) const
-{
-    QUrlQuery query;
-    query.setQueryItems(data);
-    if (includeRid) {
-        query.addQueryItem("rid", m_gateway->rid());
-    }
-
-    const QString url = QString("http://s%1.%2/%3.php?%4")
-            .arg(m_gateway->serverId())
-            .arg(m_gateway->serverDomain())
-            .arg(endpoint)
-            .arg(query.toString());
-
-#if DEBUG_MODE
-    qDebug() << "Building Query:" << url << query.toString();
-#endif
-
-    return QUrl(url);
-}
-
-QUrl ApiMessage::buildEndpointAjaxUrl(const QString &endpoint,
-                                      const QList<QPair<QString, QString>> &data,
-                                      bool includeRid) const
-{
-    return buildEndpointUrl(QString("ajax/%1").arg(endpoint), data, includeRid);
-}
-
-bool ApiMessage::handleNotLogged(const QString &operation)
-{
-    bool notLogged = !m_gateway->isLoggedIn();
-    if (notLogged) {
-        raiseError(ApiGatewayError::ErrorType::NotLogged,
-        { tr("Action %1 requires to be logged in.").arg(operation) });
-    }
-
-    return notLogged;
 }

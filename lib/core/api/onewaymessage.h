@@ -27,16 +27,18 @@ namespace Api{
         {
         public:
             explicit OneWayMessage (ApiGateway *gateway,
-                                    MessageType type,
-                                    const QString &endpoint);
-        public slots:
-            void sendMessage() override;
+                                    MessageType type = Messages::MessageType::Unknown,
+                                    const QString &endpoint = QString());
+
+        public:
+            const QUrl url() const;
+            void handleResponse(QNetworkReply *reply);
 
         private:
             virtual const QList<QPair<QString, QString>> constructedMessageData() const = 0;
             QString m_endpointUrl;
-        };
 
+        };
     }
 }
 

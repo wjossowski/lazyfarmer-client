@@ -25,17 +25,32 @@
 using namespace Api;
 using namespace Messages;
 
-void Logout::sendMessage()
+//void Logout::sendMessage()
+//{
+//    QNetworkRequest request(buildEndpointUrl("main", {
+//        { "page", "logout" },
+//        { "logoutbutton", "1" }
+//    }, false));
+
+//    buildHeaders(request);
+
+//    auto reply = m_manager->get(request);
+//    connect(reply, &QNetworkReply::finished, [this, reply] () {
+//        m_gateway->setLoggedIn(false);
+//    });
+//}
+
+const QUrl Logout::url() const
 {
-    QNetworkRequest request(buildEndpointUrl("main", {
+    return m_gateway->buildEndpointUrl("main", {
         { "page", "logout" },
         { "logoutbutton", "1" }
-    }, false));
+                                       }, false);
+}
 
-    buildHeaders(request);
+void Logout::handleResponse(QNetworkReply *reply)
+{
+    Q_UNUSED (reply)
 
-    auto reply = m_manager->get(request);
-    connect(reply, &QNetworkReply::finished, [this, reply] () {
-        m_gateway->setLoggedIn(false);
-    });
+    m_gateway->setLoggedIn(false);
 }

@@ -23,13 +23,13 @@ using namespace Api;
 using namespace Messages;
 
 SetPour::SetPour(ApiGateway *gateway, const PlantData &plantData)
-    : OneWayMessage(gateway, MessageType::MessageSetPour, "farm"),
+    : OneWayMessage(gateway, MessageType::SetPour, "farm"),
       m_plantData(plantData)
 {
 
 }
 
-const QList<QPair<QString, QString> > SetPour::constructedMessageData() const
+const QList<QPair<QString, QString>> SetPour::constructedMessageData() const
 {
     return {
         { "mode", "garden_water" },

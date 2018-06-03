@@ -38,6 +38,8 @@
 
 #include <QtDebug>
 
+using namespace Api::Messages;
+
 #ifdef Q_OS_WIN
     #include <windows.h>
 #endif
@@ -160,21 +162,11 @@ int main(int argc, char *argv[])
 
     Api::ApiGateway debugGateway;
     createDebugEnvironment(debugGateway, parser);
-    debugGateway.queueMessage(Api::Messages::ApiMessage::create<Api::Messages::Login>(&debugGateway));
-//    debugGateway.queueMessage(ApiMessage::create<GetFarmInfoMessage>(&debugGateway));
-    debugGateway.queueMessage(Api::Messages::ApiMessage::create<Api::Messages::SetPlant>(&debugGateway));
-    debugGateway.queueMessage(Api::Messages::ApiMessage::create<Api::Messages::SetPour>(&debugGateway));
+    debugGateway.queueMessage(QSharedPointer<Login>(new Login(&debugGateway)));
+    debugGateway.queueMessage(QSharedPointer<SetPlant>(new SetPlant(&debugGateway)));
+    debugGateway.queueMessage(QSharedPointer<SetPour>(new SetPour(&debugGateway)));
 
     debugGateway.start();
-
-    QTimer::singleShot(5000, [&](){
-       debugGateway.start();
-
-       QTimer::singleShot(1000, [&](){
-          debugGateway.start();
-       });
-    });
-
 
 #else
     QSharedPointer<QQmlApplicationEngine> engine;

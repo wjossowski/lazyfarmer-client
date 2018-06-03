@@ -20,10 +20,6 @@
 
 #include "../apimessage.h"
 
-#include <functional>
-
-class QNetworkReply;
-
 namespace Api {
     namespace Messages {
 
@@ -31,15 +27,13 @@ namespace Api {
         {
         public:
             explicit Login(ApiGateway *gateway)
-                : ApiMessage (gateway, MessageType::MessageLogin, false) { }
+                : ApiMessage (gateway, MessageType::Login, QueryType::Post, false) { }
 
-        public slots:
-            void sendMessage() override;
+            const QUrl url() const override;
+            void configureRequest(QNetworkRequest &request) const override;
+            const QList<QPair<QString, QString> > postData() const override;
 
-        private:
-            QUrl tokenUrl() const;
-            void recursiveRedirect(const QString &url,
-                                   const std::function<void (QNetworkReply *)> &callback);
+            void handleResponse(QNetworkReply *reply) override;
         };
 
     }

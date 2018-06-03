@@ -21,17 +21,18 @@
 #include "../apimessage.h"
 
 namespace Api {
-namespace Messages {
+    namespace Messages {
 
-class GetFarmInfo : public ApiMessage
-{
-public:
-    explicit GetFarmInfo(ApiGateway *gateway)
-        : ApiMessage (gateway, MessageType::MessageGetFarmInfo) { }
+        class GetFarmInfo : public ApiMessage
+        {
+        public:
+            explicit GetFarmInfo(ApiGateway *gateway)
+                : ApiMessage (gateway, MessageType::GetFarmInfo) { }
 
-public slots:
-    void sendMessage() override;
-};
+        public:
+            const QUrl url() const;
+            void handleResponse(QNetworkReply *reply);
+        };
 
-}
+    }
 }

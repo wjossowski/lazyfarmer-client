@@ -32,6 +32,9 @@
 #include <QtCore/QFile>
 #include <QtCore/QTimer>
 
+#include <QtCore/QUrl>
+#include <QtCore/QUrlQuery>
+
 #include <QtDebug>
 
 using namespace Api;
@@ -121,7 +124,95 @@ void ApiGateway::start()
     m_currentMessage = m_messageQueue.first();
     m_messageQueue.pop_front();
 
-    m_currentMessage->sendMessage();
+    sendMessage(m_currentMessage.data());
+}
+
+QUrl ApiGateway::buildEndpointUrl(const QString &endpoint,
+                                  const QList<QPair<QString, QString>> &data,
+                                  bool includeRid) const
+{
+    QUrlQuery query;
+    query.setQueryItems(data);
+    if (includeRid) {
+        query.addQueryItem("rid", m_rid);
+    }
+
+    const QString url = QString("http://s%1.%2/%3.php?%4")
+            .arg(m_serverId)
+            .arg(m_serverDomain)
+            .arg(endpoint)
+            .arg(query.toString());
+
+#if DEBUG_MODE
+    qDebug() << "Building Query:" << url << query.toString();
+#endif
+
+    return QUrl(url);
+}
+
+QUrl ApiGateway::buildEndpointAjaxUrl(const QString &endpoint, const QList<QPair<QString, QString> > &data, bool includeRid) const
+{
+    return buildEndpointUrl(QString("ajax/%1").arg(endpoint), data, includeRid);
+}
+
+void ApiGateway::buildHeaders(QNetworkRequest &request) const
+{
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+    request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0");
+}
+
+void ApiGateway::recursiveRedirect(const QString &url, const std::function<void (QNetworkReply *)> &callback)
+{
+    QNetworkRequest request(url);
+    buildHeaders(request);
+
+    auto reply = m_manager.get(request);
+    connect(reply, &QNetworkReply::finished, [this, reply, callback] () {
+        const auto redirectUrl = reply->header(QNetworkRequest::LocationHeader);
+        if (redirectUrl.isValid()) {
+            recursiveRedirect(redirectUrl.toString(), callback);
+            reply->deleteLater();
+        } else {
+            callback(reply);
+        }
+    });
+}
+
+void ApiGateway::sendMessage(ApiMessage *message)
+{
+    QNetworkRequest request(message->url());
+    buildHeaders(request);
+    message->configureRequest(request);
+
+    QNetworkReply *reply = nullptr;
+    const auto messageQueryType = message->queryType();
+
+    if (messageQueryType == QueryType::Get) {
+        reply = m_manager.get(request);
+
+    } else if (messageQueryType == QueryType::Post) {
+        QUrlQuery query;
+        query.setQueryItems(message->postData());
+
+        reply = m_manager.post(request, query.toString().toLatin1());
+
+    } else {
+        // TODO: Raise error
+    }
+
+    if (reply) {
+        connect(reply, &QNetworkReply::finished, [this, message, reply] () {
+            message->handleResponse(reply);
+        });
+
+        connect(message, &ApiMessage::finished,
+                reply,   &QNetworkReply::deleteLater);
+
+        connect(message, &ApiMessage::finished,
+                this,    &ApiGateway::start);
+
+        message->setIsSent(true);
+    }
 }
 
 void ApiGateway::handleError(ApiGatewayError::ErrorType errorType, const QStringList &args)
@@ -137,7 +228,8 @@ void ApiGateway::handleError(ApiGatewayError::ErrorType errorType, const QString
 
     const QString errorMessage = tr("Error on `%1` raised. %2").arg(error.toString()).arg(message);
 
-    emit errorRaised(errorMessage);
+    emit errorRaised(errorMessage); 
+
     qCritical() << errorMessage;
 }
 

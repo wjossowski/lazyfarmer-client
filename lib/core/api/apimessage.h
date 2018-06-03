@@ -20,15 +20,8 @@
 
 #include "apigatewayerror.h"
 
-#include <QtCore/QObject>
-#include <QtCore/QSharedPointer>
-#include <QtCore/QJsonArray>
-#include <QtCore/QJsonDocument>
-#include <QtCore/QJsonObject>
-
+class QNetworkReply;
 #include <QtNetwork/QNetworkRequest>
-
-class QNetworkAccessManager;
 
 namespace Api {
 
@@ -36,29 +29,35 @@ namespace Api {
 
     namespace Messages {
 
+        enum class QueryType {
+            Post,
+            Get,
+            Unknown
+        };
+
         enum class MessageType {
-            MessageLogin,
-            MessageLogout,
+            Login,
+            Logout,
 
-            MessageGetFarmInfo,
+            GetFarmInfo,
 
-            MessageSetPlant,
-            MessageSetPour,
-            MessageGetCollect,
+            SetPlant,
+            SetPour,
+            GetCollect,
 
-            MessageSetFeed,
-            MessageGetFeed,
+            SetFeed,
+            GetFeed,
 
-            MessageSetProduction,
-            MessageGetProduction,
+            SetProduction,
+            GetProduction,
 
-            MessageSetBuyer,
-            MessageGetBuyer,
+            SetBuyer,
+            GetBuyer,
 
-            MessageGetPricesOnMarket,
-            MessageSetOfferOnMarket,
+            GetPricesOnMarket,
+            SetOfferOnMarket,
 
-            MessageUnknown
+            Unknown
         };
 
         class ApiMessage : public QObject
@@ -67,45 +66,35 @@ namespace Api {
 
         public:
             explicit ApiMessage(ApiGateway *gateway,
-                                MessageType messageType = MessageType::MessageUnknown,
+                                MessageType messageType = MessageType::Unknown,
+                                QueryType queryType = QueryType::Get,
                                 bool isLoginRequired = true);
 
             virtual ~ApiMessage();
 
-            template <typename T>
-            static QSharedPointer <ApiMessage> create (ApiGateway *gateway) { return QSharedPointer<T> (new T(gateway)); }
-
             bool isSent() const { return m_isSent; }
             void setIsSent(bool isSent) { m_isSent = isSent; }
 
-            bool isResponseReceived() const { return m_isResponseReceived; }
-            void setIsResponseReceived(bool isResponseReceived) { m_isResponseReceived = isResponseReceived; }
+            QueryType queryType() const { return m_queryType; }
 
-        public slots:
-            virtual void sendMessage() = 0;
+            virtual const QUrl url() const = 0;
+            virtual void configureRequest(QNetworkRequest &request) const { Q_UNUSED (request) }
+            virtual const QList<QPair<QString, QString>> postData() const { return {}; }
+
+            virtual void handleResponse(QNetworkReply *reply) = 0;
 
         signals:
             void raiseError(ApiGatewayError::ErrorType errorType, const QStringList &args = QStringList());
             void finished();
 
         protected:
-            void buildHeaders(QNetworkRequest &request) const;
-            QUrl buildEndpointUrl(const QString &endpoint,
-                                  const QList<QPair<QString, QString>> &data,
-                                  bool includeRid = true) const;
-            QUrl buildEndpointAjaxUrl(const QString &endpoint,
-                                      const QList<QPair<QString, QString>> &data,
-                                      bool includeRid = true) const;
-            bool handleNotLogged(const QString &operation);
-
-        protected:
-            MessageType m_messageType;
             ApiGateway *m_gateway;
-            QNetworkAccessManager *m_manager;
+
+            MessageType m_messageType;
+            QueryType m_queryType;
 
             bool m_isLoginRequired;
             bool m_isSent;
-            bool m_isResponseReceived;
         };
     }
 

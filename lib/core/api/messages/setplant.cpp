@@ -23,7 +23,7 @@ using namespace Api;
 using namespace Messages;
 
 SetPlant::SetPlant(ApiGateway *gateway, const PlantData &plantData)
-    : OneWayMessage(gateway, MessageType::MessageSetPlant, "farm"),
+    : OneWayMessage(gateway, MessageType::SetPlant, "farm"),
       m_plantData(plantData)
 {
 

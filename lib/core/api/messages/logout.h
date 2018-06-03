@@ -27,10 +27,10 @@ namespace Api {
         {
         public:
             explicit Logout(ApiGateway *gateway)
-                : ApiMessage (gateway, MessageType::MessageLogout) { }
+                : ApiMessage (gateway, MessageType::Logout) { }
 
-        public slots:
-            void sendMessage() override;
+            const QUrl url() const;
+            void handleResponse(QNetworkReply *reply);
         };
 
     }
