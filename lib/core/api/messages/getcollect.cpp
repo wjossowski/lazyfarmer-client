@@ -16,28 +16,29 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "setpour.h"
+#include "getcollect.h"
 #include "../apigateway.h"
 
 using namespace Api;
 using namespace Messages;
 
-SetPour::SetPour(ApiGateway *gateway,
-                 const BuildingData &buildingData,
-                 const PlantData &plantData)
-    : OneWayMessage(gateway, MessageType::SetPour, "farm"),
-      m_buildingData(buildingData),
+GetCollect::GetCollect(ApiGateway *gateway,
+                       const BuildingData &BuildingData,
+                       const PlantData &plantData)
+    : OneWayMessage(gateway, MessageType::GetCollect, "farm"),
+      m_buildingData(BuildingData),
       m_plantData(plantData)
 {
 
 }
 
-const QList<QPair<QString, QString>> SetPour::constructedMessageData() const
+const QList<QPair<QString, QString> > GetCollect::constructedMessageData() const
 {
     return {
-        { "mode", "garden_water" },
+        { "mode", "garden_harvest" },
         { "farm", QString::number(m_buildingData.farmId) },
         { "position", QString::number(m_buildingData.positionId) },
+        { "pflanze[]", QString::number(m_plantData.plantId) },
         { "feld[]", "1" }, // TODO: Create function to get valid positions
         { "felder[]", "1,2"}
     };

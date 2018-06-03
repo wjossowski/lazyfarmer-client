@@ -163,8 +163,10 @@ int main(int argc, char *argv[])
     Api::ApiGateway debugGateway;
     createDebugEnvironment(debugGateway, parser);
     debugGateway.queueMessage(QSharedPointer<Login>(new Login(&debugGateway)));
-    debugGateway.queueMessage(QSharedPointer<SetPlant>(new SetPlant(&debugGateway)));
-    debugGateway.queueMessage(QSharedPointer<SetPour>(new SetPour(&debugGateway)));
+    debugGateway.queueMessage(QSharedPointer<GetCollect>(new GetCollect(&debugGateway)));
+    debugGateway.queueMessage(QSharedPointer<Logout>(new Logout(&debugGateway)));
+//    debugGateway.queueMessage(QSharedPointer<SetPlant>(new SetPlant(&debugGateway)));
+//    debugGateway.queueMessage(QSharedPointer<SetPour>(new SetPour(&debugGateway)));
 
     debugGateway.start();
 

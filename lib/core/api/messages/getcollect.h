@@ -16,30 +16,30 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#pragma once
-
 #include "../onewaymessage.h"
 #include "../helpers/querystructs.h"
 
 namespace Api {
+
     namespace Messages {
 
-        class SetPlant : public OneWayMessage
+        class GetCollect : public OneWayMessage
         {
         public:
-            explicit SetPlant(ApiGateway *gateway,
-                              const BuildingData &buindingData = BuildingData(),
-                              const PlantData &plantData = PlantData());
+            explicit GetCollect(ApiGateway *gateway,
+                                const BuildingData &BuildingData = BuildingData(),
+                                const PlantData &plantData = PlantData());
 
             void setBuildingData(const BuildingData &buindingData) { m_buildingData = buindingData; }
             void setPlantData(const PlantData &plantData) { m_plantData = plantData; }
 
         private:
-            const QList<QPair<QString, QString> > constructedMessageData() const override;
+            const QList<QPair<QString, QString> > constructedMessageData() const;
 
         private:
             BuildingData m_buildingData;
             PlantData m_plantData;
+
         };
 
     }

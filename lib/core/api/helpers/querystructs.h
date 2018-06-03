@@ -23,12 +23,19 @@ namespace Api {
     struct PlantData
     {
         explicit PlantData ()
-            : farmId(1), positionId(1), plantId(1), plantSize(2) {}
+            : plantId(1), plantSize(2) {}
 
-        unsigned char farmId;
-        unsigned char positionId;
-        unsigned char plantId;
-        unsigned char plantSize;
+        unsigned int plantId;
+        unsigned int plantSize;
+    };
+
+    struct BuildingData
+    {
+        explicit BuildingData()
+            : farmId(1), positionId(1) {}
+
+        unsigned int farmId;
+        unsigned int positionId;
     };
 
 }

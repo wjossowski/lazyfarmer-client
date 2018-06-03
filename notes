@@ -1,0 +1,44 @@
+Karmienie:
+http://s18.wolnifarmerzy.pl/ajax/farm.php?rid=039ad60235173392a7e93a444b82f4e3&mode=inner_feed&farm=1&position=6&pid=108&c=108_1|&amount=1&guildjob=0
+
+Zbieranie zwierząt:
+
+
+Info o produkcji:
+http://s18.wolnifarmerzy.pl/ajax/farm.php?rid=039ad60235173392a7e93a444b82f4e3&mode=innerinfos&farm=1&position=2
+Resp:
+{"datablock":[1,{"4":1,"pid":"111","6":"8","7":0,"8":0,"9":0,"in":[10,110],"need":[12,5],"out":[{"1":27,"2":120000,"3":15},{"1":111,"2":59040,"3":7}]}],"updateblock":{"stock":null,"menue":null}}
+
+Rozpoczynanie produkcji:
+http://s18.wolnifarmerzy.pl/ajax/farm.php?rid=039ad60235173392a7e93a444b82f4e3&mode=setadvancedproduction&farm=1&position=2&id=110&product=110&guildjob=undefined
+
+Zbiór produkcji:
+http://s18.wolnifarmerzy.pl/ajax/farm.php?rid=039ad60235173392a7e93a444b82f4e3&mode=harvestproduction&farm=1&position=2&id=1&slot=1
+
+Zbiór drzew:
+http://s18.wolnifarmerzy.pl/ajax/forestry.php?rid=039ad60235173392a7e93a444b82f4e3&action=crop&params=&z[]=2&p[]=1
+
+174 to Id kwiata
+Sadzenie kwiatów:
+http://s18.wolnifarmerzy.pl/ajax/farm.php?rid=039ad60235173392a7e93a444b82f4e3&mode=flowerarea_plant&farm=1&position=1&set=1:174,
+
+Podlewanie kwiatów:
+http://s18.wolnifarmerzy.pl/ajax/farm.php?rid=039ad60235173392a7e93a444b82f4e3&mode=flowerarea_water&farm=1&position=1&set=1:174,
+
+Zbiór kwiatów:
+http://s18.wolnifarmerzy.pl/ajax/farm.php?rid=039ad60235173392a7e93a444b82f4e3&mode=flowerarea_plant&farm=1&position=1&set=
+
+Pracownia kwiatowa:
+http://s18.wolnifarmerzy.pl/ajax/farm.php?rid=039ad60235173392a7e93a444b82f4e3&mode=nursery_harvest&farm=1&position=1&id=1&slot=1
+
+Giełda:
+http://s18.wolnifarmerzy.pl/ajax/city.php?rid=039ad60235173392a7e93a444b82f4e3&mode=marketinit&id=0&comp=1
+Odp:
+{"updateblock":{"stock":null,"menue":null},"datablock":[1,{"guild":0,"products":{"0":1,"1":1,"2":1,"3":1,"4":1,"5":1,"6":1,"7":1,"8":1,"9":1,"10":1,"11":1,"12":1,"17":1,"18":1,"19":1,"20":1,"21":1,"22":1,"23":1,"24":1,"25":1,"26":1,"27":1,"29":1,"91":1,"92":1,"93":1,"45":1,"46":1,"47":1,"48":1,"50":1,"52":1,"58":1,"59":1,"61":1,"62":1,"63":1,"64":1,"65":1,"73":1,"74":1,"76":1,"77":1,"78":1,"80":1,"82":1,"83":1,"85":1,"86":1,"90":1,"94":1,"95":1,"96":1,"98":1,"99":1,"105":1,"108":1,"109":1,"110":1,"111":1,"130":1,"131":1,"132":1,"133":1,"134":1,"135":1,"136":1,"137":1,"138":1,"139":1,"140":1,"141":1,"142":1,"143":1,"144":1,"159":1,"160":1,"161":1,"162":1,"163":1,"164":1,"165":1,"166":1,"171":1,"172":1,"173":1,"174":1,"200":1,"201":1,"202":1,"550":1,"551":1,"552":1,"553":1,"554":1,"555":1,"556":1},"offers":[{"id":"9660824","no":"andzinsan9","n":"andzinsan9","u":"16720473","p":"1","a":"1","pr":"0.55","pr2":"0.00","s":1},{"id":"9660808","no":"xxkingax3","n":"xxkingax3","u":"16931881","p":"1","a":"53","pr":"0.55","pr2":"0.00"},{"id":"9655351","no":"hook","n":"hook","u":"16763459","p":"1","a":"739088","pr":"0.56","pr2":"0.00","sumb":1},{"id":"9650965","no":"pawel22","n":"pawel22","u":"16728417","p":"1","a":"34900","pr":"0.64","pr2":"0.00"},{"id":"9650867","no":"sobiepani18","n":"sobiepani18","u":"16884675","p":"1","a":"29567","pr":"0.65","pr2":"0.00"},{"id":"9639545","no":"Max Max Max","n":"Max Max Max","u":"16821407","p":"1","a":"60262","pr":"1.00","pr2":"0.00"},{"id":"9637356","no":"jovita","n":"jovita","u":"16822115","p":"1","a":"119729","pr":"1.00","pr2":"0.00","sumb":1}],"transfer":null,"bar":"110997.15","count":"1"}]}
+Fitlrowanie:
+http://s18.wolnifarmerzy.pl/ajax/city.php?rid=039ad60235173392a7e93a444b82f4e3&mode=marketupdate&id=0&pid=1&comp=1
+Wystawianie oferty:
+http://s18.wolnifarmerzy.pl/ajax/city.php?rid=039ad60235173392a7e93a444b82f4e3&mode=marketcreateoffer&id=0&pid=1&amount=1&price=0.55&comp=1
+Kupowanie:buyMarketOffer(9655351)
+http://s18.wolnifarmerzy.pl/ajax/city.php?rid=039ad60235173392a7e93a444b82f4e3&mode=marketbuyoffer&id=9655351&pid=1&amount=2&comp=1
+

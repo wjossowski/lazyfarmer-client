@@ -21,6 +21,7 @@
 #include "../apimessage.h"
 
 namespace Api {
+
     namespace Messages {
 
         class GetFarmInfo : public ApiMessage
@@ -35,4 +36,5 @@ namespace Api {
         };
 
     }
+
 }

@@ -21,6 +21,7 @@
 #include "../apimessage.h"
 
 namespace Api {
+
     namespace Messages {
 
         class Logout : public ApiMessage
@@ -34,4 +35,5 @@ namespace Api {
         };
 
     }
+
 }

@@ -22,8 +22,11 @@
 using namespace Api;
 using namespace Messages;
 
-SetPlant::SetPlant(ApiGateway *gateway, const PlantData &plantData)
+SetPlant::SetPlant(ApiGateway *gateway,
+                   const BuildingData &buindingData,
+                   const PlantData &plantData)
     : OneWayMessage(gateway, MessageType::SetPlant, "farm"),
+      m_buildingData(buindingData),
       m_plantData(plantData)
 {
 
@@ -33,8 +36,8 @@ const QList<QPair<QString, QString> > SetPlant::constructedMessageData() const
 {
     return {
         { "mode", "garden_plant" },
-        { "farm", QString::number(m_plantData.farmId) },
-        { "position", QString::number(m_plantData.positionId) },
+        { "farm", QString::number(m_buildingData.farmId) },
+        { "position", QString::number(m_buildingData.positionId) },
         { "pflanze[]", QString::number(m_plantData.plantId) },
         { "feld[]", "1" }, // TODO: Create function to get valid positions
         { "felder[]", "1,2"}

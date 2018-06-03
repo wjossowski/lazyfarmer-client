@@ -37,6 +37,6 @@ HEADERS += \
         $${PWD}/api/helpers/*.h \
         $${PWD}/api/messages/*.h \
         $${PWD}/api/*.h \
-        $${PWD}/*.h \
+        $${PWD}/*.h
 
 include($${PWD}/../../common.pri)

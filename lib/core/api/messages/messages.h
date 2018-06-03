@@ -24,6 +24,7 @@
 
 // Getters
 #include "getfarminfo.h"
+#include "getcollect.h"
 
 // Setters
 #include "setplant.h"
