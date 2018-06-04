@@ -26,7 +26,7 @@ SetProduction::SetProduction(ApiGateway *gateway,
                         const BuildingData &buindingData,
                         const ProductData &productData,
                         const ProductionData &productionData)
-    : OneWayMessage(gateway, MessageType::SetPlant, "farm"),
+    : OneWayMessage(gateway, MessageType::SetProduction, "farm"),
       m_buildingData(buindingData),
       m_productData(productData),
       m_productionData(productionData)

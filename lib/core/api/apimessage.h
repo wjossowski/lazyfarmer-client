@@ -45,11 +45,11 @@ namespace Api {
             SetPour, // Done
             GetCollect, // Done
 
-            SetFeed,
+            SetFeed, // Done
             GetFeed,
 
-            SetProduction,
-            GetProduction,
+            SetProduction, // Done
+            GetProduction, // Done
             GetProductionInfo,
 
             SetBuyer,

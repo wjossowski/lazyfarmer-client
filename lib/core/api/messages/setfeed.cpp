@@ -16,29 +16,30 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "getproduction.h"
+#include "setfeed.h"
 #include "../apigateway.h"
 
 using namespace Api;
 using namespace Messages;
 
-GetProduction::GetProduction(ApiGateway *gateway,
-                             const BuildingData &buindingData,
-                             const ProductionData &productionData)
-    : OneWayMessage(gateway, MessageType::GetProduction, "farm"),
+SetFeed::SetFeed(ApiGateway *gateway,
+                 const BuildingData &buindingData,
+                 const ProductData &productData)
+    : OneWayMessage(gateway, MessageType::SetFeed, "farm"),
       m_buildingData(buindingData),
-      m_productionData(productionData)
+      m_productData(productData)
 {
 
 }
 
-const QList<QPair<QString, QString> > GetProduction::constructedMessageData() const
+const QList<QPair<QString, QString> > SetFeed::constructedMessageData() const
 {
     return {
-        { "mode", "harvestproduction" },
+        { "mode", "inner_feed" },
         { "farm", QString::number(m_buildingData.farmId) },
         { "position", QString::number(m_buildingData.positionId) },
-        { "id", QString::number(m_productionData.productionId) },
-        { "slot", QString::number(m_productionData.productionSlot) }
+        { "pid", QString::number(m_productData.productId) },
+        { "c", QString("%1_9|").arg(m_productData.productId) },
+        { "guildjob", "0" }
     };
 }
