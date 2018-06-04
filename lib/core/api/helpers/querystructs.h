@@ -18,24 +18,56 @@
 
 #pragma once
 
+#include <QtCore/QString>
+
 namespace Api {
 
-    struct PlantData
-    {
-        explicit PlantData ()
-            : plantId(1), plantSize(2) {}
-
-        unsigned int plantId;
-        unsigned int plantSize;
-    };
+    static const unsigned int MAX_PLANT_COLUMNS = 12;
+    static const unsigned int MAX_PLANT_ROWS = 10;
 
     struct BuildingData
     {
-        explicit BuildingData()
-            : farmId(1), positionId(1) {}
+        explicit BuildingData(unsigned int farm_id = 1,
+                              unsigned int position_id = 1)
+            : farmId(farm_id), positionId(position_id) {}
 
         unsigned int farmId;
         unsigned int positionId;
+    };
+
+    struct PlantData
+    {
+        explicit PlantData (unsigned int plant_id = 1,
+                            unsigned int plant_size = 1,
+                            unsigned int position_id = 1)
+            : plantId(plant_id), plantSize(plant_size), positionId(position_id) { }
+
+        QString fieldIds () const {
+            if (plantSize == 1) {
+                return QString::number(positionId);
+            } else if (plantSize == 2) {
+                return QString("%1,%2")
+                        .arg(positionId)
+                        .arg(positionId+1);
+            } else if (plantSize == 4) {
+                return QString("%1,%2,%3,%4")
+                        .arg(positionId)
+                        .arg(positionId+1)
+                        .arg(positionId+MAX_PLANT_COLUMNS)
+                        .arg(positionId+MAX_PLANT_COLUMNS+1);;
+            } else {
+                return QString();
+            }
+        }
+
+        unsigned int plantId;
+        unsigned int plantSize;
+        unsigned int positionId;
+    };
+
+    struct ProductionData
+    {
+
     };
 
 }

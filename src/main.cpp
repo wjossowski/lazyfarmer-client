@@ -38,7 +38,8 @@
 
 #include <QtDebug>
 
-using namespace Api::Messages;
+using namespace Api;
+using namespace Messages;
 
 #ifdef Q_OS_WIN
     #include <windows.h>
@@ -163,7 +164,17 @@ int main(int argc, char *argv[])
     Api::ApiGateway debugGateway;
     createDebugEnvironment(debugGateway, parser);
     debugGateway.queueMessage(QSharedPointer<Login>(new Login(&debugGateway)));
-    debugGateway.queueMessage(QSharedPointer<GetCollect>(new GetCollect(&debugGateway)));
+
+    BuildingData building {1, 1};
+    for (unsigned int i = 0; i < 120; i++) {
+        if (i % 2 == 1) continue;
+        PlantData plant {1, 2, i+1};
+
+//        debugGateway.queueMessage(QSharedPointer<GetCollect>(new GetCollect(&debugGateway, building, plant)));
+//        debugGateway.queueMessage(QSharedPointer<SetPlant>(new SetPlant(&debugGateway, building, plant)));
+        debugGateway.queueMessage(QSharedPointer<SetPour>(new SetPour(&debugGateway, building, plant)));
+    }
+
     debugGateway.queueMessage(QSharedPointer<Logout>(new Logout(&debugGateway)));
 //    debugGateway.queueMessage(QSharedPointer<SetPlant>(new SetPlant(&debugGateway)));
 //    debugGateway.queueMessage(QSharedPointer<SetPour>(new SetPour(&debugGateway)));

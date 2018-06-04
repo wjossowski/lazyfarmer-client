@@ -118,8 +118,11 @@ void ApiGateway::queueMessage(const QSharedPointer<ApiMessage> &message)
 
 void ApiGateway::start()
 {
-    if (m_messageQueue.size() == 0)
+    if (m_messageQueue.size() == 0){
+        qDebug() << "No messages eleft";
+        m_currentMessage.reset();
         return;
+    }
 
     m_currentMessage = m_messageQueue.first();
     m_messageQueue.pop_front();

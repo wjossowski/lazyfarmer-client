@@ -39,7 +39,7 @@ const QList<QPair<QString, QString> > SetPlant::constructedMessageData() const
         { "farm", QString::number(m_buildingData.farmId) },
         { "position", QString::number(m_buildingData.positionId) },
         { "pflanze[]", QString::number(m_plantData.plantId) },
-        { "feld[]", "1" }, // TODO: Create function to get valid positions
-        { "felder[]", "1,2"}
+        { "feld[]", QString::number(m_plantData.positionId) },
+        { "felder[]", m_plantData.fieldIds() }
     };
 }
