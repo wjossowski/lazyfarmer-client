@@ -36,20 +36,21 @@ namespace Api {
         };
 
         enum class MessageType {
-            Login,
-            Logout,
+            Login, // Done
+            Logout, // Done
 
-            GetFarmInfo,
+            GetFarmInfo, // Todo
 
-            SetPlant,
-            SetPour,
-            GetCollect,
+            SetPlant, // Done
+            SetPour, // Done
+            GetCollect, // Done
 
             SetFeed,
             GetFeed,
 
             SetProduction,
             GetProduction,
+            GetProductionInfo,
 
             SetBuyer,
             GetBuyer,

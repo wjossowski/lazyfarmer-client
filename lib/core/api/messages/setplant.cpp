@@ -24,10 +24,10 @@ using namespace Messages;
 
 SetPlant::SetPlant(ApiGateway *gateway,
                    const BuildingData &buindingData,
-                   const PlantData &plantData)
+                   const ProductData &productData)
     : OneWayMessage(gateway, MessageType::SetPlant, "farm"),
       m_buildingData(buindingData),
-      m_plantData(plantData)
+      m_productData(productData)
 {
 
 }
@@ -38,8 +38,8 @@ const QList<QPair<QString, QString> > SetPlant::constructedMessageData() const
         { "mode", "garden_plant" },
         { "farm", QString::number(m_buildingData.farmId) },
         { "position", QString::number(m_buildingData.positionId) },
-        { "pflanze[]", QString::number(m_plantData.plantId) },
-        { "feld[]", QString::number(m_plantData.positionId) },
-        { "felder[]", m_plantData.fieldIds() }
+        { "pflanze[]", QString::number(m_productData.productId) },
+        { "feld[]", QString::number(m_productData.positionId) },
+        { "felder[]", m_productData.fieldIds() }
     };
 }

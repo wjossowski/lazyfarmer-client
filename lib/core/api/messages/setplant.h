@@ -22,6 +22,7 @@
 #include "../helpers/querystructs.h"
 
 namespace Api {
+
     namespace Messages {
 
         class SetPlant : public OneWayMessage
@@ -29,17 +30,17 @@ namespace Api {
         public:
             explicit SetPlant(ApiGateway *gateway,
                               const BuildingData &buindingData = BuildingData(),
-                              const PlantData &plantData = PlantData());
+                              const ProductData &productData = ProductData());
 
             void setBuildingData(const BuildingData &buindingData) { m_buildingData = buindingData; }
-            void setPlantData(const PlantData &plantData) { m_plantData = plantData; }
+            void setProductData(const ProductData &productData) { m_productData = productData; }
 
         private:
             const QList<QPair<QString, QString> > constructedMessageData() const override;
 
         private:
             BuildingData m_buildingData;
-            PlantData m_plantData;
+            ProductData m_productData;
         };
 
     }

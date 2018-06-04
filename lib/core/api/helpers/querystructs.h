@@ -35,12 +35,12 @@ namespace Api {
         unsigned int positionId;
     };
 
-    struct PlantData
+    struct ProductData
     {
-        explicit PlantData (unsigned int plant_id = 1,
-                            unsigned int plant_size = 1,
-                            unsigned int position_id = 1)
-            : plantId(plant_id), plantSize(plant_size), positionId(position_id) { }
+        explicit ProductData (unsigned int product_id = 1,
+                              unsigned int plant_size = 1,
+                              unsigned int position_id = 1)
+            : productId(product_id), plantSize(plant_size), positionId(position_id) { }
 
         QString fieldIds () const {
             if (plantSize == 1) {
@@ -60,13 +60,19 @@ namespace Api {
             }
         }
 
-        unsigned int plantId;
+        unsigned int productId;
         unsigned int plantSize;
         unsigned int positionId;
     };
 
     struct ProductionData
     {
+        explicit ProductionData(unsigned int production_id = 1,
+                                unsigned int production_slot = 1)
+            : productionId(production_id), productionSlot(production_slot) { }
+
+        unsigned int productionId;
+        unsigned int productionSlot;
 
     };
 

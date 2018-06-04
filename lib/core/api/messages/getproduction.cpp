@@ -16,30 +16,29 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "getcollect.h"
+#include "getproduction.h"
 #include "../apigateway.h"
 
 using namespace Api;
 using namespace Messages;
 
-GetCollect::GetCollect(ApiGateway *gateway,
-                       const BuildingData &BuildingData,
-                       const ProductData &productData)
-    : OneWayMessage(gateway, MessageType::GetCollect, "farm"),
-      m_buildingData(BuildingData),
-      m_productData(productData)
+GetProduction::GetProduction(ApiGateway *gateway,
+                             const BuildingData &buindingData,
+                             const ProductionData &productionData)
+    : OneWayMessage(gateway, MessageType::SetPlant, "farm"),
+      m_buildingData(buindingData),
+      m_productionData(productionData)
 {
 
 }
 
-const QList<QPair<QString, QString> > GetCollect::constructedMessageData() const
+const QList<QPair<QString, QString> > GetProduction::constructedMessageData() const
 {
     return {
-        { "mode", "garden_harvest" },
+        { "mode", "harvestproduction" },
         { "farm", QString::number(m_buildingData.farmId) },
         { "position", QString::number(m_buildingData.positionId) },
-        { "pflanze[]", QString::number(m_productData.productId) },
-        { "feld[]", QString::number(m_productData.positionId) },
-        { "felder[]", m_productData.fieldIds() }
+        { "id", QString::number(m_productionData.productionId) },
+        { "slot", QString::number(m_productionData.productionSlot) }
     };
 }

@@ -16,6 +16,8 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
+#pragma once
+
 #include "../onewaymessage.h"
 #include "../helpers/querystructs.h"
 
@@ -23,23 +25,22 @@ namespace Api {
 
     namespace Messages {
 
-        class GetCollect : public OneWayMessage
+        class GetProduction : public OneWayMessage
         {
         public:
-            explicit GetCollect(ApiGateway *gateway,
-                                const BuildingData &BuildingData = BuildingData(),
-                                const ProductData &productData = ProductData());
+            explicit GetProduction(ApiGateway *gateway,
+                                   const BuildingData &buindingData = BuildingData(),
+                                   const ProductionData &productionData = ProductionData());
 
             void setBuildingData(const BuildingData &buindingData) { m_buildingData = buindingData; }
-            void setProductData(const ProductData &productData) { m_productData = productData; }
+            void setProductionData(const ProductionData &productionData) { m_productionData = productionData; }
 
         private:
-            const QList<QPair<QString, QString> > constructedMessageData() const;
+            const QList<QPair<QString, QString> > constructedMessageData() const override;
 
         private:
             BuildingData m_buildingData;
-            ProductData m_productData;
-
+            ProductionData m_productionData;
         };
 
     }

@@ -24,10 +24,10 @@ using namespace Messages;
 
 SetPour::SetPour(ApiGateway *gateway,
                  const BuildingData &buildingData,
-                 const PlantData &plantData)
+                 const ProductData &productData)
     : OneWayMessage(gateway, MessageType::SetPour, "farm"),
       m_buildingData(buildingData),
-      m_plantData(plantData)
+      m_productData(productData)
 {
 
 }
@@ -38,7 +38,7 @@ const QList<QPair<QString, QString>> SetPour::constructedMessageData() const
         { "mode", "garden_water" },
         { "farm", QString::number(m_buildingData.farmId) },
         { "position", QString::number(m_buildingData.positionId) },
-        { "feld[]", QString::number(m_plantData.positionId) },
-        { "felder[]", m_plantData.fieldIds() }
+        { "feld[]", QString::number(m_productData.positionId) },
+        { "felder[]", m_productData.fieldIds() }
     };
 }
