@@ -184,6 +184,9 @@ void ApiGateway::recursiveRedirect(const QString &url, const std::function<void 
 void ApiGateway::sendMessage(ApiMessage *message)
 {
     QNetworkRequest request(message->url());
+#ifdef DEBUG_MODE
+    qDebug() << message->url();
+#endif
     buildHeaders(request);
     message->configureRequest(request);
 

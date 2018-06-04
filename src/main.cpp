@@ -174,8 +174,10 @@ int main(int argc, char *argv[])
 
 //        debugGateway.queueMessage(QSharedPointer<GetCollect>(new GetCollect(&debugGateway, building, plant)));
 //        debugGateway.queueMessage(QSharedPointer<SetPlant>(new SetPlant(&debugGateway, building, plant)));
-        debugGateway.queueMessage(QSharedPointer<SetPour>(new SetPour(&debugGateway, building, plant)));
+//        debugGateway.queueMessage(QSharedPointer<SetPour>(new SetPour(&debugGateway, building, plant)));
     }
+
+    debugGateway.queueMessage(QSharedPointer<GetFarmInfo>(new GetFarmInfo(&debugGateway)));
 
     debugGateway.queueMessage(QSharedPointer<Logout>(new Logout(&debugGateway)));
 //    debugGateway.queueMessage(QSharedPointer<SetPlant>(new SetPlant(&debugGateway)));

@@ -40,6 +40,7 @@ namespace Api {
             Logout, // Done
 
             GetFarmInfo, // Todo
+            GetFieldInfo,
 
             SetPlant, // Done
             SetPour, // Done
