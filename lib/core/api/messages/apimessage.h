@@ -19,6 +19,7 @@
 #pragma once
 
 #include "../apigatewayerror.h"
+#include "messagetypes.h"
 
 class QNetworkReply;
 #include <QtNetwork/QNetworkRequest>
@@ -28,39 +29,6 @@ namespace Api {
     class ApiGateway;
 
     namespace Messages {
-
-        enum class QueryType {
-            Post,
-            Get,
-            Unknown
-        };
-
-        enum class MessageType {
-            Login, // Done
-            Logout, // Done
-
-            GetFarmInfo, // Todo
-            GetFieldInfo,
-
-            SetPlant, // Done
-            SetPour, // Done
-            GetCollect, // Done
-
-            SetFeed, // Done
-            GetFeed,
-
-            SetProduction, // Done
-            GetProduction, // Done
-            GetProductionInfo,
-
-            SetBuyer,
-            GetBuyer,
-
-            GetPricesOnMarket,
-            SetOfferOnMarket,
-
-            Unknown
-        };
 
         class ApiMessage : public QObject
         {
