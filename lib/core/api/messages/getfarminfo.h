@@ -31,8 +31,8 @@ namespace Api {
                 : ApiMessage (gateway, MessageType::GetFarmInfo) { }
 
         public:
-            const QUrl url() const;
-            void handleResponse(QNetworkReply *reply);
+            const QUrl url() const override;
+            void handleResponse(QNetworkReply *reply) override;
         };
 
     }

@@ -31,8 +31,8 @@ namespace Api{
                                     MessageType type = Messages::MessageType::Unknown,
                                     const QString &endpoint = QString());
 
-            const QUrl url() const;
-            void handleResponse(QNetworkReply *reply);
+            const QUrl url() const override;
+            void handleResponse(QNetworkReply *reply) override;
 
         private:
             virtual const QList<QPair<QString, QString>> constructedMessageData() const = 0;

@@ -30,8 +30,8 @@ namespace Api {
             explicit Logout(ApiGateway *gateway)
                 : ApiMessage (gateway, MessageType::Logout) { }
 
-            const QUrl url() const;
-            void handleResponse(QNetworkReply *reply);
+            const QUrl url() const override;
+            void handleResponse(QNetworkReply *reply) override;
         };
 
     }

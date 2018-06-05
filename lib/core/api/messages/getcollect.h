@@ -34,7 +34,7 @@ namespace Api {
             void setProductData(const ProductData &productData) { m_productData = productData; }
 
         private:
-            const QList<QPair<QString, QString> > constructedMessageData() const;
+            const QList<QPair<QString, QString> > constructedMessageData() const override;
 
         private:
             BuildingData m_buildingData;
