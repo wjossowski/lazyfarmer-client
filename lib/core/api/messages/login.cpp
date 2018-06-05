@@ -28,36 +28,6 @@
 using namespace Api;
 using namespace Messages;
 
-//void Login::sendMessage()
-//{
-//    if (!m_gateway->isConfigured()) {
-//        m_gateway->handleError(ApiGatewayError::ErrorType::NotConfigured);
-//        return;
-//    }
-
-//    QNetworkRequest request(tokenUrl());
-
-//    QSslConfiguration config = QSslConfiguration::defaultConfiguration();
-//    config.setProtocol(QSsl::TlsV1SslV3);
-//    request.setSslConfiguration(config);
-
-//    buildHeaders(request);
-
-//    QUrlQuery credentials;
-//    credentials.setQueryItems({
-//                                  { "server", m_gateway->serverId() },
-//                                  { "username", m_gateway->login() },
-//                                  { "password", m_gateway->password() },
-//                                  { "ref", "" },
-//                                  { "retid", "" }
-//                              });
-
-//    auto reply = m_manager->post(request, credentials.toString().toLocal8Bit());
-//    connect(reply, &QNetworkReply::finished, [this, reply] () {
-
-//    });
-//}
-
 const QUrl Login::url() const
 {
     return QUrl(QString("https://www.%1/ajax/createtoken2.php?n=%2")

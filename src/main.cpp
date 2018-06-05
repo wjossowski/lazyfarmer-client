@@ -168,13 +168,13 @@ int main(int argc, char *argv[])
     BuildingData building {1, 1};
     for (unsigned int i = 0; i < 120; i++) {
         if (i % 2 != 0) continue;
-        if ((i / 12) % 2 != 0) continue;
+//        if ((i / 12) % 2 != 0) continue;
 
-        ProductData plant (4, 4, i+1);
+        ProductData plant (1, 2, i+1);
 
 //        debugGateway.queueMessage(QSharedPointer<GetCollect>(new GetCollect(&debugGateway, building, plant)));
-//        debugGateway.queueMessage(QSharedPointer<SetPlant>(new SetPlant(&debugGateway, building, plant)));
-//        debugGateway.queueMessage(QSharedPointer<SetPour>(new SetPour(&debugGateway, building, plant)));
+        debugGateway.queueMessage(QSharedPointer<SetPlant>(new SetPlant(&debugGateway, building, plant)));
+        debugGateway.queueMessage(QSharedPointer<SetPour>(new SetPour(&debugGateway, building, plant)));
     }
 
     debugGateway.queueMessage(QSharedPointer<GetFarmInfo>(new GetFarmInfo(&debugGateway)));

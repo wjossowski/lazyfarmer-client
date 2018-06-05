@@ -1,6 +1,6 @@
 /**
  ** This file is part of the LazyFarmer project.
- ** Copyright 2017 Wojciech Ossowski <w.j.ossowski@gmail.com>.
+ ** Copyright 2018 Wojciech Ossowski <w.j.ossowski@gmail.com>.
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU Lesser General Public License as
@@ -16,26 +16,17 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "logout.h"
-#include "../apigateway.h"
+#include <QtCore/QString>
+#include <QtCore/QVariant>
 
-#include <QtNetwork/QNetworkRequest>
-#include <QtNetwork/QNetworkReply>
+namespace Helpers {
 
-using namespace Api;
-using namespace Messages;
+    class FieldInfoExtractor
+    {
+        Q_DISABLE_COPY(FieldInfoExtractor)
 
-const QUrl Logout::url() const
-{
-    return m_gateway->buildEndpointUrl("main", {
-        { "page", "logout" },
-        { "logoutbutton", "1" }
-    }, false);
-}
+    private:
+        QVariantList m_fields;
+    };
 
-void Logout::handleResponse(QNetworkReply *reply)
-{
-    Q_UNUSED (reply)
-
-    m_gateway->setLoggedIn(false);
 }

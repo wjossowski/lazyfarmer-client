@@ -29,32 +29,56 @@ class GameInfoExtractorTest : public QObject
 private slots:
     void initTestCase();
 
-    void extractorTest_data();
-    void extractorTest();
+    void baseExtractorTest_data();
+    void baseExtractorTest();
+
+    void constantsExtractorTest_data();
+    void constantsExtractorTest();
 
     void extractToFile();
 
 private:
-    QVariantMap constructFilter (const QString &key) {
+
+    QVariantMap constructBaseFilter (const QString &key) {
         return {
             { key, GameInfoExtractor::BaseFilters[key] }
         };
     }
 
+    QVariantMap constructConstantsFilter (const QString &key) {
+        return {
+            { key, GameInfoExtractor::ConstantsFilters[key] }
+        };
+    }
+
 private:
-    QString m_siteContent;
+    QString m_baseContent;
+    QString m_constantsContents;
+
 };
 
 void GameInfoExtractorTest::initTestCase()
 {
-    QFile siteFile (QString("%1/assets/content.html").arg(TEST_PWD));
-    if (!siteFile.open(QIODevice::ReadOnly)) {
-        QFAIL ("Unable to open content.html file");
+    QHash<QString, QString*> data {
+        { "content.html", &m_baseContent },
+        { "jsconstants.js", &m_constantsContents },
+    };
+
+    QHashIterator<QString, QString*> dataIterator(data);
+    while (dataIterator.hasNext()) {
+        const auto dataItem = dataIterator.next();
+        QString *dataMember = dataIterator.value();
+
+        QFile siteFile (QString("%1/assets/%2").arg(TEST_PWD).arg(dataItem.key()));
+        if (!siteFile.open(QIODevice::ReadOnly)) {
+            QFAIL ("Unable to open file");
+        }
+
+        *dataMember = QString::fromUtf8(siteFile.readAll());
     }
-    m_siteContent = QString::fromUtf8(siteFile.readAll());
 }
 
-void GameInfoExtractorTest::extractorTest_data()
+void GameInfoExtractorTest::baseExtractorTest_data()
 {
     QTest::addColumn<QString>("key");
 
@@ -64,13 +88,35 @@ void GameInfoExtractorTest::extractorTest_data()
     QTest::newRow("Buildings") << "buildings";
 }
 
-void GameInfoExtractorTest::extractorTest()
+void GameInfoExtractorTest::baseExtractorTest()
 {
     QFETCH(QString, key);
 
-    GameInfoExtractor extractor(constructFilter(key));
+    GameInfoExtractor extractor(constructBaseFilter(key));
 
-    QVERIFY2 (extractor.extract(m_siteContent), "GameInfoExtractor should extract");
+    QVERIFY2 (extractor.extract(m_baseContent), "GameInfoExtractor should extract");
+    const auto &output = extractor.results();
+
+    QVERIFY2 (!output.isEmpty(), "Product object shouldn't be empty");
+    QVERIFY2 (output[key].isValid(), "Products object should be saved");
+}
+
+void GameInfoExtractorTest::constantsExtractorTest_data()
+{
+    QTest::addColumn<QString>("key");
+
+    QTest::newRow("X Axis size") << "product_x";
+    QTest::newRow("Y Axis size") << "product_y";
+    QTest::newRow("Product time") << "product_time";
+}
+
+void GameInfoExtractorTest::constantsExtractorTest()
+{
+    QFETCH(QString, key);
+
+    GameInfoExtractor extractor(constructConstantsFilter(key));
+
+    QVERIFY2 (extractor.extract(m_constantsContents), "GameInfoExtractor should extract");
     const auto &output = extractor.results();
 
     QVERIFY2 (!output.isEmpty(), "Product object shouldn't be empty");
@@ -79,17 +125,23 @@ void GameInfoExtractorTest::extractorTest()
 
 void GameInfoExtractorTest::extractToFile()
 {
-    GameInfoExtractor extractor;
+    const auto baseExtractor = GameInfoExtractor::createBaseExtractor();
+    QVERIFY2 (baseExtractor->extract(m_baseContent), "GameInfoExtractor should extract");
 
-    QVERIFY2 (extractor.extract(m_siteContent), "GameInfoExtractor should extract");
+    const auto constantsExtractor = GameInfoExtractor::createConstantsExtractor();
+    QVERIFY2 (constantsExtractor->extract(m_constantsContents), "GameInfoExtractor should extract");
 
     QFile file(QString("%1/labels.json").arg(TEST_OUT_PWD));
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        file.write(QJsonDocument::fromVariant(extractor.results()).toJson(QJsonDocument::Indented));
+        file.write(QJsonDocument(QJsonObject({
+            { "base", QJsonValue::fromVariant(baseExtractor->results()) },
+            { "constants", QJsonValue::fromVariant(constantsExtractor->results())}
+        })).toJson(QJsonDocument::Indented));
     } else {
         QFAIL("File should be opened");
     }
 }
+
 
 QTEST_MAIN(GameInfoExtractorTest)
 

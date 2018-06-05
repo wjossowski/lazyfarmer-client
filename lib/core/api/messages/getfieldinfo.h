@@ -1,6 +1,6 @@
 /**
  ** This file is part of the LazyFarmer project.
- ** Copyright 2017 Wojciech Ossowski <w.j.ossowski@gmail.com>.
+ ** Copyright 2018 Wojciech Ossowski <w.j.ossowski@gmail.com>.
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU Lesser General Public License as
@@ -16,26 +16,32 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "logout.h"
+#pragma once
+
+#include "../apimessage.h"
 #include "../apigateway.h"
+#include "../helpers/querystructs.h"
 
-#include <QtNetwork/QNetworkRequest>
-#include <QtNetwork/QNetworkReply>
+namespace Api {
 
-using namespace Api;
-using namespace Messages;
+    namespace Messages {
 
-const QUrl Logout::url() const
-{
-    return m_gateway->buildEndpointUrl("main", {
-        { "page", "logout" },
-        { "logoutbutton", "1" }
-    }, false);
-}
+        class GetFieldInfo : public ApiMessage
+        {
+        public:
+            explicit GetFieldInfo(ApiGateway *gateway,
+                                  const BuildingData &buildingData = BuildingData());
 
-void Logout::handleResponse(QNetworkReply *reply)
-{
-    Q_UNUSED (reply)
+            const QUrl url() const override;
+            void handleResponse(QNetworkReply *reply) override;
 
-    m_gateway->setLoggedIn(false);
+            void setBuildingData(const BuildingData &buildingData);
+
+        private:
+            BuildingData m_buildingData;
+
+        };
+
+    }
+
 }

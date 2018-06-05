@@ -16,32 +16,47 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "../onewaymessage.h"
-#include "../helpers/querystructs.h"
+#include "core/helpers/fieldinfoextractor.h"
 
-namespace Api {
+#include <QtTest>
 
-    namespace Messages {
+using namespace Helpers;
 
-        class GetCollect : public OneWayMessage
-        {
-        public:
-            explicit GetCollect(ApiGateway *gateway,
-                                const BuildingData &buildingData = BuildingData(),
-                                const ProductData &productData = ProductData());
+class FieldInfoExtractorTest : public QObject
+{
+    Q_OBJECT
 
-            void setBuildingData(const BuildingData &buindingData) { m_buildingData = buindingData; }
-            void setProductData(const ProductData &productData) { m_productData = productData; }
+private slots:
+    void initTestCase();
 
-        private:
-            const QList<QPair<QString, QString> > constructedMessageData() const;
+    void extractorTest_data();
+    void extractorTest();
 
-        private:
-            BuildingData m_buildingData;
-            ProductData m_productData;
+private:
+    QString m_siteContent;
 
-        };
+};
 
+void FieldInfoExtractorTest::initTestCase()
+{
+    QFile fieldsJson (QString("%1/assets/fields.json").arg(TEST_PWD));
+    if (!fieldsJson.open(QIODevice::ReadOnly)) {
+        QFAIL ("Unable to open fields.json file");
     }
 
+    m_siteContent = QString::fromUtf8(fieldsJson.readAll());
 }
+
+void FieldInfoExtractorTest::extractorTest_data()
+{
+
+}
+
+void FieldInfoExtractorTest::extractorTest()
+{
+    QFAIL("Not implemented yet");
+}
+
+QTEST_APPLESS_MAIN(FieldInfoExtractorTest)
+
+#include "tst_fieldinfoextractor.moc"
