@@ -90,8 +90,8 @@ void ApiGateway::extractRid(QNetworkReply *reply)
         setLoggedIn(true);
 
         if (m_firstRun) {
-            GameInfoExtractor extractor(m_serverDomain);
-            extractor.extract(content);
+            const auto extractor = GameInfoExtractor::createBaseExtractor(m_serverDomain);
+            extractor->extract(content);
         }
     } else {
         handleError(ApiGatewayError::ErrorType::RidNotParsed);

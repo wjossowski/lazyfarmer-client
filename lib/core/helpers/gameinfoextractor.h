@@ -23,6 +23,7 @@
 #include <QtCore/QJsonObject>
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonValue>
+#include <QtCore/QSharedPointer>
 
 #ifdef DEBUG_MODE
 #include <QtCore/QDebug>
@@ -35,12 +36,13 @@ namespace Helpers {
         Q_DISABLE_COPY(GameInfoExtractor)
 
     public:
-        explicit GameInfoExtractor(const QString &domain = QString());
-
-        GameInfoExtractor(const QVariantMap &filters,
-                          const QString &domain = QString());
+        explicit GameInfoExtractor(const QVariantMap &filters,
+                                   const QString &domain = QString());
 
         virtual ~GameInfoExtractor();
+
+        static QSharedPointer<GameInfoExtractor> createBaseExtractor(const QString &domain = QString());
+        static QSharedPointer<GameInfoExtractor> createConstantsExtractor(const QString &domain = QString());
 
         inline QString domain() const { return m_domain; }
         inline void setDomain(const QString &domain) { m_domain = domain; }
@@ -50,6 +52,7 @@ namespace Helpers {
     #endif
 
         static const QVariantMap BaseFilters;
+        static const QVariantMap ConstantsFilters;
 
         bool extract(const QString &content);
         const QVariantMap &results() { return m_results; }

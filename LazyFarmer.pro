@@ -32,3 +32,5 @@ CONFIG(debug, debug|release) {
 
     SUBDIRS += unit_tests
 }
+
+OTHER_FILES+=notes

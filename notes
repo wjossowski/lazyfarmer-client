@@ -5,8 +5,11 @@ Karmienie:
 http://s18.wolnifarmerzy.pl/ajax/farm.php?rid=039ad60235173392a7e93a444b82f4e3&mode=inner_feed&farm=1&position=6&pid=108&c=108_1|&amount=1&guildjob=0
 http://s18.wolnifarmerzy.pl/ajax/farm.php?rid=2369f6f0e0d36f6f78cc36317702a79d&mode=inner_feed&farm=1&position=4&pid=109&c=109_9|&amount=1&guildjob=0
 
-Zbieranie zwierząt:
+Info o zwierzętach:
+{"datablock":[1,{"1":{"4":{"buildingid":"12","level":"2","pid":110,"crop":15,"time":129600,"remain":1,"rest":-64799,"feed":{"109":{"time":600},"108":{"time":1200}},"animals":{"type":12,"amount":"3","pos":[],"max":3,"next":2709},"specials":[]}}},{"tutorial":0},null],"updateblock":{"stock":null,"menue":null}}
 
+Zbieranie zwierząt:
+http://s18.wolnifarmerzy.pl/ajax/farm.php?rid=539190890d2f805c747b4f06222e1f4c&mode=inner_crop&farm=1&position=4
 
 Info o produkcji:
 http://s18.wolnifarmerzy.pl/ajax/farm.php?rid=039ad60235173392a7e93a444b82f4e3&mode=innerinfos&farm=1&position=2

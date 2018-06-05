@@ -21,6 +21,7 @@
 #include "apimessage.h"
 
 namespace Api{
+
     namespace Messages {
 
         class OneWayMessage : public ApiMessage
@@ -30,7 +31,6 @@ namespace Api{
                                     MessageType type = Messages::MessageType::Unknown,
                                     const QString &endpoint = QString());
 
-        public:
             const QUrl url() const;
             void handleResponse(QNetworkReply *reply);
 
@@ -39,6 +39,8 @@ namespace Api{
             QString m_endpointUrl;
 
         };
+
     }
+
 }
 

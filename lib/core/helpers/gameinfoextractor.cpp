@@ -34,11 +34,11 @@ const QVariantMap GameInfoExtractor::BaseFilters = {
     { "buildings", "var buildinginfos = eval\\(\\'(?<buildings>.*)\\'\\);" }
 };
 
-GameInfoExtractor::GameInfoExtractor(const QString &domain)
-    : GameInfoExtractor(BaseFilters, domain)
-{
-
-}
+const QVariantMap GameInfoExtractor::ConstantsFilters = {
+    { "product_x", "var produkt_x = (?<product_x>.*);" },
+    { "product_y", "var produkt_y = (?<product_y>.*);" },
+    { "product_time", "var produkt_zeit = (?<product_time>.*);" }
+};
 
 GameInfoExtractor::GameInfoExtractor(const QVariantMap &filters,
                                      const QString &domain)
@@ -57,6 +57,16 @@ GameInfoExtractor::~GameInfoExtractor()
 #ifdef DEBUG_MODE
     qDebug() << "Destructing GameInfoExtractor" << m_filters;
 #endif
+}
+
+QSharedPointer<GameInfoExtractor> GameInfoExtractor::createBaseExtractor(const QString &domain)
+{
+    return QSharedPointer<GameInfoExtractor>(new GameInfoExtractor(GameInfoExtractor::BaseFilters, domain));
+}
+
+QSharedPointer<GameInfoExtractor> GameInfoExtractor::createConstantsExtractor(const QString &domain)
+{
+    return QSharedPointer<GameInfoExtractor>(new GameInfoExtractor(GameInfoExtractor::ConstantsFilters, domain));
 }
 
 bool GameInfoExtractor::extract(const QString &content)

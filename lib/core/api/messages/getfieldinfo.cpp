@@ -16,30 +16,36 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "getcollect.h"
-#include "../apigateway.h"
+
+#include "getfieldinfo.h"
 
 using namespace Api;
-using namespace Messages;
+using namespace Api::Messages;
 
-GetCollect::GetCollect(ApiGateway *gateway,
-                       const BuildingData &buildingData,
-                       const ProductData &productData)
-    : OneWayMessage(gateway, MessageType::GetCollect, "farm"),
-      m_buildingData(buildingData),
-      m_productData(productData)
+GetFieldInfo::GetFieldInfo(ApiGateway *gateway,
+                           const BuildingData &buildingData)
+    : ApiMessage(gateway, MessageType::GetFieldInfo),
+      m_buildingData(buildingData)
 {
 
 }
 
-const QList<QPair<QString, QString> > GetCollect::constructedMessageData() const
+const QUrl GetFieldInfo::url() const
 {
-    return {
-        { "mode", "garden_harvest" },
+    return m_gateway->buildEndpointAjaxUrl("farm", {
+        { "mode", "gardeninit" },
         { "farm", QString::number(m_buildingData.farmId) },
-        { "position", QString::number(m_buildingData.positionId) },
-        { "pflanze[]", QString::number(m_productData.productId) },
-        { "feld[]", QString::number(m_productData.positionId) },
-        { "felder[]", m_productData.fieldIds() }
-    };
+        { "position", QString::number(m_buildingData.positionId) }
+    });
+}
+
+void GetFieldInfo::handleResponse(QNetworkReply *reply)
+{
+    Q_UNUSED(reply)
+    // TODO: FILLME
+}
+
+void GetFieldInfo::setBuildingData(const BuildingData &buildingData)
+{
+    m_buildingData = buildingData;
 }
