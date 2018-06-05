@@ -23,10 +23,6 @@
 
 namespace Api {
 
-    /**
- * @brief The ApiGatewayError struct
- * Defines API gateway error and specifies error massage
- */
     struct ApiGatewayError
     {
         enum class ErrorType {

@@ -111,27 +111,27 @@ int main(int argc, char *argv[])
 
     // Initialize command-line parser
     QCommandLineParser parser;
-    parser.setApplicationDescription(QGuiApplication::translate("main", "Lazy farmer - My Free Farm bot"));
+    parser.setApplicationDescription(qApp->translate("main", "Lazy farmer - My Free Farm bot"));
     parser.addHelpOption();
     parser.addVersionOption();
     parser.addOptions({
         { { "l", "login" },
-          QGuiApplication::translate("main", "Specifies login on startup."),
-          QGuiApplication::translate("main", "User's login.") },
+          qApp->translate("main", "Specifies login on startup."),
+          qApp->translate("main", "User's login.") },
         { { "p", "password" },
-          QGuiApplication::translate("main", "Specifies password on startup."),
-          QGuiApplication::translate("main", "User's password.") },
+          qApp->translate("main", "Specifies password on startup."),
+          qApp->translate("main", "User's password.") },
         { { "d", "domain" },
-          QGuiApplication::translate("main", "Specifies game's domain on startup."),
-          QGuiApplication::translate("main", "Domain (myfreefarm.de / wolnifarmerzy.pl).") },
+          qApp->translate("main", "Specifies game's domain on startup."),
+          qApp->translate("main", "Domain (myfreefarm.de / wolnifarmerzy.pl).") },
         { { "s", "server" },
-          QGuiApplication::translate("main", "Specifies server number on startup."),
-          QGuiApplication::translate("main", "Server number.") },
+          qApp->translate("main", "Specifies server number on startup."),
+          qApp->translate("main", "Server number.") },
         { { "c", "config" },
-          QGuiApplication::translate("main", "Specifies config file on startup."),
-          QGuiApplication::translate("main", "Task manager's configuration file.") },
+          qApp->translate("main", "Specifies config file on startup."),
+          qApp->translate("main", "Task manager's configuration file.") },
         { { "n", "no-gui" },
-          QGuiApplication::translate("main", "Disables UI Mode.") }
+          qApp->translate("main", "Disables UI Mode.") }
     });
     // Execute CLI Parser
     parser.process(lazyFarmerApp);
@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
         // Inilialize cache directory
         QDir applicationDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
         if (!applicationDir.mkpath("."))
-            throw std::ios_base::failure(QGuiApplication::translate("main", "Unable to create path to application data.").toStdString());
+            throw std::ios_base::failure(qApp->translate("main", "Unable to create path to application data.").toStdString());
 
         // Initalize log directory
         const QString fileName = QDateTime::currentDateTime().toString("yyyy_MM_dd-HH_mm.log");
@@ -149,7 +149,7 @@ int main(int argc, char *argv[])
         // Create debug prompt device
         debugStream.setDevice(&debugFile);
         if (!debugFile.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Unbuffered))
-            throw std::ios_base::failure(QGuiApplication::translate("main", "Unable to open logging file.").toStdString());
+            throw std::ios_base::failure(qApp->translate("main", "Unable to open logging file.").toStdString());
 
         // Initialize message handler
         qSetMessagePattern("[%{time HH:mm:ss.zzz}] %{type}: %{message} (%{function}, %{file}, %{line})");
