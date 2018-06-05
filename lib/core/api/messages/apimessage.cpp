@@ -1,6 +1,6 @@
 /**
  ** This file is part of the LazyFarmer project.
- ** Copyright 2018 Wojciech Ossowski <w.j.ossowski@gmail.com>.
+ ** Copyright 2017 Wojciech Ossowski <w.j.ossowski@gmail.com>.
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU Lesser General Public License as
@@ -16,32 +16,28 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "onewaymessage.h"
-#include "apigateway.h"
-
-#include <QtNetwork/QNetworkRequest>
-#include <QtNetwork/QNetworkReply>
+#include "../apigateway.h"
 
 using namespace Api;
 using namespace Api::Messages;
 
-OneWayMessage::OneWayMessage(ApiGateway *gateway,
-                             MessageType type,
-                             const QString &endpoint)
-    : ApiMessage(gateway, type),
-      m_endpointUrl(endpoint)
+ApiMessage::ApiMessage(ApiGateway *gateway,
+                       MessageType messageType,
+                       bool isLoginRequired)
+    : QObject(gateway),
+
+      m_gateway(gateway),
+
+      m_messageType(messageType),
+
+      m_isLoginRequired(isLoginRequired),
+      m_isSent(false)
 {
 
 }
 
-const QUrl OneWayMessage::url() const
-{
-    return m_gateway->buildEndpointAjaxUrl(m_endpointUrl,
-                                           this->constructedMessageData());
-}
-
-void OneWayMessage::handleResponse(QNetworkReply *reply)
-{
-    Q_UNUSED (reply)
-    emit finished();
+ApiMessage::~ApiMessage() {
+#if DEBUG_MODE
+    qDebug() << "Destroying API Message" << (quint8) this->m_messageType << this;
+#endif
 }

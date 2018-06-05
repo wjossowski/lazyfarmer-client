@@ -16,7 +16,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "../onewaymessage.h"
+#include "onewaymessage.h"
 #include "../helpers/querystructs.h"
 
 namespace Api {

@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include "../apimessage.h"
+#include "apimessage.h"
 
 namespace Api {
 

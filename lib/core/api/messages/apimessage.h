@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include "apigatewayerror.h"
+#include "../apigatewayerror.h"
 
 class QNetworkReply;
 #include <QtNetwork/QNetworkRequest>

@@ -19,7 +19,7 @@
 #pragma once
 
 #include "apigatewayerror.h"
-#include "apimessage.h"
+#include "messages/apimessage.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QQueue>

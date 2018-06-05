@@ -18,7 +18,7 @@
 
 #pragma once
 
-#include "../onewaymessage.h"
+#include "onewaymessage.h"
 #include "../helpers/querystructs.h"
 
 namespace Api {
