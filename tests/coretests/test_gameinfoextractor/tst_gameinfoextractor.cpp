@@ -54,6 +54,7 @@ private:
 private:
     QString m_baseContent;
     QString m_constantsContents;
+
 };
 
 void GameInfoExtractorTest::initTestCase()
@@ -63,18 +64,17 @@ void GameInfoExtractorTest::initTestCase()
         { "jsconstants.js", &m_constantsContents },
     };
 
-    QHashIterator<QString, QString*> hi(data);
-    while (hi.hasNext()) {
-        auto foofof = hi.next();
+    QHashIterator<QString, QString*> dataIterator(data);
+    while (dataIterator.hasNext()) {
+        const auto dataItem = dataIterator.next();
+        QString *dataMember = dataIterator.value();
 
-        QString *shto = hi.value();
-
-        QFile siteFile (QString("%1/assets/%2").arg(TEST_PWD).arg(foofof.key()));
+        QFile siteFile (QString("%1/assets/%2").arg(TEST_PWD).arg(dataItem.key()));
         if (!siteFile.open(QIODevice::ReadOnly)) {
             QFAIL ("Unable to open file");
         }
 
-        *shto = QString::fromUtf8(siteFile.readAll());
+        *dataMember = QString::fromUtf8(siteFile.readAll());
     }
 }
 
