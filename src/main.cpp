@@ -39,7 +39,7 @@
 #include <QtDebug>
 
 using namespace Api;
-using namespace Messages;
+using namespace Api::Messages;
 
 #ifdef Q_OS_WIN
     #include <windows.h>

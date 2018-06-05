@@ -19,7 +19,7 @@
 #include "apigateway.h"
 
 using namespace Api;
-using namespace Messages;
+using namespace Api::Messages;
 
 ApiMessage::ApiMessage(ApiGateway *gateway,
                        MessageType messageType,

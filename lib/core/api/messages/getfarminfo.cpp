@@ -29,7 +29,7 @@
 #include <QtNetwork/QNetworkReply>
 
 using namespace Api;
-using namespace Messages;
+using namespace Api::Messages;
 using namespace Helpers;
 
 const QUrl GetFarmInfo::url() const

@@ -26,7 +26,7 @@
 #include <QtCore/QJsonArray>
 
 using namespace Api;
-using namespace Messages;
+using namespace Api::Messages;
 
 const QUrl Login::url() const
 {

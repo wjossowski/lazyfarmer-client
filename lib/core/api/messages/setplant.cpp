@@ -20,7 +20,7 @@
 #include "../apigateway.h"
 
 using namespace Api;
-using namespace Messages;
+using namespace Api::Messages;
 
 SetPlant::SetPlant(ApiGateway *gateway,
                    const BuildingData &buindingData,

@@ -20,7 +20,7 @@
 #include "../apigateway.h"
 
 using namespace Api;
-using namespace Messages;
+using namespace Api::Messages;
 
 GetProduction::GetProduction(ApiGateway *gateway,
                              const BuildingData &buindingData,

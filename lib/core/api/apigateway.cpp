@@ -38,7 +38,7 @@
 #include <QtDebug>
 
 using namespace Api;
-using namespace Messages;
+using namespace Api::Messages;
 using namespace Helpers;
 
 ApiGateway::ApiGateway(QObject *parent)

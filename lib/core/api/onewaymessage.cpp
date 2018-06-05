@@ -23,7 +23,7 @@
 #include <QtNetwork/QNetworkReply>
 
 using namespace Api;
-using namespace Messages;
+using namespace Api::Messages;
 
 OneWayMessage::OneWayMessage(ApiGateway *gateway,
                              MessageType type,

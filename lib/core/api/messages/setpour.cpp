@@ -20,7 +20,7 @@
 #include "../apigateway.h"
 
 using namespace Api;
-using namespace Messages;
+using namespace Api::Messages;
 
 SetPour::SetPour(ApiGateway *gateway,
                  const BuildingData &buildingData,
