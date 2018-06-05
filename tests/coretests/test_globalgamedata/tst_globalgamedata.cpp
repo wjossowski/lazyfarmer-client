@@ -31,8 +31,9 @@ class GlobalGameDataTest : public QObject
 
 private slots:
     void initTestCase();
-
-    void loadDataTest();
+    void productDataTest();
+    void buildingDataTest();
+    void forestryDataTest();
     void emptyDataTest();
 
 private:
@@ -47,12 +48,11 @@ void GlobalGameDataTest::initTestCase()
     }
 
     m_data = QJsonDocument::fromJson(fieldsJson.readAll()).toVariant();
+    GlobalGameData::registerGameData("domain", m_data);
 }
 
-void GlobalGameDataTest::loadDataTest()
+void GlobalGameDataTest::productDataTest()
 {
-    GlobalGameData::registerGameData("domain", m_data);
-
     const auto domainData = GlobalGameData::gameData("domain");
     const auto productInfo = domainData->productInfo("2");
 
@@ -60,6 +60,22 @@ void GlobalGameDataTest::loadDataTest()
     QVERIFY(productInfo.size == 4);
     QVERIFY(productInfo.price == 110);
     QVERIFY(productInfo.time == 2700);
+}
+
+void GlobalGameDataTest::buildingDataTest()
+{
+    const auto domainData = GlobalGameData::gameData("domain");
+    const auto buildingInfo = domainData->buildingInfo("2");
+
+    QVERIFY(buildingInfo.name == "Kurnik");
+}
+
+void GlobalGameDataTest::forestryDataTest()
+{
+    const auto domainData = GlobalGameData::gameData("domain");
+    const auto forestryInfo = domainData->forestryInfo("2");
+
+    QVERIFY(forestryInfo.name == "Brzoza");
 }
 
 void GlobalGameDataTest::emptyDataTest()
