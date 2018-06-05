@@ -32,7 +32,11 @@ class GlobalGameDataTest : public QObject
 private slots:
     void initTestCase();
 
-//    void
+    void loadDataTest();
+    void emptyDataTest();
+
+private:
+    QVariant m_data;
 };
 
 void GlobalGameDataTest::initTestCase()
@@ -42,9 +46,30 @@ void GlobalGameDataTest::initTestCase()
         QFAIL ("Unable to open globalgamedata.json file");
     }
 
-    GlobalGameData::registerGameData("domain", QJsonDocument::fromJson(fieldsJson.readAll()).toVariant());
+    m_data = QJsonDocument::fromJson(fieldsJson.readAll()).toVariant();
 }
 
+void GlobalGameDataTest::loadDataTest()
+{
+    GlobalGameData::registerGameData("domain", m_data);
+
+    const auto domainData = GlobalGameData::gameData("domain");
+    const auto productInfo = domainData->productInfo("2");
+
+    QVERIFY(productInfo.name == "Kukurydza");
+    QVERIFY(productInfo.size == 4);
+    QVERIFY(productInfo.price == 110);
+    QVERIFY(productInfo.time == 2700);
+}
+
+void GlobalGameDataTest::emptyDataTest()
+{
+    const auto undefinedData = GlobalGameData::gameData("nothinsk");
+
+    QVERIFY(undefinedData->productInfo("2").name == "Unknown Product");
+    QVERIFY(undefinedData->buildingInfo("11").name == "Unknown Building");
+    QVERIFY(undefinedData->forestryInfo("21").name == "Unknown Product");
+}
 
 QTEST_APPLESS_MAIN(GlobalGameDataTest)
 

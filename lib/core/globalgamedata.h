@@ -18,7 +18,8 @@
 
 #include <QtCore/QMap>
 #include <QtCore/QVariant>
-#include <QtCore/QScopedPointer>
+#include <QtCore/QSharedPointer>
+#include <QtCore/QJsonObject>
 
 namespace Core {
 
@@ -46,31 +47,35 @@ namespace Core {
         virtual ~GlobalGameData() = default;
 
         const BuildingInfo buildingInfo (const QString &buildingId) const {
-            return m_buildingInfos.value(buildingId);
+            return m_buildingInfos.value(buildingId, { "Unknown Building" });
         }
         const ProductInfo productInfo (const QString &productId) const {
-            return m_productInfos.value(productId);
+            return m_productInfos.value(productId, { "Unknown Product", 0, 0, UINT32_MAX });
         }
         const ForestryInfo forestryInfo (const QString &forestryId) const {
-            return m_forestryInfos.value(forestryId);
+            return m_forestryInfos.value(forestryId, { "Unknown Product" });
         }
 
         static void registerGameData(const QString &domain, const QVariant &data);
-        static const GlobalGameData &gameData(const QString &domain);
+        static QSharedPointer<GlobalGameData> gameData(const QString &domain);
+
+        QMap<QString, BuildingInfo> buildingInfos() const { return m_buildingInfos; }
+        QMap<QString, ProductInfo> productInfos() const { return m_productInfos; }
+        QMap<QString, ForestryInfo> forestryInfos() const { return m_forestryInfos; }
 
     private:
-        explicit GlobalGameData(const QVariant &data);
+        explicit GlobalGameData(const QVariant &data = QVariant());
 
-        void createProductInfo(const QVariant &data);
-        void createBuildingInfo(const QVariant &data);
-        void createForestryInfo(const QVariant &data);
+        void createProductInfo(const QJsonObject &baseData, const QJsonObject &constantsData);
+        void createBuildingInfo(const QJsonObject &baseData);
+        void createForestryInfo(const QJsonObject &baseData);
 
     private:
         QMap<QString, BuildingInfo> m_buildingInfos;
         QMap<QString, ProductInfo> m_productInfos;
         QMap<QString, ForestryInfo> m_forestryInfos;
 
-        static QMap<QString, GlobalGameData> m_gameData;
+        static QMap<QString, QSharedPointer<GlobalGameData>> m_gameData;
 
     };
 
