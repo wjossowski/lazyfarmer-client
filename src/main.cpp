@@ -49,7 +49,8 @@ QFile debugFile;
 QMutex debugMutex;
 QTextStream debugStream;
 
-void handleMessage(QtMsgType type, const QMessageLogContext &context,
+void handleMessage(QtMsgType type,
+                   const QMessageLogContext &context,
                    const QString &buf)
 {
     QMutexLocker locker(&debugMutex);

@@ -28,13 +28,16 @@ namespace Api {
         {
         public:
             explicit Login(ApiGateway *gateway)
-                : ApiMessage (gateway, MessageType::Login, QueryType::Post, false) { }
+                : ApiMessage (gateway, MessageType::Login, false) { }
+
+            QueryType queryType() const override { return QueryType::Post; }
 
             const QUrl url() const override;
             void configureRequest(QNetworkRequest &request) const override;
             const QList<QPair<QString, QString> > postData() const override;
 
             void handleResponse(QNetworkReply *reply) override;
+
         };
 
     }

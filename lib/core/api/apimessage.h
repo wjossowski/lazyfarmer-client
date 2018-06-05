@@ -69,7 +69,6 @@ namespace Api {
         public:
             explicit ApiMessage(ApiGateway *gateway,
                                 MessageType messageType = MessageType::Unknown,
-                                QueryType queryType = QueryType::Get,
                                 bool isLoginRequired = true);
 
             virtual ~ApiMessage();
@@ -77,7 +76,7 @@ namespace Api {
             bool isSent() const { return m_isSent; }
             void setIsSent(bool isSent) { m_isSent = isSent; }
 
-            QueryType queryType() const { return m_queryType; }
+            virtual QueryType queryType() const { return QueryType::Get; }
 
             virtual const QUrl url() const = 0;
             virtual void configureRequest(QNetworkRequest &request) const { Q_UNUSED (request) }
@@ -93,7 +92,6 @@ namespace Api {
             ApiGateway *m_gateway;
 
             MessageType m_messageType;
-            QueryType m_queryType;
 
             bool m_isLoginRequired;
             bool m_isSent;

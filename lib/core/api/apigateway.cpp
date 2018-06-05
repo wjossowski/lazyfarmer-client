@@ -146,10 +146,6 @@ QUrl ApiGateway::buildEndpointUrl(const QString &endpoint,
             .arg(endpoint)
             .arg(query.toString());
 
-#if DEBUG_MODE
-    qDebug() << "Building Query:" << url << query.toString();
-#endif
-
     return QUrl(url);
 }
 

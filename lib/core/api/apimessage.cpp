@@ -23,14 +23,12 @@ using namespace Messages;
 
 ApiMessage::ApiMessage(ApiGateway *gateway,
                        MessageType messageType,
-                       Api::Messages::QueryType queryType,
                        bool isLoginRequired)
     : QObject(gateway),
 
       m_gateway(gateway),
 
       m_messageType(messageType),
-      m_queryType(queryType),
 
       m_isLoginRequired(isLoginRequired),
       m_isSent(false)
