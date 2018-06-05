@@ -38,8 +38,10 @@
 
 #include <QtDebug>
 
+#ifdef DEBUG_MODE
 using namespace Api;
 using namespace Api::Messages;
+#endif
 
 #ifdef Q_OS_WIN
     #include <windows.h>
@@ -53,6 +55,12 @@ void handleMessage(QtMsgType type,
                    const QMessageLogContext &context,
                    const QString &buf)
 {
+#ifndef DEBUG_MODE
+    if (type == QtDebugMsg){
+        return;
+    }
+#endif
+
     QMutexLocker locker(&debugMutex);
     const auto message = qFormatLogMessage(type, context, buf);
 
@@ -61,7 +69,7 @@ void handleMessage(QtMsgType type,
     fflush(out);
 
     if (debugStream.status() == QTextStream::Ok) {
-        debugStream << message << flush;
+        debugStream << '\n' << message << flush;
     }
 }
 
@@ -154,6 +162,8 @@ int main(int argc, char *argv[])
         // Initialize message handler
         qSetMessagePattern("[%{time HH:mm:ss.zzz}] %{type}: %{message} (%{function}, %{file}, %{line})");
         qInstallMessageHandler(handleMessage);
+
+        qDebug() << debugFile.fileName();
 
     } catch (std::exception &e) {
         qCritical() << e.what();
