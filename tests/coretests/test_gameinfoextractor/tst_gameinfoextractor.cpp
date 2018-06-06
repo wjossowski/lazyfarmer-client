@@ -125,10 +125,10 @@ void GameInfoExtractorTest::constantsExtractorTest()
 
 void GameInfoExtractorTest::extractToFile()
 {
-    const auto baseExtractor = GameInfoExtractor::createBaseExtractor();
+    const auto baseExtractor = GameInfoExtractor::baseExtractor();
     QVERIFY2 (baseExtractor->extract(m_baseContent), "GameInfoExtractor should extract");
 
-    const auto constantsExtractor = GameInfoExtractor::createConstantsExtractor();
+    const auto constantsExtractor = GameInfoExtractor::constantsExtractor();
     QVERIFY2 (constantsExtractor->extract(m_constantsContents), "GameInfoExtractor should extract");
 
     QFile file(QString("%1/labels.json").arg(TEST_OUT_PWD));

@@ -61,9 +61,10 @@ namespace Api {
 
         void setApiOptions(const ApiOptions &options);
 
-        void queueMessage(const QSharedPointer<Messages::ApiMessage> &message);
+        void queueMessage(const QSharedPointer<Messages::ApiMessage> &message, bool pushToTop = false);
         void start();
 
+        QUrl buildStaticUrl(const QString &endpoint);
 
         QUrl buildEndpointUrl(const QString &endpoint,
                               const QList<QPair<QString, QString>> &data,

@@ -1,6 +1,6 @@
 /**
  ** This file is part of the LazyFarmer project.
- ** Copyright 2017 Wojciech Ossowski <w.j.ossowski@gmail.com>.
+ ** Copyright 2018 Wojciech Ossowski <w.j.ossowski@gmail.com>.
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU Lesser General Public License as
@@ -16,21 +16,24 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#pragma once
+#include "apimessage.h"
 
-// Account management
-#include "login.h"
-#include "logout.h"
+namespace Api {
 
-// Getters
-#include "getfarminfo.h"
-#include "getcollect.h"
-#include "getproduction.h"
-#include "getfieldinfo.h"
-#include "getconstantdata.h"
+    namespace Messages {
 
-// Setters
-#include "setplant.h"
-#include "setpour.h"
-#include "setfeed.h"
-#include "setproduction.h"
+        class GetConstantData : public ApiMessage
+        {
+        public:
+            explicit GetConstantData(ApiGateway *gateway, const QString &fileUrl);
+
+            const QUrl url() const override;
+            void handleResponse(QNetworkReply *reply) override;
+
+        private:
+            QString m_fileUrl;
+        };
+
+    }
+
+}
