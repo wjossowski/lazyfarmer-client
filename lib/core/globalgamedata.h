@@ -19,7 +19,6 @@
 #include <QtCore/QMap>
 #include <QtCore/QVariant>
 #include <QtCore/QSharedPointer>
-#include <QtCore/QJsonObject>
 
 namespace Core {
 
@@ -66,9 +65,9 @@ namespace Core {
     private:
         explicit GlobalGameData(const QVariant &data = QVariant());
 
-        void createProductInfo(const QJsonObject &baseData, const QJsonObject &constantsData);
-        void createBuildingInfo(const QJsonObject &baseData);
-        void createForestryInfo(const QJsonObject &baseData);
+        void createProductInfo(const QVariantMap &baseData, const QVariantMap &constantsData);
+        void createBuildingInfo(const QVariantMap &baseData);
+        void createForestryInfo(const QVariantMap &baseData);
 
     private:
         QMap<QString, BuildingInfo> m_buildingInfos;
