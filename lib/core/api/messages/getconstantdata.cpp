@@ -20,7 +20,6 @@
 #include "../apigateway.h"
 
 #include "../../helpers/gameinfoextractor.h"
-#include "../../globalgamedata.h"
 
 #include <QtNetwork/QNetworkReply>
 

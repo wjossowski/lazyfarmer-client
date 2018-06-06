@@ -31,7 +31,7 @@ namespace Api {
             Login, // Done
             Logout, // Done
 
-            GetConstantData,
+            GetConstantData, // Done
 
             GetFarmInfo, // Todo
             GetFieldInfo,
