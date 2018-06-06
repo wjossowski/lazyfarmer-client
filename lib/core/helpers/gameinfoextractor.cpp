@@ -73,10 +73,29 @@ QSharedPointer<GameInfoExtractor> GameInfoExtractor::constantsExtractor(const QS
     return findOrCreateExtractor(domain, GameInfoExtractor::ConstantsFilters, m_constantsExtractors);
 }
 
-bool GameInfoExtractor::extract(const QString &content)
+QVariantMap GameInfoExtractor::globalResults(const QString &domain)
+{
+    if (!m_baseExtractors.contains(domain) || !m_constantsExtractors.contains(domain)) {
+        return QVariantMap();
+    }
+
+    const auto baseResults = m_baseExtractors[domain]->results();
+    const auto constantResults = m_constantsExtractors[domain]->results();
+
+    if (baseResults.isEmpty() || constantResults.isEmpty()) {
+        return QVariantMap();
+    } else {
+        return {
+            { "base", baseResults },
+            { "constants", constantResults }
+        };
+    }
+}
+
+void GameInfoExtractor::extract(const QString &content)
 {
     if (!m_results.isEmpty()) {
-        return true;
+        return;
     }
 
     auto extractJson = [&] (const QString &match, const QString &pattern) {
@@ -96,8 +115,6 @@ bool GameInfoExtractor::extract(const QString &content)
         filter.next();
         extractJson (filter.key(), filter.value().toString());
     }
-
-    return true;
 }
 
 void GameInfoExtractor::save()

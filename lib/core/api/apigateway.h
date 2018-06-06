@@ -81,6 +81,7 @@ namespace Api {
 
         QNetworkAccessManager *accessManager() { return &m_manager; }
 
+        void extractGameData();
         void handleError(ApiGatewayError::ErrorType errorType, const QStringList &args = QStringList());
 
     signals:
@@ -88,6 +89,7 @@ namespace Api {
         void errorRaised(const QString &message) const;
 
     private:
+        void queueConstantData(const QString &content);
         bool handleNotLogged(const QString &operation);
 
     private:

@@ -46,6 +46,8 @@ namespace Helpers {
         static Ptr baseExtractor(const QString &domain = QString());
         static Ptr constantsExtractor(const QString &domain = QString());
 
+        static QVariantMap globalResults(const QString &domain = QString());
+
         inline QString domain() const { return m_domain; }
         inline void setDomain(const QString &domain) { m_domain = domain; }
 
@@ -56,7 +58,7 @@ namespace Helpers {
         static const QVariantMap BaseFilters;
         static const QVariantMap ConstantsFilters;
 
-        bool extract(const QString &content);
+        void extract(const QString &content);
         const QVariantMap &results() { return m_results; }
         void save();
 

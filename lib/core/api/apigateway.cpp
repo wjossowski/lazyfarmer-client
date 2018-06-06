@@ -17,7 +17,10 @@
  **/
 
 #include "apigateway.h"
+#include "globalgamedata.h"
+
 #include "helpers/gameinfoextractor.h"
+
 #include "messages/messages.h"
 
 #include <QtNetwork/QNetworkRequest>
@@ -37,6 +40,7 @@
 
 #include <QtDebug>
 
+using namespace Core;
 using namespace Api;
 using namespace Api::Messages;
 using namespace Helpers;
@@ -91,19 +95,7 @@ void ApiGateway::extractRid(QNetworkReply *reply)
             const auto extractor = GameInfoExtractor::baseExtractor(m_serverDomain);
             extractor->extract(content);
 
-            // Create url template with version placeholder
-            const QString jsConstantUrl ("js/jsconstants_%1.js");
-
-            // Create regex to obtain version number
-            QRegularExpression jscVersionRegex(QString("src=\"%1\"")
-                                               .arg(jsConstantUrl.arg("(?<version>.*)")));
-
-            // Acquire version number
-            const auto version = jscVersionRegex.match(content).captured("version");
-
-            // TODO: Add message to obtain library
-            queueMessage(QSharedPointer<GetConstantData>(new GetConstantData(this, jsConstantUrl.arg(version))),
-                         true /*push to top*/);
+            queueConstantData(content);
 
             m_firstRun = false;
         }
@@ -243,6 +235,11 @@ void ApiGateway::sendMessage(ApiMessage *message)
     }
 }
 
+void ApiGateway::extractGameData()
+{
+    GlobalGameData::registerGameData(m_serverDomain, GameInfoExtractor::globalResults(m_serverDomain));
+}
+
 void ApiGateway::handleError(ApiGatewayError::ErrorType errorType, const QStringList &args)
 {
     ApiGatewayError error(errorType);
@@ -259,6 +256,24 @@ void ApiGateway::handleError(ApiGatewayError::ErrorType errorType, const QString
     emit errorRaised(errorMessage); 
 
     qCritical() << errorMessage;
+}
+
+void ApiGateway::queueConstantData(const QString &content)
+{
+    // Create url template with version placeholder
+    const QString jsConstantUrl ("js/jsconstants_%1.js");
+
+    // Create regex to obtain version number
+    QRegularExpression jscVersionRegex(QString("src=\"%1\"").arg(jsConstantUrl.arg("(?<version>.*)")));
+
+    // Acquire version number
+    const auto version = jscVersionRegex.match(content).captured("version");
+
+    auto message = new GetConstantData(this, jsConstantUrl.arg(version));
+    const auto messagePtr = QSharedPointer<GetConstantData>(message);
+
+    // TODO: Add message to obtain library
+    queueMessage(messagePtr, true);
 }
 
 bool ApiGateway::handleNotLogged(const QString &operation)

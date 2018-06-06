@@ -20,11 +20,13 @@
 #include "../apigateway.h"
 
 #include "../../helpers/gameinfoextractor.h"
+#include "../../globalgamedata.h"
 
 #include <QtNetwork/QNetworkReply>
 
 using namespace Api;
 using namespace Api::Messages;
+using namespace Helpers;
 
 GetConstantData::GetConstantData(ApiGateway *gateway,
                                  const QString &fileUrl)
@@ -41,8 +43,10 @@ const QUrl GetConstantData::url() const
 
 void GetConstantData::handleResponse(QNetworkReply *reply)
 {
-    const auto extractor = Helpers::GameInfoExtractor::constantsExtractor(m_gateway->serverDomain());
+    const auto extractor = GameInfoExtractor::constantsExtractor(m_gateway->serverDomain());
     extractor->extract(reply->readAll());
 
-    qDebug() << extractor->results();
+    m_gateway->extractGameData();
+
+    emit finished();
 }
