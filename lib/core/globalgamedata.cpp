@@ -18,17 +18,14 @@
 
 #include "globalgamedata.h"
 
-#include <QtCore/QJsonObject>
-#include <QtCore/QJsonDocument>
-
 #include <QtDebug>
 
 using namespace Core;
 
 QMap<QString, QSharedPointer<GlobalGameData>> GlobalGameData::m_gameData;
 
-const QJsonObject childObject (const QJsonObject &object, const QString &property) {
-    return object.value(property).toObject();
+const QVariantMap childObject (const QVariant &object, const QString &property) {
+    return object.toMap().value(property).toMap();
 }
 
 void GlobalGameData::registerGameData(const QString &domain,
@@ -48,7 +45,7 @@ QSharedPointer<GlobalGameData> GlobalGameData::gameData(const QString &domain)
 
 GlobalGameData::GlobalGameData(const QVariant &data)
 {
-    const auto contents = QJsonDocument::fromVariant(data).object();
+    const auto contents = data.toMap();
     if (contents.isEmpty()) {
         return;
     }
@@ -64,7 +61,7 @@ GlobalGameData::GlobalGameData(const QVariant &data)
     createForestryInfo(baseObject);
 }
 
-void GlobalGameData::createProductInfo(const QJsonObject &baseData, const QJsonObject &constantsData)
+void GlobalGameData::createProductInfo(const QVariantMap &baseData, const QVariantMap &constantsData)
 {
     const auto productNames = childObject(baseData, "products");
     const auto productPrices = childObject(baseData, "products_prices");
@@ -96,7 +93,7 @@ void GlobalGameData::createProductInfo(const QJsonObject &baseData, const QJsonO
     }
 }
 
-void GlobalGameData::createBuildingInfo(const QJsonObject &baseData)
+void GlobalGameData::createBuildingInfo(const QVariantMap &baseData)
 {
     const auto buildingNames = childObject(baseData, "buildings");
 
@@ -109,7 +106,7 @@ void GlobalGameData::createBuildingInfo(const QJsonObject &baseData)
     }
 }
 
-void GlobalGameData::createForestryInfo(const QJsonObject &baseData)
+void GlobalGameData::createForestryInfo(const QVariantMap &baseData)
 {
     const auto forestryNames = childObject(baseData, "forestry");
 
