@@ -184,11 +184,11 @@ int main(int argc, char *argv[])
         ProductData plant (1, 2, i+1);
 
 //        debugGateway.queueMessage(QSharedPointer<GetCollect>(new GetCollect(&debugGateway, building, plant)));
-        debugGateway.queueMessage(QSharedPointer<SetPlant>(new SetPlant(&debugGateway, building, plant)));
-        debugGateway.queueMessage(QSharedPointer<SetPour>(new SetPour(&debugGateway, building, plant)));
+//        debugGateway.queueMessage(QSharedPointer<SetPlant>(new SetPlant(&debugGateway, building, plant)));
+//        debugGateway.queueMessage(QSharedPointer<SetPour>(new SetPour(&debugGateway, building, plant)));
     }
 
-    debugGateway.queueMessage(QSharedPointer<GetFarmInfo>(new GetFarmInfo(&debugGateway)));
+//    debugGateway.queueMessage(QSharedPointer<GetFarmInfo>(new GetFarmInfo(&debugGateway)));
 
     debugGateway.queueMessage(QSharedPointer<Logout>(new Logout(&debugGateway)));
 //    debugGateway.queueMessage(QSharedPointer<SetPlant>(new SetPlant(&debugGateway)));

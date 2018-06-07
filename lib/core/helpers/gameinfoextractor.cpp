@@ -23,9 +23,13 @@
 #include <QtCore/QJsonArray>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
+
 #include <QtDebug>
 
 using namespace Helpers;
+
+QMap<QString, GameInfoExtractor::Ptr> GameInfoExtractor::m_baseExtractors;
+QMap<QString, GameInfoExtractor::Ptr> GameInfoExtractor::m_constantsExtractors;
 
 const QVariantMap GameInfoExtractor::BaseFilters = {
     { "forestry", "var produkt_name_forestry = (?<forestry>.*);" },
@@ -59,18 +63,41 @@ GameInfoExtractor::~GameInfoExtractor()
 #endif
 }
 
-QSharedPointer<GameInfoExtractor> GameInfoExtractor::createBaseExtractor(const QString &domain)
+QSharedPointer<GameInfoExtractor> GameInfoExtractor::baseExtractor(const QString &domain)
 {
-    return QSharedPointer<GameInfoExtractor>(new GameInfoExtractor(GameInfoExtractor::BaseFilters, domain));
+    return findOrCreateExtractor(domain, GameInfoExtractor::BaseFilters, m_baseExtractors);
 }
 
-QSharedPointer<GameInfoExtractor> GameInfoExtractor::createConstantsExtractor(const QString &domain)
+QSharedPointer<GameInfoExtractor> GameInfoExtractor::constantsExtractor(const QString &domain)
 {
-    return QSharedPointer<GameInfoExtractor>(new GameInfoExtractor(GameInfoExtractor::ConstantsFilters, domain));
+    return findOrCreateExtractor(domain, GameInfoExtractor::ConstantsFilters, m_constantsExtractors);
 }
 
-bool GameInfoExtractor::extract(const QString &content)
+QVariantMap GameInfoExtractor::globalResults(const QString &domain)
 {
+    if (!m_baseExtractors.contains(domain) || !m_constantsExtractors.contains(domain)) {
+        return QVariantMap();
+    }
+
+    const auto baseResults = m_baseExtractors[domain]->results();
+    const auto constantResults = m_constantsExtractors[domain]->results();
+
+    if (baseResults.isEmpty() || constantResults.isEmpty()) {
+        return QVariantMap();
+    } else {
+        return {
+            { "base", baseResults },
+            { "constants", constantResults }
+        };
+    }
+}
+
+void GameInfoExtractor::extract(const QString &content)
+{
+    if (!m_results.isEmpty()) {
+        return;
+    }
+
     auto extractJson = [&] (const QString &match, const QString &pattern) {
         const QRegularExpression regex(pattern);
         const QString captured = regex.match(content).captured(match).replace(QRegularExpression(",\\s*\\}$"), "}");
@@ -88,8 +115,6 @@ bool GameInfoExtractor::extract(const QString &content)
         filter.next();
         extractJson (filter.key(), filter.value().toString());
     }
-
-    return true;
 }
 
 void GameInfoExtractor::save()
@@ -139,5 +164,18 @@ QVariantMap GameInfoExtractor::extractObject(QJsonDocument &&document) const
         return document.object().toVariantMap();
     } else {
         return QVariantMap();
+    }
+}
+
+GameInfoExtractor::Ptr GameInfoExtractor::findOrCreateExtractor(const QString &domain,
+                                                                const QVariantMap &filters,
+                                                                QMap<QString, GameInfoExtractor::Ptr> &source)
+{
+    if (source.contains(domain)) {
+        return source[domain];
+    } else {
+        auto extractor = Ptr(new GameInfoExtractor(filters, domain));
+        source.insert(domain, extractor);
+        return extractor;
     }
 }

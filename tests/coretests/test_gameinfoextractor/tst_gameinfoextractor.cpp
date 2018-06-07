@@ -94,7 +94,7 @@ void GameInfoExtractorTest::baseExtractorTest()
 
     GameInfoExtractor extractor(constructBaseFilter(key));
 
-    QVERIFY2 (extractor.extract(m_baseContent), "GameInfoExtractor should extract");
+    extractor.extract(m_baseContent);
     const auto &output = extractor.results();
 
     QVERIFY2 (!output.isEmpty(), "Product object shouldn't be empty");
@@ -116,7 +116,7 @@ void GameInfoExtractorTest::constantsExtractorTest()
 
     GameInfoExtractor extractor(constructConstantsFilter(key));
 
-    QVERIFY2 (extractor.extract(m_constantsContents), "GameInfoExtractor should extract");
+    extractor.extract(m_constantsContents);
     const auto &output = extractor.results();
 
     QVERIFY2 (!output.isEmpty(), "Product object shouldn't be empty");
@@ -125,11 +125,11 @@ void GameInfoExtractorTest::constantsExtractorTest()
 
 void GameInfoExtractorTest::extractToFile()
 {
-    const auto baseExtractor = GameInfoExtractor::createBaseExtractor();
-    QVERIFY2 (baseExtractor->extract(m_baseContent), "GameInfoExtractor should extract");
+    const auto baseExtractor = GameInfoExtractor::baseExtractor();
+    baseExtractor->extract(m_baseContent);
 
-    const auto constantsExtractor = GameInfoExtractor::createConstantsExtractor();
-    QVERIFY2 (constantsExtractor->extract(m_constantsContents), "GameInfoExtractor should extract");
+    const auto constantsExtractor = GameInfoExtractor::constantsExtractor();
+    constantsExtractor->extract(m_constantsContents);
 
     QFile file(QString("%1/labels.json").arg(TEST_OUT_PWD));
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {

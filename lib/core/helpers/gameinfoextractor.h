@@ -36,13 +36,17 @@ namespace Helpers {
         Q_DISABLE_COPY(GameInfoExtractor)
 
     public:
+        using Ptr = QSharedPointer<GameInfoExtractor>;
+
         explicit GameInfoExtractor(const QVariantMap &filters,
                                    const QString &domain = QString());
 
         virtual ~GameInfoExtractor();
 
-        static QSharedPointer<GameInfoExtractor> createBaseExtractor(const QString &domain = QString());
-        static QSharedPointer<GameInfoExtractor> createConstantsExtractor(const QString &domain = QString());
+        static Ptr baseExtractor(const QString &domain = QString());
+        static Ptr constantsExtractor(const QString &domain = QString());
+
+        static QVariantMap globalResults(const QString &domain = QString());
 
         inline QString domain() const { return m_domain; }
         inline void setDomain(const QString &domain) { m_domain = domain; }
@@ -54,7 +58,7 @@ namespace Helpers {
         static const QVariantMap BaseFilters;
         static const QVariantMap ConstantsFilters;
 
-        bool extract(const QString &content);
+        void extract(const QString &content);
         const QVariantMap &results() { return m_results; }
         void save();
 
@@ -62,7 +66,14 @@ namespace Helpers {
         QVariantMap extractNameFromObject(QJsonObject &&object) const;
         QVariantMap extractObject(QJsonDocument &&document) const;
 
+        static Ptr findOrCreateExtractor(const QString &domain,
+                                         const QVariantMap &filters,
+                                         QMap<QString, Ptr> &source);
+
     private:
+        static QMap<QString, Ptr> m_baseExtractors;
+        static QMap<QString, Ptr> m_constantsExtractors;
+
         QVariantMap m_filters;
         QVariantMap m_results;
 

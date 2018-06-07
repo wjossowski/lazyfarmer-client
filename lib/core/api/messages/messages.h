@@ -27,6 +27,7 @@
 #include "getcollect.h"
 #include "getproduction.h"
 #include "getfieldinfo.h"
+#include "getconstantdata.h"
 
 // Setters
 #include "setplant.h"

@@ -16,46 +16,36 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-namespace Api {
+#include "getconstantdata.h"
+#include "../apigateway.h"
 
-    namespace Messages {
+#include "../../helpers/gameinfoextractor.h"
 
-        enum class QueryType {
-            Post,
-            Get,
+#include <QtNetwork/QNetworkReply>
 
-            Unknown
-        };
+using namespace Api;
+using namespace Api::Messages;
+using namespace Helpers;
 
-        enum class MessageType {
-            Login, // Done
-            Logout, // Done
+GetConstantData::GetConstantData(ApiGateway *gateway,
+                                 const QString &fileUrl)
+    : ApiMessage(gateway, MessageType::GetConstantData),
+      m_fileUrl(fileUrl)
+{
 
-            GetConstantData, // Done
+}
 
-            GetFarmInfo, // Todo
-            GetFieldInfo,
+const QUrl GetConstantData::url() const
+{
+    return m_gateway->buildStaticUrl(m_fileUrl);
+}
 
-            SetPlant, // Done
-            SetPour, // Done
-            GetCollect, // Done
+void GetConstantData::handleResponse(QNetworkReply *reply)
+{
+    const auto extractor = GameInfoExtractor::constantsExtractor(m_gateway->serverDomain());
+    extractor->extract(reply->readAll());
 
-            SetFeed, // Done
-            GetFeed,
+    m_gateway->extractGameData();
 
-            SetProduction, // Done
-            GetProduction, // Done
-            GetProductionInfo,
-
-            SetBuyer,
-            GetBuyer,
-
-            GetPricesOnMarket,
-            SetOfferOnMarket,
-
-            Unknown
-        };
-
-    }
-
+    emit finished();
 }

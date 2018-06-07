@@ -61,9 +61,10 @@ namespace Api {
 
         void setApiOptions(const ApiOptions &options);
 
-        void queueMessage(const QSharedPointer<Messages::ApiMessage> &message);
+        void queueMessage(const QSharedPointer<Messages::ApiMessage> &message, bool pushToTop = false);
         void start();
 
+        QUrl buildStaticUrl(const QString &endpoint);
 
         QUrl buildEndpointUrl(const QString &endpoint,
                               const QList<QPair<QString, QString>> &data,
@@ -80,6 +81,7 @@ namespace Api {
 
         QNetworkAccessManager *accessManager() { return &m_manager; }
 
+        void extractGameData();
         void handleError(ApiGatewayError::ErrorType errorType, const QStringList &args = QStringList());
 
     signals:
@@ -87,6 +89,7 @@ namespace Api {
         void errorRaised(const QString &message) const;
 
     private:
+        void queueConstantData(const QString &content);
         bool handleNotLogged(const QString &operation);
 
     private:

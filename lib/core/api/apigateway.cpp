@@ -17,7 +17,10 @@
  **/
 
 #include "apigateway.h"
+#include "globalgamedata.h"
+
 #include "helpers/gameinfoextractor.h"
+
 #include "messages/messages.h"
 
 #include <QtNetwork/QNetworkRequest>
@@ -37,6 +40,7 @@
 
 #include <QtDebug>
 
+using namespace Core;
 using namespace Api;
 using namespace Api::Messages;
 using namespace Helpers;
@@ -87,12 +91,16 @@ void ApiGateway::extractRid(QNetworkReply *reply)
     m_rid = ridRegex.match(content).captured("rid");
 
     if (!m_rid.isEmpty()) {
-        setLoggedIn(true);
-
         if (m_firstRun) {
-            const auto extractor = GameInfoExtractor::createBaseExtractor(m_serverDomain);
+            const auto extractor = GameInfoExtractor::baseExtractor(m_serverDomain);
             extractor->extract(content);
+
+            queueConstantData(content);
+
+            m_firstRun = false;
         }
+
+        setLoggedIn(true);
     } else {
         handleError(ApiGatewayError::ErrorType::RidNotParsed);
     }
@@ -106,14 +114,16 @@ void ApiGateway::setApiOptions(const ApiOptions &options)
     m_password = options.password;
 }
 
-void ApiGateway::queueMessage(const QSharedPointer<ApiMessage> &message)
+void ApiGateway::queueMessage(const QSharedPointer<ApiMessage> &message, bool pushToTop)
 {
-    m_messageQueue.push_back(message);
+    if (pushToTop) {
+        m_messageQueue.push_front(message);
+    } else {
+        m_messageQueue.push_back(message);
+    }
 
     connect(message.data(), &ApiMessage::raiseError,
             this,           &ApiGateway::handleError);
-
-    // TODO: Handle message response
 }
 
 void ApiGateway::start()
@@ -128,6 +138,14 @@ void ApiGateway::start()
     m_messageQueue.pop_front();
 
     sendMessage(m_currentMessage.data());
+}
+
+QUrl ApiGateway::buildStaticUrl(const QString &endpoint)
+{
+    return QString("http://s%1.%2/%3")
+            .arg(m_serverId)
+            .arg(m_serverDomain)
+            .arg(endpoint);
 }
 
 QUrl ApiGateway::buildEndpointUrl(const QString &endpoint,
@@ -217,6 +235,11 @@ void ApiGateway::sendMessage(ApiMessage *message)
     }
 }
 
+void ApiGateway::extractGameData()
+{
+    GlobalGameData::registerGameData(m_serverDomain, GameInfoExtractor::globalResults(m_serverDomain));
+}
+
 void ApiGateway::handleError(ApiGatewayError::ErrorType errorType, const QStringList &args)
 {
     ApiGatewayError error(errorType);
@@ -233,6 +256,24 @@ void ApiGateway::handleError(ApiGatewayError::ErrorType errorType, const QString
     emit errorRaised(errorMessage); 
 
     qCritical() << errorMessage;
+}
+
+void ApiGateway::queueConstantData(const QString &content)
+{
+    // Create url template with version placeholder
+    const QString jsConstantUrl ("js/jsconstants_%1.js");
+
+    // Create regex to obtain version number
+    QRegularExpression jscVersionRegex(QString("src=\"%1\"").arg(jsConstantUrl.arg("(?<version>.*)")));
+
+    // Acquire version number
+    const auto version = jscVersionRegex.match(content).captured("version");
+
+    auto message = new GetConstantData(this, jsConstantUrl.arg(version));
+    const auto messagePtr = QSharedPointer<GetConstantData>(message);
+
+    // TODO: Add message to obtain library
+    queueMessage(messagePtr, true);
 }
 
 bool ApiGateway::handleNotLogged(const QString &operation)
