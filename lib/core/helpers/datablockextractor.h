@@ -16,47 +16,30 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-namespace Api {
+#pragma once
 
-    namespace Messages {
+#include <QtCore/QVariant>
+#include <QtCore/QJsonObject>
 
-        enum class QueryType {
-            Post,
-            Get,
+namespace Extractors {
 
-            Unknown
-        };
+    class DatablockExtractor
+    {
+        Q_DISABLE_COPY(DatablockExtractor)
 
-        enum class MessageType {
-            Login, // Done
-            Logout, // Done
+    public:
+        explicit DatablockExtractor() = default;
 
-            GetConstantData, // Done
+        const QVariantMap &result() { return m_data; }
+        void extract(const QByteArray &content);
 
-            GetFarmInfo, // Todo
-            GetFieldInfo,
+    private:
+        bool fetchDatablock(const QJsonDocument &document);
+        virtual void extractSpecificData() = 0;
 
-            SetPlant, // Done
-            SetPour, // Done
-            GetCollect, // Done
-
-            SetFeed, // Done
-            GetFeed,
-            GetFeedInfo,
-
-            SetProduction, // Done
-            GetProduction, // Done
-            GetProductionInfo, //Done
-
-            SetBuyer,
-            GetBuyer,
-
-            GetPricesOnMarket,
-            SetOfferOnMarket,
-
-            Unknown
-        };
-
-    }
+    protected:
+        QVariantMap m_data;
+        QJsonObject m_datablock;
+    };
 
 }

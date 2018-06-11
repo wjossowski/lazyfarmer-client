@@ -14,12 +14,6 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-TEMPLATE = subdirs
-
-SUBDIRS += \
-    test_gameinfoextractor \
-    test_playerinfoextractor \
-    test_storage \
-    test_fieldinfoextractor \
-    test_globalgamedata \
-    test_datablockextractor
+TEMPLATE = app
+SOURCES += tst_datablockextractor.cpp
+include($${PWD}/../common_coretests.pri)

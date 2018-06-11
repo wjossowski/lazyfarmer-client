@@ -16,45 +16,25 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
+#include "apimessage.h"
+#include "../helpers/querystructs.h"
+
 namespace Api {
 
     namespace Messages {
 
-        enum class QueryType {
-            Post,
-            Get,
+        class GetFeedInfo : public ApiMessage
+        {
+        public:
+            explicit GetFeedInfo(ApiGateway *gateway,
+                                 const BuildingData &buildingData = BuildingData());
 
-            Unknown
-        };
+            const QUrl url() const override;
+            void handleResponse(QNetworkReply *reply) override;
 
-        enum class MessageType {
-            Login, // Done
-            Logout, // Done
+        private:
+            BuildingData m_buildingData;
 
-            GetConstantData, // Done
-
-            GetFarmInfo, // Todo
-            GetFieldInfo,
-
-            SetPlant, // Done
-            SetPour, // Done
-            GetCollect, // Done
-
-            SetFeed, // Done
-            GetFeed,
-            GetFeedInfo,
-
-            SetProduction, // Done
-            GetProduction, // Done
-            GetProductionInfo, //Done
-
-            SetBuyer,
-            GetBuyer,
-
-            GetPricesOnMarket,
-            SetOfferOnMarket,
-
-            Unknown
         };
 
     }

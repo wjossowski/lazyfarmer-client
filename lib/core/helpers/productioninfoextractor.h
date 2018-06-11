@@ -16,23 +16,17 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include <QtCore/QString>
-#include <QtCore/QVariant>
+#pragma once
+
+#include "datablockextractor.h"
 
 namespace Extractors {
 
-    class ProductionInfoExtractor
+    class ProductionInfoExtractor : public DatablockExtractor
     {
-        Q_DISABLE_COPY (ProductionInfoExtractor)
-
-    public:
-        explicit ProductionInfoExtractor() { }
-
-        const QVariantMap &result() { return m_productionData; }
-        void extract(const QByteArray &content);
 
     private:
-        QVariantMap m_productionData;
+        void extractSpecificData();
 
     };
 
