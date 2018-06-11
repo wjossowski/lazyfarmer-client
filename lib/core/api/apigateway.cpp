@@ -43,7 +43,7 @@
 using namespace Core;
 using namespace Api;
 using namespace Api::Messages;
-using namespace Helpers;
+using namespace Extractors;
 
 ApiGateway::ApiGateway(QObject *parent)
     : QObject(parent)

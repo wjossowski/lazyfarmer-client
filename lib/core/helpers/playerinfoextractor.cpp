@@ -25,7 +25,7 @@
 
 #include <QtDebug>
 
-using namespace Helpers;
+using namespace Extractors;
 
 #ifdef DEBUG_MODE
 void printJson(const QJsonObject &obj) {
@@ -159,7 +159,7 @@ QVariantMap extractBuildingInfo(int type, const QJsonObject &buildingObject)
         if (!production.isArray())
             return 0;
 
-        int max = 0;
+        int max = -1;
         foreach (const auto &process, production.toArray()) {
             max = qMax(max, process.toObject()["remain"].toInt());
         }

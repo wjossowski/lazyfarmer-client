@@ -29,18 +29,15 @@ namespace Api {
         {
         public:
             explicit GetProduction(ApiGateway *gateway,
-                                   const BuildingData &buindingData = BuildingData(),
-                                   const ProductionData &productionData = ProductionData());
+                                   const BuildingData &buindingData = BuildingData());
 
             void setBuildingData(const BuildingData &buindingData) { m_buildingData = buindingData; }
-            void setProductionData(const ProductionData &productionData) { m_productionData = productionData; }
 
         private:
             const QList<QPair<QString, QString> > constructedMessageData() const override;
 
         private:
             BuildingData m_buildingData;
-            ProductionData m_productionData;
         };
 
     }

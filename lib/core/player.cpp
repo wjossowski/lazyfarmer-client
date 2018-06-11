@@ -25,7 +25,7 @@
 
 #include <QtDebug>
 
-using namespace Helpers;
+using namespace Extractors;
 
 Player::Player(QObject *parent)
     : QObject(parent)

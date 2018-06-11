@@ -29,7 +29,7 @@
 #include <QtCore/QDebug>
 #endif
 
-namespace Helpers {
+namespace Extractors {
 
     class GameInfoExtractor
     {

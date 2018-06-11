@@ -19,4 +19,4 @@
 
 #include "fieldinfoextractor.h"
 
-using namespace Helpers;
+using namespace Extractors;

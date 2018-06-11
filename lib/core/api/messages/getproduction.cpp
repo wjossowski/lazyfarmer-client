@@ -23,11 +23,9 @@ using namespace Api;
 using namespace Api::Messages;
 
 GetProduction::GetProduction(ApiGateway *gateway,
-                             const BuildingData &buindingData,
-                             const ProductionData &productionData)
+                             const BuildingData &buindingData)
     : OneWayMessage(gateway, MessageType::GetProduction, "farm"),
-      m_buildingData(buindingData),
-      m_productionData(productionData)
+      m_buildingData(buindingData)
 {
 
 }
@@ -37,8 +35,6 @@ const QList<QPair<QString, QString> > GetProduction::constructedMessageData() co
     return {
         { "mode", "harvestproduction" },
         { "farm", QString::number(m_buildingData.farmId) },
-        { "position", QString::number(m_buildingData.positionId) },
-        { "id", QString::number(m_productionData.productionId) },
-        { "slot", QString::number(m_productionData.productionSlot) }
+        { "position", QString::number(m_buildingData.positionId) }
     };
 }

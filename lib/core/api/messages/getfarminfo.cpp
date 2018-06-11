@@ -30,7 +30,7 @@
 
 using namespace Api;
 using namespace Api::Messages;
-using namespace Helpers;
+using namespace Extractors;
 
 const QUrl GetFarmInfo::url() const
 {

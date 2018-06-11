@@ -20,7 +20,7 @@
 
 #include <QtTest>
 
-using namespace Helpers;
+using namespace Extractors;
 
 class FieldInfoExtractorTest : public QObject
 {
