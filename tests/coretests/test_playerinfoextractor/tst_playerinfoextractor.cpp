@@ -23,7 +23,7 @@
 #include <QtCore/QFileInfo>
 #include <QtTest>
 
-using namespace Helpers;
+using namespace Extractors;
 
 Q_DECLARE_METATYPE(PlayerInfoExtractor*)
 

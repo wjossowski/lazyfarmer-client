@@ -1,6 +1,6 @@
 /**
  ** This file is part of the LazyFarmer project.
- ** Copyright 2017 Wojciech Ossowski <w.j.ossowski@gmail.com>.
+ ** Copyright 2018 Wojciech Ossowski <w.j.ossowski@gmail.com>.
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU Lesser General Public License as
@@ -16,22 +16,24 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#pragma once
+#include <QtCore/QString>
+#include <QtCore/QVariant>
 
-// Account management
-#include "login.h"
-#include "logout.h"
+namespace Extractors {
 
-// Getters
-#include "getcollect.h"
-#include "getconstantdata.h"
-#include "getfarminfo.h"
-#include "getfieldinfo.h"
-#include "getproduction.h"
-#include "getproductioninfo.h"
+    class ProductionInfoExtractor
+    {
+        Q_DISABLE_COPY (ProductionInfoExtractor)
 
-// Setters
-#include "setplant.h"
-#include "setpour.h"
-#include "setfeed.h"
-#include "setproduction.h"
+    public:
+        explicit ProductionInfoExtractor() { }
+
+        const QVariantMap &result() { return m_productionData; }
+        void extract(const QByteArray &content);
+
+    private:
+        QVariantMap m_productionData;
+
+    };
+
+}

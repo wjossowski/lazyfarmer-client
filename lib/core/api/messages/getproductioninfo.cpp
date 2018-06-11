@@ -16,36 +16,41 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "getconstantdata.h"
+#include "getproductioninfo.h"
 #include "../apigateway.h"
-
-#include "../../helpers/gameinfoextractor.h"
+#include "../../helpers/productioninfoextractor.h"
 
 #include <QtNetwork/QNetworkReply>
+#include <QtCore/QVariantMap>
+#include <QtCore/QJsonDocument>
 
 using namespace Api;
 using namespace Api::Messages;
 using namespace Extractors;
 
-GetConstantData::GetConstantData(ApiGateway *gateway,
-                                 const QString &fileUrl)
-    : ApiMessage(gateway, MessageType::GetConstantData),
-      m_fileUrl(fileUrl)
+GetProductionInfo::GetProductionInfo(ApiGateway *gateway,
+                                     const BuildingData &buildingData)
+    : ApiMessage(gateway, MessageType::GetProductionInfo),
+      m_buildingData(buildingData)
 {
 
 }
 
-const QUrl GetConstantData::url() const
+const QUrl GetProductionInfo::url() const
 {
-    return m_gateway->buildStaticUrl(m_fileUrl);
+    return m_gateway->buildEndpointAjaxUrl("farm", {
+        { "mode", "innerinfos" },
+        { "farm", QString::number(m_buildingData.farmId) },
+        { "position", QString::number(m_buildingData.positionId) }
+    });
 }
 
-void GetConstantData::handleResponse(QNetworkReply *reply)
+void GetProductionInfo::handleResponse(QNetworkReply *reply)
 {
-    const auto extractor = GameInfoExtractor::constantsExtractor(m_gateway->serverDomain());
-    extractor->extract(reply->readAll());
+    ProductionInfoExtractor extractor;
+    extractor.extract(reply->readAll());
 
-    m_gateway->extractGameData();
+    qDebug() << QJsonDocument::fromVariant(extractor.result());
 
     emit finished();
 }

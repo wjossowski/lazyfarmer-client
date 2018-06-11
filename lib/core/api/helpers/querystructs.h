@@ -27,10 +27,6 @@ namespace Api {
 
     struct BuildingData
     {
-        explicit BuildingData(unsigned int farm_id = 1,
-                              unsigned int position_id = 1)
-            : farmId(farm_id), positionId(position_id) {}
-
         unsigned int farmId;
         unsigned int positionId;
     };

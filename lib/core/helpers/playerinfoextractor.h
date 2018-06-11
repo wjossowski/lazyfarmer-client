@@ -23,7 +23,7 @@
 
 class QJsonObject;
 
-namespace Helpers {
+namespace Extractors {
 
     class PlayerInfoExtractor
     {

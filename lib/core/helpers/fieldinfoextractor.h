@@ -19,7 +19,7 @@
 #include <QtCore/QString>
 #include <QtCore/QVariant>
 
-namespace Helpers {
+namespace Extractors {
 
     class FieldInfoExtractor
     {
