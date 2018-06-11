@@ -26,6 +26,7 @@
 #include "getcollect.h"
 #include "getconstantdata.h"
 #include "getfarminfo.h"
+#include "getfeedinfo.h"
 #include "getfieldinfo.h"
 #include "getproduction.h"
 #include "getproductioninfo.h"

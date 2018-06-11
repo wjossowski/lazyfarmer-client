@@ -21,4 +21,5 @@ SUBDIRS += \
     test_playerinfoextractor \
     test_storage \
     test_fieldinfoextractor \
-    test_globalgamedata
+    test_globalgamedata \
+    test_datablockextractor

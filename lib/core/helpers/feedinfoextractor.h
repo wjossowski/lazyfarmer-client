@@ -16,47 +16,16 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-namespace Api {
+#include "datablockextractor.h"
 
-    namespace Messages {
+namespace Extractors {
 
-        enum class QueryType {
-            Post,
-            Get,
+    class FeedInfoExtractor : public DatablockExtractor
+    {
 
-            Unknown
-        };
+    private:
+        void extractSpecificData();
 
-        enum class MessageType {
-            Login, // Done
-            Logout, // Done
-
-            GetConstantData, // Done
-
-            GetFarmInfo, // Todo
-            GetFieldInfo,
-
-            SetPlant, // Done
-            SetPour, // Done
-            GetCollect, // Done
-
-            SetFeed, // Done
-            GetFeed,
-            GetFeedInfo,
-
-            SetProduction, // Done
-            GetProduction, // Done
-            GetProductionInfo, //Done
-
-            SetBuyer,
-            GetBuyer,
-
-            GetPricesOnMarket,
-            SetOfferOnMarket,
-
-            Unknown
-        };
-
-    }
+    };
 
 }

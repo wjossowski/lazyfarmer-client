@@ -16,45 +16,20 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
+#pragma once
+
+#include "onewaymessage.h"
+
 namespace Api {
 
     namespace Messages {
 
-        enum class QueryType {
-            Post,
-            Get,
+        class GetFeed : public OneWayMessage
+        {
+            explicit GetFeed(ApiGateway *gateway);
 
-            Unknown
-        };
-
-        enum class MessageType {
-            Login, // Done
-            Logout, // Done
-
-            GetConstantData, // Done
-
-            GetFarmInfo, // Todo
-            GetFieldInfo,
-
-            SetPlant, // Done
-            SetPour, // Done
-            GetCollect, // Done
-
-            SetFeed, // Done
-            GetFeed,
-            GetFeedInfo,
-
-            SetProduction, // Done
-            GetProduction, // Done
-            GetProductionInfo, //Done
-
-            SetBuyer,
-            GetBuyer,
-
-            GetPricesOnMarket,
-            SetOfferOnMarket,
-
-            Unknown
+        private:
+            const QList<QPair<QString, QString> > constructedMessageData() const override;
         };
 
     }

@@ -14,31 +14,6 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-QT       += core network
-CONFIG   += c++14 dll
-
-TARGET = CoreLib
-TEMPLATE = lib
-
-INCLUDEPATH += $${PWD}/helpers
-
-SOURCES += \
-        $${PWD}/helpers/*.cpp \
-        $${PWD}/storage/*.cpp \
-        $${PWD}/farm/*.cpp  \
-        $${PWD}/api/messages/*.cpp \
-        $${PWD}/api/*.cpp \
-        $${PWD}/*.cpp \
-    api/messages/getfeed.cpp
-
-HEADERS += \
-        $${PWD}/helpers/*.h \
-        $${PWD}/storage/*.h \
-        $${PWD}/farm/*.h \
-        $${PWD}/api/helpers/*.h \
-        $${PWD}/api/messages/*.h \
-        $${PWD}/api/*.h \
-        $${PWD}/*.h \
-    api/messages/getfeed.h
-
-include($${PWD}/../../common.pri)
+TEMPLATE = app
+SOURCES += tst_datablockextractor.cpp
+include($${PWD}/../common_coretests.pri)

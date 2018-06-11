@@ -25,42 +25,11 @@
 
 using namespace Extractors;
 
-void ProductionInfoExtractor::extract(const QByteArray &content)
+void ProductionInfoExtractor::extractSpecificData()
 {
-    if (content.isEmpty()){
-        return;
-    }
-
-    // Create JSON document
-    const auto document = QJsonDocument::fromJson(content);
-    const auto data = document.object();
-
-    if (data.isEmpty()) {
-        return;
-    }
-
-    if (!data.contains("datablock")) {
-        return;
-    }
-
-    // Get result
-    const QJsonArray datablock = data.value("datablock").toArray();
-
-    // Check if result is correct;
-    if (datablock.size() < 2 ||
-        datablock.first().toInt() != 1) {
-        return;
-    }
-
-    // Get Production Info Object
-    const auto productionJsonData = datablock.at(1).toObject();
-    if (productionJsonData.isEmpty()) {
-        return;
-    }
-
-    const QJsonArray in = productionJsonData.value("in").toArray();
-    const QJsonArray need = productionJsonData.value("need").toArray();
-    const QJsonArray out = productionJsonData.value("out").toArray();
+    const QJsonArray in = m_datablock.value("in").toArray();
+    const QJsonArray need = m_datablock.value("need").toArray();
+    const QJsonArray out = m_datablock.value("out").toArray();
 
     // Check lenghts:
     if (in.size() != need.size() ||
@@ -69,9 +38,9 @@ void ProductionInfoExtractor::extract(const QByteArray &content)
     }
 
     // Extract current production
-    const QJsonValue currentProductionId = productionJsonData.value("pid");
+    const QJsonValue currentProductionId = m_datablock.value("pid");
     if (currentProductionId.isString()) {
-        m_productionData.insert("CurrentProduction", currentProductionId.toString());
+        m_data.insert("CurrentProduction", currentProductionId.toString());
     }
 
     QVariantList availableProductions;
@@ -96,6 +65,5 @@ void ProductionInfoExtractor::extract(const QByteArray &content)
         }));
     }
 
-    m_productionData.insert("ProductionInfo", availableProductions);
-
+    m_data.insert("ProductionInfo", availableProductions);
 }
