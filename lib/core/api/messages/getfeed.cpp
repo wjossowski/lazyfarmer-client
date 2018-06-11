@@ -21,8 +21,10 @@
 using namespace Api;
 using namespace Api::Messages;
 
-GetFeed::GetFeed(ApiGateway *gateway)
-    : OneWayMessage(gateway, MessageType::GetFeed, "farm")
+GetFeed::GetFeed(ApiGateway *gateway,
+                 const BuildingData &buindingData)
+    : OneWayMessage(gateway, MessageType::GetFeed, "farm"),
+      m_buildingData(buindingData)
 {
 
 }

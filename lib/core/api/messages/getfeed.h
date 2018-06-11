@@ -19,6 +19,7 @@
 #pragma once
 
 #include "onewaymessage.h"
+#include "../helpers/querystructs.h"
 
 namespace Api {
 
@@ -26,10 +27,16 @@ namespace Api {
 
         class GetFeed : public OneWayMessage
         {
-            explicit GetFeed(ApiGateway *gateway);
+            explicit GetFeed(ApiGateway *gateway,
+                             const BuildingData &buindingData = BuildingData());
+
+            void setBuildingData(const BuildingData &buindingData) { m_buildingData = buindingData; }
 
         private:
             const QList<QPair<QString, QString> > constructedMessageData() const override;
+
+        private:
+            BuildingData m_buildingData;
         };
 
     }
