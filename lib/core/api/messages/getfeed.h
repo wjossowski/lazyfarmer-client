@@ -1,6 +1,6 @@
 /**
  ** This file is part of the LazyFarmer project.
- ** Copyright 2017 Wojciech Ossowski <w.j.ossowski@gmail.com>.
+ ** Copyright 2018 Wojciech Ossowski <w.j.ossowski@gmail.com>.
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU Lesser General Public License as
@@ -18,21 +18,20 @@
 
 #pragma once
 
-// Account management
-#include "login.h"
-#include "logout.h"
+#include "onewaymessage.h"
 
-// Getters
-#include "getcollect.h"
-#include "getconstantdata.h"
-#include "getfarminfo.h"
-#include "getfeedinfo.h"
-#include "getfieldinfo.h"
-#include "getproduction.h"
-#include "getproductioninfo.h"
+namespace Api {
 
-// Setters
-#include "setplant.h"
-#include "setpour.h"
-#include "setfeed.h"
-#include "setproduction.h"
+    namespace Messages {
+
+        class GetFeed : public OneWayMessage
+        {
+            explicit GetFeed(ApiGateway *gateway);
+
+        private:
+            const QList<QPair<QString, QString> > constructedMessageData() const override;
+        };
+
+    }
+
+}

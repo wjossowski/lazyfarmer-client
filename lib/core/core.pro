@@ -28,7 +28,8 @@ SOURCES += \
         $${PWD}/farm/*.cpp  \
         $${PWD}/api/messages/*.cpp \
         $${PWD}/api/*.cpp \
-        $${PWD}/*.cpp
+        $${PWD}/*.cpp \
+    api/messages/getfeed.cpp
 
 HEADERS += \
         $${PWD}/helpers/*.h \
@@ -37,6 +38,7 @@ HEADERS += \
         $${PWD}/api/helpers/*.h \
         $${PWD}/api/messages/*.h \
         $${PWD}/api/*.h \
-        $${PWD}/*.h
+        $${PWD}/*.h \
+    api/messages/getfeed.h
 
 include($${PWD}/../../common.pri)

@@ -1,31 +1,6 @@
 Obrazki:
 http://mff.wavecdn.de/mff/maps/tafel_map.30.jpg
 
-Karmienie:
-http://s18.wolnifarmerzy.pl/ajax/farm.php?rid=039ad60235173392a7e93a444b82f4e3&mode=inner_feed&farm=1&position=6&pid=108&c=108_1|&amount=1&guildjob=0
-http://s18.wolnifarmerzy.pl/ajax/farm.php?rid=2369f6f0e0d36f6f78cc36317702a79d&mode=inner_feed&farm=1&position=4&pid=109&c=109_9|&amount=1&guildjob=0
-
-innerinfos
-
-{"datablock":[1,{"1":{"1":12,"2":"3","3":"goat.png"},"2":{"1":{"1":109,"2":"1254","3":1800,"4":"etikett2_gluemchen","5":"Stokrotki"},"2":{"1":108,"2":"8664","3":3600,"4":"etikett2_geranien","5":"Bodziszki"}},"3":2,"4":{"1":110,"2":129600,"3":5,"4":"etikett2_ziegenmilch","5":"Kozie mleko"},"5":2,"6":"12","7":0,"8":0,"9":1,"10":64800,"need":[109,108]}],"updateblock":{"stock":null,"menue":null}}
-
-Info o zwierzętach:
-{"datablock":[1,{"1":{"4":{"buildingid":"12","level":"2","pid":110,"crop":15,"time":129600,"remain":1,"rest":-64799,"feed":{"109":{"time":600},"108":{"time":1200}},"animals":{"type":12,"amount":"3","pos":[],"max":3,"next":2709},"specials":[]}}},{"tutorial":0},null],"updateblock":{"stock":null,"menue":null}}
-
-Zbieranie zwierząt:
-http://s18.wolnifarmerzy.pl/ajax/farm.php?rid=539190890d2f805c747b4f06222e1f4c&mode=inner_crop&farm=1&position=4
-
-Info o produkcji:
-http://s18.wolnifarmerzy.pl/ajax/farm.php?rid=039ad60235173392a7e93a444b82f4e3&mode=innerinfos&farm=1&position=2
-Resp:
-{"datablock":[1,{"4":1,"pid":"111","6":"8","7":0,"8":0,"9":0,"in":[10,110],"need":[12,5],"out":[{"1":27,"2":120000,"3":15},{"1":111,"2":59040,"3":7}]}],"updateblock":{"stock":null,"menue":null}}
-
-Rozpoczynanie produkcji:
-http://s18.wolnifarmerzy.pl/ajax/farm.php?rid=039ad60235173392a7e93a444b82f4e3&mode=setadvancedproduction&farm=1&position=2&id=110&product=110&guildjob=undefined
-
-Zbiór produkcji:
-http://s18.wolnifarmerzy.pl/ajax/farm.php?rid=039ad60235173392a7e93a444b82f4e3&mode=harvestproduction&farm=1&position=2&id=1&slot=1
-
 Zbiór drzew:
 http://s18.wolnifarmerzy.pl/ajax/forestry.php?rid=039ad60235173392a7e93a444b82f4e3&action=crop&params=&z[]=2&p[]=1
 
@@ -72,3 +47,33 @@ Response:
 
 
 Zrobić parser pola
+
+
+============================
+DONE:
+
+Karmienie:
+http://s18.wolnifarmerzy.pl/ajax/farm.php?rid=039ad60235173392a7e93a444b82f4e3&mode=inner_feed&farm=1&position=6&pid=108&c=108_1|&amount=1&guildjob=0
+http://s18.wolnifarmerzy.pl/ajax/farm.php?rid=2369f6f0e0d36f6f78cc36317702a79d&mode=inner_feed&farm=1&position=4&pid=109&c=109_9|&amount=1&guildjob=0
+
+innerinfos
+
+{"datablock":[1,{"1":{"1":12,"2":"3","3":"goat.png"},"2":{"1":{"1":109,"2":"1254","3":1800,"4":"etikett2_gluemchen","5":"Stokrotki"},"2":{"1":108,"2":"8664","3":3600,"4":"etikett2_geranien","5":"Bodziszki"}},"3":2,"4":{"1":110,"2":129600,"3":5,"4":"etikett2_ziegenmilch","5":"Kozie mleko"},"5":2,"6":"12","7":0,"8":0,"9":1,"10":64800,"need":[109,108]}],"updateblock":{"stock":null,"menue":null}}
+
+Info o zwierzętach:
+{"datablock":[1,{"1":{"4":{"buildingid":"12","level":"2","pid":110,"crop":15,"time":129600,"remain":1,"rest":-64799,"feed":{"109":{"time":600},"108":{"time":1200}},"animals":{"type":12,"amount":"3","pos":[],"max":3,"next":2709},"specials":[]}}},{"tutorial":0},null],"updateblock":{"stock":null,"menue":null}}
+
+Zbieranie zwierząt:
+http://s18.wolnifarmerzy.pl/ajax/farm.php?rid=539190890d2f805c747b4f06222e1f4c&mode=inner_crop&farm=1&position=4
+
+Info o produkcji:
+http://s18.wolnifarmerzy.pl/ajax/farm.php?rid=039ad60235173392a7e93a444b82f4e3&mode=innerinfos&farm=1&position=2
+Resp:
+{"datablock":[1,{"4":1,"pid":"111","6":"8","7":0,"8":0,"9":0,"in":[10,110],"need":[12,5],"out":[{"1":27,"2":120000,"3":15},{"1":111,"2":59040,"3":7}]}],"updateblock":{"stock":null,"menue":null}}
+
+Rozpoczynanie produkcji:
+http://s18.wolnifarmerzy.pl/ajax/farm.php?rid=039ad60235173392a7e93a444b82f4e3&mode=setadvancedproduction&farm=1&position=2&id=110&product=110&guildjob=undefined
+
+Zbiór produkcji:
+http://s18.wolnifarmerzy.pl/ajax/farm.php?rid=039ad60235173392a7e93a444b82f4e3&mode=harvestproduction&farm=1&position=2&id=1&slot=1
+
