@@ -100,14 +100,16 @@ void DatablockExtractorTest::feedInfoExtractorTest()
     QVERIFY2(info.length() == 2,
              "Invalid info length");
 
+
     const QVariantMap expectedInfo1 = {
-        { "In", "109" }
+        { "In", "108" },
+        { "Remaining", "1200" }
     };
 
     const QVariantMap expectedInfo2 = {
-        { "In", "108" }
+        { "In", "109" },
+        { "Remaining","600" }
     };
-
 
     QVERIFY2(info.first().toMap() == expectedInfo1,
              "First Input Info doesnt match");

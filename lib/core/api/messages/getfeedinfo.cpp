@@ -39,7 +39,7 @@ GetFeedInfo::GetFeedInfo(ApiGateway *gateway,
 const QUrl GetFeedInfo::url() const
 {
     return m_gateway->buildEndpointAjaxUrl("farm", {
-        { "mode", "innerinfos" },
+        { "mode", "inner_init" },
         { "farm", QString::number(m_buildingData.farmId) },
         { "position", QString::number(m_buildingData.positionId) }
     });
