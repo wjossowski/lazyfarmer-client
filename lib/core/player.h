@@ -19,8 +19,8 @@
 #pragma once
 
 #include "api/apigateway.h"
-#include "storage/storage.h"
-#include "farm/farm.h"
+#include "model/data/storage.h"
+#include "model/data/farm.h"
 
 #include <QtCore/QObject>
 

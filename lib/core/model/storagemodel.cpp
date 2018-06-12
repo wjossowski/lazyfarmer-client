@@ -17,7 +17,7 @@
  **/
 
 #include "storagemodel.h"
-#include "storage.h"
+#include "data/storage.h"
 
 using namespace Core;
 using namespace Core::Model;

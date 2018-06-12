@@ -18,7 +18,7 @@
 
 #include <QtTest>
 
-#include "core/storage/storage.h"
+#include "core/model/data/storage.h"
 
 using namespace Core;
 using namespace Core::Model;
