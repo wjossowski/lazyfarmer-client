@@ -19,8 +19,8 @@
 #pragma once
 
 #include "api/apigateway.h"
-#include "storage/playerstorage.h"
-#include "farm/playerfarm.h"
+#include "storage/storage.h"
+#include "farm/farm.h"
 
 #include <QtCore/QObject>
 
@@ -51,8 +51,8 @@ namespace Core {
         qreal m_money;
         QString m_levelDescription;
 
-        Storage::PlayerStorage m_storage;
-        Farm::PlayerFarm m_farm;
+        Model::Data::Storage m_storage;
+        Model::Data::Farm m_farm;
         Api::ApiGateway m_gateway;
     };
 

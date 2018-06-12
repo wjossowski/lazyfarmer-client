@@ -1,10 +1,12 @@
-#include "playerfarm.h"
+#include "farm.h"
 
 #include <QtDebug>
 
-using namespace Farm;
+using namespace Core;
+using namespace Core::Model;
+using namespace Core::Model::Data;
 
-QSharedPointer<Building> PlayerFarm::buildingAt(int farm, int position)
+QSharedPointer<Building> Farm::buildingAt(int farm, int position)
 {
     for (auto building : m_buildings) {
         if (building->farmId == farm && building->position == position) {
@@ -15,7 +17,7 @@ QSharedPointer<Building> PlayerFarm::buildingAt(int farm, int position)
     return QSharedPointer<Building>(nullptr);
 }
 
-void PlayerFarm::update(const QVariantList &farmInfo)
+void Farm::update(const QVariantList &farmInfo)
 {
     for (const auto &buildingInfo : farmInfo) {
         const QVariantMap &buildingInfoMap = buildingInfo.toMap();

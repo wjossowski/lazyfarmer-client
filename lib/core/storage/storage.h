@@ -24,26 +24,33 @@
 #include <QtCore/QSharedPointer>
 #include <QtCore/QVariantMap>
 
-namespace Storage {
+namespace Core {
 
-    class PlayerStorage : public QObject
-    {
-        Q_OBJECT
+    namespace Model {
 
-    public:
-        explicit PlayerStorage(QObject *parent = nullptr);
-        void update(const QVariantList &storage);
+        namespace Data {
 
-        inline int size() const { return m_products.size(); }
-        inline const QList<QSharedPointer<Product>> &products () const { return m_products; }
-        inline void clear() { m_products.clear(); }
+            class Storage : public QObject
+            {
+                Q_OBJECT
 
-    signals:
-        void storageChanged();
+            public:
+                explicit Storage(QObject *parent = nullptr);
+                void update(const QVariantList &storage);
 
-    private:
-        QList<QSharedPointer<Product>> m_products;
-    };
+                inline int size() const { return m_products.size(); }
+                inline const QList<QSharedPointer<Product>> &products () const { return m_products; }
+                inline void clear() { m_products.clear(); }
+
+            signals:
+                void storageChanged();
+
+            private:
+                QList<QSharedPointer<Product>> m_products;
+            };
+
+        }
+
+    }
 
 }
-

@@ -17,8 +17,11 @@
  **/
 
 #include "storagemodel.h"
+#include "storage.h"
 
-using namespace Storage;
+using namespace Core;
+using namespace Core::Model;
+using namespace Core::Model::Data;
 
 StorageModel::StorageModel(QObject *parent)
     : QAbstractItemModel(parent)

@@ -20,34 +20,41 @@
 
 #include <QtCore/QVariant>
 
-namespace Farm {
+namespace Core {
 
-    struct Building
-    {
-        int type;
-        int farmId;
-        int position;
-        int level;
-        int animals;
-        int remaining;
+    namespace Model {
 
-        Building(): type(0), farmId(0),
-            position(0), level(0),
-            animals(0), remaining(0)
-        {
+        namespace Data {
+
+            struct Building
+            {
+                int type;
+                int farmId;
+                int position;
+                int level;
+                int animals;
+                int remaining;
+
+                Building(): type(0), farmId(0),
+                    position(0), level(0),
+                    animals(0), remaining(0)
+                {
+
+                }
+
+                void update(const QVariantMap &buildingInfo)
+                {
+                    type = buildingInfo["Type"].toInt();
+                    farmId = buildingInfo["FarmId"].toInt();
+                    position = buildingInfo["Position"].toInt();
+                    level = buildingInfo["Level"].toInt();
+                    animals = buildingInfo["Animals"].toInt();
+                    remaining = buildingInfo["Remaining"].toInt();
+                }
+            };
 
         }
 
-        void update(const QVariantMap &buildingInfo)
-        {
-            type = buildingInfo["Type"].toInt();
-            farmId = buildingInfo["FarmId"].toInt();
-            position = buildingInfo["Position"].toInt();
-            level = buildingInfo["Level"].toInt();
-            animals = buildingInfo["Animals"].toInt();
-            remaining = buildingInfo["Remaining"].toInt();
-        }
-    };
+    }
 
 }
-
