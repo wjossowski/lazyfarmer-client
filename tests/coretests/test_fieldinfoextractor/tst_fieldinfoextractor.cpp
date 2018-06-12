@@ -54,7 +54,8 @@ void FieldInfoExtractorTest::extractorTest_data()
 
 void FieldInfoExtractorTest::extractorTest()
 {
-    QFAIL("Not implemented yet");
+    FieldInfoExtractor extractor;
+    extractor.extract(m_siteContent.toLatin1());
 }
 
 QTEST_APPLESS_MAIN(FieldInfoExtractorTest)

@@ -18,9 +18,11 @@
 
 #include "fieldinfoextractor.h"
 
+#include <QDebug>
+
 using namespace Extractors;
 
 void FieldInfoExtractor::extractSpecificData()
 {
-
+    qDebug() << m_datablock;
 }
