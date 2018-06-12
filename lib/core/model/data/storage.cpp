@@ -16,38 +16,30 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#pragma once
+#include "storage.h"
 
-#include <QtCore/QVariant>
+#include <QtDebug>
 
-namespace Farm {
+using namespace Core;
+using namespace Core::Model;
+using namespace Core::Model::Data;
 
-    struct Building
-    {
-        int type;
-        int farmId;
-        int position;
-        int level;
-        int animals;
-        int remaining;
-
-        Building(): type(0), farmId(0),
-            position(0), level(0),
-            animals(0), remaining(0)
-        {
-
-        }
-
-        void update(const QVariantMap &buildingInfo)
-        {
-            type = buildingInfo["Type"].toInt();
-            farmId = buildingInfo["FarmId"].toInt();
-            position = buildingInfo["Position"].toInt();
-            level = buildingInfo["Level"].toInt();
-            animals = buildingInfo["Animals"].toInt();
-            remaining = buildingInfo["Remaining"].toInt();
-        }
-    };
+Storage::Storage(QObject *parent)
+    : QObject(parent)
+{
 
 }
 
+void Storage::update(const QVariantList &storage)
+{
+    m_products.clear();
+
+    for (const auto &item : storage) {
+        const auto product = QSharedPointer<Product>(new Product(item.toMap()));
+        m_products.push_back(std::move(product));
+    }
+
+    std::sort(std::begin(m_products), std::end(m_products));
+
+    emit storageChanged();
+}

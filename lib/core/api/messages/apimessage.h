@@ -24,46 +24,51 @@
 class QNetworkReply;
 #include <QtNetwork/QNetworkRequest>
 
-namespace Api {
+namespace Core {
 
-    class ApiGateway;
+    namespace Api {
 
-    namespace Messages {
+        class ApiGateway;
 
-        class ApiMessage : public QObject
-        {
-            Q_OBJECT
+        namespace Messages {
 
-        public:
-            explicit ApiMessage(ApiGateway *gateway,
-                                MessageType messageType = MessageType::Unknown,
-                                bool isLoginRequired = true);
+            class ApiMessage : public QObject
+            {
+                Q_OBJECT
 
-            virtual ~ApiMessage();
+            public:
+                explicit ApiMessage(ApiGateway *gateway,
+                                    MessageType messageType = MessageType::Unknown,
+                                    bool isLoginRequired = true);
 
-            bool isSent() const { return m_isSent; }
-            void setIsSent(bool isSent) { m_isSent = isSent; }
+                virtual ~ApiMessage();
 
-            virtual QueryType queryType() const { return QueryType::Get; }
+                bool isSent() const { return m_isSent; }
+                void setIsSent(bool isSent) { m_isSent = isSent; }
 
-            virtual const QUrl url() const = 0;
-            virtual void configureRequest(QNetworkRequest &request) const { Q_UNUSED (request) }
-            virtual const QList<QPair<QString, QString>> postData() const { return {}; }
+                virtual QueryType queryType() const { return QueryType::Get; }
 
-            virtual void handleResponse(QNetworkReply *reply) = 0;
+                virtual const QUrl url() const = 0;
+                virtual void configureRequest(QNetworkRequest &request) const { Q_UNUSED (request) }
+                virtual const QList<QPair<QString, QString>> postData() const { return {}; }
 
-        signals:
-            void raiseError(ApiGatewayError::ErrorType errorType, const QStringList &args = QStringList());
-            void finished();
+                virtual void handleResponse(QNetworkReply *reply) = 0;
 
-        protected:
-            ApiGateway *m_gateway;
+            signals:
+                void raiseError(ApiGatewayError::ErrorType errorType, const QStringList &args = QStringList());
+                void finished();
 
-            MessageType m_messageType;
+            protected:
+                ApiGateway *m_gateway;
 
-            bool m_isLoginRequired;
-            bool m_isSent;
-        };
+                MessageType m_messageType;
+
+                bool m_isLoginRequired;
+                bool m_isSent;
+            };
+
+        }
+
     }
 
 }

@@ -19,7 +19,7 @@
 #include "apigateway.h"
 #include "globalgamedata.h"
 
-#include "helpers/gameinfoextractor.h"
+#include "extractors/gameinfoextractor.h"
 
 #include "messages/messages.h"
 
@@ -41,9 +41,9 @@
 #include <QtDebug>
 
 using namespace Core;
-using namespace Api;
-using namespace Api::Messages;
-using namespace Extractors;
+using namespace Core::Api;
+using namespace Core::Api::Messages;
+using namespace Core::Extractors;
 
 ApiGateway::ApiGateway(QObject *parent)
     : QObject(parent)

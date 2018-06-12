@@ -21,23 +21,27 @@
 #include "onewaymessage.h"
 #include "../helpers/querystructs.h"
 
-namespace Api {
+namespace Core {
 
-    namespace Messages {
+    namespace Api {
 
-        class GetFeed : public OneWayMessage
-        {
-            explicit GetFeed(ApiGateway *gateway,
-                             const BuildingData &buindingData = BuildingData());
+        namespace Messages {
 
-            void setBuildingData(const BuildingData &buindingData) { m_buildingData = buindingData; }
+            class GetFeed : public OneWayMessage
+            {
+                explicit GetFeed(ApiGateway *gateway,
+                                 const BuildingData &buindingData = BuildingData());
 
-        private:
-            const QList<QPair<QString, QString> > constructedMessageData() const override;
+                void setBuildingData(const BuildingData &buindingData) { m_buildingData = buindingData; }
 
-        private:
-            BuildingData m_buildingData;
-        };
+            private:
+                const QList<QPair<QString, QString> > constructedMessageData() const override;
+
+            private:
+                BuildingData m_buildingData;
+            };
+
+        }
 
     }
 

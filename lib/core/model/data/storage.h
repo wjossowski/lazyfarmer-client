@@ -18,29 +18,39 @@
 
 #pragma once
 
-#include <QtCore/QtGlobal>
+#include "product.h"
+
+#include <QtCore/QObject>
+#include <QtCore/QSharedPointer>
 #include <QtCore/QVariantMap>
-#include <QtDebug>
 
-class Product
-{
-public:
-    explicit Product(const QVariantMap &info)
-        : m_id(info["Id"].toInt())
-        , m_amount(info["Amount"].toInt()) { }
+namespace Core {
 
-    Product (const Product &another) : m_id(another.id()) , m_amount(another.amount()) { }
+    namespace Model {
 
-    inline int id() const { return m_id; }
-    inline void setId(const int value) { m_id = value; }
-    inline int amount() const { return m_amount; }
-    inline void setAmount(const int value) { m_amount = value; }
+        namespace Data {
 
-    friend bool operator <(const QSharedPointer<Product> &lhs,
-                           const QSharedPointer<Product> &rhs)
-        { return lhs->id() < rhs->id(); }
+            class Storage : public QObject
+            {
+                Q_OBJECT
 
-private:
-    int m_id;
-    int m_amount;
-};
+            public:
+                explicit Storage(QObject *parent = nullptr);
+                void update(const QVariantList &storage);
+
+                inline int size() const { return m_products.size(); }
+                inline const QList<QSharedPointer<Product>> &products () const { return m_products; }
+                inline void clear() { m_products.clear(); }
+
+            signals:
+                void storageChanged();
+
+            private:
+                QList<QSharedPointer<Product>> m_products;
+            };
+
+        }
+
+    }
+
+}

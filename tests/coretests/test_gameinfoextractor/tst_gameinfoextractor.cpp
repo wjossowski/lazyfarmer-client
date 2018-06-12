@@ -16,11 +16,12 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "core/helpers/gameinfoextractor.h"
+#include "core/extractors/gameinfoextractor.h"
 
 #include <QtTest>
 
-using namespace Extractors;
+using namespace Core;
+using namespace Core::Extractors;
 
 class GameInfoExtractorTest : public QObject
 {

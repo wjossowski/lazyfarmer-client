@@ -23,7 +23,8 @@
 #include <QtCore/QJsonValue>
 #include <QtCore/QJsonArray>
 
-using namespace Extractors;
+using namespace Core;
+using namespace Core::Extractors;
 
 void ProductionInfoExtractor::extractSpecificData()
 {

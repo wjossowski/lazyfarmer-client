@@ -25,7 +25,8 @@
 
 #include <QtDebug>
 
-using namespace Extractors;
+using namespace Core;
+using namespace Core::Extractors;
 
 #ifdef DEBUG_MODE
 void printJson(const QJsonObject &obj) {

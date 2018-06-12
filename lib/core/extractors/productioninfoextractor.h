@@ -1,6 +1,6 @@
 /**
  ** This file is part of the LazyFarmer project.
- ** Copyright 2017 Wojciech Ossowski <w.j.ossowski@gmail.com>.
+ ** Copyright 2018 Wojciech Ossowski <w.j.ossowski@gmail.com>.
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU Lesser General Public License as
@@ -16,28 +16,22 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "playerstorage.h"
+#pragma once
 
-#include <QtDebug>
+#include "datablockextractor.h"
 
-using namespace Storage;
+namespace Core {
 
-PlayerStorage::PlayerStorage(QObject *parent)
-    : QObject(parent)
-{
+    namespace Extractors {
 
-}
+        class ProductionInfoExtractor : public DatablockExtractor
+        {
 
-void PlayerStorage::update(const QVariantList &storage)
-{
-    m_products.clear();
+        private:
+            void extractSpecificData() override;
 
-    for (const auto &item : storage) {
-        const auto product = QSharedPointer<Product>(new Product(item.toMap()));
-        m_products.push_back(std::move(product));
+        };
+
     }
 
-    std::sort(std::begin(m_products), std::end(m_products));
-
-    emit storageChanged();
 }

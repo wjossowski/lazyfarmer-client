@@ -21,23 +21,27 @@
 #include "apimessage.h"
 #include "../helpers/querystructs.h"
 
-namespace Api {
+namespace Core {
 
-    namespace Messages {
+    namespace Api {
 
-        class GetProductionInfo : public ApiMessage
-        {
-        public:
-            explicit GetProductionInfo(ApiGateway *gateway,
-                                       const BuildingData &buildingData = BuildingData());
+        namespace Messages {
 
-            const QUrl url() const override;
-            void handleResponse(QNetworkReply *reply) override;
+            class GetProductionInfo : public ApiMessage
+            {
+            public:
+                explicit GetProductionInfo(ApiGateway *gateway,
+                                           const BuildingData &buildingData = BuildingData());
 
-        private:
-            BuildingData m_buildingData;
+                const QUrl url() const override;
+                void handleResponse(QNetworkReply *reply) override;
 
-        };
+            private:
+                BuildingData m_buildingData;
+
+            };
+
+        }
 
     }
 

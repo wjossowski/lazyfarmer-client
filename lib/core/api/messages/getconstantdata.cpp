@@ -19,13 +19,14 @@
 #include "getconstantdata.h"
 #include "../apigateway.h"
 
-#include "../../helpers/gameinfoextractor.h"
+#include "extractors/gameinfoextractor.h"
 
 #include <QtNetwork/QNetworkReply>
 
-using namespace Api;
-using namespace Api::Messages;
-using namespace Extractors;
+using namespace Core;
+using namespace Core::Api;
+using namespace Core::Api::Messages;
+using namespace Core::Extractors;
 
 GetConstantData::GetConstantData(ApiGateway *gateway,
                                  const QString &fileUrl)

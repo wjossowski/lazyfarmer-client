@@ -21,31 +21,36 @@
 #include "onewaymessage.h"
 #include "../helpers/querystructs.h"
 
-namespace Api {
+namespace Core {
 
-    namespace Messages {
+    namespace Api {
 
-        class SetProduction : public OneWayMessage
-        {
-        public:
-            explicit SetProduction(ApiGateway *gateway,
-                                   const BuildingData &buindingData = BuildingData(),
-                                   const ProductData &productData = ProductData(),
-                                   const ProductionData &productionData = ProductionData());
+        namespace Messages {
 
-            void setBuildingData(const BuildingData &buindingData) { m_buildingData = buindingData; }
-            void setProductData(const ProductData &productData) { m_productData = productData; }
-            void setProductionData(const ProductionData &productionData) { m_productionData = productionData; }
+            class SetProduction : public OneWayMessage
+            {
+            public:
+                explicit SetProduction(ApiGateway *gateway,
+                                       const BuildingData &buindingData = BuildingData(),
+                                       const ProductData &productData = ProductData(),
+                                       const ProductionData &productionData = ProductionData());
 
-        private:
-            const QList<QPair<QString, QString> > constructedMessageData() const override;
+                void setBuildingData(const BuildingData &buindingData) { m_buildingData = buindingData; }
+                void setProductData(const ProductData &productData) { m_productData = productData; }
+                void setProductionData(const ProductionData &productionData) { m_productionData = productionData; }
 
-        private:
-            BuildingData m_buildingData;
-            ProductData m_productData;
-            ProductionData m_productionData;
-        };
+            private:
+                const QList<QPair<QString, QString> > constructedMessageData() const override;
+
+            private:
+                BuildingData m_buildingData;
+                ProductData m_productData;
+                ProductionData m_productionData;
+            };
+
+        }
 
     }
 
 }
+

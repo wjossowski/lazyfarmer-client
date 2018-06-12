@@ -18,8 +18,9 @@
 
 #include "getfeed.h"
 
-using namespace Api;
-using namespace Api::Messages;
+using namespace Core;
+using namespace Core::Api;
+using namespace Core::Api::Messages;
 
 GetFeed::GetFeed(ApiGateway *gateway,
                  const BuildingData &buindingData)

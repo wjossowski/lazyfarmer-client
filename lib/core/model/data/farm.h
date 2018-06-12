@@ -1,6 +1,6 @@
 /**
  ** This file is part of the LazyFarmer project.
- ** Copyright 2018 Wojciech Ossowski <w.j.ossowski@gmail.com>.
+ ** Copyright 2017 Wojciech Ossowski <w.j.ossowski@gmail.com>.
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU Lesser General Public License as
@@ -18,27 +18,29 @@
 
 #pragma once
 
-#include <QtCore/QVariant>
-#include <QtCore/QJsonObject>
+#include "building.h"
 
-namespace Extractors {
+#include <QtCore/QSharedPointer>
 
-    class DatablockExtractor
-    {
+namespace Core {
 
-    public:
-        explicit DatablockExtractor() = default;
+    namespace Model {
 
-        const QVariantMap &result() { return m_data; }
-        void extract(const QByteArray &content);
+        namespace Data {
 
-    private:
-        bool fetchDatablock(const QJsonDocument &document);
-        virtual void extractSpecificData() = 0;
+            class Farm
+            {
+            public:
+                QSharedPointer<Building> buildingAt(int farm, int position);
 
-    protected:
-        QVariantMap m_data;
-        QJsonObject m_datablock;
-    };
+                void update(const QVariantList &farmInfo);
+
+            private:
+                QList<QSharedPointer<Building>> m_buildings;
+            };
+
+        }
+
+    }
 
 }

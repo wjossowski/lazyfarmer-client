@@ -18,9 +18,11 @@
 
 #include <QtTest>
 
-#include "core/storage/playerstorage.h"
+#include "core/model/data/storage.h"
 
-using namespace Storage;
+using namespace Core;
+using namespace Core::Model;
+using namespace Core::Model::Data;
 
 class StorageTest : public QObject
 {
@@ -74,7 +76,7 @@ void StorageTest::update()
     QFETCH(QList<int>, indexes);
     QFETCH(QList<int>, amounts);
 
-    QScopedPointer<PlayerStorage> m_storage (new PlayerStorage);
+    QScopedPointer<Storage> m_storage (new Storage);
 
     m_storage->update(storage);
     QVERIFY2 (m_storage->size() == storage.size(), "Storage sizes must be equal");

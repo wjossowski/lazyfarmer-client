@@ -20,19 +20,23 @@
 
 #include "apimessage.h"
 
-namespace Api {
+namespace Core {
 
-    namespace Messages {
+    namespace Api {
 
-        class Logout : public ApiMessage
-        {
-        public:
-            explicit Logout(ApiGateway *gateway)
-                : ApiMessage (gateway, MessageType::Logout) { }
+        namespace Messages {
 
-            const QUrl url() const override;
-            void handleResponse(QNetworkReply *reply) override;
-        };
+            class Logout : public ApiMessage
+            {
+            public:
+                explicit Logout(ApiGateway *gateway)
+                    : ApiMessage (gateway, MessageType::Logout) { }
+
+                const QUrl url() const override;
+                void handleResponse(QNetworkReply *reply) override;
+            };
+
+        }
 
     }
 

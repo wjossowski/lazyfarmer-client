@@ -24,7 +24,8 @@
 
 #include <QtCore/QVariantMap>
 
-using namespace Extractors;
+using namespace Core;
+using namespace Core::Extractors;
 
 void FeedInfoExtractor::extractSpecificData()
 {

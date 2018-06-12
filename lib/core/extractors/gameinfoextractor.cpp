@@ -26,7 +26,8 @@
 
 #include <QtDebug>
 
-using namespace Extractors;
+using namespace Core;
+using namespace Core::Extractors;
 
 QMap<QString, GameInfoExtractor::Ptr> GameInfoExtractor::m_baseExtractors;
 QMap<QString, GameInfoExtractor::Ptr> GameInfoExtractor::m_constantsExtractors;

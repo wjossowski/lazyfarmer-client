@@ -20,14 +20,24 @@
 
 #include "datablockextractor.h"
 
-namespace Extractors {
+namespace Core {
 
-    class ProductionInfoExtractor : public DatablockExtractor
-    {
+    namespace Extractors {
 
-    private:
-        void extractSpecificData() override;
+        class FieldInfoExtractor : public DatablockExtractor
+        {
 
-    };
+        public:
+            explicit FieldInfoExtractor(quint64 timestamp = 0);
+
+        private:
+            void extractSpecificData() override;
+
+        private:
+            qint64 m_timestamp;
+
+        };
+
+    }
 
 }

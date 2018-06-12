@@ -1,6 +1,6 @@
 /**
  ** This file is part of the LazyFarmer project.
- ** Copyright 2017 Wojciech Ossowski <w.j.ossowski@gmail.com>.
+ ** Copyright 2018 Wojciech Ossowski <w.j.ossowski@gmail.com>.
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU Lesser General Public License as
@@ -16,34 +16,9 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#pragma once
 
-#include "product.h"
+#include "building.h"
 
-#include <QtCore/QObject>
-#include <QtCore/QSharedPointer>
-#include <QtCore/QVariantMap>
-
-namespace Storage {
-
-    class PlayerStorage : public QObject
-    {
-        Q_OBJECT
-
-    public:
-        explicit PlayerStorage(QObject *parent = nullptr);
-        void update(const QVariantList &storage);
-
-        inline int size() const { return m_products.size(); }
-        inline const QList<QSharedPointer<Product>> &products () const { return m_products; }
-        inline void clear() { m_products.clear(); }
-
-    signals:
-        void storageChanged();
-
-    private:
-        QList<QSharedPointer<Product>> m_products;
-    };
-
-}
-
+using namespace Core;
+using namespace Core::Model;
+using namespace Core::Model::Data;

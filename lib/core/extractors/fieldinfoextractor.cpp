@@ -22,7 +22,8 @@
 
 #include <QDebug>
 
-using namespace Extractors;
+using namespace Core;
+using namespace Core::Extractors;
 
 FieldInfoExtractor::FieldInfoExtractor(quint64 timestamp)
     : DatablockExtractor()

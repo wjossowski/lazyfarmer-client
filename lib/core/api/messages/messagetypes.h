@@ -18,46 +18,50 @@
 
 #pragma once
 
-namespace Api {
+namespace Core {
 
-    namespace Messages {
+    namespace Api {
 
-        enum class QueryType {
-            Post,
-            Get,
+        namespace Messages {
 
-            Unknown
-        };
+            enum class QueryType {
+                Post,
+                Get,
 
-        enum class MessageType {
-            Login, // Done
-            Logout, // Done
+                Unknown
+            };
 
-            GetConstantData, // Done
+            enum class MessageType {
+                Login, // Done
+                Logout, // Done
 
-            GetFarmInfo, // Todo
-            GetFieldInfo,
+                GetConstantData, // Done
 
-            SetPlant, // Done
-            SetPour, // Done
-            GetCollect, // Done
+                GetFarmInfo, // Todo
+                GetFieldInfo,
 
-            SetFeed, // Done
-            GetFeed,
-            GetFeedInfo,
+                SetPlant, // Done
+                SetPour, // Done
+                GetCollect, // Done
 
-            SetProduction, // Done
-            GetProduction, // Done
-            GetProductionInfo, //Done
+                SetFeed, // Done
+                GetFeed,
+                GetFeedInfo,
 
-            SetBuyer,
-            GetBuyer,
+                SetProduction, // Done
+                GetProduction, // Done
+                GetProductionInfo, //Done
 
-            GetPricesOnMarket,
-            SetOfferOnMarket,
+                SetBuyer,
+                GetBuyer,
 
-            Unknown
-        };
+                GetPricesOnMarket,
+                SetOfferOnMarket,
+
+                Unknown
+            };
+
+        }
 
     }
 

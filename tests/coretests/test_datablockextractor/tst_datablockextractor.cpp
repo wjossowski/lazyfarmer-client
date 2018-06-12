@@ -16,12 +16,13 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "core/helpers/productioninfoextractor.h"
-#include "core/helpers/feedinfoextractor.h"
+#include "core/extractors/productioninfoextractor.h"
+#include "core/extractors/feedinfoextractor.h"
 
 #include <QtTest>
 
-using namespace Extractors;
+using namespace Core;
+using namespace Core::Extractors;
 
 class DatablockExtractorTest : public QObject
 {

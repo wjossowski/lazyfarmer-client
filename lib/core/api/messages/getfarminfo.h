@@ -20,20 +20,24 @@
 
 #include "apimessage.h"
 
-namespace Api {
+namespace Core {
 
-    namespace Messages {
+    namespace Api {
 
-        class GetFarmInfo : public ApiMessage
-        {
-        public:
-            explicit GetFarmInfo(ApiGateway *gateway)
-                : ApiMessage (gateway, MessageType::GetFarmInfo) { }
+        namespace Messages {
 
-        public:
-            const QUrl url() const override;
-            void handleResponse(QNetworkReply *reply) override;
-        };
+            class GetFarmInfo : public ApiMessage
+            {
+            public:
+                explicit GetFarmInfo(ApiGateway *gateway)
+                    : ApiMessage (gateway, MessageType::GetFarmInfo) { }
+
+            public:
+                const QUrl url() const override;
+                void handleResponse(QNetworkReply *reply) override;
+            };
+
+        }
 
     }
 

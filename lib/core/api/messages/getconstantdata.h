@@ -19,22 +19,25 @@
 #pragma once
 
 #include "apimessage.h"
+namespace Core {
 
-namespace Api {
+    namespace Api {
 
-    namespace Messages {
+        namespace Messages {
 
-        class GetConstantData : public ApiMessage
-        {
-        public:
-            explicit GetConstantData(ApiGateway *gateway, const QString &fileUrl);
+            class GetConstantData : public ApiMessage
+            {
+            public:
+                explicit GetConstantData(ApiGateway *gateway, const QString &fileUrl);
 
-            const QUrl url() const override;
-            void handleResponse(QNetworkReply *reply) override;
+                const QUrl url() const override;
+                void handleResponse(QNetworkReply *reply) override;
 
-        private:
-            QString m_fileUrl;
-        };
+            private:
+                QString m_fileUrl;
+            };
+
+        }
 
     }
 

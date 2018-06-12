@@ -17,7 +17,7 @@
  **/
 
 #include "player.h"
-#include "helpers/playerinfoextractor.h"
+#include "extractors/playerinfoextractor.h"
 
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>
@@ -25,6 +25,7 @@
 
 #include <QtDebug>
 
+using namespace Core;
 using namespace Extractors;
 
 Player::Player(QObject *parent)
