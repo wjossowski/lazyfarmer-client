@@ -1,3 +1,12 @@
+Kurnik:
+http://s1.wolnifarmerzy.pl/ajax/farm.php?rid=a145a7d4d6eab3cf75b9a3ef173a614d&mode=inner_init&farm=1&position=2
+Response:
+{"datablock":[1,{"1":{"2":{"buildingid":"2","level":"1","pid":9,"crop":3,"time":14400,"rest":7200,"feed":{"1":{"time":200},"2":{"time":400}},"animals":{"type":2,"amount":"3","pos":[],"max":5,"next":520},"specials":[]}}},{"tutorial":0},null],"updateblock":{"stock":null,"menue":null}}
+Kozy:
+http://s18.wolnifarmerzy.pl/ajax/farm.php?rid=bc6529a098e04985762d9cca3728e904&mode=inner_init&farm=1&position=4
+{"datablock":[1,{"1":{"4":{"buildingid":"12","level":"2","pid":110,"crop":15,"time":129600,"rest":64800,"feed":{"109":{"time":600},"108":{"time":1200}},"animals":{"type":12,"amount":"3","pos":[],"max":3,"next":2709},"specials":[]}}},{"tutorial":0},null],"updateblock":{"stock":null,"menue":null}}
+
+
 Obrazki:
 http://mff.wavecdn.de/mff/maps/tafel_map.30.jpg
 

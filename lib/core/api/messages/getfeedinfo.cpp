@@ -18,7 +18,7 @@
 
 #include "getfeedinfo.h"
 #include "../apigateway.h"
-#include "../../helpers/feedinfoextractor.h"
+#include "helpers/feedinfoextractor.h"
 
 #include <QtNetwork/QNetworkReply>
 #include <QtCore/QVariantMap>
@@ -39,7 +39,7 @@ GetFeedInfo::GetFeedInfo(ApiGateway *gateway,
 const QUrl GetFeedInfo::url() const
 {
     return m_gateway->buildEndpointAjaxUrl("farm", {
-        { "mode", "innerinfos" },
+        { "mode", "inner_init" },
         { "farm", QString::number(m_buildingData.farmId) },
         { "position", QString::number(m_buildingData.positionId) }
     });

@@ -25,7 +25,6 @@ namespace Extractors {
 
     class DatablockExtractor
     {
-        Q_DISABLE_COPY(DatablockExtractor)
 
     public:
         explicit DatablockExtractor() = default;

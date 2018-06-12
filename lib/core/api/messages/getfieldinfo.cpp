@@ -18,9 +18,14 @@
 
 
 #include "getfieldinfo.h"
+#include "helpers/fieldinfoextractor.h"
+
+#include <QtNetwork/QNetworkReply>
+#include <QtCore/QJsonDocument>
 
 using namespace Api;
 using namespace Api::Messages;
+using namespace Extractors;
 
 GetFieldInfo::GetFieldInfo(ApiGateway *gateway,
                            const BuildingData &buildingData)
@@ -41,8 +46,10 @@ const QUrl GetFieldInfo::url() const
 
 void GetFieldInfo::handleResponse(QNetworkReply *reply)
 {
-    Q_UNUSED(reply)
-    // TODO: FILLME
+    FieldInfoExtractor extractor;
+    extractor.extract(reply->readAll());
+
+    qDebug() << QJsonDocument::fromVariant(extractor.result());
 }
 
 void GetFieldInfo::setBuildingData(const BuildingData &buildingData)

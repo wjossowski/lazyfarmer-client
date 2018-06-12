@@ -28,29 +28,31 @@ using namespace Extractors;
 
 void FeedInfoExtractor::extractSpecificData()
 {
+    const QJsonObject buildingObject = m_datablock[m_datablock.keys().first()].toObject();
+    const QJsonObject info = buildingObject[buildingObject.keys().first()].toObject();
+
     // Extract feed input data
-    const QJsonObject need = m_datablock.value("2").toObject();
+    const QJsonObject feed = info["feed"].toObject();
+    if (feed.isEmpty()) {
+        return;
+    }
 
     QVariantList feedInputInfo;
-    for (const auto &key : need.keys()) {
-        const auto inputRecord = need[key].toObject();
-
-        int inputId = inputRecord["1"].toInt();
-        int inputRemaining = inputRecord["3"].toInt();
-
+    for (const auto &id : feed.keys()) {
+        const int remaining = feed[id].toObject().value("time").toInt();
         feedInputInfo.append(QVariantMap({
-            { "In", QString::number(inputId) },
-            { "Remaining", QString::number(inputRemaining) }
+            { "In", id },
+            { "Remaining", QString::number(remaining) }
         }));
     }
 
     m_data.insert("FeedInputInfo", feedInputInfo);
 
-    // Extract feed output data
-    const QJsonObject output = m_datablock.value("4").toObject();
 
-    int outputId = output.value("1").toInt();
-    int outputRemaining = output.value("2").toInt();
+    // Extract feed output data
+
+    int outputId = info.value("pid").toInt();
+    int outputRemaining = info.value("time").toInt();
 
     const QVariantMap outputInfo = {
         { "Out", QString::number(outputId) },

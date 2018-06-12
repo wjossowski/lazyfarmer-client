@@ -26,7 +26,7 @@ namespace Extractors {
     {
 
     private:
-        void extractSpecificData();
+        void extractSpecificData() override;
 
     };
 

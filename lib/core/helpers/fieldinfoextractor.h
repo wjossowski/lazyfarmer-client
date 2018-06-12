@@ -16,17 +16,24 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include <QtCore/QString>
-#include <QtCore/QVariant>
+#pragma once
+
+#include "datablockextractor.h"
 
 namespace Extractors {
 
-    class FieldInfoExtractor
+    class FieldInfoExtractor : public DatablockExtractor
     {
-        Q_DISABLE_COPY(FieldInfoExtractor)
+
+    public:
+        explicit FieldInfoExtractor(quint64 timestamp = 0);
 
     private:
-        QVariantList m_fields;
+        void extractSpecificData() override;
+
+    private:
+        qint64 m_timestamp;
+
     };
 
 }

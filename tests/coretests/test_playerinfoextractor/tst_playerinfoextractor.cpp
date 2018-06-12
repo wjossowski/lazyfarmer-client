@@ -167,7 +167,7 @@ void PlayerInfoExtractorTest::extractFarmsInfo_data()
                                    // number of animals
                                 << QVariantMap({{"1", QList<QVariant>({0, 0, 0, 0, 0, 0})}})
                                    // remaining time
-                                << QVariantMap({{"1", QList<QVariant>({0, 0, 0, 0, 0, 0})}});
+                                << QVariantMap({{"1", QList<QVariant>({-1, 0, 0, 0, 0, 0})}});
 
 
     QTest::newRow("Big File") << m_bigExtractor.data()
@@ -183,8 +183,8 @@ void PlayerInfoExtractorTest::extractFarmsInfo_data()
                               << QVariantMap({{"1", QList<QVariant>({0, 0,        0,  3, 0,  3})},
                                               {"2", QList<QVariant>({0, 0,        0,  0, 0,  0})}})
                                  // remaining time;
-                              << QVariantMap({{"1", QList<QVariant>({0, 31309697, 0,  0, 0,  0})},
-                                              {"2", QList<QVariant>({0, 0,        0,  0, 0,  0})}});
+                              << QVariantMap({{"1", QList<QVariant>({0, 31309697,-1, -1, 0, -1})},
+                                              {"2", QList<QVariant>({-1, 0,      -1,  0, -1,  -1})}});
 }
 
 void PlayerInfoExtractorTest::extractFarmsInfo()
