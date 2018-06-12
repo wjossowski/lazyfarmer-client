@@ -22,25 +22,29 @@
 #include "../apigateway.h"
 #include "../helpers/querystructs.h"
 
-namespace Api {
+namespace Core {
 
-    namespace Messages {
+    namespace Api {
 
-        class GetFieldInfo : public ApiMessage
-        {
-        public:
-            explicit GetFieldInfo(ApiGateway *gateway,
-                                  const BuildingData &buildingData = BuildingData());
+        namespace Messages {
 
-            const QUrl url() const override;
-            void handleResponse(QNetworkReply *reply) override;
+            class GetFieldInfo : public ApiMessage
+            {
+            public:
+                explicit GetFieldInfo(ApiGateway *gateway,
+                                      const BuildingData &buildingData = BuildingData());
 
-            void setBuildingData(const BuildingData &buildingData);
+                const QUrl url() const override;
+                void handleResponse(QNetworkReply *reply) override;
 
-        private:
-            BuildingData m_buildingData;
+                void setBuildingData(const BuildingData &buildingData);
 
-        };
+            private:
+                BuildingData m_buildingData;
+
+            };
+
+        }
 
     }
 

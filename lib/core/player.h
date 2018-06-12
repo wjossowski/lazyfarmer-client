@@ -24,32 +24,36 @@
 
 #include <QtCore/QObject>
 
-class Player : public QObject
-{
-    Q_OBJECT
+namespace Core {
 
-public:
-    explicit Player(QObject *parent = nullptr);
+    class Player : public QObject
+    {
+        Q_OBJECT
 
-    Q_INVOKABLE inline int level() const { return m_level; }
-    Q_INVOKABLE inline QString levelDescription() const { return m_levelDescription; }
-    Q_INVOKABLE inline int levelPercentage() const { return m_levelPercentage; }
-    Q_INVOKABLE inline qreal money() const { return m_money; }
+    public:
+        explicit Player(QObject *parent = nullptr);
 
-    void update(const QByteArray &info);
+        Q_INVOKABLE inline int level() const { return m_level; }
+        Q_INVOKABLE inline QString levelDescription() const { return m_levelDescription; }
+        Q_INVOKABLE inline int levelPercentage() const { return m_levelPercentage; }
+        Q_INVOKABLE inline qreal money() const { return m_money; }
 
-private:
-    void updateBasicInfo(const QVariantMap &basicInfo);
-    void initialize();
-    void initializeConnections() const;
+        void update(const QByteArray &info);
 
-private:
-    int m_level;
-    int m_levelPercentage;
-    qreal m_money;
-    QString m_levelDescription;
+    private:
+        void updateBasicInfo(const QVariantMap &basicInfo);
+        void initialize();
+        void initializeConnections() const;
 
-    Storage::PlayerStorage m_storage;
-    Farm::PlayerFarm m_farm;
-    Api::ApiGateway m_gateway;
-};
+    private:
+        int m_level;
+        int m_levelPercentage;
+        qreal m_money;
+        QString m_levelDescription;
+
+        Storage::PlayerStorage m_storage;
+        Farm::PlayerFarm m_farm;
+        Api::ApiGateway m_gateway;
+    };
+
+}

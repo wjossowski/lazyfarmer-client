@@ -21,24 +21,28 @@
 #include <QtCore/QVariant>
 #include <QtCore/QJsonObject>
 
-namespace Extractors {
+namespace Core {
 
-    class DatablockExtractor
-    {
+    namespace Extractors {
 
-    public:
-        explicit DatablockExtractor() = default;
+        class DatablockExtractor
+        {
 
-        const QVariantMap &result() { return m_data; }
-        void extract(const QByteArray &content);
+        public:
+            explicit DatablockExtractor() = default;
 
-    private:
-        bool fetchDatablock(const QJsonDocument &document);
-        virtual void extractSpecificData() = 0;
+            const QVariantMap &result() { return m_data; }
+            void extract(const QByteArray &content);
 
-    protected:
-        QVariantMap m_data;
-        QJsonObject m_datablock;
-    };
+        private:
+            bool fetchDatablock(const QJsonDocument &document);
+            virtual void extractSpecificData() = 0;
+
+        protected:
+            QVariantMap m_data;
+            QJsonObject m_datablock;
+        };
+
+    }
 
 }

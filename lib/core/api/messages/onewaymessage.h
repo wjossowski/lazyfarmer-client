@@ -20,27 +20,30 @@
 
 #include "apimessage.h"
 
-namespace Api{
+namespace Core {
 
-    namespace Messages {
+    namespace Api{
 
-        class OneWayMessage : public ApiMessage
-        {
-        public:
-            explicit OneWayMessage (ApiGateway *gateway,
-                                    MessageType type = Messages::MessageType::Unknown,
-                                    const QString &endpoint = QString());
+        namespace Messages {
 
-            const QUrl url() const override;
-            void handleResponse(QNetworkReply *reply) override;
+            class OneWayMessage : public ApiMessage
+            {
+            public:
+                explicit OneWayMessage (ApiGateway *gateway,
+                                        MessageType type = Messages::MessageType::Unknown,
+                                        const QString &endpoint = QString());
 
-        private:
-            virtual const QList<QPair<QString, QString>> constructedMessageData() const = 0;
-            QString m_endpointUrl;
+                const QUrl url() const override;
+                void handleResponse(QNetworkReply *reply) override;
 
-        };
+            private:
+                virtual const QList<QPair<QString, QString>> constructedMessageData() const = 0;
+                QString m_endpointUrl;
+
+            };
+
+        }
 
     }
 
 }
-

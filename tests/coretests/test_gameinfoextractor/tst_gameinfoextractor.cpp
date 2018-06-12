@@ -20,7 +20,8 @@
 
 #include <QtTest>
 
-using namespace Extractors;
+using namespace Core;
+using namespace Core::Extractors;
 
 class GameInfoExtractorTest : public QObject
 {

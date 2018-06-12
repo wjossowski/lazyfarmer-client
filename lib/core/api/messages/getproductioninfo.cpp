@@ -25,9 +25,10 @@
 #include <QtCore/QVariantMap>
 #include <QtCore/QJsonDocument>
 
-using namespace Api;
-using namespace Api::Messages;
-using namespace Extractors;
+using namespace Core;
+using namespace Core::Api;
+using namespace Core::Api::Messages;
+using namespace Core::Extractors;
 
 GetProductionInfo::GetProductionInfo(ApiGateway *gateway,
                                      const BuildingData &buildingData)

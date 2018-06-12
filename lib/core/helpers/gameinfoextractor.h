@@ -29,59 +29,63 @@
 #include <QtCore/QDebug>
 #endif
 
-namespace Extractors {
+namespace Core {
 
-    class GameInfoExtractor
-    {
-        Q_DISABLE_COPY(GameInfoExtractor)
+    namespace Extractors {
 
-    public:
-        using Ptr = QSharedPointer<GameInfoExtractor>;
+        class GameInfoExtractor
+        {
+            Q_DISABLE_COPY(GameInfoExtractor)
 
-        explicit GameInfoExtractor(const QVariantMap &filters,
-                                   const QString &domain = QString());
+        public:
+            using Ptr = QSharedPointer<GameInfoExtractor>;
 
-        virtual ~GameInfoExtractor();
+            explicit GameInfoExtractor(const QVariantMap &filters,
+                                       const QString &domain = QString());
 
-        static Ptr baseExtractor(const QString &domain = QString());
-        static Ptr constantsExtractor(const QString &domain = QString());
+            virtual ~GameInfoExtractor();
 
-        static QVariantMap globalResults(const QString &domain = QString());
+            static Ptr baseExtractor(const QString &domain = QString());
+            static Ptr constantsExtractor(const QString &domain = QString());
 
-        inline QString domain() const { return m_domain; }
-        inline void setDomain(const QString &domain) { m_domain = domain; }
+            static QVariantMap globalResults(const QString &domain = QString());
 
-    #if DEBUG_MODE
-        inline const QStringList &regexMatches() const { return m_regexMatches; }
-    #endif
+            inline QString domain() const { return m_domain; }
+            inline void setDomain(const QString &domain) { m_domain = domain; }
 
-        static const QVariantMap BaseFilters;
-        static const QVariantMap ConstantsFilters;
+        #if DEBUG_MODE
+            inline const QStringList &regexMatches() const { return m_regexMatches; }
+        #endif
 
-        void extract(const QString &content);
-        const QVariantMap &results() { return m_results; }
-        void save();
+            static const QVariantMap BaseFilters;
+            static const QVariantMap ConstantsFilters;
 
-    private:
-        QVariantMap extractNameFromObject(QJsonObject &&object) const;
-        QVariantMap extractObject(QJsonDocument &&document) const;
+            void extract(const QString &content);
+            const QVariantMap &results() { return m_results; }
+            void save();
 
-        static Ptr findOrCreateExtractor(const QString &domain,
-                                         const QVariantMap &filters,
-                                         QMap<QString, Ptr> &source);
+        private:
+            QVariantMap extractNameFromObject(QJsonObject &&object) const;
+            QVariantMap extractObject(QJsonDocument &&document) const;
 
-    private:
-        static QMap<QString, Ptr> m_baseExtractors;
-        static QMap<QString, Ptr> m_constantsExtractors;
+            static Ptr findOrCreateExtractor(const QString &domain,
+                                             const QVariantMap &filters,
+                                             QMap<QString, Ptr> &source);
 
-        QVariantMap m_filters;
-        QVariantMap m_results;
+        private:
+            static QMap<QString, Ptr> m_baseExtractors;
+            static QMap<QString, Ptr> m_constantsExtractors;
 
-        QString m_domain;
+            QVariantMap m_filters;
+            QVariantMap m_results;
 
-    #if DEBUG_MODE
-        QStringList m_regexMatches;
-    #endif
-    };
+            QString m_domain;
+
+        #if DEBUG_MODE
+            QStringList m_regexMatches;
+        #endif
+        };
+
+    }
 
 }

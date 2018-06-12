@@ -20,25 +20,29 @@
 
 #include "apimessage.h"
 
-namespace Api {
+namespace Core {
 
-    namespace Messages {
+    namespace Api {
 
-        class Login : public ApiMessage
-        {
-        public:
-            explicit Login(ApiGateway *gateway)
-                : ApiMessage (gateway, MessageType::Login, false) { }
+        namespace Messages {
 
-            QueryType queryType() const override { return QueryType::Post; }
+            class Login : public ApiMessage
+            {
+            public:
+                explicit Login(ApiGateway *gateway)
+                    : ApiMessage (gateway, MessageType::Login, false) { }
 
-            const QUrl url() const override;
-            void configureRequest(QNetworkRequest &request) const override;
-            const QList<QPair<QString, QString> > postData() const override;
+                QueryType queryType() const override { return QueryType::Post; }
 
-            void handleResponse(QNetworkReply *reply) override;
+                const QUrl url() const override;
+                void configureRequest(QNetworkRequest &request) const override;
+                const QList<QPair<QString, QString> > postData() const override;
 
-        };
+                void handleResponse(QNetworkReply *reply) override;
+
+            };
+
+        }
 
     }
 

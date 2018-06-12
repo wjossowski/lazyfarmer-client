@@ -33,80 +33,85 @@
 
 class QNetworkReply;
 
-namespace Api {
+namespace Core {
 
-    struct ApiOptions {
-        QString serverId, serverDomain, login, password;
-    };
+    namespace Api {
 
-    class ApiGateway : public QObject
-    {
-        Q_OBJECT
+        struct ApiOptions {
+            QString serverId, serverDomain, login, password;
+        };
 
-    public:
-        explicit ApiGateway(QObject *parent = nullptr);
+        class ApiGateway : public QObject
+        {
+            Q_OBJECT
 
-        bool isConfigured() const;
+        public:
+            explicit ApiGateway(QObject *parent = nullptr);
 
-        bool isLoggedIn() const { return m_loggedIn; }
-        void setLoggedIn (bool loggedIn);
+            bool isConfigured() const;
 
-        const QString &rid() const { return m_rid; }
-        void extractRid(QNetworkReply *reply);
+            bool isLoggedIn() const { return m_loggedIn; }
+            void setLoggedIn (bool loggedIn);
 
-        const QString &serverId() const { return m_serverId; }
-        const QString &serverDomain() const { return m_serverDomain; }
-        const QString &login() const { return m_login; }
-        const QString &password() const { return m_password; }
+            const QString &rid() const { return m_rid; }
+            void extractRid(QNetworkReply *reply);
 
-        void setApiOptions(const ApiOptions &options);
+            const QString &serverId() const { return m_serverId; }
+            const QString &serverDomain() const { return m_serverDomain; }
+            const QString &login() const { return m_login; }
+            const QString &password() const { return m_password; }
 
-        void queueMessage(const QSharedPointer<Messages::ApiMessage> &message, bool pushToTop = false);
-        void start();
+            void setApiOptions(const ApiOptions &options);
 
-        QUrl buildStaticUrl(const QString &endpoint);
+            void queueMessage(const QSharedPointer<Messages::ApiMessage> &message, bool pushToTop = false);
+            void start();
 
-        QUrl buildEndpointUrl(const QString &endpoint,
-                              const QList<QPair<QString, QString>> &data,
-                              bool includeRid = true) const;
+            QUrl buildStaticUrl(const QString &endpoint);
 
-        QUrl buildEndpointAjaxUrl(const QString &endpoint,
+            QUrl buildEndpointUrl(const QString &endpoint,
                                   const QList<QPair<QString, QString>> &data,
                                   bool includeRid = true) const;
 
-        void buildHeaders(QNetworkRequest &request) const;
-        void recursiveRedirect(const QString &url,
-                               const std::function<void (QNetworkReply *)> &callback);
-        void sendMessage(Messages::ApiMessage *message);
+            QUrl buildEndpointAjaxUrl(const QString &endpoint,
+                                      const QList<QPair<QString, QString>> &data,
+                                      bool includeRid = true) const;
 
-        QNetworkAccessManager *accessManager() { return &m_manager; }
+            void buildHeaders(QNetworkRequest &request) const;
+            void recursiveRedirect(const QString &url,
+                                   const std::function<void (QNetworkReply *)> &callback);
+            void sendMessage(Messages::ApiMessage *message);
 
-        void extractGameData();
-        void handleError(ApiGatewayError::ErrorType errorType, const QStringList &args = QStringList());
+            QNetworkAccessManager *accessManager() { return &m_manager; }
 
-    signals:
-        void loggedInChanged(bool changed) const;
-        void errorRaised(const QString &message) const;
+            void extractGameData();
+            void handleError(ApiGatewayError::ErrorType errorType, const QStringList &args = QStringList());
 
-    private:
-        void queueConstantData(const QString &content);
-        bool handleNotLogged(const QString &operation);
+        signals:
+            void loggedInChanged(bool changed) const;
+            void errorRaised(const QString &message) const;
 
-    private:
-        bool m_firstRun;
-        bool m_loggedIn;
+        private:
+            void queueConstantData(const QString &content);
+            bool handleNotLogged(const QString &operation);
 
-        QString m_serverId;
-        QString m_serverDomain;
-        QString m_login;
-        QString m_password;
+        private:
+            bool m_firstRun;
+            bool m_loggedIn;
 
-        QString m_rid;
+            QString m_serverId;
+            QString m_serverDomain;
+            QString m_login;
+            QString m_password;
 
-        QQueue<QSharedPointer<Messages::ApiMessage>> m_messageQueue;
-        QSharedPointer<Messages::ApiMessage> m_currentMessage;
-        QNetworkAccessManager m_manager;
-    };
+            QString m_rid;
+
+            QQueue<QSharedPointer<Messages::ApiMessage>> m_messageQueue;
+            QSharedPointer<Messages::ApiMessage> m_currentMessage;
+            QNetworkAccessManager m_manager;
+        };
+
+    }
 
 }
+
 

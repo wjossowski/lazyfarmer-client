@@ -20,14 +20,18 @@
 
 #include "datablockextractor.h"
 
-namespace Extractors {
+namespace Core {
 
-    class ProductionInfoExtractor : public DatablockExtractor
-    {
+    namespace Extractors {
 
-    private:
-        void extractSpecificData() override;
+        class ProductionInfoExtractor : public DatablockExtractor
+        {
 
-    };
+        private:
+            void extractSpecificData() override;
+
+        };
+
+    }
 
 }

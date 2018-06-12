@@ -22,22 +22,26 @@
 
 #include <QtCore/QObject>
 
-class PlayerFactory : public QObject
-{
-    Q_OBJECT
+namespace Core {
 
-public:
-    explicit PlayerFactory(QObject *parent = nullptr);
+    class PlayerFactory : public QObject
+    {
+        Q_OBJECT
 
-    Q_PROPERTY(int size READ size NOTIFY sizeChanged)
-    Q_INVOKABLE int size() { return m_players.size(); }
+    public:
+        explicit PlayerFactory(QObject *parent = nullptr);
 
-    QSharedPointer<Player> create();
-    void remove(int i);
+        Q_PROPERTY(int size READ size NOTIFY sizeChanged)
+        Q_INVOKABLE int size() { return m_players.size(); }
 
-signals:
-    void sizeChanged(int size);
+        QSharedPointer<Player> create();
+        void remove(int i);
 
-private:
-    QList<QSharedPointer<Player>> m_players;
-};
+    signals:
+        void sizeChanged(int size);
+
+    private:
+        QList<QSharedPointer<Player>> m_players;
+    };
+
+}

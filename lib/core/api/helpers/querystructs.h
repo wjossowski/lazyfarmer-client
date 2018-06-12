@@ -20,56 +20,61 @@
 
 #include <QtCore/QString>
 
-namespace Api {
+namespace Core {
 
-    static const unsigned int MAX_PLANT_COLUMNS = 12;
-    static const unsigned int MAX_PLANT_ROWS = 10;
+    namespace Api {
 
-    struct BuildingData
-    {
-        unsigned int farmId;
-        unsigned int positionId;
-    };
+        static const unsigned int MAX_PLANT_COLUMNS = 12;
+        static const unsigned int MAX_PLANT_ROWS = 10;
 
-    struct ProductData
-    {
-        explicit ProductData (unsigned int product_id = 1,
-                              unsigned int plant_size = 1,
-                              unsigned int position_id = 1)
-            : productId(product_id), plantSize(plant_size), positionId(position_id) { }
+        struct BuildingData
+        {
+            unsigned int farmId;
+            unsigned int positionId;
+        };
 
-        QString fieldIds () const {
-            if (plantSize == 1) {
-                return QString::number(positionId);
-            } else if (plantSize == 2) {
-                return QString("%1,%2")
-                        .arg(positionId)
-                        .arg(positionId+1);
-            } else if (plantSize == 4) {
-                return QString("%1,%2,%3,%4")
-                        .arg(positionId)
-                        .arg(positionId+1)
-                        .arg(positionId+MAX_PLANT_COLUMNS)
-                        .arg(positionId+MAX_PLANT_COLUMNS+1);;
-            } else {
-                return QString();
+        struct ProductData
+        {
+            explicit ProductData (unsigned int product_id = 1,
+                                  unsigned int plant_size = 1,
+                                  unsigned int position_id = 1)
+                : productId(product_id), plantSize(plant_size), positionId(position_id) { }
+
+            QString fieldIds () const {
+                if (plantSize == 1) {
+                    return QString::number(positionId);
+                } else if (plantSize == 2) {
+                    return QString("%1,%2")
+                            .arg(positionId)
+                            .arg(positionId+1);
+                } else if (plantSize == 4) {
+                    return QString("%1,%2,%3,%4")
+                            .arg(positionId)
+                            .arg(positionId+1)
+                            .arg(positionId+MAX_PLANT_COLUMNS)
+                            .arg(positionId+MAX_PLANT_COLUMNS+1);;
+                } else {
+                    return QString();
+                }
             }
-        }
 
-        unsigned int productId;
-        unsigned int plantSize;
-        unsigned int positionId;
-    };
+            unsigned int productId;
+            unsigned int plantSize;
+            unsigned int positionId;
+        };
 
-    struct ProductionData
-    {
-        explicit ProductionData(unsigned int production_id = 1,
-                                unsigned int production_slot = 1)
-            : productionId(production_id), productionSlot(production_slot) { }
+        struct ProductionData
+        {
+            explicit ProductionData(unsigned int production_id = 1,
+                                    unsigned int production_slot = 1)
+                : productionId(production_id), productionSlot(production_slot) { }
 
-        unsigned int productionId;
-        unsigned int productionSlot;
+            unsigned int productionId;
+            unsigned int productionSlot;
 
-    };
+        };
+
+    }
 
 }
+

@@ -21,7 +21,8 @@
 
 #include <QtTest>
 
-using namespace Extractors;
+using namespace Core;
+using namespace Core::Extractors;
 
 class DatablockExtractorTest : public QObject
 {

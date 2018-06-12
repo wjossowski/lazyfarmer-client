@@ -21,50 +21,55 @@
 #include <QtCore/QString>
 #include <QtCore/QCoreApplication>
 
-namespace Api {
+namespace Core {
 
-    struct ApiGatewayError
-    {
-        enum class ErrorType {
-            NotConfigured,
-            InvalidCredentials,
-            NotLogged,
-            RidNotParsed
-        } type;
+    namespace Api {
 
-        QString toString() const
+        struct ApiGatewayError
         {
-            switch (type) {
-            case ErrorType::NotConfigured: return "NotConfigured";
-            case ErrorType::InvalidCredentials: return "InvalidCredentials";
-            case ErrorType::NotLogged: return "Action %1 requires to be logged in.";
-            case ErrorType::RidNotParsed: return "Unable to extract `rid`. Login failed.";
-            default: return "Unknown error";
-            }
-        }
+            enum class ErrorType {
+                NotConfigured,
+                InvalidCredentials,
+                NotLogged,
+                RidNotParsed
+            } type;
 
-        QString message() const
-        {
-            switch (type) {
-            case ErrorType::NotConfigured:
-                return qApp->translate("ApiGatewayError",
-                                       "Unable to login with unspecified credentials.");
-            case ErrorType::InvalidCredentials:
-                return qApp->translate("ApiGatewayError",
-                                       "Unable to extract `rid`. Login failed.");
-            case ErrorType::NotLogged:
-                return qApp->translate("ApiGatewayError",
-                                       "Action %1 requires to be logged in.");
-            case ErrorType::RidNotParsed:
-                return qApp->translate("ApiGatewayError",
-                                       "Unable to extract `rid`. Login failed.");
-            default:
-                return qApp->translate("ApiGatewayError",
-                                       "Unknown error");
+            QString toString() const
+            {
+                switch (type) {
+                case ErrorType::NotConfigured: return "NotConfigured";
+                case ErrorType::InvalidCredentials: return "InvalidCredentials";
+                case ErrorType::NotLogged: return "Action %1 requires to be logged in.";
+                case ErrorType::RidNotParsed: return "Unable to extract `rid`. Login failed.";
+                default: return "Unknown error";
+                }
             }
-        }
 
-        ApiGatewayError (ErrorType exceptionType) : type(exceptionType) { }
-    };
+            QString message() const
+            {
+                switch (type) {
+                case ErrorType::NotConfigured:
+                    return qApp->translate("ApiGatewayError",
+                                           "Unable to login with unspecified credentials.");
+                case ErrorType::InvalidCredentials:
+                    return qApp->translate("ApiGatewayError",
+                                           "Unable to extract `rid`. Login failed.");
+                case ErrorType::NotLogged:
+                    return qApp->translate("ApiGatewayError",
+                                           "Action %1 requires to be logged in.");
+                case ErrorType::RidNotParsed:
+                    return qApp->translate("ApiGatewayError",
+                                           "Unable to extract `rid`. Login failed.");
+                default:
+                    return qApp->translate("ApiGatewayError",
+                                           "Unknown error");
+                }
+            }
+
+            ApiGatewayError (ErrorType exceptionType) : type(exceptionType) { }
+        };
+
+    }
 
 }
+

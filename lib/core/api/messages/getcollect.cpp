@@ -19,8 +19,9 @@
 #include "getcollect.h"
 #include "../apigateway.h"
 
-using namespace Api;
-using namespace Api::Messages;
+using namespace Core;
+using namespace Core::Api;
+using namespace Core::Api::Messages;
 
 GetCollect::GetCollect(ApiGateway *gateway,
                        const BuildingData &buildingData,

@@ -19,8 +19,9 @@
 #include "setplant.h"
 #include "../apigateway.h"
 
-using namespace Api;
-using namespace Api::Messages;
+using namespace Core;
+using namespace Core::Api;
+using namespace Core::Api::Messages;
 
 SetPlant::SetPlant(ApiGateway *gateway,
                    const BuildingData &buindingData,

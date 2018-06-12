@@ -28,9 +28,10 @@
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QNetworkReply>
 
-using namespace Api;
-using namespace Api::Messages;
-using namespace Extractors;
+using namespace Core;
+using namespace Core::Api;
+using namespace Core::Api::Messages;
+using namespace Core::Extractors;
 
 const QUrl GetFarmInfo::url() const
 {

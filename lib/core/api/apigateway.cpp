@@ -41,9 +41,9 @@
 #include <QtDebug>
 
 using namespace Core;
-using namespace Api;
-using namespace Api::Messages;
-using namespace Extractors;
+using namespace Core::Api;
+using namespace Core::Api::Messages;
+using namespace Core::Extractors;
 
 ApiGateway::ApiGateway(QObject *parent)
     : QObject(parent)

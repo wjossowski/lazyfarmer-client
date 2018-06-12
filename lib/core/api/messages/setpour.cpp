@@ -19,8 +19,9 @@
 #include "setpour.h"
 #include "../apigateway.h"
 
-using namespace Api;
-using namespace Api::Messages;
+using namespace Core;
+using namespace Core::Api;
+using namespace Core::Api::Messages;
 
 SetPour::SetPour(ApiGateway *gateway,
                  const BuildingData &buildingData,

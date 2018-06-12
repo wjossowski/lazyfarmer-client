@@ -19,8 +19,9 @@
 #include "setfeed.h"
 #include "../apigateway.h"
 
-using namespace Api;
-using namespace Api::Messages;
+using namespace Core;
+using namespace Core::Api;
+using namespace Core::Api::Messages;
 
 SetFeed::SetFeed(ApiGateway *gateway,
                  const BuildingData &buindingData,
