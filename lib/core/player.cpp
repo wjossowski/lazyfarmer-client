@@ -17,7 +17,7 @@
  **/
 
 #include "player.h"
-#include "helpers/playerinfoextractor.h"
+#include "extractors/playerinfoextractor.h"
 
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonObject>

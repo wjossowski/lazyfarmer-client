@@ -18,7 +18,7 @@
 
 #include "getfeedinfo.h"
 #include "../apigateway.h"
-#include "helpers/feedinfoextractor.h"
+#include "extractors/feedinfoextractor.h"
 
 #include <QtNetwork/QNetworkReply>
 #include <QtCore/QVariantMap>

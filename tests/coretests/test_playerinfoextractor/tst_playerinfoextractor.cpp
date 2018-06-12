@@ -16,7 +16,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "core/helpers/playerinfoextractor.h"
+#include "core/extractors/playerinfoextractor.h"
 #include "core/player.h"
 
 #include <QtCore/QRegularExpression>

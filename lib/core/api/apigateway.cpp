@@ -19,7 +19,7 @@
 #include "apigateway.h"
 #include "globalgamedata.h"
 
-#include "helpers/gameinfoextractor.h"
+#include "extractors/gameinfoextractor.h"
 
 #include "messages/messages.h"
 

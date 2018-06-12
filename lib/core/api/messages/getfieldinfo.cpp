@@ -18,7 +18,7 @@
 
 
 #include "getfieldinfo.h"
-#include "helpers/fieldinfoextractor.h"
+#include "extractors/fieldinfoextractor.h"
 
 #include <QtNetwork/QNetworkReply>
 #include <QtCore/QJsonDocument>

@@ -20,10 +20,10 @@ CONFIG   += c++14 dll
 TARGET = CoreLib
 TEMPLATE = lib
 
-INCLUDEPATH += $${PWD}/helpers
+INCLUDEPATH += $${PWD}/extractors
 
 SOURCES += \
-        $${PWD}/helpers/*.cpp \
+        $${PWD}/extractors/*.cpp \
         $${PWD}/storage/*.cpp \
         $${PWD}/farm/*.cpp  \
         $${PWD}/api/messages/*.cpp \
@@ -31,7 +31,7 @@ SOURCES += \
         $${PWD}/*.cpp
 
 HEADERS += \
-        $${PWD}/helpers/*.h \
+        $${PWD}/extractors/*.h \
         $${PWD}/storage/*.h \
         $${PWD}/farm/*.h \
         $${PWD}/api/helpers/*.h \

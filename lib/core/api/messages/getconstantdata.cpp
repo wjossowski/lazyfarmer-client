@@ -19,7 +19,7 @@
 #include "getconstantdata.h"
 #include "../apigateway.h"
 
-#include "../../helpers/gameinfoextractor.h"
+#include "extractors/gameinfoextractor.h"
 
 #include <QtNetwork/QNetworkReply>
 

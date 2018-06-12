@@ -19,7 +19,7 @@
 #include "getproductioninfo.h"
 #include "../apigateway.h"
 
-#include "helpers/productioninfoextractor.h"
+#include "extractors/productioninfoextractor.h"
 
 #include <QtNetwork/QNetworkReply>
 #include <QtCore/QVariantMap>

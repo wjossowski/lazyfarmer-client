@@ -19,7 +19,7 @@
 #include "getfarminfo.h"
 #include "../apigateway.h"
 
-#include "helpers/playerinfoextractor.h"
+#include "extractors/playerinfoextractor.h"
 
 #include <QtCore/QFile>
 #include <QtCore/QJsonDocument>
