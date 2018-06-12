@@ -29,18 +29,11 @@ using namespace Extractors;
 void FeedInfoExtractor::extractSpecificData()
 {
     // Extract feed input data
-    const QJsonObject need = m_datablock.value("2").toObject();
-
     QVariantList feedInputInfo;
-    for (const auto &key : need.keys()) {
-        const auto inputRecord = need[key].toObject();
-
-        int inputId = inputRecord["1"].toInt();
-        int inputRemaining = inputRecord["3"].toInt();
-
+    const QJsonArray need = m_datablock.value("need").toArray();
+    for (const auto &id : need) {
         feedInputInfo.append(QVariantMap({
-            { "In", QString::number(inputId) },
-            { "Remaining", QString::number(inputRemaining) }
+            { "In", QString::number(id.toInt()) }
         }));
     }
 

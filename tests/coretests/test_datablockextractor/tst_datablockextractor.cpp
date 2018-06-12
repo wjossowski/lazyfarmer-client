@@ -101,13 +101,11 @@ void DatablockExtractorTest::feedInfoExtractorTest()
              "Invalid info length");
 
     const QVariantMap expectedInfo1 = {
-        { "In", "109" },
-        { "Remaining","1800" }
+        { "In", "109" }
     };
 
     const QVariantMap expectedInfo2 = {
-        { "In", "108" },
-        { "Remaining", "3600" }
+        { "In", "108" }
     };
 
 
