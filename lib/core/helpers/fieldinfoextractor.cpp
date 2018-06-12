@@ -18,11 +18,48 @@
 
 #include "fieldinfoextractor.h"
 
+#include <QtCore/QDateTime>
+
 #include <QDebug>
 
 using namespace Extractors;
 
+FieldInfoExtractor::FieldInfoExtractor(quint64 timestamp)
+    : DatablockExtractor()
+{
+    m_timestamp = timestamp == 0 ? QDateTime::currentSecsSinceEpoch()
+                                 : timestamp;
+}
+
 void FieldInfoExtractor::extractSpecificData()
 {
-    qDebug() << m_datablock;
+    QVariantList fieldsInfo;
+
+    for (const auto &field : m_datablock) {
+        // Field should be an object
+        if (!field.isObject()) {
+            break;
+        }
+
+        // Field info should contain "inhalt" field
+        const auto info = field.toObject();
+        if (!info.contains("inhalt")) {
+            return;
+        }
+
+        // Calculate remaining time
+        int storedRemaining = info["zeit"].toString().toInt();
+        int remaining = storedRemaining - ((storedRemaining == 0) ? 0 : m_timestamp);
+
+        // Build FieldInfo object
+        fieldsInfo.append(QVariantMap({
+            { "Id", info["inhalt"].toString() },
+            { "FieldId", info["teil_nr"].toString() },
+            { "Remaining", QString::number(qMax(-1, remaining)) },
+            { "IsWater", QString::number(info["iswater"].toBool()) }
+        }));
+
+    }
+
+    m_data.insert("FieldsInfo", fieldsInfo);
 }

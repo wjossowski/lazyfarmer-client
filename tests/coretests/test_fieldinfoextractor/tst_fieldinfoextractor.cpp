@@ -29,7 +29,6 @@ class FieldInfoExtractorTest : public QObject
 private slots:
     void initTestCase();
 
-    void extractorTest_data();
     void extractorTest();
 
 private:
@@ -47,15 +46,32 @@ void FieldInfoExtractorTest::initTestCase()
     m_siteContent = QString::fromUtf8(fieldsJson.readAll());
 }
 
-void FieldInfoExtractorTest::extractorTest_data()
-{
-
-}
-
 void FieldInfoExtractorTest::extractorTest()
 {
-    FieldInfoExtractor extractor;
+    // Initialize with proper timestamp
+    FieldInfoExtractor extractor(1528067870);
     extractor.extract(m_siteContent.toLatin1());
+
+    const auto result = extractor.result();
+
+    QVERIFY2(!result.isEmpty(), "Should extract data");
+
+    const auto fieldsInfo = result["FieldsInfo"].toList();
+    QVERIFY(!fieldsInfo.isEmpty());
+    QVERIFY(fieldsInfo.size() == 120);
+
+    for (const auto &info : fieldsInfo) {
+        const auto infoData = info.toMap();
+        int id = infoData["Id"].toString().toInt();
+        int fieldId = infoData["FieldId"].toString().toInt();
+        int remaining = infoData["Remaining"].toString().toInt();
+        int isWater = infoData["IsWater"].toString().toInt();
+
+        QVERIFY2(id != 0, "Id should be correct");
+        QVERIFY2(fieldId > 0 && fieldId <= 120, "FieldId has to be correct");
+        QVERIFY2(remaining >= -1, "Remaining time has to be correct");
+        QVERIFY2(isWater == 1 || isWater == 0, "IsWater has to be correct");
+    }
 }
 
 QTEST_APPLESS_MAIN(FieldInfoExtractorTest)
