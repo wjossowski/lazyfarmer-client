@@ -34,7 +34,7 @@ namespace Core {
                                         const QString &endpoint = QString());
 
                 const QUrl url() const override;
-                void handleResponse(QNetworkReply *reply) override;
+                void handleResponse(QIODevice *reply) override;
 
             private:
                 virtual const QList<QPair<QString, QString>> constructedMessageData() const = 0;

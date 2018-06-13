@@ -21,8 +21,6 @@
 
 #include "extractors/gameinfoextractor.h"
 
-#include <QtNetwork/QNetworkReply>
-
 using namespace Core;
 using namespace Core::Api;
 using namespace Core::Api::Messages;
@@ -41,7 +39,7 @@ const QUrl GetConstantData::url() const
     return m_gateway->buildStaticUrl(m_fileUrl);
 }
 
-void GetConstantData::handleResponse(QNetworkReply *reply)
+void GetConstantData::handleResponse(QIODevice *reply)
 {
     const auto extractor = GameInfoExtractor::constantsExtractor(m_gateway->serverDomain());
     extractor->extract(reply->readAll());

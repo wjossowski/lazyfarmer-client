@@ -21,7 +21,7 @@
 #include "../apigatewayerror.h"
 #include "messagetypes.h"
 
-class QNetworkReply;
+class QIODevice;
 #include <QtNetwork/QNetworkRequest>
 
 namespace Core {
@@ -52,7 +52,7 @@ namespace Core {
                 virtual void configureRequest(QNetworkRequest &request) const { Q_UNUSED (request) }
                 virtual const QList<QPair<QString, QString>> postData() const { return {}; }
 
-                virtual void handleResponse(QNetworkReply *reply) = 0;
+                virtual void handleResponse(QIODevice *reply) = 0;
 
             signals:
                 void raiseError(ApiGatewayError::ErrorType errorType, const QStringList &args = QStringList());

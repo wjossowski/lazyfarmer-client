@@ -20,7 +20,6 @@
 #include "../apigateway.h"
 #include "extractors/feedinfoextractor.h"
 
-#include <QtNetwork/QNetworkReply>
 #include <QtCore/QVariantMap>
 #include <QtCore/QJsonDocument>
 
@@ -46,7 +45,7 @@ const QUrl GetFeedInfo::url() const
     });
 }
 
-void GetFeedInfo::handleResponse(QNetworkReply *reply)
+void GetFeedInfo::handleResponse(QIODevice *reply)
 {
     FeedInfoExtractor extractor;
     extractor.extract(reply->readAll());

@@ -79,7 +79,7 @@ void ApiGateway::setLoggedIn(bool loggedIn)
     }
 }
 
-void ApiGateway::extractRid(QNetworkReply *reply)
+void ApiGateway::extractRid(QIODevice *reply)
 {
     QSettings settings;
     settings.beginGroup("Lookup");
@@ -178,7 +178,7 @@ void ApiGateway::buildHeaders(QNetworkRequest &request) const
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0");
 }
 
-void ApiGateway::recursiveRedirect(const QString &url, const std::function<void (QNetworkReply *)> &callback)
+void ApiGateway::recursiveRedirect(const QString &url, const std::function<void (QIODevice *)> &callback)
 {
     QNetworkRequest request(url);
     buildHeaders(request);

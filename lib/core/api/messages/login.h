@@ -38,7 +38,7 @@ namespace Core {
                 void configureRequest(QNetworkRequest &request) const override;
                 const QList<QPair<QString, QString> > postData() const override;
 
-                void handleResponse(QNetworkReply *reply) override;
+                void handleResponse(QIODevice *reply) override;
 
             };
 

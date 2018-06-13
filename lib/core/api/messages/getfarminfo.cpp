@@ -26,7 +26,6 @@
 #include <QtCore/QJsonObject>
 
 #include <QtNetwork/QNetworkRequest>
-#include <QtNetwork/QNetworkReply>
 
 using namespace Core;
 using namespace Core::Api;
@@ -40,7 +39,7 @@ const QUrl GetFarmInfo::url() const
     });
 }
 
-void GetFarmInfo::handleResponse(QNetworkReply *reply)
+void GetFarmInfo::handleResponse(QIODevice *reply)
 {
     const auto contents = reply->readAll();
 

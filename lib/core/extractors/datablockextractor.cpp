@@ -23,11 +23,14 @@
 #include <QtCore/QJsonValue>
 #include <QtCore/QJsonArray>
 
+#include <QtDebug>
+
 using namespace Core;
 using namespace Core::Extractors;
 
 void DatablockExtractor::extract(const QByteArray &content)
 {
+    qDebug() << content;
     if (content.isEmpty()){
         return;
     }
@@ -39,7 +42,11 @@ void DatablockExtractor::extract(const QByteArray &content)
         return;
     }
 
-    extractSpecificData();
+    try {
+        extractSpecificData();
+    } catch (...) {
+        qWarning() << "Datablock extractor error";
+    }
 }
 
 bool DatablockExtractor::fetchDatablock(const QJsonDocument &document)

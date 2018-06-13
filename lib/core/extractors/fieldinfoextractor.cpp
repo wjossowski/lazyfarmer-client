@@ -28,7 +28,7 @@ using namespace Core::Extractors;
 FieldInfoExtractor::FieldInfoExtractor(quint64 timestamp)
     : DatablockExtractor()
 {
-    m_timestamp = timestamp == 0 ? QDateTime::currentSecsSinceEpoch()
+    m_timestamp = timestamp == 0 ? QDateTime::currentMSecsSinceEpoch()/1000
                                  : timestamp;
 }
 

@@ -34,7 +34,7 @@ namespace Core {
 
             public:
                 const QUrl url() const override;
-                void handleResponse(QNetworkReply *reply) override;
+                void handleResponse(QIODevice *reply) override;
             };
 
         }

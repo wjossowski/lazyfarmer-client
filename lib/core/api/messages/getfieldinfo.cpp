@@ -20,7 +20,6 @@
 #include "getfieldinfo.h"
 #include "extractors/fieldinfoextractor.h"
 
-#include <QtNetwork/QNetworkReply>
 #include <QtCore/QJsonDocument>
 
 using namespace Core;
@@ -45,12 +44,14 @@ const QUrl GetFieldInfo::url() const
     });
 }
 
-void GetFieldInfo::handleResponse(QNetworkReply *reply)
+void GetFieldInfo::handleResponse(QIODevice *reply)
 {
     FieldInfoExtractor extractor;
     extractor.extract(reply->readAll());
 
     qDebug() << QJsonDocument::fromVariant(extractor.result());
+
+    emit finished();
 }
 
 void GetFieldInfo::setBuildingData(const BuildingData &buildingData)

@@ -20,7 +20,6 @@
 #include "../apigateway.h"
 
 #include <QtNetwork/QNetworkRequest>
-#include <QtNetwork/QNetworkReply>
 
 using namespace Core;
 using namespace Core::Api;
@@ -34,7 +33,7 @@ const QUrl Logout::url() const
     }, false);
 }
 
-void Logout::handleResponse(QNetworkReply *reply)
+void Logout::handleResponse(QIODevice *reply)
 {
     Q_UNUSED (reply)
 

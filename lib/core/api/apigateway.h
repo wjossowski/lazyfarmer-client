@@ -54,7 +54,7 @@ namespace Core {
             void setLoggedIn (bool loggedIn);
 
             const QString &rid() const { return m_rid; }
-            void extractRid(QNetworkReply *reply);
+            void extractRid(QIODevice *reply);
 
             const QString &serverId() const { return m_serverId; }
             const QString &serverDomain() const { return m_serverDomain; }
@@ -78,7 +78,7 @@ namespace Core {
 
             void buildHeaders(QNetworkRequest &request) const;
             void recursiveRedirect(const QString &url,
-                                   const std::function<void (QNetworkReply *)> &callback);
+                                   const std::function<void (QIODevice *)> &callback);
             void sendMessage(Messages::ApiMessage *message);
 
             QNetworkAccessManager *accessManager() { return &m_manager; }

@@ -35,7 +35,7 @@ namespace Core {
                                       const BuildingData &buildingData = BuildingData());
 
                 const QUrl url() const override;
-                void handleResponse(QNetworkReply *reply) override;
+                void handleResponse(QIODevice *reply) override;
 
                 void setBuildingData(const BuildingData &buildingData);
 

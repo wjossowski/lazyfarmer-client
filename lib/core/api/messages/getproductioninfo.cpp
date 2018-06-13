@@ -21,7 +21,6 @@
 
 #include "extractors/productioninfoextractor.h"
 
-#include <QtNetwork/QNetworkReply>
 #include <QtCore/QVariantMap>
 #include <QtCore/QJsonDocument>
 
@@ -47,7 +46,7 @@ const QUrl GetProductionInfo::url() const
     });
 }
 
-void GetProductionInfo::handleResponse(QNetworkReply *reply)
+void GetProductionInfo::handleResponse(QIODevice *reply)
 {
     ProductionInfoExtractor extractor;
     extractor.extract(reply->readAll());

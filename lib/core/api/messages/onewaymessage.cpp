@@ -20,7 +20,6 @@
 #include "../apigateway.h"
 
 #include <QtNetwork/QNetworkRequest>
-#include <QtNetwork/QNetworkReply>
 
 using namespace Core;
 using namespace Core::Api;
@@ -41,7 +40,7 @@ const QUrl OneWayMessage::url() const
                                            this->constructedMessageData());
 }
 
-void OneWayMessage::handleResponse(QNetworkReply *reply)
+void OneWayMessage::handleResponse(QIODevice *reply)
 {
     Q_UNUSED (reply)
     emit finished();

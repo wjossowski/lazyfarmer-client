@@ -190,7 +190,7 @@ int main(int argc, char *argv[])
     }
 
     debugGateway.queueMessage(QSharedPointer<GetFieldInfo>(new GetFieldInfo(&debugGateway, {1, 1})));
-//    debugGateway.queueMessage(QSharedPointer<GetFeedInfo>(new GetFeedInfo(&debugGateway, {1, 2})));
+    debugGateway.queueMessage(QSharedPointer<GetFeedInfo>(new GetFeedInfo(&debugGateway, {1, 2})));
 
     debugGateway.queueMessage(QSharedPointer<Logout>(new Logout(&debugGateway)));
 //    debugGateway.queueMessage(QSharedPointer<SetPlant>(new SetPlant(&debugGateway)));

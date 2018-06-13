@@ -20,7 +20,6 @@
 #include "../apigateway.h"
 
 #include <QtNetwork/QNetworkRequest>
-#include <QtNetwork/QNetworkReply>
 
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonArray>
@@ -54,11 +53,11 @@ const QList<QPair<QString, QString> > Login::postData() const
     };
 }
 
-void Login::handleResponse(QNetworkReply *reply)
+void Login::handleResponse(QIODevice *reply)
 {
     const auto data = QJsonDocument::fromJson(reply->readAll());
     if (data.isArray()) {
-        m_gateway->recursiveRedirect(data.array().last().toString(), [this] (QNetworkReply *reply) {
+        m_gateway->recursiveRedirect(data.array().last().toString(), [this] (QIODevice *reply) {
             m_gateway->extractRid(reply);
             emit finished();
         });
