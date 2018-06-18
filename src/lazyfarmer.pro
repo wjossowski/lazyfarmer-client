@@ -29,7 +29,13 @@ else:unix: LIBS += -L$$OUT_PWD/../lib/core/ -lCoreLib
 
 INCLUDEPATH += $$PWD/../lib
 
-SOURCES += *.cpp
+SOURCES += \
+    $$PWD/model/*.cpp \
+    $$PWD/*.cpp
+
+HEADERS += \
+    $$PWD/model/*.h
+
 
 include($${PWD}/../common.pri)
 include($${PWD}/../installs.pri)
@@ -42,3 +48,4 @@ DISTFILES += \
     Views/qmldir
 
 RESOURCES += resources.qrc
+

@@ -29,7 +29,7 @@ using namespace Core::Api::Messages;
 using namespace Core::Extractors;
 
 GetFeedInfo::GetFeedInfo(ApiGateway *gateway,
-                         const BuildingData &buildingData)
+                         const Data::Building &buildingData)
     : ApiMessage(gateway, MessageType::GetFeedInfo),
       m_buildingData(buildingData)
 {

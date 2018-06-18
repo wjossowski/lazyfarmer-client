@@ -16,9 +16,39 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
+#pragma once
 
-#include "building.h"
+#include "core/data/storage.h"
 
-using namespace Core;
-using namespace Core::Model;
-using namespace Core::Model::Data;
+#include <QtCore/QAbstractListModel>
+
+namespace Model {
+
+    class StorageModel : public QAbstractListModel
+    {
+        Q_OBJECT
+
+    public:
+
+        enum class StorageData {
+            Name    = Qt::DisplayRole,
+            Icon    = Qt::DecorationRole,
+            Id      = Qt::UserRole,
+            Amount  = Qt::UserRole + 1
+        };
+
+        explicit StorageModel(const Core::Data::Storage::Ptr &storage, QObject *parent = nullptr);
+
+        int rowCount(const QModelIndex &) const override;
+        QVariant data(const QModelIndex &index, int role) const override;
+        QHash<int, QByteArray> roleNames() const override;
+
+    private slots:
+        void reload();
+
+    private:
+       Core::Data::Storage::Ptr m_storage;
+
+    };
+
+}

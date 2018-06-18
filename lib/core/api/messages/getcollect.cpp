@@ -24,8 +24,8 @@ using namespace Core::Api;
 using namespace Core::Api::Messages;
 
 GetCollect::GetCollect(ApiGateway *gateway,
-                       const BuildingData &buildingData,
-                       const ProductData &productData)
+                       const Data::Building &buildingData,
+                       const Data::Product &productData)
     : OneWayMessage(gateway, MessageType::GetCollect, "farm"),
       m_buildingData(buildingData),
       m_productData(productData)

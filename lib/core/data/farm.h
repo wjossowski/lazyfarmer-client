@@ -16,30 +16,27 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "storage.h"
+#pragma once
 
-#include <QtDebug>
+#include "building.h"
 
-using namespace Core;
-using namespace Core::Model;
-using namespace Core::Model::Data;
+#include <QtCore/QSharedPointer>
 
-Storage::Storage(QObject *parent)
-    : QObject(parent)
-{
+namespace Core {
 
-}
+    namespace Data {
 
-void Storage::update(const QVariantList &storage)
-{
-    m_products.clear();
+        class Farm
+        {
+        public:
+            QSharedPointer<Building> buildingAt(int farm, int position);
 
-    for (const auto &item : storage) {
-        const auto product = QSharedPointer<Product>(new Product(item.toMap()));
-        m_products.push_back(std::move(product));
+            void update(const QVariantList &farmInfo);
+
+        private:
+            QList<QSharedPointer<Building>> m_buildings;
+        };
+
     }
 
-    std::sort(std::begin(m_products), std::end(m_products));
-
-    emit storageChanged();
 }

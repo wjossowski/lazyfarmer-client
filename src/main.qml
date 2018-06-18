@@ -26,9 +26,13 @@ ApplicationWindow {
         }
     }
 
-    StackView {
-        id: stack
-        anchors.fill: parent
+//    StackView {
+//        id: stack
+//        anchors.fill: parent
+//    }
+
+    Views.StorageView {
+        anchors.fill: parent;
     }
 
     footer: ToolBar {

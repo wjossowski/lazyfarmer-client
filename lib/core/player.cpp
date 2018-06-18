@@ -44,6 +44,7 @@ void Player::update(const QByteArray &info)
 
     if (extractor.parseInfo(info)) {
         updateBasicInfo(extractor.basicInfo());
+
         m_storage.update(extractor.storageInfo());
         m_farm.update(extractor.farmsInfo());
     }
@@ -54,6 +55,7 @@ void Player::updateBasicInfo(const QVariantMap &basicInfo)
     m_level = basicInfo["Level"].toInt();
     m_levelDescription = basicInfo["LevelDescription"].toString();
     m_levelPercentage = basicInfo["LevelPercentage"].toInt();
+
     m_money = basicInfo["Money"].toDouble();
 }
 

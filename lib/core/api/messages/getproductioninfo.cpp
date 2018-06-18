@@ -30,7 +30,7 @@ using namespace Core::Api::Messages;
 using namespace Core::Extractors;
 
 GetProductionInfo::GetProductionInfo(ApiGateway *gateway,
-                                     const BuildingData &buildingData)
+                                     const Data::Building &buildingData)
     : ApiMessage(gateway, MessageType::GetProductionInfo),
       m_buildingData(buildingData)
 {

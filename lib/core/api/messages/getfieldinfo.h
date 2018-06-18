@@ -20,7 +20,7 @@
 
 #include "apimessage.h"
 #include "../apigateway.h"
-#include "../helpers/querystructs.h"
+#include "../../data/common.h"
 
 namespace Core {
 
@@ -32,15 +32,15 @@ namespace Core {
             {
             public:
                 explicit GetFieldInfo(ApiGateway *gateway,
-                                      const BuildingData &buildingData = BuildingData());
+                                      const Data::Building &buildingData = Data::Building());
 
                 const QUrl url() const override;
                 void handleResponse(QIODevice *reply) override;
 
-                void setBuildingData(const BuildingData &buildingData);
+                void setBuilding(const Data::Building &buildingData);
 
             private:
-                BuildingData m_buildingData;
+                Data::Building m_buildingData;
 
             };
 

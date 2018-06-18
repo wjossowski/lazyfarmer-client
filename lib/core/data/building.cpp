@@ -1,6 +1,6 @@
 /**
  ** This file is part of the LazyFarmer project.
- ** Copyright 2017 Wojciech Ossowski <w.j.ossowski@gmail.com>.
+ ** Copyright 2018 Wojciech Ossowski <w.j.ossowski@gmail.com>.
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU Lesser General Public License as
@@ -16,31 +16,8 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#pragma once
 
 #include "building.h"
 
-#include <QtCore/QSharedPointer>
-
-namespace Core {
-
-    namespace Model {
-
-        namespace Data {
-
-            class Farm
-            {
-            public:
-                QSharedPointer<Building> buildingAt(int farm, int position);
-
-                void update(const QVariantList &farmInfo);
-
-            private:
-                QList<QSharedPointer<Building>> m_buildings;
-            };
-
-        }
-
-    }
-
-}
+using namespace Core;
+using namespace Core::Data;

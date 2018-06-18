@@ -17,6 +17,7 @@
  **/
 
 #ifdef DEBUG_MODE
+#include "model/storagemodel.h"
 #include "core/api/apigateway.h"
 #include "core/api/messages/messages.h"
 #include <QTimer>
@@ -35,6 +36,7 @@
 #include <QtGui/QGuiApplication>
 
 #include <QtQml/QQmlApplicationEngine>
+#include <QtQml/QQmlContext>
 
 #include <QtDebug>
 
@@ -177,12 +179,12 @@ int main(int argc, char *argv[])
     createDebugEnvironment(debugGateway, parser);
     debugGateway.queueMessage(QSharedPointer<Login>(new Login(&debugGateway)));
 
-    BuildingData building {1, 1};
+    Data::Building building {1, 1};
     for (unsigned int i = 0; i < 120; i++) {
         if (i % 2 != 0) continue;
 //        if ((i / 12) % 2 != 0) continue;
 
-        ProductData plant (1, 2, i+1);
+        Data::Product plant (1, 2, i+1);
 
 //        debugGateway.queueMessage(QSharedPointer<GetCollect>(new GetCollect(&debugGateway, building, plant)));
 //        debugGateway.queueMessage(QSharedPointer<SetPlant>(new SetPlant(&debugGateway, building, plant)));
@@ -196,16 +198,37 @@ int main(int argc, char *argv[])
 //    debugGateway.queueMessage(QSharedPointer<SetPlant>(new SetPlant(&debugGateway)));
 //    debugGateway.queueMessage(QSharedPointer<SetPour>(new SetPour(&debugGateway)));
 
-    debugGateway.start();
+//    debugGateway.start();
 
-#else
-    QSharedPointer<QQmlApplicationEngine> engine;
-    if (!parser.isSet("no-gui")) {
-        engine.reset(new QQmlApplicationEngine());
-        engine->load(QUrl(QLatin1String("qrc:/qml/main.qml")));
-        if (engine->rootObjects().isEmpty())
-            return -1;
+//#else
+
+    if (parser.isSet("no-gui")) {
+        return lazyFarmerApp.exec();
     }
+
+    QQmlApplicationEngine engine;
+
+    Core::Data::Storage::Ptr storage(new Core::Data::Storage);
+
+    QTimer::singleShot(5000, [&](){
+        qDebug() << "BOOM!";
+        storage->update(QVariantList({
+                                         QVariantMap({ { "Id", 21 }, { "Amount", 40 } }),
+                                         QVariantMap({ { "Id", 32 }, { "Amount", 20 } }),
+                                         QVariantMap({ { "Id", 37 }, { "Amount", 30 } }),
+                                         QVariantMap({ { "Id", 89 }, { "Amount", 10 } }),
+                                     }));
+    });
+
+    Model::StorageModel storageModel(storage);
+
+    engine.rootContext()->setContextProperty("StorageModel", &storageModel);
+
+    engine.load(QUrl(QLatin1String("qrc:/qml/main.qml")));
+    if (engine.rootObjects().isEmpty()){
+        return -1;
+    }
+
 #endif
 
     return lazyFarmerApp.exec();

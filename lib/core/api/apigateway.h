@@ -81,8 +81,6 @@ namespace Core {
                                    const std::function<void (QIODevice *)> &callback);
             void sendMessage(Messages::ApiMessage *message);
 
-            QNetworkAccessManager *accessManager() { return &m_manager; }
-
             void extractGameData();
             void handleError(ApiGatewayError::ErrorType errorType, const QStringList &args = QStringList());
 
@@ -107,6 +105,7 @@ namespace Core {
 
             QQueue<QSharedPointer<Messages::ApiMessage>> m_messageQueue;
             QSharedPointer<Messages::ApiMessage> m_currentMessage;
+
             QNetworkAccessManager m_manager;
         };
 

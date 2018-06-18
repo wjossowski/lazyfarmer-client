@@ -21,23 +21,20 @@ TARGET = CoreLib
 TEMPLATE = lib
 
 INCLUDEPATH += $${PWD}/extractors
-INCLUDEPATH += $${PWD}/model
+INCLUDEPATH += $${PWD}/data
 
 SOURCES += \
-        $${PWD}/extractors/*.cpp \
-        $${PWD}/model/*.cpp \
-        $${PWD}/model/data/*.cpp  \
-        $${PWD}/api/messages/*.cpp \
         $${PWD}/api/*.cpp \
+        $${PWD}/api/messages/*.cpp \
+        $${PWD}/data/*.cpp  \
+        $${PWD}/extractors/*.cpp \
         $${PWD}/*.cpp
 
 HEADERS += \
-        $${PWD}/extractors/*.h \
-        $${PWD}/model/*.h \
-        $${PWD}/model/data/*.h  \
-        $${PWD}/api/helpers/*.h \
-        $${PWD}/api/messages/*.h \
         $${PWD}/api/*.h \
+        $${PWD}/api/messages/*.h \
+        $${PWD}/data/*.h \
+        $${PWD}/extractors/*.h \
         $${PWD}/*.h
 
 include($${PWD}/../../common.pri)

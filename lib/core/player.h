@@ -19,8 +19,8 @@
 #pragma once
 
 #include "api/apigateway.h"
-#include "model/data/storage.h"
-#include "model/data/farm.h"
+#include "data/storage.h"
+#include "data/farm.h"
 
 #include <QtCore/QObject>
 
@@ -48,11 +48,13 @@ namespace Core {
     private:
         int m_level;
         int m_levelPercentage;
+
         qreal m_money;
         QString m_levelDescription;
 
-        Model::Data::Storage m_storage;
-        Model::Data::Farm m_farm;
+        Data::Storage m_storage;
+        Data::Farm m_farm;
+
         Api::ApiGateway m_gateway;
     };
 

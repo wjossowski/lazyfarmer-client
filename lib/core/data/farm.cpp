@@ -3,8 +3,7 @@
 #include <QtDebug>
 
 using namespace Core;
-using namespace Core::Model;
-using namespace Core::Model::Data;
+using namespace Core::Data;
 
 QSharedPointer<Building> Farm::buildingAt(int farm, int position)
 {

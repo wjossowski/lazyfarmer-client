@@ -19,7 +19,7 @@
 #pragma once
 
 #include "onewaymessage.h"
-#include "../helpers/querystructs.h"
+#include "../../data/common.h"
 
 namespace Core {
 
@@ -31,21 +31,21 @@ namespace Core {
             {
             public:
                 explicit SetProduction(ApiGateway *gateway,
-                                       const BuildingData &buindingData = BuildingData(),
-                                       const ProductData &productData = ProductData(),
-                                       const ProductionData &productionData = ProductionData());
+                                       const Data::Building &buindingData = Data::Building(),
+                                       const Data::Product &productData = Data::Product(),
+                                       const Data::Production &productionData = Data::Production());
 
-                void setBuildingData(const BuildingData &buindingData) { m_buildingData = buindingData; }
-                void setProductData(const ProductData &productData) { m_productData = productData; }
-                void setProductionData(const ProductionData &productionData) { m_productionData = productionData; }
+                void setBuilding(const Data::Building &buindingData) { m_buildingData = buindingData; }
+                void setProduct(const Data::Product &productData) { m_productData = productData; }
+                void setProductionData(const Data::Production &productionData) { m_productionData = productionData; }
 
             private:
                 const QList<QPair<QString, QString> > constructedMessageData() const override;
 
             private:
-                BuildingData m_buildingData;
-                ProductData m_productData;
-                ProductionData m_productionData;
+                Data::Building m_buildingData;
+                Data::Product m_productData;
+                Data::Production m_productionData;
             };
 
         }

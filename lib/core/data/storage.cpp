@@ -16,41 +16,21 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#pragma once
+#include "storage.h"
 
-#include "product.h"
+#include <QtDebug>
 
-#include <QtCore/QObject>
-#include <QtCore/QSharedPointer>
-#include <QtCore/QVariantMap>
+using namespace Core;
+using namespace Core::Data;
 
-namespace Core {
+void Storage::update(const QVariantList &data)
+{
+    m_products.clear();
 
-    namespace Model {
-
-        namespace Data {
-
-            class Storage : public QObject
-            {
-                Q_OBJECT
-
-            public:
-                explicit Storage(QObject *parent = nullptr);
-                void update(const QVariantList &storage);
-
-                inline int size() const { return m_products.size(); }
-                inline const QList<QSharedPointer<Product>> &products () const { return m_products; }
-                inline void clear() { m_products.clear(); }
-
-            signals:
-                void storageChanged();
-
-            private:
-                QList<QSharedPointer<Product>> m_products;
-            };
-
-        }
-
+    for (const auto &item : data) {
+        const auto product = item.toMap();
+        m_products.insert(product["Id"].toInt(), product["Amount"].toInt());
     }
 
+    emit storageChanged();
 }
