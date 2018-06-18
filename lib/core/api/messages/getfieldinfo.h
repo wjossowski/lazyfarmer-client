@@ -32,15 +32,15 @@ namespace Core {
             {
             public:
                 explicit GetFieldInfo(ApiGateway *gateway,
-                                      const Data::Building &buildingData = Data::Building());
+                                      const Data::BuildingDetails &buildingData = Data::BuildingDetails());
 
                 const QUrl url() const override;
                 void handleResponse(QIODevice *reply) override;
 
-                void setBuilding(const Data::Building &buildingData);
+                void setBuilding(const Data::BuildingDetails &buildingData);
 
             private:
-                Data::Building m_buildingData;
+                Data::BuildingDetails m_buildingData;
 
             };
 

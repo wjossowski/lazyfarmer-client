@@ -28,7 +28,7 @@ using namespace Core::Api::Messages;
 using namespace Core::Extractors;
 
 GetFieldInfo::GetFieldInfo(ApiGateway *gateway,
-                           const Data::Building &buildingData)
+                           const Data::BuildingDetails &buildingData)
     : ApiMessage(gateway, MessageType::GetFieldInfo),
       m_buildingData(buildingData)
 {
@@ -54,7 +54,7 @@ void GetFieldInfo::handleResponse(QIODevice *reply)
     emit finished();
 }
 
-void GetFieldInfo::setBuilding(const Data::Building &buildingData)
+void GetFieldInfo::setBuilding(const Data::BuildingDetails &buildingData)
 {
     m_buildingData = buildingData;
 }

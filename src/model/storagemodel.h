@@ -20,7 +20,7 @@
 
 #include "core/data/storage.h"
 
-#include <QtCore/QAbstractListModel>
+#include <QAbstractListModel>
 
 namespace Model {
 
@@ -38,6 +38,7 @@ namespace Model {
         };
 
         explicit StorageModel(const Core::Data::Storage::Ptr &storage, QObject *parent = nullptr);
+        virtual ~StorageModel() {}
 
         int rowCount(const QModelIndex &) const override;
         QVariant data(const QModelIndex &index, int role) const override;

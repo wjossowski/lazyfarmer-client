@@ -8,7 +8,7 @@ using namespace Core::Data;
 QSharedPointer<Building> Farm::buildingAt(int farm, int position)
 {
     for (auto building : m_buildings) {
-        if (building->farmId == farm && building->position == position) {
+        if (building->farmId() == farm && building->position() == position) {
             return building;
         }
     }

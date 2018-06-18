@@ -27,17 +27,17 @@ namespace Core {
         static const unsigned int MAX_PLANT_COLUMNS = 12;
         static const unsigned int MAX_PLANT_ROWS = 10;
 
-        struct Building
+        struct BuildingDetails
         {
             unsigned int farmId;
             unsigned int positionId;
         };
 
-        struct Product
+        struct ProductDetails
         {
-            explicit Product (unsigned int product_id = 1,
-                              unsigned int plant_size = 1,
-                              unsigned int position_id = 1)
+            explicit ProductDetails (unsigned int product_id = 1,
+                                     unsigned int plant_size = 1,
+                                     unsigned int position_id = 1)
                 : productId(product_id), plantSize(plant_size), positionId(position_id) { }
 
             QString fieldIds () const {
@@ -63,10 +63,10 @@ namespace Core {
             unsigned int positionId;
         };
 
-        struct Production
+        struct ProductionDetails
         {
-            explicit Production(unsigned int production_id = 1,
-                                unsigned int production_slot = 1)
+            explicit ProductionDetails(unsigned int production_id = 1,
+                                       unsigned int production_slot = 1)
                 : productionId(production_id), productionSlot(production_slot) { }
 
             unsigned int productionId;

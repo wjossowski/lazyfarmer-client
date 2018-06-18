@@ -18,10 +18,10 @@
 
 #include "storagemodel.h"
 
+#include <QDebug>
+
 using namespace Core;
 using namespace Model;
-
-#include <QDebug>
 
 StorageModel::StorageModel(const Data::Storage::Ptr &storage, QObject *parent)
     : QAbstractListModel(parent)

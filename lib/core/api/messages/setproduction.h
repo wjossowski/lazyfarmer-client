@@ -31,21 +31,21 @@ namespace Core {
             {
             public:
                 explicit SetProduction(ApiGateway *gateway,
-                                       const Data::Building &buindingData = Data::Building(),
-                                       const Data::Product &productData = Data::Product(),
-                                       const Data::Production &productionData = Data::Production());
+                                       const Data::BuildingDetails &buindingData = Data::BuildingDetails(),
+                                       const Data::ProductDetails &productData = Data::ProductDetails(),
+                                       const Data::ProductionDetails &productionData = Data::ProductionDetails());
 
-                void setBuilding(const Data::Building &buindingData) { m_buildingData = buindingData; }
-                void setProduct(const Data::Product &productData) { m_productData = productData; }
-                void setProductionData(const Data::Production &productionData) { m_productionData = productionData; }
+                void setBuilding(const Data::BuildingDetails &buindingData) { m_buildingData = buindingData; }
+                void setProduct(const Data::ProductDetails &productData) { m_productData = productData; }
+                void setProductionData(const Data::ProductionDetails &productionData) { m_productionData = productionData; }
 
             private:
                 const QList<QPair<QString, QString> > constructedMessageData() const override;
 
             private:
-                Data::Building m_buildingData;
-                Data::Product m_productData;
-                Data::Production m_productionData;
+                Data::BuildingDetails m_buildingData;
+                Data::ProductDetails m_productData;
+                Data::ProductionDetails m_productionData;
             };
 
         }

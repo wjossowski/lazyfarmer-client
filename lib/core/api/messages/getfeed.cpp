@@ -23,7 +23,7 @@ using namespace Core::Api;
 using namespace Core::Api::Messages;
 
 GetFeed::GetFeed(ApiGateway *gateway,
-                 const Data::Building &buindingData)
+                 const Data::BuildingDetails &buindingData)
     : OneWayMessage(gateway, MessageType::GetFeed, "farm"),
       m_buildingData(buindingData)
 {

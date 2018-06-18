@@ -31,18 +31,18 @@ namespace Core {
             {
             public:
                 explicit SetFeed(ApiGateway *gateway,
-                                 const Data::Building &buindingData = Data::Building(),
-                                 const Data::Product &productData = Data::Product());
+                                 const Data::BuildingDetails &buindingData = Data::BuildingDetails(),
+                                 const Data::ProductDetails &productData = Data::ProductDetails());
 
-                void setBuilding(const Data::Building &buindingData) { m_buildingData = buindingData; }
-                void setProduct(const Data::Product &productData) { m_productData = productData; }
+                void setBuilding(const Data::BuildingDetails &buindingData) { m_buildingData = buindingData; }
+                void setProduct(const Data::ProductDetails &productData) { m_productData = productData; }
 
             private:
                 const QList<QPair<QString, QString> > constructedMessageData() const override;
 
             private:
-                Data::Building m_buildingData;
-                Data::Product m_productData;
+                Data::BuildingDetails m_buildingData;
+                Data::ProductDetails m_productData;
             };
 
         }

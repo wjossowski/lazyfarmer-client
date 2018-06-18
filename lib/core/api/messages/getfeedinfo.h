@@ -31,13 +31,13 @@ namespace Core {
             {
             public:
                 explicit GetFeedInfo(ApiGateway *gateway,
-                                     const Data::Building &buildingData = Data::Building());
+                                     const Data::BuildingDetails &buildingData = Data::BuildingDetails());
 
                 const QUrl url() const override;
                 void handleResponse(QIODevice *reply) override;
 
             private:
-                Data::Building m_buildingData;
+                Data::BuildingDetails m_buildingData;
 
             };
 

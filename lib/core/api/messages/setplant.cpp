@@ -24,8 +24,8 @@ using namespace Core::Api;
 using namespace Core::Api::Messages;
 
 SetPlant::SetPlant(ApiGateway *gateway,
-                   const Data::Building &buindingData,
-                   const Data::Product &productData)
+                   const Data::BuildingDetails &buindingData,
+                   const Data::ProductDetails &productData)
     : OneWayMessage(gateway, MessageType::SetPlant, "farm"),
       m_buildingData(buindingData),
       m_productData(productData)

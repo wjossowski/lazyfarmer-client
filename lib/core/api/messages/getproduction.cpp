@@ -24,7 +24,7 @@ using namespace Core::Api;
 using namespace Core::Api::Messages;
 
 GetProduction::GetProduction(ApiGateway *gateway,
-                             const Data::Building &buindingData)
+                             const Data::BuildingDetails &buindingData)
     : OneWayMessage(gateway, MessageType::GetProduction, "farm"),
       m_buildingData(buindingData)
 {

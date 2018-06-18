@@ -31,15 +31,15 @@ namespace Core {
             {
             public:
                 explicit GetProduction(ApiGateway *gateway,
-                                       const Data::Building &buindingData = Data::Building());
+                                       const Data::BuildingDetails &buindingData = Data::BuildingDetails());
 
-                void setBuilding(const Data::Building &buindingData) { m_buildingData = buindingData; }
+                void setBuilding(const Data::BuildingDetails &buindingData) { m_buildingData = buindingData; }
 
             private:
                 const QList<QPair<QString, QString> > constructedMessageData() const override;
 
             private:
-                Data::Building m_buildingData;
+                Data::BuildingDetails m_buildingData;
             };
 
         }
