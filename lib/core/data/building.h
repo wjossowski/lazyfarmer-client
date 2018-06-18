@@ -25,41 +25,34 @@ namespace Core {
 
     namespace Data {
 
-//        class Building : public QObject
-//        {
-//            Q_OBJECT
-
-//        public:
-
-//        private:
-
-//        };
-
-        struct Building
+        class Building : public QObject
         {
-            int type;
-            int farmId;
-            int position;
-            int level;
-            int animals;
-            int remaining;
+            Q_OBJECT
 
-            Building(): type(0), farmId(0),
-                position(0), level(0),
-                animals(0), remaining(0)
-            {
+        public:
+            explicit Building(QObject *parent = nullptr);
+            Building (const QVariantMap &buildingInfo, QObject *parent = nullptr);
 
-            }
+            void update(const QVariantMap &buildingInfo);
 
-            void update(const QVariantMap &buildingInfo)
-            {
-                type = buildingInfo["Type"].toInt();
-                farmId = buildingInfo["FarmId"].toInt();
-                position = buildingInfo["Position"].toInt();
-                level = buildingInfo["Level"].toInt();
-                animals = buildingInfo["Animals"].toInt();
-                remaining = buildingInfo["Remaining"].toInt();
-            }
+            int type() const { return m_type; }
+            int farmId() const { return m_farmId; }
+            int position() const { return m_position; }
+            int level() const { return m_level; }
+            int animals() const { return m_animals; }
+            int remaining() const { return m_remaining; }
+
+        signals:
+            void buildingChanged();
+
+        private:
+            int m_type;
+            int m_farmId;
+            int m_position;
+            int m_level;
+            int m_animals;
+            int m_remaining;
+
         };
 
     }

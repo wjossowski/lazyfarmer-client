@@ -21,3 +21,49 @@
 
 using namespace Core;
 using namespace Core::Data;
+
+Building::Building(QObject *parent)
+    : QObject(parent)
+    , m_type(0)
+    , m_farmId(0)
+    , m_position(0)
+    , m_level(0)
+    , m_animals(0)
+    , m_remaining(0)
+{
+
+}
+
+Building::Building(const QVariantMap &buildingInfo, QObject *parent)
+    : Building(parent)
+{
+    update(buildingInfo);
+}
+
+void Building::update(const QVariantMap &buildingInfo)
+{
+    int type = buildingInfo["Type"].toInt();
+    int farmId = buildingInfo["FarmId"].toInt();
+    int position = buildingInfo["Position"].toInt();
+    int level = buildingInfo["Level"].toInt();
+    int animals = buildingInfo["Animals"].toInt();
+    int remaining = buildingInfo["Remaining"].toInt();
+
+    if (m_type != type
+        || m_farmId != farmId
+        || m_position != position
+        || m_level != level
+        || m_animals != animals
+        || m_remaining != remaining)
+    {
+        m_type = type;
+        m_farmId = farmId;
+        m_position = position;
+        m_level = level;
+        m_animals = animals;
+        m_remaining = remaining;
+
+        emit buildingChanged();
+    }
+
+}
