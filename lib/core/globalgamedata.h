@@ -47,22 +47,22 @@ namespace Core {
     public:
         virtual ~GlobalGameData() = default;
 
-        const BuildingInfo buildingInfo (const QString &buildingId) const {
+        const BuildingInfo buildingInfo (const int buildingId) const {
             return m_buildingInfos.value(buildingId, { "Unknown Building" });
         }
-        const ProductInfo productInfo (const QString &productId) const {
+        const ProductInfo productInfo (const int productId) const {
             return m_productInfos.value(productId, { "Unknown Product", 0, 0, UINT32_MAX });
         }
-        const ForestryInfo forestryInfo (const QString &forestryId) const {
+        const ForestryInfo forestryInfo (const int forestryId) const {
             return m_forestryInfos.value(forestryId, { "Unknown Product" });
         }
 
         static void registerGameData(const QString &domain, const QVariant &data);
         static QSharedPointer<GlobalGameData> gameData(const QString &domain);
 
-        QMap<QString, BuildingInfo> buildingInfos() const { return m_buildingInfos; }
-        QMap<QString, ProductInfo> productInfos() const { return m_productInfos; }
-        QMap<QString, ForestryInfo> forestryInfos() const { return m_forestryInfos; }
+        QMap<int, BuildingInfo> buildingInfos() const { return m_buildingInfos; }
+        QMap<int, ProductInfo> productInfos() const { return m_productInfos; }
+        QMap<int, ForestryInfo> forestryInfos() const { return m_forestryInfos; }
 
     private:
         explicit GlobalGameData(const QVariant &data = QVariant());
@@ -72,9 +72,9 @@ namespace Core {
         void createForestryInfo(const QVariantMap &baseData);
 
     private:
-        QMap<QString, BuildingInfo> m_buildingInfos;
-        QMap<QString, ProductInfo> m_productInfos;
-        QMap<QString, ForestryInfo> m_forestryInfos;
+        QMap<int, BuildingInfo> m_buildingInfos;
+        QMap<int, ProductInfo> m_productInfos;
+        QMap<int, ForestryInfo> m_forestryInfos;
 
         static QMap<QString, QSharedPointer<GlobalGameData>> m_gameData;
 

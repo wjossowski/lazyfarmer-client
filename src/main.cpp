@@ -180,11 +180,11 @@ int main(int argc, char *argv[])
     debugGateway.queueMessage(QSharedPointer<Login>(new Login(&debugGateway)));
 
     Data::BuildingDetails building {1, 1};
-    for (unsigned int i = 0; i < 120; i++) {
+    for (int i = 0; i < 120; i++) {
         if (i % 2 != 0) continue;
 //        if ((i / 12) % 2 != 0) continue;
 
-        Data::ProductDetails plant (1, 2, i+1);
+        Data::ProductDetails plant {1, 2, i+1};
 
 //        debugGateway.queueMessage(QSharedPointer<GetCollect>(new GetCollect(&debugGateway, building, plant)));
 //        debugGateway.queueMessage(QSharedPointer<SetPlant>(new SetPlant(&debugGateway, building, plant)));

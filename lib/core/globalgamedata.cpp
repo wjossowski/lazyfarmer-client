@@ -75,7 +75,7 @@ void GlobalGameData::createProductInfo(const QVariantMap &baseData, const QVaria
         return ySize == 2 ? 4 : xSize == 2 ? 2 : 1;
     };
 
-    const QStringList productIds = productNames.keys();
+    const auto productIds = productNames.keys();
     for (const auto &id: productIds) {
         const QString name = productNames.value(id).toString();
         if (name.isEmpty()) continue;
@@ -89,7 +89,7 @@ void GlobalGameData::createProductInfo(const QVariantMap &baseData, const QVaria
         quint8 size = getSize(productY.value(id).toString().toInt(),
                               productX.value(id).toString().toInt());
 
-        m_productInfos.insert(id, { name, size, price, time });
+        m_productInfos.insert(id.toInt(), { name, size, price, time });
     }
 }
 
@@ -97,12 +97,12 @@ void GlobalGameData::createBuildingInfo(const QVariantMap &baseData)
 {
     const auto buildingNames = childObject(baseData, "buildings");
 
-    const QStringList buildingIds = buildingNames.keys();
+    const auto buildingIds = buildingNames.keys();
     for (const auto &id: buildingIds) {
         const QString name = buildingNames.value(id).toString();
         if (name.isEmpty()) continue;
 
-        m_buildingInfos.insert(id, {name});
+        m_buildingInfos.insert(id.toInt(), {name});
     }
 }
 
@@ -110,11 +110,11 @@ void GlobalGameData::createForestryInfo(const QVariantMap &baseData)
 {
     const auto forestryNames = childObject(baseData, "forestry");
 
-    const QStringList forestryIds = forestryNames.keys();
+    const auto forestryIds = forestryNames.keys();
     for (const auto &id: forestryIds) {
         const QString name = forestryNames.value(id).toString();
         if (name.isEmpty()) continue;
 
-        m_forestryInfos.insert(id, {name});
+        m_forestryInfos.insert(id.toInt(), {name});
     }
 }

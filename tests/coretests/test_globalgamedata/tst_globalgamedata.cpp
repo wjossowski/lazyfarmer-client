@@ -54,7 +54,7 @@ void GlobalGameDataTest::initTestCase()
 void GlobalGameDataTest::productDataTest()
 {
     const auto domainData = GlobalGameData::gameData("domain");
-    const auto productInfo = domainData->productInfo("2");
+    const auto productInfo = domainData->productInfo(2);
 
     QVERIFY(productInfo.name == "Kukurydza");
     QVERIFY(productInfo.size == 4);
@@ -65,7 +65,7 @@ void GlobalGameDataTest::productDataTest()
 void GlobalGameDataTest::buildingDataTest()
 {
     const auto domainData = GlobalGameData::gameData("domain");
-    const auto buildingInfo = domainData->buildingInfo("2");
+    const auto buildingInfo = domainData->buildingInfo(2);
 
     QVERIFY(buildingInfo.name == "Kurnik");
 }
@@ -73,7 +73,7 @@ void GlobalGameDataTest::buildingDataTest()
 void GlobalGameDataTest::forestryDataTest()
 {
     const auto domainData = GlobalGameData::gameData("domain");
-    const auto forestryInfo = domainData->forestryInfo("2");
+    const auto forestryInfo = domainData->forestryInfo(2);
 
     QVERIFY(forestryInfo.name == "Brzoza");
 }
@@ -82,9 +82,9 @@ void GlobalGameDataTest::emptyDataTest()
 {
     const auto undefinedData = GlobalGameData::gameData("nothinsk");
 
-    QVERIFY(undefinedData->productInfo("2").name == "Unknown Product");
-    QVERIFY(undefinedData->buildingInfo("11").name == "Unknown Building");
-    QVERIFY(undefinedData->forestryInfo("21").name == "Unknown Product");
+    QVERIFY(undefinedData->productInfo(2).name == "Unknown Product");
+    QVERIFY(undefinedData->buildingInfo(11).name == "Unknown Building");
+    QVERIFY(undefinedData->forestryInfo(21).name == "Unknown Product");
 }
 
 QTEST_APPLESS_MAIN(GlobalGameDataTest)

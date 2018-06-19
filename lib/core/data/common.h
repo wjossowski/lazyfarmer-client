@@ -29,17 +29,12 @@ namespace Core {
 
         struct BuildingDetails
         {
-            unsigned int farmId;
-            unsigned int positionId;
+            int farmId;
+            int positionId;
         };
 
         struct ProductDetails
         {
-            explicit ProductDetails (unsigned int product_id = 1,
-                                     unsigned int plant_size = 1,
-                                     unsigned int position_id = 1)
-                : productId(product_id), plantSize(plant_size), positionId(position_id) { }
-
             QString fieldIds () const {
                 if (plantSize == 1) {
                     return QString::number(positionId);
@@ -58,20 +53,15 @@ namespace Core {
                 }
             }
 
-            unsigned int productId;
-            unsigned int plantSize;
-            unsigned int positionId;
+            int productId;
+            int plantSize;
+            int positionId;
         };
 
         struct ProductionDetails
         {
-            explicit ProductionDetails(unsigned int production_id = 1,
-                                       unsigned int production_slot = 1)
-                : productionId(production_id), productionSlot(production_slot) { }
-
-            unsigned int productionId;
-            unsigned int productionSlot;
-
+            int productionId;
+            int productionSlot;
         };
 
     }

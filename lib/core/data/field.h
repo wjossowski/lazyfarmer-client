@@ -1,6 +1,6 @@
 /**
  ** This file is part of the LazyFarmer project.
- ** Copyright 2017 Wojciech Ossowski <w.j.ossowski@gmail.com>.
+ ** Copyright 2018 Wojciech Ossowski <w.j.ossowski@gmail.com>.
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU Lesser General Public License as
@@ -16,46 +16,44 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#pragma once
-
 #include "common.h"
 
 #include <QtCore/QVariantMap>
 #include <QtCore/QObject>
 
+#pragma once
+
 namespace Core {
 
     namespace Data {
 
-        class Building : public QObject
+        class Field : public QObject
         {
             Q_OBJECT
 
         public:
-            explicit Building(QObject *parent = nullptr);
-            Building (const QVariantMap &buildingInfo, QObject *parent = nullptr);
+            explicit Field (QObject *parent = nullptr);
+            Field(const QVariantMap &fieldInfo, QObject *parent = nullptr);
 
-            void update(const QVariantMap &buildingInfo);
+            void update(const QVariantMap &fieldInfo);
 
-            int type() const { return m_type; }
-            int farmId() const { return m_farmId; }
-            int position() const { return m_position; }
-            int level() const { return m_level; }
-            int animals() const { return m_animals; }
+            int id() const { return m_id; }
+            int fieldId() const { return m_fieldId; }
             int remaining() const { return m_remaining; }
+            bool isWater() const { return m_isWater; }
 
-            BuildingDetails details() const { return { m_farmId, m_position }; }
+            bool isEmpty() const { return m_id == 0; }
+
+            ProductDetails details() const { return { m_id, 1, m_fieldId };}
 
         signals:
-            void buildingChanged();
+            void fieldChanged();
 
         private:
-            int m_type;
-            int m_farmId;
-            int m_position;
-            int m_level;
-            int m_animals;
+            int m_id;
+            int m_fieldId;
             int m_remaining;
+            bool m_isWater;
 
         };
 
