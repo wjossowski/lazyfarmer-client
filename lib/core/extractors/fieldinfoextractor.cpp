@@ -54,10 +54,10 @@ void FieldInfoExtractor::extractSpecificData()
 
         // Build FieldInfo object
         fieldsInfo.append(QVariantMap({
-            { "Id", info["inhalt"].toString() },
-            { "FieldId", info["teil_nr"].toString() },
-            { "Remaining", QString::number(qMax(-1, remaining)) },
-            { "IsWater", QString::number(info["iswater"].toBool()) }
+            { "Id", info["inhalt"].toString().toInt() },
+            { "FieldId", info["teil_nr"].toString().toInt() },
+            { "Remaining", QString::number(qMax(-1, remaining)).toInt() },
+            { "IsWater", QString::number(info["iswater"].toBool()).toInt() }
         }));
 
     }

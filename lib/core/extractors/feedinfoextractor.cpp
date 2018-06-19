@@ -43,7 +43,7 @@ void FeedInfoExtractor::extractSpecificData()
         const int remaining = feed[id].toObject().value("time").toInt();
         feedInputInfo.append(QVariantMap({
             { "In", id },
-            { "Remaining", QString::number(remaining) }
+            { "Remaining", remaining }
         }));
     }
 
@@ -56,8 +56,8 @@ void FeedInfoExtractor::extractSpecificData()
     int outputRemaining = info.value("time").toInt();
 
     const QVariantMap outputInfo = {
-        { "Out", QString::number(outputId) },
-        { "Remaining", QString::number(outputRemaining) }
+        { "Out", outputId },
+        { "Remaining", outputRemaining }
     };
 
     m_data.insert("FeedOutputInfo", outputInfo);
