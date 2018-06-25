@@ -53,7 +53,7 @@ namespace Core {
         QString m_levelDescription;
 
         Data::Storage m_storage;
-        Data::Farm m_farm;
+        Data::BuildingList m_farm;
 
         Api::ApiGateway m_gateway;
     };

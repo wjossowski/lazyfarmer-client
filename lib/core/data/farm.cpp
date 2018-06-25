@@ -5,7 +5,7 @@
 using namespace Core;
 using namespace Core::Data;
 
-QSharedPointer<Building> Farm::buildingAt(int farm, int position)
+QSharedPointer<Building> BuildingList::buildingAt(int farm, int position)
 {
     for (auto building : m_buildings) {
         if (building->farmId() == farm && building->position() == position) {
@@ -16,7 +16,7 @@ QSharedPointer<Building> Farm::buildingAt(int farm, int position)
     return QSharedPointer<Building>(nullptr);
 }
 
-void Farm::update(const QVariantList &farmInfo)
+void BuildingList::update(const QVariantList &farmInfo)
 {
     for (const auto &buildingInfo : farmInfo) {
         const QVariantMap &buildingInfoMap = buildingInfo.toMap();

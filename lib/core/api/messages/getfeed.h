@@ -29,6 +29,7 @@ namespace Core {
 
             class GetFeed : public OneWayMessage
             {
+            public:
                 explicit GetFeed(ApiGateway *gateway,
                                  const Data::BuildingDetails &buindingData = Data::BuildingDetails());
 

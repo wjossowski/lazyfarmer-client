@@ -26,7 +26,7 @@ namespace Core {
 
     namespace Data {
 
-        class Farm
+        class BuildingList : public QObject
         {
         public:
             QSharedPointer<Building> buildingAt(int farm, int position);
