@@ -29,7 +29,11 @@ namespace Core {
 
             class GetProductionInfo : public ApiMessage
             {
+                Q_OBJECT
+
             public:
+                using Ptr = QSharedPointer<GetProductionInfo>;
+
                 explicit GetProductionInfo(ApiGateway *gateway,
                                            const Data::BuildingDetails &buildingData = Data::BuildingDetails());
 

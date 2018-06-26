@@ -29,7 +29,11 @@ namespace Core {
 
             class SetPlant : public OneWayMessage
             {
+                Q_OBJECT
+
             public:
+                using Ptr = QSharedPointer<SetPlant>;
+
                 explicit SetPlant(ApiGateway *gateway,
                                   const Data::BuildingDetails &buindingData = Data::BuildingDetails(),
                                   const Data::ProductDetails &productData = Data::ProductDetails());

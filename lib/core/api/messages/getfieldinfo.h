@@ -30,7 +30,11 @@ namespace Core {
 
             class GetFieldInfo : public ApiMessage
             {
+                Q_OBJECT
+
             public:
+                using Ptr = QSharedPointer<GetFieldInfo>;
+
                 explicit GetFieldInfo(ApiGateway *gateway,
                                       const Data::BuildingDetails &buildingData = Data::BuildingDetails());
 

@@ -29,7 +29,12 @@ namespace Core {
 
             class SetProduction : public OneWayMessage
             {
+
+                Q_OBJECT
+
             public:
+                using Ptr = QSharedPointer<SetProduction>;
+
                 explicit SetProduction(ApiGateway *gateway,
                                        const Data::BuildingDetails &buindingData = Data::BuildingDetails(),
                                        const Data::ProductDetails &productData = Data::ProductDetails(),

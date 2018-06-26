@@ -29,7 +29,11 @@ namespace Core {
 
             class GetFeedInfo : public ApiMessage
             {
+                Q_OBJECT
+
             public:
+                using Ptr = QSharedPointer<GetFeedInfo>;
+
                 explicit GetFeedInfo(ApiGateway *gateway,
                                      const Data::BuildingDetails &buildingData = Data::BuildingDetails());
 

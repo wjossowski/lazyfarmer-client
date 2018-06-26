@@ -28,7 +28,11 @@ namespace Core {
 
             class GetFarmInfo : public ApiMessage
             {
+                Q_OBJECT
+
             public:
+                using Ptr = QSharedPointer<GetFarmInfo>;
+
                 explicit GetFarmInfo(ApiGateway *gateway)
                     : ApiMessage (gateway, MessageType::GetFarmInfo) { }
 

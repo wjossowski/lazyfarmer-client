@@ -20,6 +20,7 @@
 
 #include "api/apigateway.h"
 #include "data/storage.h"
+#include "data/common.h"
 #include "data/buildinglist.h"
 
 #include <QtCore/QObject>
@@ -47,6 +48,7 @@ namespace Core {
 
     public slots:
         void update(const QByteArray &info);
+        void buildingUpdateRequested(int farm, int position, Data::BuildingType type);
 
     private:
         void updateBasicInfo(const QVariantMap &basicInfo);

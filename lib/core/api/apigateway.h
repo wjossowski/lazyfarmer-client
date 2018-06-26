@@ -49,6 +49,11 @@ namespace Core {
             Q_OBJECT
 
         public:
+            enum class PushMessageTo {
+                Top,
+                Bottom
+            };
+
             explicit ApiGateway(QObject *parent = nullptr);
 
             bool isConfigured() const;
@@ -66,7 +71,7 @@ namespace Core {
 
             void setApiOptions(const ApiOptions &options);
 
-            void queueMessage(const QSharedPointer<Messages::ApiMessage> &message, bool pushToTop = false);
+            void queueMessage(const QSharedPointer<Messages::ApiMessage> &message, PushMessageTo placement = PushMessageTo::Bottom);
             void start();
 
             QUrl buildStaticUrl(const QString &endpoint);

@@ -19,7 +19,10 @@ QSharedPointer<Building> BuildingList::buildingAt(int farm, int position)
         }
     }
 
-    return QSharedPointer<Building>(nullptr);
+    const auto building = Building::Ptr(new Building(m_owner));
+    m_buildings.append(building);
+    return building;
+
 }
 
 void BuildingList::update(const QVariant &info)
@@ -33,17 +36,7 @@ void BuildingList::update(const QVariant &info)
         int position = buildingInfoMap["Position"].toInt();
 
         auto building = buildingAt(farm, position);
-        if (building.isNull()) {
-            building.reset(new Building(m_owner));
-            m_buildings.append(building);
-        }
-
         building->update(buildingInfoMap);
-
-        if (building->isFarm()) {
-            // TODO: Handle getting farm info here
-        }
-
     }
 }
 

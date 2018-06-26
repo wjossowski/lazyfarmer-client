@@ -114,9 +114,9 @@ void ApiGateway::setApiOptions(const ApiOptions &options)
     m_password = options.password;
 }
 
-void ApiGateway::queueMessage(const QSharedPointer<ApiMessage> &message, bool pushToTop)
+void ApiGateway::queueMessage(const QSharedPointer<ApiMessage> &message, PushMessageTo placement)
 {
-    if (pushToTop) {
+    if (placement == PushMessageTo::Top) {
         m_messageQueue.push_front(message);
     } else {
         m_messageQueue.push_back(message);
@@ -128,10 +128,16 @@ void ApiGateway::queueMessage(const QSharedPointer<ApiMessage> &message, bool pu
 
 void ApiGateway::start()
 {
-    if (m_messageQueue.size() == 0){
-        qDebug() << "No messages eleft";
-        m_currentMessage.reset();
-        return;
+    if (m_messageQueue.size() == 0) {
+        if (m_loggedIn) {
+            queueMessage(Logout::Ptr(new Logout(this)));
+        } else {
+            qDebug() << "No messages eleft";
+            m_currentMessage.reset();
+            return;
+        }
+    } else if (!m_loggedIn) {
+        queueMessage(Login::Ptr(new Login(this)), PushMessageTo::Top);
     }
 
     m_currentMessage = m_messageQueue.first();
@@ -281,7 +287,7 @@ void ApiGateway::queueConstantData(const QString &content)
     const auto messagePtr = QSharedPointer<GetConstantData>(message);
 
     // TODO: Add message to obtain library
-    queueMessage(messagePtr, true);
+    queueMessage(messagePtr, PushMessageTo::Top);
 }
 
 bool ApiGateway::handleNotLogged(const QString &operation)

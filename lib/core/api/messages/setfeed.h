@@ -29,7 +29,11 @@ namespace Core {
 
             class SetFeed : public OneWayMessage
             {
+                Q_OBJECT
+
             public:
+                using Ptr = QSharedPointer<SetFeed>;
+
                 explicit SetFeed(ApiGateway *gateway,
                                  const Data::BuildingDetails &buindingData = Data::BuildingDetails(),
                                  const Data::ProductDetails &productData = Data::ProductDetails());

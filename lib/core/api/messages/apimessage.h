@@ -37,6 +37,8 @@ namespace Core {
                 Q_OBJECT
 
             public:
+                using Ptr = QSharedPointer<ApiMessage>;
+
                 explicit ApiMessage(ApiGateway *gateway,
                                     MessageType messageType = MessageType::Unknown,
                                     bool isLoginRequired = true);

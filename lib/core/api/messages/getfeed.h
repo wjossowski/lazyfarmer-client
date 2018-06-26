@@ -29,7 +29,11 @@ namespace Core {
 
             class GetFeed : public OneWayMessage
             {
+                Q_OBJECT
+
             public:
+                using Ptr = QSharedPointer<GetFeed>;
+
                 explicit GetFeed(ApiGateway *gateway,
                                  const Data::BuildingDetails &buindingData = Data::BuildingDetails());
 

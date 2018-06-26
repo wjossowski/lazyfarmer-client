@@ -29,8 +29,6 @@ using namespace Core::Data;
 
 void Storage::update(const QVariant &info)
 {
-    qDebug() << "Updating storage info" << info;
-
     const QVariantList storageData = info.toList();
 
     m_products.clear();

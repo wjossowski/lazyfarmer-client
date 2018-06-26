@@ -17,6 +17,7 @@
  **/
 
 #include "player.h"
+#include "api/messages/messages.h"
 #include "extractors/playerinfoextractor.h"
 
 #include <QtCore/QJsonDocument>
@@ -26,8 +27,10 @@
 #include <QtDebug>
 
 using namespace Core;
-using namespace Extractors;
-using namespace Api;
+using namespace Core::Data;
+using namespace Core::Extractors;
+using namespace Core::Api;
+using namespace Core::Api::Messages;
 
 Player::Player(QObject *parent)
     : QObject(parent)
@@ -58,6 +61,25 @@ void Player::update(const QByteArray &info)
         qInfo() << m_storage->toString();
         qInfo() << m_buildingList->toString();
     }
+}
+
+void Player::buildingUpdateRequested(int farm, int position, Data::BuildingType type)
+{
+//    const Data::BuildingDetails details { farm, position };
+
+//    switch (type) {
+//    case BuildingType::Farm:
+//        m_gateway.queueMessage(GetFieldInfo::Ptr(new GetFieldInfo(&m_gateway, details)));
+//        break;
+//    case BuildingType::AnimalProduction:
+//        m_gateway.queueMessage(GetFeedInfo::Ptr(new GetFeedInfo(&m_gateway, details)));
+//        break;
+//    case BuildingType::ResourceProduction:
+//        m_gateway.queueMessage(GetProductionInfo::Ptr(new GetProductionInfo(&m_gateway, details)));
+//        break;
+//    default:
+//        break;
+//    }
 }
 
 void Player::updateBasicInfo(const QVariantMap &basicInfo)

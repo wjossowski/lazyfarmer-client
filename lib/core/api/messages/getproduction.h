@@ -29,7 +29,11 @@ namespace Core {
 
             class GetProduction : public OneWayMessage
             {
+                Q_OBJECT
+
             public:
+                using Ptr = QSharedPointer<GetProduction>;
+
                 explicit GetProduction(ApiGateway *gateway,
                                        const Data::BuildingDetails &buindingData = Data::BuildingDetails());
 

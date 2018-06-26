@@ -47,15 +47,16 @@ namespace Core {
             int remaining() const { return m_remaining; }
             QString name() const { return m_name; }
 
-            bool isFarm() const { return m_id == 1; }
-
             BuildingDetails details() const { return { m_farmId, m_position }; }
 
             void update(const QVariant &info) override;
             QString toString() const override;
 
         signals:
-            void buildingChanged();
+            void buildingChanged(int farm, int position, Data::BuildingType type);
+
+        private:
+            void initializeConnections();
 
         private:
             int m_id;

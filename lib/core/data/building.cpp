@@ -33,7 +33,7 @@ Building::Building(Player *parent)
     , m_animals(0)
     , m_remaining(0)
 {
-
+    initializeConnections();
 }
 
 void Building::update(const QVariant &info)
@@ -66,7 +66,7 @@ void Building::update(const QVariant &info)
 
         m_name = m_owner->gameData()->buildingInfo(m_id).name;
 
-        emit buildingChanged();
+        emit buildingChanged(m_farmId, m_position, m_type);
     }
 
 }
@@ -81,4 +81,10 @@ QString Building::toString() const
             .arg(m_position)
             .arg(m_level)
             .arg(m_remaining);
+}
+
+void Building::initializeConnections()
+{
+    connect(this,       &Building::buildingChanged,
+            m_owner,    &Player::buildingUpdateRequested);
 }

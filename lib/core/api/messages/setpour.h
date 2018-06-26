@@ -29,7 +29,11 @@ namespace Core {
 
             class SetPour : public OneWayMessage
             {
+                Q_OBJECT
+
             public:
+                using Ptr = QSharedPointer<SetPour>;
+
                 explicit SetPour(ApiGateway *gateway,
                                  const Data::BuildingDetails &buildingData = Data::BuildingDetails(),
                                  const Data::ProductDetails &productData = Data::ProductDetails());

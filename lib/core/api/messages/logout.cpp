@@ -38,4 +38,6 @@ void Logout::handleResponse(QIODevice *reply)
     Q_UNUSED (reply)
 
     m_gateway->setLoggedIn(false);
+
+    emit finished();
 }

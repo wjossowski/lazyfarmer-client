@@ -29,7 +29,11 @@ namespace Core {
 
             class GetCollect : public OneWayMessage
             {
+                Q_OBJECT
+
             public:
+                using Ptr = QSharedPointer<GetCollect>;
+
                 explicit GetCollect(ApiGateway *gateway,
                                     const Data::BuildingDetails &buildingData = Data::BuildingDetails(),
                                     const Data::ProductDetails &productData = Data::ProductDetails());

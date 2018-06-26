@@ -187,6 +187,9 @@ int main(int argc, char *argv[])
             throw std::ios_base::failure(qApp->translate("main", "Unable to load building-config.json").toStdString());
         }
 
+        // Load custom metatypes
+        qRegisterMetaType<Core::Data::BuildingType>("Core::Data::BuildingType");
+
     } catch (std::exception &e) {
         qCritical() << e.what();
         return -1;
@@ -206,15 +209,12 @@ int main(int argc, char *argv[])
     createDebugEnvironment(debugGateway, parser);
 
     const auto getInfo = [&](){
-        debugGateway.queueMessage(QSharedPointer<Login>(new Login(&debugGateway)));
-        debugGateway.queueMessage(QSharedPointer<GetFarmInfo>(new GetFarmInfo(&debugGateway)));
-        debugGateway.queueMessage(QSharedPointer<Logout>(new Logout(&debugGateway)));
-
+        debugGateway.queueMessage(GetFarmInfo::Ptr(new GetFarmInfo(&debugGateway)));
         debugGateway.start();
     };
 
     getInfo();
-    QTimer::singleShot(30000, getInfo);
+//    QTimer::singleShot(30000, getInfo);
 
     Model::StorageModel storageModel(p.storage());
 
