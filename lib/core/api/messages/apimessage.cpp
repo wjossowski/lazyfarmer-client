@@ -39,6 +39,6 @@ ApiMessage::ApiMessage(ApiGateway *gateway,
 
 ApiMessage::~ApiMessage() {
 #if DEBUG_MODE
-    qDebug() << "Destroying API Message" << toString(static_cast<MessageType>(this->m_messageType)) << this;
+    qDebug() << "Destroying API Message" << MessageHelper::toString(this->m_messageType) << this;
 #endif
 }

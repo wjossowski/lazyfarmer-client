@@ -47,6 +47,8 @@ namespace Core {
             int remaining() const { return m_remaining; }
             QString name() const { return m_name; }
 
+            bool isFarm() const { return m_type == 1; }
+
             BuildingDetails details() const { return { m_farmId, m_position }; }
 
             void update(const QVariant &info) override;

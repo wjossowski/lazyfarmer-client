@@ -63,30 +63,34 @@ namespace Core {
                 Unknown
             };
 
-            static QString toString(MessageType type)
+            struct MessageHelper
             {
-                switch (type) {
-                case MessageType::Login:                return "Login";
-                case MessageType::Logout:               return "Logout";
-                case MessageType::GetConstantData:      return "GetConstantData";
-                case MessageType::GetFarmInfo:          return "GetFarmInfo";
-                case MessageType::GetFieldInfo:         return "GetFieldInfo";
-                case MessageType::SetPlant:             return "SetPlant";
-                case MessageType::SetPour:              return "SetPour";
-                case MessageType::GetCollect:           return "GetCollect";
-                case MessageType::SetFeed:              return "SetFeed";
-                case MessageType::GetFeed:              return "GetFeed";
-                case MessageType::GetFeedInfo:          return "GetFeedInfo";
-                case MessageType::SetProduction:        return "SetProduction";
-                case MessageType::GetProduction:        return "GetProduction";
-                case MessageType::GetProductionInfo:    return "GetProductionInfo";
-                case MessageType::SetBuyer:             return "SetBuyer";
-                case MessageType::GetBuyer:             return "GetBuyer";
-                case MessageType::GetPricesOnMarket:    return "GetPricesOnMarket";
-                case MessageType::SetOfferOnMarket:     return "SetOfferOnMarket";
-                default:                                return "Unknown";
+
+                static QString toString(MessageType type)
+                {
+                    switch (type) {
+                    case MessageType::Login:                return "Login";
+                    case MessageType::Logout:               return "Logout";
+                    case MessageType::GetConstantData:      return "GetConstantData";
+                    case MessageType::GetFarmInfo:          return "GetFarmInfo";
+                    case MessageType::GetFieldInfo:         return "GetFieldInfo";
+                    case MessageType::SetPlant:             return "SetPlant";
+                    case MessageType::SetPour:              return "SetPour";
+                    case MessageType::GetCollect:           return "GetCollect";
+                    case MessageType::SetFeed:              return "SetFeed";
+                    case MessageType::GetFeed:              return "GetFeed";
+                    case MessageType::GetFeedInfo:          return "GetFeedInfo";
+                    case MessageType::SetProduction:        return "SetProduction";
+                    case MessageType::GetProduction:        return "GetProduction";
+                    case MessageType::GetProductionInfo:    return "GetProductionInfo";
+                    case MessageType::SetBuyer:             return "SetBuyer";
+                    case MessageType::GetBuyer:             return "GetBuyer";
+                    case MessageType::GetPricesOnMarket:    return "GetPricesOnMarket";
+                    case MessageType::SetOfferOnMarket:     return "SetOfferOnMarket";
+                    default:                                return "Unknown";
+                    }
                 }
-            }
+            };
 
         }
 
