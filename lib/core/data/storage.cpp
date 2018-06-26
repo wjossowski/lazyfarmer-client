@@ -17,19 +17,35 @@
  **/
 
 #include "storage.h"
+#include "player.h"
+#include "globalgamedata.h"
+
+#include <QtCore/QVariantList>
 
 #include <QtDebug>
 
 using namespace Core;
 using namespace Core::Data;
 
-void Storage::update(const QVariantList &data)
+void Storage::update(const QVariant &info)
 {
+    qDebug() << "Updating storage info" << info;
+
+    const QVariantList storageData = info.toList();
+
     m_products.clear();
 
-    for (const auto &item : data) {
+    for (const auto &item : storageData) {
         const auto product = item.toMap();
-        m_products.insert(product["Id"].toInt(), product["Amount"].toInt());
+
+        int id = product["Id"].toInt();
+        int amount = product["Amount"].toInt();
+        const QString name = m_owner->gameData()->productInfo(id).name;
+
+        m_products.insert(id, {
+            amount,
+            name
+        });
     }
 
     emit storageChanged();

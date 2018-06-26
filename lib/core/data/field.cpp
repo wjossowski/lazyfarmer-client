@@ -21,8 +21,8 @@
 using namespace Core;
 using namespace Core::Data;
 
-Field::Field(QObject *parent)
-    : QObject(parent)
+Field::Field(Player *parent)
+    : IPlayerData(parent)
     , m_id(0)
     , m_fieldId(0)
     , m_remaining(0)
@@ -31,14 +31,16 @@ Field::Field(QObject *parent)
 
 }
 
-Field::Field(const QVariantMap &fieldInfo, QObject *parent)
+Field::Field(const QVariant &info, Player *parent)
     : Field (parent)
 {
-    update(fieldInfo);
+    update(info);
 }
 
-void Field::update(const QVariantMap &fieldInfo)
+void Field::update(const QVariant &info)
 {
+    const QVariantMap fieldInfo = info.toMap();
+
     int id = fieldInfo["Id"].toInt();
     int fieldId = fieldInfo["FieldId"].toInt();
     int remaining = fieldInfo["Remaining"].toInt();

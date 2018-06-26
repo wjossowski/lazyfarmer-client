@@ -40,7 +40,7 @@ void GlobalGameData::registerGameData(const QString &domain,
 
 QSharedPointer<GlobalGameData> GlobalGameData::gameData(const QString &domain)
 {
-    return m_gameData.value(domain, QSharedPointer<GlobalGameData>(new GlobalGameData()));
+    return m_gameData.value(domain, QSharedPointer<GlobalGameData>(nullptr));
 }
 
 GlobalGameData::GlobalGameData(const QVariant &data)

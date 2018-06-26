@@ -16,14 +16,15 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-
 #include "building.h"
+#include "player.h"
+#include "globalgamedata.h"
 
 using namespace Core;
 using namespace Core::Data;
 
-Building::Building(QObject *parent)
-    : QObject(parent)
+Building::Building(Player *parent)
+    : IPlayerData(parent)
     , m_type(0)
     , m_farmId(0)
     , m_position(0)
@@ -34,14 +35,16 @@ Building::Building(QObject *parent)
 
 }
 
-Building::Building(const QVariantMap &buildingInfo, QObject *parent)
+Building::Building(const QVariant &info, Player *parent)
     : Building(parent)
 {
-    update(buildingInfo);
+    update(info);
 }
 
-void Building::update(const QVariantMap &buildingInfo)
+void Building::update(const QVariant &info)
 {
+    const QVariantMap buildingInfo = info.toMap();
+
     int type = buildingInfo["Type"].toInt();
     int farmId = buildingInfo["FarmId"].toInt();
     int position = buildingInfo["Position"].toInt();
@@ -62,6 +65,8 @@ void Building::update(const QVariantMap &buildingInfo)
         m_level = level;
         m_animals = animals;
         m_remaining = remaining;
+
+        m_name = m_owner->gameData()->buildingInfo(m_type).name;
 
         emit buildingChanged();
     }

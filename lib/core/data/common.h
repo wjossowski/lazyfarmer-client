@@ -35,7 +35,8 @@ namespace Core {
 
         struct ProductDetails
         {
-            QString fieldIds () const {
+            QString fieldIds () const
+            {
                 if (plantSize == 1) {
                     return QString::number(positionId);
                 } else if (plantSize == 2) {

@@ -20,6 +20,7 @@
 #include "model/storagemodel.h"
 #include "core/api/apigateway.h"
 #include "core/api/messages/messages.h"
+#include "core/player.h"
 #include <QTimer>
 #endif
 
@@ -175,7 +176,8 @@ int main(int argc, char *argv[])
 #ifdef DEBUG_MODE
     qDebug() << "Debug storage located in:" << QFileInfo(debugFile).absoluteFilePath();
 
-    Api::ApiGateway debugGateway;
+    Player p;
+    Api::ApiGateway &debugGateway = p.gateway();
     createDebugEnvironment(debugGateway, parser);
     debugGateway.queueMessage(QSharedPointer<Login>(new Login(&debugGateway)));
 
@@ -191,14 +193,15 @@ int main(int argc, char *argv[])
 //        debugGateway.queueMessage(QSharedPointer<SetPour>(new SetPour(&debugGateway, building, plant)));
     }
 
-    debugGateway.queueMessage(QSharedPointer<GetFieldInfo>(new GetFieldInfo(&debugGateway, {1, 1})));
-    debugGateway.queueMessage(QSharedPointer<GetFeedInfo>(new GetFeedInfo(&debugGateway, {1, 2})));
+    debugGateway.queueMessage(QSharedPointer<GetFarmInfo>(new GetFarmInfo(&debugGateway)));
+//    debugGateway.queueMessage(QSharedPointer<GetFieldInfo>(new GetFieldInfo(&debugGateway, {1, 1})));
+//    debugGateway.queueMessage(QSharedPointer<GetFeedInfo>(new GetFeedInfo(&debugGateway, {1, 2})));
 
     debugGateway.queueMessage(QSharedPointer<Logout>(new Logout(&debugGateway)));
 //    debugGateway.queueMessage(QSharedPointer<SetPlant>(new SetPlant(&debugGateway)));
 //    debugGateway.queueMessage(QSharedPointer<SetPour>(new SetPour(&debugGateway)));
 
-//    debugGateway.start();
+    debugGateway.start();
 
 //#else
 
@@ -208,19 +211,7 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-    Core::Data::Storage::Ptr storage(new Core::Data::Storage);
-
-    QTimer::singleShot(5000, [&](){
-        qDebug() << "BOOM!";
-        storage->update(QVariantList({
-                                         QVariantMap({ { "Id", 21 }, { "Amount", 40 } }),
-                                         QVariantMap({ { "Id", 32 }, { "Amount", 20 } }),
-                                         QVariantMap({ { "Id", 37 }, { "Amount", 30 } }),
-                                         QVariantMap({ { "Id", 89 }, { "Amount", 10 } }),
-                                     }));
-    });
-
-    Model::StorageModel storageModel(storage);
+    Model::StorageModel storageModel(p.storage());
 
     engine.rootContext()->setContextProperty("StorageModel", &storageModel);
 

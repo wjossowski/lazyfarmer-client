@@ -27,6 +27,7 @@
 
 using namespace Core;
 using namespace Extractors;
+using namespace Api;
 
 Player::Player(QObject *parent)
     : QObject(parent)
@@ -38,6 +39,11 @@ Player::Player(QObject *parent)
     initializeConnections();
 }
 
+QSharedPointer<GlobalGameData> Player::gameData() const
+{
+    return m_gateway.gameData();
+}
+
 void Player::update(const QByteArray &info)
 {
     PlayerInfoExtractor extractor;
@@ -45,8 +51,8 @@ void Player::update(const QByteArray &info)
     if (extractor.parseInfo(info)) {
         updateBasicInfo(extractor.basicInfo());
 
-        m_storage.update(extractor.storageInfo());
-        m_farm.update(extractor.farmsInfo());
+        m_storage->update(extractor.storageInfo());
+        m_buildingList->update(extractor.farmsInfo());
     }
 }
 
@@ -61,10 +67,12 @@ void Player::updateBasicInfo(const QVariantMap &basicInfo)
 
 void Player::initialize()
 {
-
+    m_storage.reset(new Data::Storage(this));
+    m_buildingList.reset(new Data::BuildingList(this));
 }
 
 void Player::initializeConnections() const
 {
-
+    connect(&m_gateway, &ApiGateway::updatePlayerData,
+            this,       &Player::update);
 }

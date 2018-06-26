@@ -38,7 +38,7 @@ namespace Core {
             virtual void update(const QVariant &info) = 0;
 
         protected:
-            Core::Player *m_owner;
+            Player *m_owner;
 
         };
 

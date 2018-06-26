@@ -19,23 +19,25 @@
 #pragma once
 
 #include "common.h"
+#include "iplayerdata.h"
 
 #include <QtCore/QVariantMap>
-#include <QtCore/QObject>
 
 namespace Core {
 
+    class Player;
+
     namespace Data {
 
-        class Building : public QObject
+        class Building : public IPlayerData
         {
             Q_OBJECT
 
         public:
-            explicit Building(QObject *parent = nullptr);
-            Building (const QVariantMap &buildingInfo, QObject *parent = nullptr);
+            using Ptr = QSharedPointer<Building>;
 
-            void update(const QVariantMap &buildingInfo);
+            explicit Building(Player *parent = nullptr);
+            Building (const QVariant &info, Player *parent = nullptr);
 
             int type() const { return m_type; }
             int farmId() const { return m_farmId; }
@@ -43,8 +45,11 @@ namespace Core {
             int level() const { return m_level; }
             int animals() const { return m_animals; }
             int remaining() const { return m_remaining; }
+            QString name() const { return m_name; }
 
             BuildingDetails details() const { return { m_farmId, m_position }; }
+
+            void update(const QVariant &info) override;
 
         signals:
             void buildingChanged();
@@ -56,6 +61,7 @@ namespace Core {
             int m_level;
             int m_animals;
             int m_remaining;
+            QString m_name;
 
         };
 

@@ -33,7 +33,10 @@
 
 class QNetworkReply;
 
+
 namespace Core {
+
+    class GlobalGameData;
 
     namespace Api {
 
@@ -82,9 +85,14 @@ namespace Core {
             void sendMessage(Messages::ApiMessage *message);
 
             void extractGameData();
+            QSharedPointer<GlobalGameData> gameData() const;
+
+            void handlePlayerData(const QByteArray &playerData) const;
+
             void handleError(ApiGatewayError::ErrorType errorType, const QStringList &args = QStringList());
 
         signals:
+            void updatePlayerData(const QByteArray &data) const;
             void loggedInChanged(bool changed) const;
             void errorRaised(const QString &message) const;
 

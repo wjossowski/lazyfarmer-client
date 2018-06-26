@@ -240,15 +240,23 @@ void ApiGateway::extractGameData()
     GlobalGameData::registerGameData(m_serverDomain, GameInfoExtractor::globalResults(m_serverDomain));
 }
 
+QSharedPointer<GlobalGameData> ApiGateway::gameData() const
+{
+    return GlobalGameData::gameData(m_serverDomain);
+}
+
+void ApiGateway::handlePlayerData(const QByteArray &playerData) const
+{
+    emit updatePlayerData(playerData);
+}
+
 void ApiGateway::handleError(ApiGatewayError::ErrorType errorType, const QStringList &args)
 {
     ApiGatewayError error(errorType);
 
     auto message = error.message();
-    if (!args.isEmpty()) {
-        for (const auto arg : args) {
-            message.arg(arg);
-        }
+    for (const auto arg : args) {
+        message.arg(arg);
     }
 
     const QString errorMessage = tr("Error on `%1` raised. %2").arg(error.toString()).arg(message);

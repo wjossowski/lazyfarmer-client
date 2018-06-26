@@ -19,19 +19,28 @@
 #pragma once
 
 #include "building.h"
+#include "iplayerdata.h"
 
 #include <QtCore/QSharedPointer>
 
 namespace Core {
 
+    class Player;
+
     namespace Data {
 
-        class BuildingList : public QObject
+        class BuildingList : public IPlayerData
         {
+            Q_OBJECT
+
         public:
+            using Ptr = QSharedPointer<BuildingList>;
+
+            explicit BuildingList (Player *parent = nullptr);
+
             QSharedPointer<Building> buildingAt(int farm, int position);
 
-            void update(const QVariantList &farmInfo);
+            void update(const QVariant &info) override;
 
         private:
             QList<QSharedPointer<Building>> m_buildings;

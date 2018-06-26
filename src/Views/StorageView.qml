@@ -5,14 +5,14 @@ ListView {
     model: StorageModel;
 
     delegate: Rectangle {
-        height: 20
-        width: parent.width
+        height: 20;
+        width: parent.width;
 
         Text {
-            text: "Item: " + id + ", amount: " + amount
-            anchors.centerIn: parent
+            text: name + ' : ' + amount;
+            anchors.centerIn: parent;
         }
 
-        color: Qt.red;
+        color: "red";
     }
 }

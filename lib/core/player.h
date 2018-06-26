@@ -26,6 +26,8 @@
 
 namespace Core {
 
+    class GlobalGameData;
+
     class Player : public QObject
     {
         Q_OBJECT
@@ -38,6 +40,12 @@ namespace Core {
         Q_INVOKABLE inline int levelPercentage() const { return m_levelPercentage; }
         Q_INVOKABLE inline qreal money() const { return m_money; }
 
+        QSharedPointer<GlobalGameData> gameData() const;
+
+        Api::ApiGateway &gateway() { return m_gateway; }
+        Data::Storage::Ptr storage() { return m_storage; }
+
+    public slots:
         void update(const QByteArray &info);
 
     private:
@@ -52,8 +60,8 @@ namespace Core {
         qreal m_money;
         QString m_levelDescription;
 
-        Data::Storage m_storage;
-        Data::BuildingList m_farm;
+        Data::Storage::Ptr m_storage;
+        Data::BuildingList::Ptr m_buildingList;
 
         Api::ApiGateway m_gateway;
     };

@@ -17,6 +17,7 @@
  **/
 
 #include "common.h"
+#include "iplayerdata.h"
 
 #include <QtCore/QVariantMap>
 #include <QtCore/QObject>
@@ -25,17 +26,19 @@
 
 namespace Core {
 
+    class Player;
+
     namespace Data {
 
-        class Field : public QObject
+        class Field : public IPlayerData
         {
             Q_OBJECT
 
         public:
-            explicit Field (QObject *parent = nullptr);
-            Field(const QVariantMap &fieldInfo, QObject *parent = nullptr);
+            using Ptr = QSharedPointer<Field>;
 
-            void update(const QVariantMap &fieldInfo);
+            explicit Field (Player *parent = nullptr);
+            Field(const QVariant &info, Player *parent = nullptr);
 
             int id() const { return m_id; }
             int fieldId() const { return m_fieldId; }
@@ -44,7 +47,9 @@ namespace Core {
 
             bool isEmpty() const { return m_id == 0; }
 
-            ProductDetails details() const { return { m_id, 1, m_fieldId };}
+            ProductDetails details() const;
+
+            void update(const QVariant &info) override;
 
         signals:
             void fieldChanged();

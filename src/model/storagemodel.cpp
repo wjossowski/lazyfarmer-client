@@ -47,7 +47,7 @@ QVariant StorageModel::data(const QModelIndex &index, int role) const
 
     switch (dataRole) {
     case StorageData::Id:       return m_storage->idAtRow(row);
-    case StorageData::Name:     return m_storage->amount(row);
+    case StorageData::Name:     return m_storage->nameAtRow(row);
     case StorageData::Icon:     return m_storage->amount(row);
     case StorageData::Amount:   return m_storage->amountAtRow(row);
     default:                    return QVariant();
