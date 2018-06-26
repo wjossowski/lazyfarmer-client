@@ -64,12 +64,12 @@ GameInfoExtractor::~GameInfoExtractor()
 #endif
 }
 
-QSharedPointer<GameInfoExtractor> GameInfoExtractor::baseExtractor(const QString &domain)
+GameInfoExtractor::Ptr GameInfoExtractor::baseExtractor(const QString &domain)
 {
     return findOrCreateExtractor(domain, GameInfoExtractor::BaseFilters, m_baseExtractors);
 }
 
-QSharedPointer<GameInfoExtractor> GameInfoExtractor::constantsExtractor(const QString &domain)
+GameInfoExtractor::Ptr GameInfoExtractor::constantsExtractor(const QString &domain)
 {
     return findOrCreateExtractor(domain, GameInfoExtractor::ConstantsFilters, m_constantsExtractors);
 }

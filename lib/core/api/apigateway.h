@@ -70,7 +70,7 @@ namespace Core {
 
             void setApiOptions(const ApiOptions &options);
 
-            void queueMessage(const QSharedPointer<Messages::ApiMessage> &message, PushMessageTo placement = PushMessageTo::Bottom);
+            void queueMessage(const Messages::ApiMessage::Ptr &message, PushMessageTo placement = PushMessageTo::Bottom);
             void start();
 
             QUrl buildStaticUrl(const QString &endpoint);
@@ -115,8 +115,8 @@ namespace Core {
 
             QString m_rid;
 
-            QQueue<QSharedPointer<Messages::ApiMessage>> m_messageQueue;
-            QSharedPointer<Messages::ApiMessage> m_currentMessage;
+            QQueue<Messages::ApiMessage::Ptr> m_messageQueue;
+            Messages::ApiMessage::Ptr m_currentMessage;
 
             QNetworkAccessManager m_manager;
         };

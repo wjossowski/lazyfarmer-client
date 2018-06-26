@@ -11,7 +11,7 @@ BuildingList::BuildingList(Player *parent)
 
 }
 
-QSharedPointer<Building> BuildingList::buildingAt(int farm, int position)
+Building::Ptr BuildingList::buildingAt(int farm, int position)
 {
     for (auto building : m_buildings) {
         if (building->farmId() == farm && building->position() == position) {

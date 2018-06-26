@@ -114,7 +114,7 @@ void ApiGateway::setApiOptions(const ApiOptions &options)
     m_password = options.password;
 }
 
-void ApiGateway::queueMessage(const QSharedPointer<ApiMessage> &message, PushMessageTo placement)
+void ApiGateway::queueMessage(const ApiMessage::Ptr &message, PushMessageTo placement)
 {
     if (placement == PushMessageTo::Top) {
         m_messageQueue.push_front(message);
@@ -284,7 +284,7 @@ void ApiGateway::queueConstantData(const QString &content)
     const auto version = jscVersionRegex.match(content).captured("version");
 
     auto message = new GetConstantData(this, jsConstantUrl.arg(version));
-    const auto messagePtr = QSharedPointer<GetConstantData>(message);
+    const auto messagePtr = GetConstantData::Ptr(message);
 
     // TODO: Add message to obtain library
     queueMessage(messagePtr, PushMessageTo::Top);
