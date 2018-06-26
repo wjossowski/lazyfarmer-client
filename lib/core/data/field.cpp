@@ -31,12 +31,6 @@ Field::Field(Player *parent)
 
 }
 
-Field::Field(const QVariant &info, Player *parent)
-    : Field (parent)
-{
-    update(info);
-}
-
 void Field::update(const QVariant &info)
 {
     const QVariantMap fieldInfo = info.toMap();

@@ -35,16 +35,8 @@ Building::Building(Player *parent)
 
 }
 
-Building::Building(const QVariant &info, Player *parent)
-    : Building(parent)
-{
-    update(info);
-}
-
 void Building::update(const QVariant &info)
 {
-    qDebug() << "Updating building:" << info;
-
     const QVariantMap buildingInfo = info.toMap();
 
     int type = buildingInfo["Type"].toInt();
@@ -73,4 +65,15 @@ void Building::update(const QVariant &info)
         emit buildingChanged();
     }
 
+}
+
+QString Building::toString() const
+{
+    return QString("Building: %1 (id:%2) (%3, %4) Level: %5 Remaining: %6")
+            .arg(m_name)
+            .arg(m_type)
+            .arg(m_farmId)
+            .arg(m_position)
+            .arg(m_level)
+            .arg(m_remaining);
 }

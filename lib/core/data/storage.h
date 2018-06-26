@@ -44,12 +44,14 @@ namespace Core {
             int size() const { return m_products.size(); }
 
             void update(const QVariant &info) override;
+            QString toString() const override;
 
         signals:
             void storageChanged() const;
 
         private:
             QMap<int, QPair<int, QString>> m_products;
+
         };
 
     }

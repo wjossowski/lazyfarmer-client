@@ -20,7 +20,7 @@
 
 #include "api/apigateway.h"
 #include "data/storage.h"
-#include "data/farm.h"
+#include "data/buildinglist.h"
 
 #include <QtCore/QObject>
 

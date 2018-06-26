@@ -38,7 +38,6 @@ namespace Core {
             using Ptr = QSharedPointer<Field>;
 
             explicit Field (Player *parent = nullptr);
-            Field(const QVariant &info, Player *parent = nullptr);
 
             int id() const { return m_id; }
             int fieldId() const { return m_fieldId; }

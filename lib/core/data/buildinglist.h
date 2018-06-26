@@ -42,8 +42,11 @@ namespace Core {
 
             void update(const QVariant &info) override;
 
+            QString toString() const override;
+
         private:
-            QList<QSharedPointer<Building>> m_buildings;
+            QList<Building::Ptr> m_buildings;
+
         };
 
     }

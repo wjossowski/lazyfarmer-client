@@ -54,3 +54,19 @@ void Storage::update(const QVariant &info)
 
     emit storageChanged();
 }
+
+QString Storage::toString() const
+{
+    QStringList storageContents;
+
+    QMapIterator<int, QPair<int, QString>> product (m_products);
+    while(product.hasNext()) {
+        product.next();
+
+        const auto value = product.value();
+        storageContents.append(QString("(%1 (id: %2): %3)")
+                               .arg(value.second).arg(product.key()).arg(value.first));
+    }
+
+    return QString("Storage: (%1)").arg(storageContents.join(", "));
+}

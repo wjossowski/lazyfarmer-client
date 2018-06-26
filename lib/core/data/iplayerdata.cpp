@@ -28,3 +28,8 @@ IPlayerData::IPlayerData(Player *parent)
 {
 
 }
+
+QString IPlayerData::toString() const
+{
+    return "toString() not implemented.";
+}

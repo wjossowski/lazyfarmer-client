@@ -1,4 +1,4 @@
-#include "farm.h"
+#include "buildinglist.h"
 
 #include <QtDebug>
 
@@ -40,4 +40,15 @@ void BuildingList::update(const QVariant &info)
 
         building->update(buildingInfoMap);
     }
+}
+
+QString BuildingList::toString() const
+{
+    QStringList buildingContents;
+
+    for (const auto &building : m_buildings) {
+        buildingContents.append(QString("(%1)").arg(building->toString()));
+    }
+
+    return QString("Buildings:(%1)").arg(buildingContents.join(", "));
 }

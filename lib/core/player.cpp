@@ -53,6 +53,10 @@ void Player::update(const QByteArray &info)
 
         m_storage->update(extractor.storageInfo());
         m_buildingList->update(extractor.farmsInfo());
+
+        qInfo() << "Player Info Updated:";
+        qInfo() << m_storage->toString();
+        qInfo() << m_buildingList->toString();
     }
 }
 

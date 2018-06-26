@@ -36,6 +36,7 @@ namespace Core {
             explicit IPlayerData(Player *parent = nullptr);
 
             virtual void update(const QVariant &info) = 0;
+            virtual QString toString() const;
 
         protected:
             Player *m_owner;
