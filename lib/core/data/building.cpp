@@ -43,6 +43,8 @@ Building::Building(const QVariant &info, Player *parent)
 
 void Building::update(const QVariant &info)
 {
+    qDebug() << "Updating building:" << info;
+
     const QVariantMap buildingInfo = info.toMap();
 
     int type = buildingInfo["Type"].toInt();

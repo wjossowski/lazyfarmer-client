@@ -173,54 +173,39 @@ int main(int argc, char *argv[])
         qCritical() << e.what();
     }
 
-#ifdef DEBUG_MODE
-    qDebug() << "Debug storage located in:" << QFileInfo(debugFile).absoluteFilePath();
-
-    Player p;
-    Api::ApiGateway &debugGateway = p.gateway();
-    createDebugEnvironment(debugGateway, parser);
-    debugGateway.queueMessage(QSharedPointer<Login>(new Login(&debugGateway)));
-
-    Data::BuildingDetails building {1, 1};
-    for (int i = 0; i < 120; i++) {
-        if (i % 2 != 0) continue;
-//        if ((i / 12) % 2 != 0) continue;
-
-        Data::ProductDetails plant {1, 2, i+1};
-
-//        debugGateway.queueMessage(QSharedPointer<GetCollect>(new GetCollect(&debugGateway, building, plant)));
-//        debugGateway.queueMessage(QSharedPointer<SetPlant>(new SetPlant(&debugGateway, building, plant)));
-//        debugGateway.queueMessage(QSharedPointer<SetPour>(new SetPour(&debugGateway, building, plant)));
-    }
-
-    debugGateway.queueMessage(QSharedPointer<GetFarmInfo>(new GetFarmInfo(&debugGateway)));
-//    debugGateway.queueMessage(QSharedPointer<GetFieldInfo>(new GetFieldInfo(&debugGateway, {1, 1})));
-//    debugGateway.queueMessage(QSharedPointer<GetFeedInfo>(new GetFeedInfo(&debugGateway, {1, 2})));
-
-    debugGateway.queueMessage(QSharedPointer<Logout>(new Logout(&debugGateway)));
-//    debugGateway.queueMessage(QSharedPointer<SetPlant>(new SetPlant(&debugGateway)));
-//    debugGateway.queueMessage(QSharedPointer<SetPour>(new SetPour(&debugGateway)));
-
-    debugGateway.start();
-
-//#else
-
     if (parser.isSet("no-gui")) {
         return lazyFarmerApp.exec();
     }
 
     QQmlApplicationEngine engine;
 
+#ifdef DEBUG_MODE
+    qDebug() << "Debug storage located in:" << QFileInfo(debugFile).absoluteFilePath();
+
+    Player p;
+    Api::ApiGateway &debugGateway = p.gateway();
+    createDebugEnvironment(debugGateway, parser);
+
+    const auto getInfo = [&](){
+        debugGateway.queueMessage(QSharedPointer<Login>(new Login(&debugGateway)));
+        debugGateway.queueMessage(QSharedPointer<GetFarmInfo>(new GetFarmInfo(&debugGateway)));
+        debugGateway.queueMessage(QSharedPointer<Logout>(new Logout(&debugGateway)));
+
+        debugGateway.start();
+    };
+
+    getInfo();
+    QTimer::singleShot(30000, getInfo);
+
     Model::StorageModel storageModel(p.storage());
 
     engine.rootContext()->setContextProperty("StorageModel", &storageModel);
+#endif
 
     engine.load(QUrl(QLatin1String("qrc:/qml/main.qml")));
     if (engine.rootObjects().isEmpty()){
         return -1;
     }
-
-#endif
 
     return lazyFarmerApp.exec();
 }

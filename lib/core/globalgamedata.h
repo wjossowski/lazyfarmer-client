@@ -48,13 +48,13 @@ namespace Core {
         virtual ~GlobalGameData() = default;
 
         const BuildingInfo buildingInfo (const int buildingId) const {
-            return m_buildingInfos.value(buildingId, { "Unknown Building" });
+            return m_buildingInfos.value(buildingId, { "Unknown" });
         }
         const ProductInfo productInfo (const int productId) const {
-            return m_productInfos.value(productId, { "Unknown Product", 0, 0, UINT32_MAX });
+            return m_productInfos.value(productId, { "Unknown", 0, 0, UINT32_MAX });
         }
         const ForestryInfo forestryInfo (const int forestryId) const {
-            return m_forestryInfos.value(forestryId, { "Unknown Product" });
+            return m_forestryInfos.value(forestryId, { "Unknown" });
         }
 
         static void registerGameData(const QString &domain, const QVariant &data);
