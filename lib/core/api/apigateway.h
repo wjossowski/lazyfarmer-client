@@ -20,6 +20,7 @@
 
 #include "apigatewayerror.h"
 #include "messages/apimessage.h"
+#include "../globalgamedata.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QQueue>
@@ -35,8 +36,6 @@ class QNetworkReply;
 
 
 namespace Core {
-
-    class GlobalGameData;
 
     namespace Api {
 
@@ -90,7 +89,7 @@ namespace Core {
             void sendMessage(Messages::ApiMessage *message);
 
             void extractGameData();
-            QSharedPointer<GlobalGameData> gameData() const;
+            GlobalGameData::Ptr gameData() const;
 
             void handlePlayerData(const QByteArray &playerData) const;
 

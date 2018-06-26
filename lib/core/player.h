@@ -41,14 +41,14 @@ namespace Core {
         Q_INVOKABLE inline int levelPercentage() const { return m_levelPercentage; }
         Q_INVOKABLE inline qreal money() const { return m_money; }
 
-        QSharedPointer<GlobalGameData> gameData() const;
+        GlobalGameData::Ptr gameData() const;
 
         Api::ApiGateway &gateway() { return m_gateway; }
         Data::Storage::Ptr storage() { return m_storage; }
 
     public slots:
         void update(const QByteArray &info);
-        void buildingUpdateRequested(int farm, int position, Data::BuildingType type);
+        void updateBuilding(int farm, int position, Data::BuildingType type);
 
     private:
         void updateBasicInfo(const QVariantMap &basicInfo);

@@ -66,8 +66,9 @@ void Building::update(const QVariant &info)
 
         m_name = m_owner->gameData()->buildingInfo(m_id).name;
 
-        emit buildingChanged(m_farmId, m_position, m_type);
     }
+
+    emit fetchBuildingRequested(m_farmId, m_position, m_type);
 
 }
 
@@ -85,6 +86,6 @@ QString Building::toString() const
 
 void Building::initializeConnections()
 {
-    connect(this,       &Building::buildingChanged,
-            m_owner,    &Player::buildingUpdateRequested);
+    connect(this,       &Building::fetchBuildingRequested,
+            m_owner,    &Player::updateBuilding);
 }

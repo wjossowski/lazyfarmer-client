@@ -214,7 +214,7 @@ int main(int argc, char *argv[])
     };
 
     getInfo();
-//    QTimer::singleShot(30000, getInfo);
+    QTimer::singleShot(30000, getInfo);
 
     Model::StorageModel storageModel(p.storage());
 

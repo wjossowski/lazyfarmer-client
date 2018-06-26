@@ -27,6 +27,11 @@
 using namespace Core;
 using namespace Core::Data;
 
+QString Storage::nameAtRow(int row) const
+{
+    return gameData()->productInfo(idAtRow(row)).name;
+}
+
 void Storage::update(const QVariant &info)
 {
     const QVariantList storageData = info.toList();
@@ -38,12 +43,8 @@ void Storage::update(const QVariant &info)
 
         int id = product["Id"].toInt();
         int amount = product["Amount"].toInt();
-        const QString name = m_owner->gameData()->productInfo(id).name;
 
-        m_products.insert(id, {
-            amount,
-            name
-        });
+        m_products.insert(id, amount);
     }
 
     emit storageChanged();
@@ -53,13 +54,15 @@ QString Storage::toString() const
 {
     QStringList storageContents;
 
-    QMapIterator<int, QPair<int, QString>> product (m_products);
+    QMapIterator<int, int> product (m_products);
     while(product.hasNext()) {
         product.next();
 
-        const auto value = product.value();
+        const auto id = product.key();
+        const auto name = gameData()->productInfo(id).name;
+        const auto amount = product.value();
         storageContents.append(QString("(%1 (id: %2): %3)")
-                               .arg(value.second).arg(product.key()).arg(value.first));
+                               .arg(name).arg(id).arg(amount));
     }
 
     return QString("Storage: (%1)").arg(storageContents.join(", "));

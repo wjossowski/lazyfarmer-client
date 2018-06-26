@@ -36,11 +36,10 @@ namespace Core {
             explicit Storage(Player *parent = nullptr) : IPlayerData(parent) { }
 
             int idAtRow(int row) const { return m_products.keys().at(row); }
-            int amountAtRow(int row) const { return m_products.values().at(row).first; }
-            QString nameAtRow(int row) const { return m_products.values().at(row).second; }
+            QString nameAtRow(int row) const;
+            int amountAtRow(int row) const { return m_products.values().at(row); }
 
-            int amount(int id) const { return m_products.value(id, {0, ""}).first; }
-            QString name (int id) const { return m_products.value(id, {0, ""}).second; }
+            int amount(int id) const { return m_products.value(id, 0); }
             int size() const { return m_products.size(); }
 
             void update(const QVariant &info) override;
@@ -50,7 +49,7 @@ namespace Core {
             void storageChanged() const;
 
         private:
-            QMap<int, QPair<int, QString>> m_products;
+            QMap<int, int> m_products;
 
         };
 

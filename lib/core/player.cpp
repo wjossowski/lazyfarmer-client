@@ -42,7 +42,7 @@ Player::Player(QObject *parent)
     initializeConnections();
 }
 
-QSharedPointer<GlobalGameData> Player::gameData() const
+GlobalGameData::Ptr Player::gameData() const
 {
     return m_gateway.gameData();
 }
@@ -63,23 +63,23 @@ void Player::update(const QByteArray &info)
     }
 }
 
-void Player::buildingUpdateRequested(int farm, int position, Data::BuildingType type)
+void Player::updateBuilding(int farm, int position, Data::BuildingType type)
 {
-//    const Data::BuildingDetails details { farm, position };
+    const Data::BuildingDetails details { farm, position };
 
-//    switch (type) {
-//    case BuildingType::Farm:
-//        m_gateway.queueMessage(GetFieldInfo::Ptr(new GetFieldInfo(&m_gateway, details)));
-//        break;
-//    case BuildingType::AnimalProduction:
-//        m_gateway.queueMessage(GetFeedInfo::Ptr(new GetFeedInfo(&m_gateway, details)));
-//        break;
-//    case BuildingType::ResourceProduction:
-//        m_gateway.queueMessage(GetProductionInfo::Ptr(new GetProductionInfo(&m_gateway, details)));
-//        break;
-//    default:
-//        break;
-//    }
+    switch (type) {
+    case BuildingType::Farm:
+        m_gateway.queueMessage(GetFieldInfo::Ptr(new GetFieldInfo(&m_gateway, details)));
+        break;
+    case BuildingType::AnimalProduction:
+        m_gateway.queueMessage(GetFeedInfo::Ptr(new GetFeedInfo(&m_gateway, details)));
+        break;
+    case BuildingType::ResourceProduction:
+        m_gateway.queueMessage(GetProductionInfo::Ptr(new GetProductionInfo(&m_gateway, details)));
+        break;
+    default:
+        break;
+    }
 }
 
 void Player::updateBasicInfo(const QVariantMap &basicInfo)

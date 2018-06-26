@@ -25,7 +25,7 @@
 using namespace Core;
 using namespace Core::Data;
 
-QMap<QString, QSharedPointer<GlobalGameData>> GlobalGameData::m_gameData;
+QMap<QString, GlobalGameData::Ptr> GlobalGameData::m_gameData;
 QMap<int, BuildingType> GlobalGameData::m_buildingTypes;
 
 const QVariantMap childObject (const QVariant &object, const QString &property) {
@@ -39,12 +39,12 @@ void GlobalGameData::registerGameData(const QString &domain,
         return;
     }
 
-    m_gameData.insert(domain, QSharedPointer<GlobalGameData>(new GlobalGameData(data)));
+    m_gameData.insert(domain, GlobalGameData::Ptr(new GlobalGameData(data)));
 }
 
-QSharedPointer<GlobalGameData> GlobalGameData::gameData(const QString &domain)
+GlobalGameData::Ptr GlobalGameData::gameData(const QString &domain)
 {
-    return m_gameData.value(domain, QSharedPointer<GlobalGameData>(new GlobalGameData));
+    return m_gameData.value(domain, GlobalGameData::Ptr(new GlobalGameData));
 }
 
 bool GlobalGameData::loadBuildingTypes(const QByteArray &contents)

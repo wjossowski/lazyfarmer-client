@@ -132,7 +132,7 @@ void ApiGateway::start()
         if (m_loggedIn) {
             queueMessage(Logout::Ptr(new Logout(this)));
         } else {
-            qDebug() << "No messages eleft";
+            qInfo() << "No messages left";
             m_currentMessage.reset();
             return;
         }
@@ -246,7 +246,7 @@ void ApiGateway::extractGameData()
     GlobalGameData::registerGameData(m_serverDomain, GameInfoExtractor::globalResults(m_serverDomain));
 }
 
-QSharedPointer<GlobalGameData> ApiGateway::gameData() const
+GlobalGameData::Ptr ApiGateway::gameData() const
 {
     return GlobalGameData::gameData(m_serverDomain);
 }

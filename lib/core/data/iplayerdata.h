@@ -18,6 +18,8 @@
 
 #pragma once
 
+#include "../globalgamedata.h"
+
 #include <QtCore/QObject>
 #include <QtCore/QVariant>
 #include <QtCore/QSharedPointer>
@@ -37,6 +39,8 @@ namespace Core {
 
             virtual void update(const QVariant &info) = 0;
             virtual QString toString() const;
+
+            GlobalGameData::Ptr gameData() const;
 
         protected:
             Player *m_owner;

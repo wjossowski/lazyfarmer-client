@@ -18,6 +18,7 @@
 
 #include "iplayerdata.h"
 #include "../player.h"
+#include "../globalgamedata.h"
 
 using namespace Core;
 using namespace Core::Data;
@@ -32,4 +33,9 @@ IPlayerData::IPlayerData(Player *parent)
 QString IPlayerData::toString() const
 {
     return "toString() not implemented.";
+}
+
+GlobalGameData::Ptr IPlayerData::gameData() const
+{
+    return m_owner->gameData();
 }

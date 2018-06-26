@@ -49,8 +49,6 @@ void GetFieldInfo::handleResponse(QIODevice *reply)
     FieldInfoExtractor extractor;
     extractor.extract(reply->readAll());
 
-    qDebug() << QJsonDocument::fromVariant(extractor.result());
-
     emit finished();
 }
 

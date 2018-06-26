@@ -47,6 +47,8 @@ namespace Core {
     class GlobalGameData
     {
     public:
+        using Ptr = QSharedPointer<GlobalGameData>;
+
         virtual ~GlobalGameData() = default;
 
         const BuildingInfo buildingInfo (const int buildingId) const {
@@ -64,7 +66,7 @@ namespace Core {
         }
 
         static void registerGameData(const QString &domain, const QVariant &data);
-        static QSharedPointer<GlobalGameData> gameData(const QString &domain);
+        static GlobalGameData::Ptr gameData(const QString &domain);
 
         static bool loadBuildingTypes(const QByteArray &contents);
 
@@ -84,7 +86,7 @@ namespace Core {
         QMap<int, ProductInfo> m_productInfos;
         QMap<int, ForestryInfo> m_forestryInfos;
 
-        static QMap<QString, QSharedPointer<GlobalGameData>> m_gameData;
+        static QMap<QString, GlobalGameData::Ptr> m_gameData;
         static QMap<int, Data::BuildingType> m_buildingTypes;
 
     };

@@ -17,6 +17,8 @@
  **/
 
 #include "field.h"
+#include "player.h"
+#include "globalgamedata.h"
 
 using namespace Core;
 using namespace Core::Data;
@@ -29,6 +31,15 @@ Field::Field(Player *parent)
     , m_isWater(false)
 {
 
+}
+
+ProductDetails Field::details() const
+{
+    return {
+        m_id,
+        gameData()->productInfo(m_id).size,
+        m_fieldId
+    };
 }
 
 void Field::update(const QVariant &info)
