@@ -30,7 +30,6 @@ using namespace Core::Extractors;
 
 void DatablockExtractor::extract(const QByteArray &content)
 {
-    qDebug() << content;
     if (content.isEmpty()){
         return;
     }
