@@ -16,6 +16,8 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
+#include "core/globalgamedata.h"
+
 #ifdef DEBUG_MODE
 #include "model/storagemodel.h"
 #include "core/api/apigateway.h"
@@ -169,8 +171,25 @@ int main(int argc, char *argv[])
 
         qDebug() << debugFile.fileName();
 
+        // Load Static game data
+
+#ifdef DEBUG_MODE
+        QDir assetsDirectory(ASSETS_DIRECTORY);
+#else
+        QDir assetsDirectory(qApp->applicationDirPath());
+#endif
+        QFile buildingConfig(assetsDirectory.absoluteFilePath("building-config.json"));
+        if (buildingConfig.open(QIODevice::ReadOnly)) {
+            if (!GlobalGameData::loadBuildingTypes(buildingConfig.readAll())) {
+                throw std::ios_base::failure(qApp->translate("main", "Unable to read building-config.json").toStdString());
+            }
+        } else {
+            throw std::ios_base::failure(qApp->translate("main", "Unable to load building-config.json").toStdString());
+        }
+
     } catch (std::exception &e) {
         qCritical() << e.what();
+        return -1;
     }
 
     if (parser.isSet("no-gui")) {

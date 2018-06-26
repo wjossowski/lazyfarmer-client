@@ -152,7 +152,7 @@ void PlayerInfoExtractor::parseStorageInfo(const QJsonObject &storageInfo)
     }
 }
 
-QVariantMap extractBuildingInfo(int type, const QJsonObject &buildingObject)
+QVariantMap extractBuildingInfo(int id, const QJsonObject &buildingObject)
 {
     assertNotEmptyObject(buildingObject);
 
@@ -168,7 +168,7 @@ QVariantMap extractBuildingInfo(int type, const QJsonObject &buildingObject)
     };
 
     QVariantMap building;
-    building["Type"] = type;
+    building["Id"] = id;
     building["FarmId"] = buildingObject["farm"].toString().toInt();
     building["Position"] = buildingObject["position"].toString().toInt();
     building["Level"] = buildingObject["level"].toString().toInt();

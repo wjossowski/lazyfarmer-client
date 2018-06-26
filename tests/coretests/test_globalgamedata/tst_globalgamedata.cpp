@@ -82,9 +82,9 @@ void GlobalGameDataTest::emptyDataTest()
 {
     const auto undefinedData = GlobalGameData::gameData("nothinsk");
 
-    QVERIFY(undefinedData->productInfo(2).name == "Unknown Product");
-    QVERIFY(undefinedData->buildingInfo(11).name == "Unknown Building");
-    QVERIFY(undefinedData->forestryInfo(21).name == "Unknown Product");
+    QVERIFY(undefinedData->productInfo(2).name == "Unknown");
+    QVERIFY(undefinedData->buildingInfo(11).name == "Unknown");
+    QVERIFY(undefinedData->forestryInfo(21).name == "Unknown");
 }
 
 QTEST_APPLESS_MAIN(GlobalGameDataTest)

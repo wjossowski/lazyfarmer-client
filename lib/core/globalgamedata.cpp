@@ -18,11 +18,15 @@
 
 #include "globalgamedata.h"
 
-#include <QtDebug>
+#include <QtCore/QJsonDocument>
+
+#include <QDebug>
 
 using namespace Core;
+using namespace Core::Data;
 
 QMap<QString, QSharedPointer<GlobalGameData>> GlobalGameData::m_gameData;
+QMap<int, BuildingType> GlobalGameData::m_buildingTypes;
 
 const QVariantMap childObject (const QVariant &object, const QString &property) {
     return object.toMap().value(property).toMap();
@@ -40,7 +44,34 @@ void GlobalGameData::registerGameData(const QString &domain,
 
 QSharedPointer<GlobalGameData> GlobalGameData::gameData(const QString &domain)
 {
-    return m_gameData.value(domain, QSharedPointer<GlobalGameData>(nullptr));
+    return m_gameData.value(domain, QSharedPointer<GlobalGameData>(new GlobalGameData));
+}
+
+bool GlobalGameData::loadBuildingTypes(const QByteArray &contents)
+{
+    const auto json = QJsonDocument::fromJson(contents).toVariant();
+
+    if (!json.isValid()) {
+        return false;
+    }
+
+    const QVariantList buildingInfoList = json.toList();
+    for (const auto &info : buildingInfoList) {
+        const QVariantMap data = info.toMap();
+
+        int id = data["id"].toInt();
+
+        QString category = data["category"].toString();
+        if (category == "Field") {
+            m_buildingTypes.insert(id, BuildingType::Farm);
+        } else if (category == "AnimalProduction") {
+            m_buildingTypes.insert(id, BuildingType::AnimalProduction);
+        } else if (category == "ResourceProduction") {
+            m_buildingTypes.insert(id, BuildingType::ResourceProduction);
+        }
+    }
+
+    return true;
 }
 
 GlobalGameData::GlobalGameData(const QVariant &data)

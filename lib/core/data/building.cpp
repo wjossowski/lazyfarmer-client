@@ -25,7 +25,8 @@ using namespace Core::Data;
 
 Building::Building(Player *parent)
     : IPlayerData(parent)
-    , m_type(0)
+    , m_id(0)
+    , m_type(BuildingType::Unknown)
     , m_farmId(0)
     , m_position(0)
     , m_level(0)
@@ -39,28 +40,31 @@ void Building::update(const QVariant &info)
 {
     const QVariantMap buildingInfo = info.toMap();
 
-    int type = buildingInfo["Type"].toInt();
+    int id = buildingInfo["Id"].toInt();
     int farmId = buildingInfo["FarmId"].toInt();
     int position = buildingInfo["Position"].toInt();
     int level = buildingInfo["Level"].toInt();
     int animals = buildingInfo["Animals"].toInt();
     int remaining = buildingInfo["Remaining"].toInt();
 
-    if (m_type != type
+    if (m_id != id
         || m_farmId != farmId
         || m_position != position
         || m_level != level
         || m_animals != animals
         || m_remaining != remaining)
     {
-        m_type = type;
+        m_id = id;
+
+        m_type = GlobalGameData::buildingType(id);
+
         m_farmId = farmId;
         m_position = position;
         m_level = level;
         m_animals = animals;
         m_remaining = remaining;
 
-        m_name = m_owner->gameData()->buildingInfo(m_type).name;
+        m_name = m_owner->gameData()->buildingInfo(m_id).name;
 
         emit buildingChanged();
     }
@@ -69,9 +73,10 @@ void Building::update(const QVariant &info)
 
 QString Building::toString() const
 {
-    return QString("Building: %1 (id:%2) (%3, %4) Level: %5 Remaining: %6")
+    return QString("Building: %1 (id:%2 <%3>) (%4, %5) Level: %6 Remaining: %7")
             .arg(m_name)
-            .arg(m_type)
+            .arg(m_id)
+            .arg(BuildingHelper::toString(m_type))
             .arg(m_farmId)
             .arg(m_position)
             .arg(m_level)

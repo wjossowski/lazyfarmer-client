@@ -42,10 +42,6 @@ void Storage::update(const QVariant &info)
         int amount = product["Amount"].toInt();
         const QString name = m_owner->gameData()->productInfo(id).name;
 
-        if (name == "Unknown") {
-            continue;
-        }
-
         m_products.insert(id, {
             amount,
             name

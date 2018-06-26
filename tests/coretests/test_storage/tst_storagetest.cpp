@@ -18,7 +18,9 @@
 
 #include <QtTest>
 
+#include "core/globalgamedata.h"
 #include "core/data/storage.h"
+#include "core/player.h"
 
 using namespace Core;
 using namespace Core::Data;
@@ -75,7 +77,8 @@ void StorageTest::update()
     QFETCH(QList<int>, indexes);
     QFETCH(QList<int>, amounts);
 
-    QScopedPointer<Storage> m_storage (new Storage);
+    Player p;
+    QScopedPointer<Storage> m_storage (new Storage(&p));
 
     m_storage->update(storage);
     QVERIFY2 (m_storage->size() == storage.size(), "Storage sizes must be equal");

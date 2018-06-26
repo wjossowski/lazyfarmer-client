@@ -25,6 +25,9 @@ DEFINES += "FUNCTION_NAME=__FUNCTION__"
 
 CONFIG(debug, debug|release) {
     DEFINES += DEBUG_MODE
+    DEFINES += "ASSETS_DIRECTORY=\\\"$${PWD}/assets\\\""
+} CONFIG(release, debug|release) {
+    message("doopa")
 }
 
 win32 {

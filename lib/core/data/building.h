@@ -38,7 +38,8 @@ namespace Core {
 
             explicit Building(Player *parent = nullptr);
 
-            int type() const { return m_type; }
+            int id() const { return m_id; }
+            BuildingType type() const { return m_type; }
             int farmId() const { return m_farmId; }
             int position() const { return m_position; }
             int level() const { return m_level; }
@@ -46,7 +47,7 @@ namespace Core {
             int remaining() const { return m_remaining; }
             QString name() const { return m_name; }
 
-            bool isFarm() const { return m_type == 1; }
+            bool isFarm() const { return m_id == 1; }
 
             BuildingDetails details() const { return { m_farmId, m_position }; }
 
@@ -57,7 +58,8 @@ namespace Core {
             void buildingChanged();
 
         private:
-            int m_type;
+            int m_id;
+            BuildingType m_type;
             int m_farmId;
             int m_position;
             int m_level;

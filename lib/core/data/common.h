@@ -27,6 +27,27 @@ namespace Core {
         static const unsigned int MAX_PLANT_COLUMNS = 12;
         static const unsigned int MAX_PLANT_ROWS = 10;
 
+        enum class BuildingType {
+            Farm,
+            AnimalProduction,
+            ResourceProduction,
+
+            Unknown
+        };
+
+        struct BuildingHelper
+        {
+            static QString toString(BuildingType type)
+            {
+                switch (type) {
+                case BuildingType::Farm: return "Farm";
+                case BuildingType::AnimalProduction: return "AnimalProduction";
+                case BuildingType::ResourceProduction: return "ResourceProduction";
+                default: return "Unknown";
+                }
+            }
+        };
+
         struct BuildingDetails
         {
             int farmId;
