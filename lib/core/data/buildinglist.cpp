@@ -39,6 +39,11 @@ void BuildingList::update(const QVariant &info)
         }
 
         building->update(buildingInfoMap);
+
+        if (building->isFarm()) {
+            // TODO: Handle getting farm info here
+        }
+
     }
 }
 
