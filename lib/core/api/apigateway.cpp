@@ -53,6 +53,11 @@ ApiGateway::ApiGateway(QObject *parent)
 
 }
 
+/**
+ * @brief ApiGateway::isConfigured
+ * Returns true if all configuration fields are filled
+ * @return Is Gateway configured
+ */
 bool ApiGateway::isConfigured() const
 {
     return !(this->m_login.isEmpty()
@@ -61,6 +66,11 @@ bool ApiGateway::isConfigured() const
              || this->m_serverId.isEmpty());
 }
 
+/**
+ * @brief ApiGateway::setLoggedIn
+ * Toggles LoggedIn status
+ * @param loggedIn is user LoggedIn
+ */
 void ApiGateway::setLoggedIn(bool loggedIn)
 {
     if (m_loggedIn != loggedIn) {
@@ -79,6 +89,15 @@ void ApiGateway::setLoggedIn(bool loggedIn)
     }
 }
 
+/**
+ * @brief ApiGateway::extractRid
+ * Extracts `rid` from HTML contents.
+ * During the first search, whole document is loaded and constant data
+ * such as `delays` and `sizes` from JS script are loaded.
+ * Search depth can be stored in settings under Lookup:RidExtractorDeep.
+ * this value is checked only for next calls.
+ * @param reply Reply from `Login` message call.
+ */
 void ApiGateway::extractRid(QIODevice *reply)
 {
     QSettings settings;
@@ -106,6 +125,11 @@ void ApiGateway::extractRid(QIODevice *reply)
     }
 }
 
+/**
+ * @brief ApiGateway::setApiOptions
+ * Sets internal login configuration
+ * @param options ApiOpitons structure
+ */
 void ApiGateway::setApiOptions(const ApiOptions &options)
 {
     m_serverId = options.serverId;
@@ -114,6 +138,12 @@ void ApiGateway::setApiOptions(const ApiOptions &options)
     m_password = options.password;
 }
 
+/**
+ * @brief ApiGateway::queueMessage
+ * Queues specified message to message queue.
+ * @param message Message to be pushed
+ * @param placement Describes place for pushed message
+ */
 void ApiGateway::queueMessage(const ApiMessage::Ptr &message, PushMessageTo placement)
 {
     if (placement == PushMessageTo::Top) {
@@ -126,6 +156,11 @@ void ApiGateway::queueMessage(const ApiMessage::Ptr &message, PushMessageTo plac
             this,           &ApiGateway::handleError);
 }
 
+/**
+ * @brief ApiGateway::start
+ * Starts message queue runtime.
+ * Handles Login/Logout and pushes those messages automatically to queue.
+ */
 void ApiGateway::start()
 {
     if (m_messageQueue.size() == 0) {
@@ -146,6 +181,14 @@ void ApiGateway::start()
     sendMessage(m_currentMessage.data());
 }
 
+/**
+ * @brief ApiGateway::buildStaticUrl
+ * Creates static Url for specified endpoint.
+ * It's used to load static data from server (images, scripts, etc).
+ * Built Url depends on internal gateway configuration.
+ * @param endpoint Static Endpoint Url
+ * @return Static Endpoint Url
+ */
 QUrl ApiGateway::buildStaticUrl(const QString &endpoint)
 {
     return QString("http://s%1.%2/%3")
@@ -154,6 +197,17 @@ QUrl ApiGateway::buildStaticUrl(const QString &endpoint)
             .arg(endpoint);
 }
 
+/**
+ * @brief ApiGateway::buildEndpointUrl
+ * Creates Url for specified endpoint.
+ * Pushes specified Query data.
+ * Includes Rid if necessary.
+ * Built Url depends on internal gateway configuration.
+ * @param endpoint Endpoint Url
+ * @param data Query data
+ * @param includeRid Should be `rid` included to message body
+ * @return Endpoint Url
+ */
 QUrl ApiGateway::buildEndpointUrl(const QString &endpoint,
                                   const QList<QPair<QString, QString>> &data,
                                   bool includeRid) const
@@ -173,17 +227,37 @@ QUrl ApiGateway::buildEndpointUrl(const QString &endpoint,
     return QUrl(url);
 }
 
+/**
+ * @brief ApiGateway::buildEndpointAjaxUrl
+ * Creates Endpoint Ajax url. Calls internally `buildEndpointUrl`.
+ * Built Url depends on internal gateway configuration.
+ * @param endpoint Endpoint Url
+ * @param data Query data
+ * @param includeRid Should be `rid` included to message body
+ * @return Endpoint Ajax Url
+ */
 QUrl ApiGateway::buildEndpointAjaxUrl(const QString &endpoint, const QList<QPair<QString, QString> > &data, bool includeRid) const
 {
     return buildEndpointUrl(QString("ajax/%1").arg(endpoint), data, includeRid);
 }
 
+/**
+ * @brief ApiGateway::buildHeaders
+ * Fills request with `ContentTypeHeader` and `UserAgentHeader` headers.
+ * @param request Request to be filled
+ */
 void ApiGateway::buildHeaders(QNetworkRequest &request) const
 {
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
     request.setHeader(QNetworkRequest::UserAgentHeader, "Mozilla/5.0");
 }
 
+/**
+ * @brief ApiGateway::recursiveRedirect
+ * Calls recursively endpoint when `LocationHeader` is present.
+ * @param url Url to be reached
+ * @param callback Function to be called
+ */
 void ApiGateway::recursiveRedirect(const QString &url, const std::function<void (QIODevice *)> &callback)
 {
     QNetworkRequest request(url);
@@ -201,6 +275,13 @@ void ApiGateway::recursiveRedirect(const QString &url, const std::function<void 
     });
 }
 
+/**
+ * @brief ApiGateway::sendMessage
+ * Sends `messages` through gateway. Checks `message`' query type and builds
+ * specified query. Handles its response and deletes it
+ * automatically after handling was completed.
+ * @param message Message to be sent
+ */
 void ApiGateway::sendMessage(ApiMessage *message)
 {
     QNetworkRequest request(message->url());
@@ -241,21 +322,40 @@ void ApiGateway::sendMessage(ApiMessage *message)
     }
 }
 
+/**
+ * @brief ApiGateway::extractGameData
+ * Places `Game Data` under specified domain to `GlobalGameData`
+ */
 void ApiGateway::extractGameData()
 {
     GlobalGameData::registerGameData(m_serverDomain, GameInfoExtractor::globalResults(m_serverDomain));
 }
 
+/**
+ * @brief ApiGateway::gameData
+ * @return `Game Data` for specified domain
+ */
 GlobalGameData::Ptr ApiGateway::gameData() const
 {
     return GlobalGameData::gameData(m_serverDomain);
 }
 
+/**
+ * @brief ApiGateway::handlePlayerData
+ * Re-emits `updatePlayerData` for player instance.
+ * @param playerData received `Player Data`
+ */
 void ApiGateway::handlePlayerData(const QByteArray &playerData) const
 {
     emit updatePlayerData(playerData);
 }
 
+/**
+ * @brief ApiGateway::handleError
+ * Handles raised error
+ * @param errorType Type of error
+ * @param args Error arguments
+ */
 void ApiGateway::handleError(ApiGatewayError::ErrorType errorType, const QStringList &args)
 {
     ApiGatewayError error(errorType);
@@ -272,6 +372,13 @@ void ApiGateway::handleError(ApiGatewayError::ErrorType errorType, const QString
     qCritical() << errorMessage;
 }
 
+/**
+ * @brief ApiGateway::queueConstantData
+ * Extracts file name of `Constant Data` JS file from HTML contents.
+ * Queues `GetConstantData` message during first `Login`.
+ * Pushes it to the top of `MessageQueue`.
+ * @param content HTML content
+ */
 void ApiGateway::queueConstantData(const QString &content)
 {
     // Create url template with version placeholder
@@ -290,6 +397,12 @@ void ApiGateway::queueConstantData(const QString &content)
     queueMessage(messagePtr, PushMessageTo::Top);
 }
 
+/**
+ * @brief ApiGateway::handleNotLogged
+ * Handles error when player is not logged in.
+ * @param operation Operation to be reached.
+ * @return Is Logged In status
+ */
 bool ApiGateway::handleNotLogged(const QString &operation)
 {
     bool notLogged = !m_loggedIn;
