@@ -41,7 +41,7 @@ void ProductionInfoExtractor::extractSpecificData()
     // Extract current production
     const QJsonValue currentProductionId = m_datablock.value("pid");
     if (currentProductionId.isString()) {
-        m_data.insert("CurrentProduction", currentProductionId.toString());
+        m_data.insert("CurrentProduction", currentProductionId.toString().toInt());
     }
 
     QVariantList availableProductions;
