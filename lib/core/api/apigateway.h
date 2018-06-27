@@ -96,7 +96,7 @@ namespace Core {
             void handleError(ApiGatewayError::ErrorType errorType, const QStringList &args = QStringList());
 
         public slots:
-            void updateBuilding(const Data::BuildingDetails &details, const Data::BuildingType &type);
+            void requestBuildingUpdate(const Data::BuildingDetails &details, const Data::BuildingType &type);
 
         signals:
             void playerDataUpdated(const QByteArray &data) const;

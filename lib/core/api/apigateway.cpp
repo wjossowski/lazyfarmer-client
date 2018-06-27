@@ -373,12 +373,12 @@ void ApiGateway::handleError(ApiGatewayError::ErrorType errorType, const QString
 }
 
 /**
- * @brief ApiGateway::updateBuilding
+ * @brief ApiGateway::requestBuildingUpdate
  * Pushes `GetInfo` messages depending on BuildingType
  * @param details Building Details
  * @param type Building Type
  */
-void ApiGateway::updateBuilding(const Data::BuildingDetails &details,
+void ApiGateway::requestBuildingUpdate(const Data::BuildingDetails &details,
                                 const Data::BuildingType &type)
 {
     switch (type) {

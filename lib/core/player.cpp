@@ -81,7 +81,7 @@ void Player::initialize()
 void Player::initializeConnections() const
 {
     connect(this,       &Player::updateBuildingRequested,
-            &m_gateway, &ApiGateway::updateBuilding);
+            &m_gateway, &ApiGateway::requestBuildingUpdate);
 
     connect(&m_gateway, &ApiGateway::playerDataUpdated,
             this,       &Player::update);
