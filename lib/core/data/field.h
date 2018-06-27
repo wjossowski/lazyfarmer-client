@@ -51,7 +51,7 @@ namespace Core {
             void update(const QVariant &info) override;
 
         signals:
-            void fieldChanged();
+            void fieldChanged() const;
 
         private:
             int m_id;

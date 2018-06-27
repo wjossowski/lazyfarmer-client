@@ -68,7 +68,7 @@ void Building::update(const QVariant &info)
 
     }
 
-    emit fetchBuildingRequested(m_farmId, m_position, m_type);
+    emit fetchBuildingRequested(details(), m_type);
 
 }
 
@@ -87,5 +87,5 @@ QString Building::toString() const
 void Building::initializeConnections()
 {
     connect(this,       &Building::fetchBuildingRequested,
-            m_owner,    &Player::updateBuilding);
+            m_owner,    &Player::updateBuildingRequested);
 }

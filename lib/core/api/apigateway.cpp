@@ -347,7 +347,7 @@ GlobalGameData::Ptr ApiGateway::gameData() const
  */
 void ApiGateway::handlePlayerData(const QByteArray &playerData) const
 {
-    emit updatePlayerData(playerData);
+    emit playerDataUpdated(playerData);
 }
 
 /**
@@ -370,6 +370,30 @@ void ApiGateway::handleError(ApiGatewayError::ErrorType errorType, const QString
     emit errorRaised(errorMessage); 
 
     qCritical() << errorMessage;
+}
+
+/**
+ * @brief ApiGateway::updateBuilding
+ * Pushes `GetInfo` messages depending on BuildingType
+ * @param details Building Details
+ * @param type Building Type
+ */
+void ApiGateway::updateBuilding(const Data::BuildingDetails &details,
+                                const Data::BuildingType &type)
+{
+    switch (type) {
+    case Data::BuildingType::Farm:
+        queueMessage(GetFieldInfo::Ptr(new GetFieldInfo(this, details)));
+        break;
+    case Data::BuildingType::AnimalProduction:
+        queueMessage(GetFeedInfo::Ptr(new GetFeedInfo(this, details)));
+        break;
+    case Data::BuildingType::ResourceProduction:
+        queueMessage(GetProductionInfo::Ptr(new GetProductionInfo(this, details)));
+        break;
+    default:
+        break;
+    }
 }
 
 /**

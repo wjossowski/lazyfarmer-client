@@ -48,7 +48,9 @@ namespace Core {
 
     public slots:
         void update(const QByteArray &info);
-        void updateBuilding(int farm, int position, Data::BuildingType type);
+
+    signals:
+        void updateBuildingRequested(const Data::BuildingDetails &details, const Data::BuildingType &type) const;
 
     private:
         void updateBasicInfo(const QVariantMap &basicInfo);

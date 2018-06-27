@@ -63,25 +63,6 @@ void Player::update(const QByteArray &info)
     }
 }
 
-void Player::updateBuilding(int farm, int position, Data::BuildingType type)
-{
-    const Data::BuildingDetails details { farm, position };
-
-    switch (type) {
-    case BuildingType::Farm:
-        m_gateway.queueMessage(GetFieldInfo::Ptr(new GetFieldInfo(&m_gateway, details)));
-        break;
-    case BuildingType::AnimalProduction:
-        m_gateway.queueMessage(GetFeedInfo::Ptr(new GetFeedInfo(&m_gateway, details)));
-        break;
-    case BuildingType::ResourceProduction:
-        m_gateway.queueMessage(GetProductionInfo::Ptr(new GetProductionInfo(&m_gateway, details)));
-        break;
-    default:
-        break;
-    }
-}
-
 void Player::updateBasicInfo(const QVariantMap &basicInfo)
 {
     m_level = basicInfo["Level"].toInt();
@@ -99,6 +80,9 @@ void Player::initialize()
 
 void Player::initializeConnections() const
 {
-    connect(&m_gateway, &ApiGateway::updatePlayerData,
+    connect(this,       &Player::updateBuildingRequested,
+            &m_gateway, &ApiGateway::updateBuilding);
+
+    connect(&m_gateway, &ApiGateway::playerDataUpdated,
             this,       &Player::update);
 }

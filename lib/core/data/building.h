@@ -53,7 +53,7 @@ namespace Core {
             QString toString() const override;
 
         signals:
-            void fetchBuildingRequested(int farm, int position, Data::BuildingType type);
+            void fetchBuildingRequested(BuildingDetails details, BuildingType type) const;
 
         private:
             void initializeConnections();

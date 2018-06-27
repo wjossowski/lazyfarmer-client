@@ -38,7 +38,7 @@ namespace Core {
         void remove(int i);
 
     signals:
-        void sizeChanged(int size);
+        void sizeChanged(int size) const;
 
     private:
         QList<QSharedPointer<Player>> m_players;

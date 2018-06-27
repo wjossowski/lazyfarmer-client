@@ -189,6 +189,7 @@ int main(int argc, char *argv[])
 
         // Load custom metatypes
         qRegisterMetaType<Core::Data::BuildingType>("Core::Data::BuildingType");
+        qRegisterMetaType<Core::Data::BuildingDetails>("Core::Data::BuildingDetails");
 
     } catch (std::exception &e) {
         qCritical() << e.what();
