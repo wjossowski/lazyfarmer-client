@@ -61,7 +61,9 @@ namespace Core {
             void setLoggedIn (bool loggedIn);
 
             const QString &rid() const { return m_rid; }
-            void extractRid(QIODevice *reply);
+            void setRid(const QString &rid);
+
+            void setBaseInfo(const QString &content);
 
             const QString &serverId() const { return m_serverId; }
             const QString &serverDomain() const { return m_serverDomain; }
@@ -108,7 +110,6 @@ namespace Core {
             bool handleNotLogged(const QString &operation);
 
         private:
-            bool m_firstRun;
             bool m_loggedIn;
 
             QString m_serverId;
