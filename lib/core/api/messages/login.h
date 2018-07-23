@@ -40,6 +40,9 @@ namespace Core {
 
                 void handleResponse(QIODevice *reply) override;
 
+            private:
+                void extractRid(QIODevice *reply);
+
             };
 
         }

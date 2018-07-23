@@ -23,6 +23,8 @@
 
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonArray>
+#include <QtCore/QRegularExpression>
+#include <QtCore/QSettings>
 
 using namespace Core;
 using namespace Core::Api;
@@ -57,11 +59,32 @@ void Login::handleResponse(QIODevice *reply)
 {
     const auto data = QJsonDocument::fromJson(reply->readAll());
     if (data.isArray()) {
-        m_gateway->recursiveRedirect(data.array().last().toString(), [this] (QIODevice *reply) {
-            m_gateway->extractRid(reply);
-            emit finished();
+        const QString url = data.array().last().toString();
+        m_gateway->recursiveRedirect(url, [this] (QIODevice *reply) {
+            this->extractRid(reply);
         });
     } else {
         emit raiseError(ApiGatewayError::ErrorType::InvalidCredentials);
     }
+}
+
+void Login::extractRid(QIODevice *reply)
+{
+    QSettings settings;
+    settings.beginGroup("Lookup");
+
+    bool firstRun = m_gateway->rid().isEmpty();
+    const QString content = firstRun ? reply->readAll()
+                                     : reply->read(settings.value("RidExtractorDeep", 1024).toInt());
+
+    QRegularExpression ridRegex("var rid = '(?<rid>.*)'");
+    const QString rid = ridRegex.match(content).captured("rid");
+
+    m_gateway->setRid(rid);
+
+    if (firstRun) {
+        m_gateway->setBaseInfo(content);
+    }
+
+    emit finished();
 }

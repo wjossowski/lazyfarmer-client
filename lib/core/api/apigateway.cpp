@@ -31,7 +31,6 @@
 #include <QtCore/QJsonObject>
 #include <QtCore/QMetaEnum>
 #include <QtCore/QRegularExpression>
-#include <QtCore/QSettings>
 #include <QtCore/QFile>
 #include <QtCore/QTimer>
 
@@ -47,7 +46,6 @@ using namespace Core::Extractors;
 
 ApiGateway::ApiGateway(QObject *parent)
     : QObject(parent)
-    , m_firstRun(true)
     , m_loggedIn(false)
 {
 
@@ -79,31 +77,21 @@ void ApiGateway::setLoggedIn(bool loggedIn)
     }
 }
 
-void ApiGateway::extractRid(QIODevice *reply)
+void ApiGateway::setRid(const QString &rid)
 {
-    QSettings settings;
-    settings.beginGroup("Lookup");
-
-    const QString content = m_firstRun ? reply->readAll()
-                                       : reply->read(settings.value("RidExtractorDeep", 1024).toInt());
-
-    QRegularExpression ridRegex("var rid = '(?<rid>.*)'");
-    m_rid = ridRegex.match(content).captured("rid");
-
-    if (!m_rid.isEmpty()) {
-        if (m_firstRun) {
-            const auto extractor = GameInfoExtractor::baseExtractor(m_serverDomain);
-            extractor->extract(content);
-
-            queueConstantData(content);
-
-            m_firstRun = false;
-        }
-
+    if (!rid.isEmpty()) {
+        m_rid = rid;
         setLoggedIn(true);
     } else {
         handleError(ApiGatewayError::ErrorType::RidNotParsed);
     }
+}
+
+void ApiGateway::setBaseInfo(const QString &content)
+{
+    const auto extractor = GameInfoExtractor::baseExtractor(m_serverDomain);
+    extractor->extract(content);
+    queueConstantData(content);
 }
 
 void ApiGateway::setApiOptions(const ApiOptions &options)
