@@ -43,9 +43,6 @@ namespace Core {
 
                 virtual ~ApiMessage();
 
-                bool isSent() const { return m_isSent; }
-                void setIsSent(bool isSent) { m_isSent = isSent; }
-
                 virtual QueryType queryType() const { return QueryType::Get; }
 
                 virtual const QUrl url() const = 0;

@@ -218,8 +218,6 @@ void ApiGateway::sendMessage(ApiMessage *message)
 
         connect(message, &ApiMessage::finished,
                 this,    &ApiGateway::start);
-
-        message->setIsSent(true);
     }
 }
 
