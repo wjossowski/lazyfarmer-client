@@ -49,7 +49,7 @@ void Field::update(const QVariant &info)
     int id = fieldInfo["Id"].toInt();
     int fieldId = fieldInfo["FieldId"].toInt();
     int remaining = fieldInfo["Remaining"].toInt();
-    bool isWater = static_cast<bool>(fieldInfo["IsWater"].toInt());
+    bool isWater = fieldInfo["IsWater"].toBool();
 
     if (m_id != id
         || m_fieldId != fieldId

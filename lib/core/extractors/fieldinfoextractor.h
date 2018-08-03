@@ -29,6 +29,7 @@ namespace Core {
 
         public:
             explicit FieldInfoExtractor(quint64 timestamp = 0);
+            virtual ~FieldInfoExtractor() = default;
 
         private:
             void extractSpecificData() override;

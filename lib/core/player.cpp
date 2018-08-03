@@ -58,8 +58,8 @@ void Player::update(const QByteArray &info)
         m_buildingList->update(extractor.farmsInfo());
 
         qInfo() << "Player Info Updated:";
-        qInfo() << m_storage->toString();
-        qInfo() << m_buildingList->toString();
+        qInfo() << "Storage:" << m_storage->toString();
+        qInfo() << "Buildings:" << m_buildingList->toString();
     }
 }
 

@@ -1,6 +1,7 @@
 #include "buildinglist.h"
 
 #include <QtDebug>
+#include <algorithm>
 
 using namespace Core;
 using namespace Core::Data;
@@ -13,15 +14,17 @@ BuildingList::BuildingList(Player *parent)
 
 Building::Ptr BuildingList::buildingAt(int farm, int position)
 {
-    for (auto building : m_buildings) {
-        if (building->farmId() == farm && building->position() == position) {
-            return building;
-        }
-    }
+    const auto buildingIterator = std::find_if(m_buildings.cbegin(), m_buildings.cend(), [=] (const auto &ptr){
+        return ptr->farmId() == farm && ptr->position() == position;
+    });
 
-    const auto building = Building::Ptr(new Building(m_owner));
-    m_buildings.append(building);
-    return building;
+    if (buildingIterator == m_buildings.end()) {
+        const auto building = Building::Ptr(new Building(m_owner));
+        m_buildings.append(building);
+        return building;
+    } else {
+        return *buildingIterator;
+    }
 
 }
 

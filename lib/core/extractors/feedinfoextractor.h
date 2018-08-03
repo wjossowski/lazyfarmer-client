@@ -26,6 +26,8 @@ namespace Core {
 
         class FeedInfoExtractor : public DatablockExtractor
         {
+        public:
+            virtual ~FeedInfoExtractor() = default;
 
         private:
             void extractSpecificData() override;
