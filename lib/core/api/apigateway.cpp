@@ -141,8 +141,8 @@ void ApiGateway::queueMessage(const ApiMessage::Ptr &message, PushMessageTo plac
         m_messageQueue.push_back(message);
     }
 
-    connect(message.data(), &ApiMessage::raiseError,
-            this,           &ApiGateway::handleError);
+    connect(&*message,  &ApiMessage::raiseError,
+            this,       &ApiGateway::handleError);
 }
 
 /**
@@ -167,7 +167,7 @@ void ApiGateway::start()
     m_currentMessage = m_messageQueue.first();
     m_messageQueue.pop_front();
 
-    sendMessage(m_currentMessage.data());
+    sendMessage(&*m_currentMessage);
 }
 
 /**
@@ -297,7 +297,7 @@ void ApiGateway::sendMessage(ApiMessage *message)
     }
 
     if (reply) {
-        connect(reply, &QNetworkReply::finished, [this, message, reply] () {
+        connect(reply, &QNetworkReply::finished, [message, reply] () {
             message->handleResponse(reply);
         });
 
@@ -337,6 +337,11 @@ void ApiGateway::handlePlayerData(const QByteArray &playerData) const
     emit playerDataUpdated(playerData);
 }
 
+void ApiGateway::handleBuildingUpdate(int farm, int pos, const QVariant &data) const
+{
+    emit buildingDataUpdated(farm, pos, data);
+}
+
 /**
  * @brief ApiGateway::handleError
  * Handles raised error
@@ -348,7 +353,7 @@ void ApiGateway::handleError(ApiGatewayError::ErrorType errorType, const QString
     ApiGatewayError error(errorType);
 
     auto message = error.message();
-    for (const auto arg : args) {
+    for (const auto &arg : args) {
         message.arg(arg);
     }
 

@@ -25,8 +25,9 @@
 using namespace Core;
 using namespace Core::Extractors;
 
-FieldInfoExtractor::FieldInfoExtractor(quint64 timestamp)
+FieldInfoExtractor::FieldInfoExtractor(qint64 timestamp, GlobalGameData *data)
     : DatablockExtractor()
+    , m_gamedata(data)
 {
     m_timestamp = timestamp == 0 ? QDateTime::currentMSecsSinceEpoch()/1000
                                  : timestamp;
@@ -36,7 +37,7 @@ void FieldInfoExtractor::extractSpecificData()
 {
     QVariantList fieldsInfo;
 
-    for (const auto &field : m_datablock) {
+    for (const auto field : m_datablock) {
         // Field should be an object
         if (!field.isObject()) {
             break;
@@ -50,17 +51,21 @@ void FieldInfoExtractor::extractSpecificData()
 
         // Calculate remaining time
         int storedRemaining = info["zeit"].toString().toInt();
-        int remaining = storedRemaining - ((storedRemaining == 0) ? 0 : m_timestamp);
+        qint64 remaining = storedRemaining - ((storedRemaining == 0) ? 0 : m_timestamp);
 
         // Build FieldInfo object
         fieldsInfo.append(QVariantMap({
             { "Id", info["inhalt"].toString().toInt() },
             { "FieldId", info["teil_nr"].toString().toInt() },
-            { "Remaining", QString::number(qMax(-1, remaining)).toInt() },
+            { "Remaining", QString::number(qMax(qint64(-1), remaining)).toInt() },
             { "IsWater", QString::number(info["iswater"].toBool()).toInt() }
         }));
 
     }
+
+    std::sort(fieldsInfo.begin(), fieldsInfo.end(), [](const QVariant &a, const QVariant &b) {
+        return a.toMap()["FieldId"].toInt() < b.toMap()["FieldId"].toInt();
+    });
 
     m_data.insert("FieldsInfo", fieldsInfo);
 }

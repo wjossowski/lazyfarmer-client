@@ -51,7 +51,9 @@ void GetProductionInfo::handleResponse(QIODevice *reply)
     ProductionInfoExtractor extractor;
     extractor.extract(reply->readAll());
 
-    qDebug() << QJsonDocument::fromVariant(extractor.result());
+    m_gateway->handleBuildingUpdate(m_buildingData.farmId,
+                                    m_buildingData.positionId,
+                                    extractor.result());
 
     emit finished();
 }

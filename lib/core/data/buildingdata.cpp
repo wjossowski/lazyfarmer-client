@@ -16,31 +16,26 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#pragma once
+#include "buildingdata.h"
 
-#include "datablockextractor.h"
-#include "../globalgamedata.h"
+#include <QDebug>
+#include <QJsonDocument>
 
-namespace Core {
+using namespace Core;
+using namespace Core::Data;
 
-    namespace Extractors {
+BuildingData::BuildingData(Player *parent)
+    : IPlayerData (parent)
+{
 
-        class FieldInfoExtractor : public DatablockExtractor
-        {
+}
 
-        public:
-            explicit FieldInfoExtractor(qint64 timestamp = 0, GlobalGameData *data = nullptr);
-            virtual ~FieldInfoExtractor() = default;
+void BuildingData::update(const QVariant &info)
+{
+    qDebug() << "Trying to update" << QJsonDocument::fromVariant(info).toJson(QJsonDocument::Indented);
+}
 
-        private:
-            void extractSpecificData() override;
-
-        private:
-            qint64 m_timestamp;
-            GlobalGameData *m_gamedata;
-
-        };
-
-    }
-
+QString BuildingData::toString() const
+{
+    return "";
 }

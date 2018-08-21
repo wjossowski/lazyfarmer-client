@@ -20,6 +20,7 @@
 
 #include "common.h"
 #include "iplayerdata.h"
+#include "buildingdata.h"
 
 #include <QtCore/QVariantMap>
 
@@ -37,6 +38,9 @@ namespace Core {
             using Ptr = QSharedPointer<Building>;
 
             explicit Building(Player *parent = nullptr);
+            Building (const Building& another);
+
+            const Building &operator= (const Building &another);
 
             int id() const { return m_id; }
             BuildingType type() const { return m_type; }
@@ -50,12 +54,15 @@ namespace Core {
             BuildingDetails details() const { return { m_farmId, m_position }; }
 
             void update(const QVariant &info) override;
+            void updateBuildingData(const QVariant &info);
+
             QString toString() const override;
 
         signals:
             void fetchBuildingRequested(BuildingDetails details, BuildingType type) const;
 
         private:
+            void assignAnother(const Building& another);
             void initializeConnections();
 
         private:
@@ -67,6 +74,8 @@ namespace Core {
             int m_animals;
             int m_remaining;
             QString m_name;
+
+            BuildingData m_buildingData;
 
         };
 

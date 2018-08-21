@@ -190,6 +190,8 @@ int main(int argc, char *argv[])
         // Load custom metatypes
         qRegisterMetaType<Core::Data::BuildingType>("Core::Data::BuildingType");
         qRegisterMetaType<Core::Data::BuildingDetails>("Core::Data::BuildingDetails");
+        qRegisterMetaType<Core::Data::ProductDetails>("Core::Data::ProductDetails");
+        qRegisterMetaType<Core::Data::ProductionDetails>("Core::Data::ProductionDetails");
 
     } catch (std::exception &e) {
         qCritical() << e.what();
@@ -215,7 +217,6 @@ int main(int argc, char *argv[])
     };
 
     getInfo();
-    QTimer::singleShot(30000, getInfo);
 
     Model::StorageModel storageModel(p.storage());
 

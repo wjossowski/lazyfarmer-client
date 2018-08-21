@@ -39,3 +39,8 @@ GlobalGameData::Ptr IPlayerData::gameData() const
 {
     return m_owner->gameData();
 }
+
+Player *IPlayerData::owner() const
+{
+    return m_owner;
+}

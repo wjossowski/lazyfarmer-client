@@ -36,6 +36,19 @@ Building::Building(Player *parent)
     initializeConnections();
 }
 
+Building::Building(const Building &another)
+    : IPlayerData(another.owner())
+{
+    assignAnother(another);
+}
+
+const Building &Building::operator=(const Building &another)
+{
+    assignAnother(another);
+
+    return *this;
+}
+
 void Building::update(const QVariant &info)
 {
     const QVariantMap buildingInfo = info.toMap();
@@ -72,6 +85,11 @@ void Building::update(const QVariant &info)
 
 }
 
+void Building::updateBuildingData(const QVariant &info)
+{
+    m_buildingData.update(info);
+}
+
 QString Building::toString() const
 {
     return QString("Building: %1 (id:%2 <%3>) (%4, %5) Level: %6 Remaining: %7")
@@ -82,6 +100,17 @@ QString Building::toString() const
             .arg(m_position)
             .arg(m_level)
             .arg(m_remaining);
+}
+
+void Building::assignAnother(const Building &another)
+{
+    m_id = another.id();
+    m_type = another.type();
+    m_farmId = another.farmId();
+    m_position = another.position();
+    m_level = another.level();
+    m_animals = another.animals();
+    m_remaining = another.remaining();
 }
 
 void Building::initializeConnections()

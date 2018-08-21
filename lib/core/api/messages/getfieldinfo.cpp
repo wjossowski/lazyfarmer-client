@@ -46,13 +46,12 @@ const QUrl GetFieldInfo::url() const
 
 void GetFieldInfo::handleResponse(QIODevice *reply)
 {
-    FieldInfoExtractor extractor;
+    FieldInfoExtractor extractor(0, &*m_gateway->gameData());
     extractor.extract(reply->readAll());
 
-    emit finished();
-}
+    m_gateway->handleBuildingUpdate(m_buildingData.farmId,
+                                    m_buildingData.positionId,
+                                    extractor.result());
 
-void GetFieldInfo::setBuilding(const Data::BuildingDetails &buildingData)
-{
-    m_buildingData = buildingData;
+    emit finished();
 }

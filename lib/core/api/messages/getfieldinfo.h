@@ -41,7 +41,9 @@ namespace Core {
                 const QUrl url() const override;
                 void handleResponse(QIODevice *reply) override;
 
-                void setBuilding(const Data::BuildingDetails &buildingData);
+                void setBuilding(const Data::BuildingDetails &buildingData) {
+                    m_buildingData = buildingData;
+                }
 
             private:
                 Data::BuildingDetails m_buildingData;

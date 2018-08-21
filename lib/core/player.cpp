@@ -85,4 +85,7 @@ void Player::initializeConnections() const
 
     connect(&m_gateway, &ApiGateway::playerDataUpdated,
             this,       &Player::update);
+
+    connect(&m_gateway,         &ApiGateway::buildingDataUpdated,
+            &*m_buildingList,    &BuildingList::updateBuilding);
 }

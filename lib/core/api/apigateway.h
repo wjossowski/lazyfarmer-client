@@ -94,6 +94,7 @@ namespace Core {
             GlobalGameData::Ptr gameData() const;
 
             void handlePlayerData(const QByteArray &playerData) const;
+            void handleBuildingUpdate(int farm, int pos, const QVariant &data) const;
 
             void handleError(ApiGatewayError::ErrorType errorType, const QStringList &args = QStringList());
 
@@ -101,6 +102,7 @@ namespace Core {
             void requestBuildingUpdate(const Data::BuildingDetails &details, const Data::BuildingType &type);
 
         signals:
+            void buildingDataUpdated(int farm, int pos, const QVariant &data) const;
             void playerDataUpdated(const QByteArray &data) const;
             void loggedInChanged(bool changed) const;
             void errorRaised(const QString &message) const;

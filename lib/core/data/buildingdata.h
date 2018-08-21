@@ -16,51 +16,26 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "common.h"
-#include "iplayerdata.h"
-
-#include <QtCore/QVariantMap>
-#include <QtCore/QObject>
-
 #pragma once
+
+#include "iplayerdata.h"
 
 namespace Core {
 
-    class Player;
-
     namespace Data {
 
-        class Field : public IPlayerData
+        class BuildingData : public IPlayerData
         {
             Q_OBJECT
 
         public:
-            using Ptr = QSharedPointer<Field>;
+            using Ptr = QSharedDataPointer<BuildingData>;
 
-            explicit Field (Player *parent = nullptr);
+            explicit BuildingData (Player *parent = nullptr);
 
-            int id() const { return m_id; }
-            int fieldId() const { return m_fieldNo; }
-            int remaining() const { return m_remaining; }
-            bool isWater() const { return m_isWater; }
-
-            bool isEmpty() const { return m_id == 0; }
-
-            ProductDetails details() const;
-
-            void update(const QVariant &info) override;
-
-            QString toString() const override;
-
-        signals:
-            void fieldChanged() const;
-
-        private:
-            int m_id;
-            QString m_name;
-            int m_fieldNo;
-            int m_remaining;
-            bool m_isWater;
+        public:
+            void update(const QVariant &info);
+            QString toString() const;
         };
 
     }

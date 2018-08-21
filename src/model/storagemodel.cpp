@@ -27,8 +27,8 @@ StorageModel::StorageModel(const Data::Storage::Ptr &storage, QObject *parent)
     : QAbstractListModel(parent)
     , m_storage(storage)
 {
-    connect(storage.data(), &Data::Storage::storageChanged,
-            this,           &StorageModel::reload);
+    connect(&*storage,  &Data::Storage::storageChanged,
+            this,       &StorageModel::reload);
 }
 
 int StorageModel::rowCount(const QModelIndex &) const
@@ -50,7 +50,6 @@ QVariant StorageModel::data(const QModelIndex &index, int role) const
     case StorageData::Name:     return m_storage->nameAtRow(row);
     case StorageData::Icon:     return m_storage->amount(row);
     case StorageData::Amount:   return m_storage->amountAtRow(row);
-    default:                    return QVariant();
     }
 }
 

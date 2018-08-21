@@ -44,6 +44,9 @@ namespace Core {
 
             QString toString() const override;
 
+        public slots:
+            void updateBuilding(int farm, int position, const QVariant &info);
+
         private:
             QList<Building::Ptr> m_buildings;
 

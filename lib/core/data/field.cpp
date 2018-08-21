@@ -26,7 +26,7 @@ using namespace Core::Data;
 Field::Field(Player *parent)
     : IPlayerData(parent)
     , m_id(0)
-    , m_fieldId(0)
+    , m_fieldNo(0)
     , m_remaining(0)
     , m_isWater(false)
 {
@@ -38,7 +38,7 @@ ProductDetails Field::details() const
     return {
         m_id,
         gameData()->productInfo(m_id).size,
-        m_fieldId
+        m_fieldNo
     };
 }
 
@@ -52,15 +52,26 @@ void Field::update(const QVariant &info)
     bool isWater = fieldInfo["IsWater"].toBool();
 
     if (m_id != id
-        || m_fieldId != fieldId
+        || m_fieldNo != fieldId
         || m_remaining != remaining
         || m_isWater != isWater)
     {
         m_id = id;
-        m_fieldId = fieldId;
+        m_name = m_owner->gameData()->productInfo(m_id).name;
+        m_fieldNo = fieldId;
         m_remaining = remaining;
         m_isWater = isWater;
 
         emit fieldChanged();
     }
+}
+
+QString Field::toString() const
+{
+    return QString("Field: %1 (id: %2) (fieldNo: %3), Watered: %4, Remaining: %5")
+            .arg(m_name)
+            .arg(m_id)
+            .arg(m_fieldNo)
+            .arg(m_isWater ? "Yes" : "No")
+            .arg(m_remaining);
 }

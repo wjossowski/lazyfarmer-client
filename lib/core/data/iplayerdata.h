@@ -42,6 +42,8 @@ namespace Core {
 
             GlobalGameData::Ptr gameData() const;
 
+            Player *owner() const;
+
         protected:
             Player *m_owner;
 
