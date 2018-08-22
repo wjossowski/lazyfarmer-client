@@ -19,6 +19,7 @@
 #pragma once
 
 #include <QtCore/QString>
+#include <QtCore/QList>
 
 namespace Core {
 
@@ -56,23 +57,29 @@ namespace Core {
 
         struct ProductDetails
         {
+            static QList<int> neighbours(int pos, int size) {
+                QList<int> neighbourFields;
+                if (size == 2) {
+                    neighbourFields << (pos + 1);
+                } else if (size == 4) {
+                    neighbourFields << (pos + 1)
+                                    << (pos + MAX_PLANT_COLUMNS)
+                                    << (pos + MAX_PLANT_COLUMNS + 1);
+                }
+                return neighbourFields;
+            }
+
             QString fieldIds () const
             {
-                if (plantSize == 1) {
-                    return QString::number(positionId);
-                } else if (plantSize == 2) {
-                    return QString("%1,%2")
-                            .arg(positionId)
-                            .arg(positionId+1);
-                } else if (plantSize == 4) {
-                    return QString("%1,%2,%3,%4")
-                            .arg(positionId)
-                            .arg(positionId+1)
-                            .arg(positionId+MAX_PLANT_COLUMNS)
-                            .arg(positionId+MAX_PLANT_COLUMNS+1);
-                } else {
-                    return QString();
+                QList<int> fields = {positionId};
+                fields << neighbours(positionId, plantSize);
+
+                QStringList fieldStrings;
+                for (const auto& field : fields) {
+                    fieldStrings << QString::number(field);
                 }
+
+                return fieldStrings.join(',');
             }
 
             int productId;

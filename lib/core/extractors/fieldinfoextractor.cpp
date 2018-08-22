@@ -42,17 +42,6 @@ QVariantList FieldInfoExtractor::filterFields(const QVariantList &fieldsInfo) co
         placeholdList.insert(fieldNo, fieldInfo);
     });
 
-    const auto removeBySize = [](int pos, int size) {
-        QList<int> fieldsToBeRemoved;
-        if (size == 2) {
-            fieldsToBeRemoved << (pos + 1);
-        } else if (size == 4) {
-            fieldsToBeRemoved << (pos + 1)
-                              << (pos + MAX_PLANT_COLUMNS)
-                              << (pos + MAX_PLANT_COLUMNS + 1);
-        }
-        return fieldsToBeRemoved;
-    };
 
     QMutableMapIterator<int, QVariant> iter (placeholdList);
     QList<int> fieldsToRemove;
@@ -66,7 +55,7 @@ QVariantList FieldInfoExtractor::filterFields(const QVariantList &fieldsInfo) co
             fieldsToRemove.removeOne(fieldId);
             iter.remove();
         } else {
-            fieldsToRemove << removeBySize(fieldId, m_gamedata->productSize(plantId));
+            fieldsToRemove << ProductDetails::neighbours(fieldId, m_gamedata->productSize(plantId));
         }
 
     }
