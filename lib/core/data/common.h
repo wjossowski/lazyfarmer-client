@@ -24,8 +24,8 @@ namespace Core {
 
     namespace Data {
 
-        static const unsigned int MAX_PLANT_COLUMNS = 12;
-        static const unsigned int MAX_PLANT_ROWS = 10;
+        static const int MAX_PLANT_COLUMNS = 12;
+        static const int MAX_PLANT_ROWS = 10;
 
         enum class BuildingType {
             Farm,
@@ -69,7 +69,7 @@ namespace Core {
                             .arg(positionId)
                             .arg(positionId+1)
                             .arg(positionId+MAX_PLANT_COLUMNS)
-                            .arg(positionId+MAX_PLANT_COLUMNS+1);;
+                            .arg(positionId+MAX_PLANT_COLUMNS+1);
                 } else {
                     return QString();
                 }

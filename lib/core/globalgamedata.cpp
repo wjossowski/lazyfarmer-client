@@ -103,7 +103,7 @@ void GlobalGameData::createProductInfo(const QVariantMap &baseData, const QVaria
     const auto productY = childObject(constantsData, "product_y");
 
     const auto getSize = [&] (int xSize, int ySize) {
-        return ySize == 2 ? 4 : xSize == 2 ? 2 : 1;
+        return ySize == 2 ? 4 : (xSize == 2 ? 2 : 1);
     };
 
     const auto productIds = productNames.keys();
@@ -117,8 +117,8 @@ void GlobalGameData::createProductInfo(const QVariantMap &baseData, const QVaria
         quint32 time = productTime.value(id).toString().toInt();
         if (time == 0) continue;
 
-        quint8 size = getSize(productY.value(id).toString().toInt(),
-                              productX.value(id).toString().toInt());
+        quint8 size = getSize(productX.value(id).toString().toInt(),
+                              productY.value(id).toString().toInt());
 
         m_productInfos.insert(id.toInt(), { name, size, price, time });
     }

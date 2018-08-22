@@ -24,6 +24,7 @@
 
 using namespace Core;
 using namespace Core::Extractors;
+using namespace Core::Data;
 
 FieldInfoExtractor::FieldInfoExtractor(qint64 timestamp, GlobalGameData *data)
     : DatablockExtractor()
@@ -31,6 +32,46 @@ FieldInfoExtractor::FieldInfoExtractor(qint64 timestamp, GlobalGameData *data)
 {
     m_timestamp = timestamp == 0 ? QDateTime::currentMSecsSinceEpoch()/1000
                                  : timestamp;
+}
+
+QVariantList FieldInfoExtractor::filterFields(const QVariantList &fieldsInfo) const
+{
+    QMap<int, QVariant> placeholdList;
+    std::for_each(fieldsInfo.cbegin(), fieldsInfo.cend(), [&placeholdList](const QVariant& fieldInfo) {
+        int fieldNo = fieldInfo.toMap()["FieldId"].toInt();
+        placeholdList.insert(fieldNo, fieldInfo);
+    });
+
+    const auto removeBySize = [](int pos, int size) {
+        QList<int> fieldsToBeRemoved;
+        if (size == 2) {
+            fieldsToBeRemoved << (pos + 1);
+        } else if (size == 4) {
+            fieldsToBeRemoved << (pos + 1)
+                              << (pos + MAX_PLANT_COLUMNS)
+                              << (pos + MAX_PLANT_COLUMNS + 1);
+        }
+        return fieldsToBeRemoved;
+    };
+
+    QMutableMapIterator<int, QVariant> iter (placeholdList);
+    QList<int> fieldsToRemove;
+    while(iter.hasNext()) {
+        const auto value = iter.next();
+        const auto fieldInfo = value->toMap();
+        int fieldId = fieldInfo["FieldId"].toInt();
+        int plantId = fieldInfo["Id"].toInt();
+
+        if (fieldsToRemove.contains(fieldId)) {
+            fieldsToRemove.removeOne(fieldId);
+            iter.remove();
+        } else {
+            fieldsToRemove << removeBySize(fieldId, m_gamedata->productSize(plantId));
+        }
+
+    }
+
+    return placeholdList.values();
 }
 
 void FieldInfoExtractor::extractSpecificData()
@@ -63,9 +104,5 @@ void FieldInfoExtractor::extractSpecificData()
 
     }
 
-    std::sort(fieldsInfo.begin(), fieldsInfo.end(), [](const QVariant &a, const QVariant &b) {
-        return a.toMap()["FieldId"].toInt() < b.toMap()["FieldId"].toInt();
-    });
-
-    m_data.insert("FieldsInfo", fieldsInfo);
+    m_data.insert("FieldsInfo", m_gamedata ? filterFields(fieldsInfo) : fieldsInfo);
 }

@@ -54,9 +54,14 @@ namespace Core {
         const BuildingInfo buildingInfo (const int buildingId) const {
             return m_buildingInfos.value(buildingId, { "Unknown" });
         }
+
         const ProductInfo productInfo (const int productId) const {
             return m_productInfos.value(productId, { "Unknown", 0, 0, UINT32_MAX });
         }
+        int productSize(const int productId) {
+            return productInfo(productId).size;
+        }
+
         const ForestryInfo forestryInfo (const int forestryId) const {
             return m_forestryInfos.value(forestryId, { "Unknown" });
         }

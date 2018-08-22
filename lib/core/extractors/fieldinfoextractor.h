@@ -33,6 +33,7 @@ namespace Core {
             virtual ~FieldInfoExtractor() = default;
 
         private:
+            QVariantList filterFields(const QVariantList &fieldsInfo) const;
             void extractSpecificData() override;
 
         private:
