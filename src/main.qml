@@ -2,8 +2,7 @@ import QtQuick 2.7
 import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
 
-import "Views" as Views
-import "Dialogs" as Dialogs
+import "Views"
 
 ApplicationWindow {
     visible: true
@@ -14,16 +13,7 @@ ApplicationWindow {
     title: Qt.application.name + ' v. ' + Qt.application.version
 
     header: ToolBar {
-        RowLayout {
-            anchors.fill: parent
-            ToolButton {
-                text: qsTr("\u25C0 %1").arg(Qt.application.name)
-            }
-            Item { Layout.fillWidth: true }
-            Switch {
-                text: qsTr("Notifications")
-            }
-        }
+
     }
 
 //    StackView {
@@ -31,25 +21,29 @@ ApplicationWindow {
 //        anchors.fill: parent
 //    }
 
-    Views.StorageView {
-        anchors {
-            top: parent.top
-            left: parent.left
-            right: parent.right
-        }
-
-        height: parent.height/2
+    LoginView {
+        anchors.fill: parent;
     }
 
-    Views.FarmView {
-        anchors {
-            bottom: parent.bottom
-            left: parent.left
-            right: parent.right
-        }
+//    Views.StorageView {
+//        anchors {
+//            top: parent.top
+//            left: parent.left
+//            right: parent.right
+//        }
 
-        height: parent.height/2
-    }
+//        height: parent.height/2
+//    }
+
+//    Views.FarmView {
+//        anchors {
+//            bottom: parent.bottom
+//            left: parent.left
+//            right: parent.right
+//        }
+
+//        height: parent.height/2
+//    }
 
     footer: ToolBar {
 

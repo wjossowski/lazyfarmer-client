@@ -354,7 +354,7 @@ void ApiGateway::handleError(ApiGatewayError::ErrorType errorType, const QString
 
     auto message = error.message();
     for (const auto &arg : args) {
-        message.arg(arg);
+        message = message.arg(arg);
     }
 
     const QString errorMessage = tr("Error on `%1` raised. %2").arg(error.toString()).arg(message);

@@ -41,8 +41,9 @@ namespace Core {
                 case ErrorType::InvalidCredentials: return "InvalidCredentials";
                 case ErrorType::NotLogged: return "Action %1 requires to be logged in.";
                 case ErrorType::RidNotParsed: return "Unable to extract `rid`. Login failed.";
-                default: return "Unknown error";
                 }
+
+                return "Unknown error";
             }
 
             QString message() const
@@ -60,10 +61,9 @@ namespace Core {
                 case ErrorType::RidNotParsed:
                     return qApp->translate("ApiGatewayError",
                                            "Unable to extract `rid`. Login failed.");
-                default:
-                    return qApp->translate("ApiGatewayError",
-                                           "Unknown error");
                 }
+
+                return qApp->translate("ApiGatewayError", "Unknown error");
             }
 
             ApiGatewayError (ErrorType exceptionType) : type(exceptionType) { }

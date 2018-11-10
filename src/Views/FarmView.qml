@@ -9,7 +9,7 @@ ListView {
         width: parent.width;
 
         Text {
-            text: name + '(level ' + level + ' )' + '<(' + farm + ', ' + position + ')>';
+            text: name + '(level ' + level + ') @(' + farm + ', ' + position + ')' ;
             anchors.centerIn: parent;
         }
 

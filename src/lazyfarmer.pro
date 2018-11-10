@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 QT       += core gui widgets network qml quick
-CONFIG   += c++17
+CONFIG   += c++14
 
 TARGET = LazyFarmer
 TEMPLATE = app
@@ -34,8 +34,8 @@ SOURCES += \
     $$PWD/*.cpp
 
 HEADERS += \
-    $$PWD/model/*.h
-
+    $$PWD/model/*.h \
+    $$PWD/*.h
 
 include($${PWD}/../common.pri)
 include($${PWD}/../installs.pri)
@@ -44,8 +44,7 @@ DISTFILES += \
     Dialogs/*.qml \
     Views/*.qml \
     Items/*.qml \
-    *.qml \
-    Views/qmldir
+    *.qml
 
 RESOURCES += resources.qrc
 

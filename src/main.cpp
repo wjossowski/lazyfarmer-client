@@ -17,6 +17,7 @@
  **/
 
 #include "core/globalgamedata.h"
+#include "translator.h"
 
 #ifdef DEBUG_MODE
 #include "model/storagemodel.h"
@@ -231,7 +232,7 @@ int main(int argc, char *argv[])
     Player p;
     Api::ApiGateway &debugGateway = p.gateway();
     createDebugEnvironment(debugGateway, parser);
-    queryDebug(debugGateway);
+//    queryDebug(debugGateway);
 #endif
 
     if (parser.isSet("no-gui")) {
@@ -239,15 +240,19 @@ int main(int argc, char *argv[])
     }
 
     QQmlApplicationEngine engine;
+    Model::StorageModel storageModel(p.storage());
+    engine.rootContext()->setContextProperty("StorageModel", &storageModel);
+
+    Model::BuildingModel buildingModel(p.buildings());
+    engine.rootContext()->setContextProperty("BuildingModel", &buildingModel);
+
+    Translator translator;
+    engine.rootContext()->setContextProperty("t", &translator);
+
     engine.load(QUrl(QLatin1String("qrc:/qml/main.qml")));
     if (engine.rootObjects().isEmpty()){
         return -1;
     }
-
-    Model::StorageModel storageModel(p.storage());
-    Model::BuildingModel buildingModel(p.buildings());
-    engine.rootContext()->setContextProperty("StorageModel", &storageModel);
-    engine.rootContext()->setContextProperty("BuildingModel", &buildingModel);
 
     return lazyFarmerApp.exec();
 }
