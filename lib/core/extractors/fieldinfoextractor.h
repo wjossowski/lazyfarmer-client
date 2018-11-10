@@ -30,7 +30,7 @@ namespace Core {
 
         public:
             explicit FieldInfoExtractor(qint64 timestamp = 0, GlobalGameData *data = nullptr);
-            virtual ~FieldInfoExtractor() = default;
+            ~FieldInfoExtractor() override = default;
 
         private:
             QVariantList filterFields(const QVariantList &fieldsInfo) const;

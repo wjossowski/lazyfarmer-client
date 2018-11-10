@@ -42,24 +42,26 @@ QVariant StorageModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 
-    auto dataRole = static_cast<StorageData>(role);
+    auto dataRole = static_cast<StorageRoles>(role);
     int row = index.row();
 
     switch (dataRole) {
-    case StorageData::Id:       return m_storage->idAtRow(row);
-    case StorageData::Name:     return m_storage->nameAtRow(row);
-    case StorageData::Icon:     return m_storage->amount(row);
-    case StorageData::Amount:   return m_storage->amountAtRow(row);
+    case StorageRoles::Id:       return m_storage->idAtRow(row);
+    case StorageRoles::Name:     return m_storage->nameAtRow(row);
+    case StorageRoles::Icon:     return 0; // TODO: Pixmap from sprite
+    case StorageRoles::Amount:   return m_storage->amountAtRow(row);
     }
+
+    return QVariant();
 }
 
 QHash<int, QByteArray> StorageModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
-    roles.insert(static_cast<int>(StorageData::Id), "id");
-    roles.insert(static_cast<int>(StorageData::Name), "name");
-    roles.insert(static_cast<int>(StorageData::Icon), "icon");
-    roles.insert(static_cast<int>(StorageData::Amount), "amount");
+    roles.insert(static_cast<int>(StorageRoles::Id), "id");
+    roles.insert(static_cast<int>(StorageRoles::Name), "name");
+    roles.insert(static_cast<int>(StorageRoles::Icon), "icon");
+    roles.insert(static_cast<int>(StorageRoles::Amount), "amount");
     return roles;
 }
 

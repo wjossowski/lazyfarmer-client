@@ -29,7 +29,7 @@ namespace Core {
         static const int MAX_PLANT_ROWS = 10;
 
         enum class BuildingType {
-            Farm,
+            Farm                    = 1,
             AnimalProduction,
             ResourceProduction,
 

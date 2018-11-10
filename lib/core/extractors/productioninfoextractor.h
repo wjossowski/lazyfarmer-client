@@ -26,9 +26,6 @@ namespace Core {
 
         class ProductionInfoExtractor : public DatablockExtractor
         {
-        public:
-            virtual ~ProductionInfoExtractor() = default;
-
         private:
             void extractSpecificData() override;
 

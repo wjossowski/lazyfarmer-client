@@ -79,9 +79,9 @@ void Building::update(const QVariant &info)
 
         m_name = m_owner->gameData()->buildingInfo(m_id).name;
 
+        emit buildingChanged(farmId, position);
+        emit fetchBuildingRequested(details(), m_type);
     }
-
-    emit fetchBuildingRequested(details(), m_type);
 
 }
 

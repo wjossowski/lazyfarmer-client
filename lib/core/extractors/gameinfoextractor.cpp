@@ -138,7 +138,7 @@ QVariantMap GameInfoExtractor::extractNameFromObject(QJsonObject &&object) const
         if (array.isEmpty())
             continue;
 
-        for (const auto &item : array) {
+        for (const auto item : array) {
             if (!item.isString())
                 continue;
 

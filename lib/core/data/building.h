@@ -51,6 +51,8 @@ namespace Core {
             int remaining() const { return m_remaining; }
             QString name() const { return m_name; }
 
+            bool isValid() const { return m_type != BuildingType::Unknown; }
+
             BuildingDetails details() const { return { m_farmId, m_position }; }
 
             void update(const QVariant &info) override;
@@ -60,6 +62,7 @@ namespace Core {
 
         signals:
             void fetchBuildingRequested(BuildingDetails details, BuildingType type) const;
+            void buildingChanged(int farmId, int position) const;
 
         private:
             void assignAnother(const Building& another);

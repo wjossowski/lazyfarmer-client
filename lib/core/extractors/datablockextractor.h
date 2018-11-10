@@ -29,7 +29,7 @@ namespace Core {
         {
 
         public:
-            explicit DatablockExtractor() = default;
+            virtual ~DatablockExtractor() = default;
 
             const QVariantMap &result() { return m_data; }
             void extract(const QByteArray &content);

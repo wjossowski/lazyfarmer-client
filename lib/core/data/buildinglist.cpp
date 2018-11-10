@@ -19,13 +19,23 @@ Building::Ptr BuildingList::buildingAt(int farm, int position)
     });
 
     if (buildingIterator == m_buildings.cend()) {
-        const auto building = Building::Ptr(new Building(m_owner));
+        auto building = Building::Ptr(new Building(m_owner));
         m_buildings.append(building);
+
         return building;
     } else {
         return *buildingIterator;
     }
 
+}
+
+Building::Ptr BuildingList::buildingAt(int index)
+{
+    if (m_buildings.count() < index) {
+        return Building::Ptr(new Building(m_owner));
+    } else {
+        return m_buildings.at(index);
+    }
 }
 
 void BuildingList::update(const QVariant &info)
@@ -41,6 +51,8 @@ void BuildingList::update(const QVariant &info)
         auto building = buildingAt(farm, position);
         building->update(buildingInfoMap);
     }
+
+    emit buildingListChanged();
 }
 
 QString BuildingList::toString() const

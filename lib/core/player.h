@@ -44,7 +44,8 @@ namespace Core {
         GlobalGameData::Ptr gameData() const;
 
         Api::ApiGateway &gateway() { return m_gateway; }
-        Data::Storage::Ptr storage() { return m_storage; }
+        Data::Storage::Ptr storage() const { return m_storage; }
+        Data::BuildingList::Ptr buildings() const { return m_buildingList; }
 
     public slots:
         void update(const QByteArray &info);

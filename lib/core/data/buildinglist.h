@@ -39,10 +39,15 @@ namespace Core {
             explicit BuildingList (Player *parent = nullptr);
 
             Building::Ptr buildingAt(int farm, int position);
+            Building::Ptr buildingAt(int index);
 
             void update(const QVariant &info) override;
 
             QString toString() const override;
+            int size() const { return m_buildings.size(); }
+
+        signals:
+            void buildingListChanged() const;
 
         public slots:
             void updateBuilding(int farm, int position, const QVariant &info);

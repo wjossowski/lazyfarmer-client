@@ -51,8 +51,9 @@ struct PlayerParseException {
         case EmptyStorageInfo: return QObject::tr("Empty storage info");
         case EmptyFarmsInfo: return QObject::tr("Empty farms info");
         case TypeParsingError: return QObject::tr("Invalid puarsing type");
-        default: return QObject::tr("Unknown error");
         }
+
+        return QString();
     }
 
     PlayerParseException(Type exceptionType) : type(exceptionType) { }
@@ -143,7 +144,7 @@ void PlayerInfoExtractor::parseStorageInfo(const QJsonObject &storageInfo)
 
     for (const auto &node : storageInfo) {
         if (node.isObject()) {
-            for (const auto &rack : node.toObject()) {
+            for (const auto rack : node.toObject()) {
                 m_storageInfo.append(extractProductsFromRack(rack.toObject()));
             }
         } else {

@@ -20,6 +20,7 @@
 
 #ifdef DEBUG_MODE
 #include "model/storagemodel.h"
+#include "model/buildingmodel.h"
 #include "core/api/apigateway.h"
 #include "core/api/messages/messages.h"
 #include "core/player.h"
@@ -99,8 +100,15 @@ void createDebugEnvironment(Api::ApiGateway &gateway, const QCommandLineParser &
     qDebug() << "Account" << (gateway.isConfigured() ? "configured!" : "unconfigured ;(");
 }
 
-void debugQuery()
+void queryDebug(Api::ApiGateway &debugGateway)
 {
+    const auto getInfo = [&](){
+        QVector<int> fields {};
+        debugGateway.queueMessage(GetFarmInfo::Ptr(new GetFarmInfo(&debugGateway)));
+        debugGateway.start();
+    };
+
+    getInfo();
 
 }
 #endif
@@ -223,22 +231,7 @@ int main(int argc, char *argv[])
     Player p;
     Api::ApiGateway &debugGateway = p.gateway();
     createDebugEnvironment(debugGateway, parser);
-
-    const auto getInfo = [&](){
-        QVector<int> fields {};
-        debugGateway.queueMessage(GetFarmInfo::Ptr(new GetFarmInfo(&debugGateway)));
-
-        for (int i = 0; i < 120; i++) {
-            const Data::BuildingDetails buildingDetails = {1, 1};
-            const Data::ProductDetails produceDetails = {17, 1, i};
-            debugGateway.queueMessage(GetCollect::Ptr(new GetCollect(&debugGateway, buildingDetails, produceDetails)));
-            debugGateway.queueMessage(SetPlant::Ptr(new SetPlant(&debugGateway, buildingDetails, produceDetails)));
-            debugGateway.queueMessage(SetPour::Ptr(new SetPour(&debugGateway, buildingDetails, produceDetails)));
-        }
-        debugGateway.start();
-    };
-
-    getInfo();
+    queryDebug(debugGateway);
 #endif
 
     if (parser.isSet("no-gui")) {
@@ -246,11 +239,15 @@ int main(int argc, char *argv[])
     }
 
     QQmlApplicationEngine engine;
-
     engine.load(QUrl(QLatin1String("qrc:/qml/main.qml")));
     if (engine.rootObjects().isEmpty()){
         return -1;
     }
+
+    Model::StorageModel storageModel(p.storage());
+    Model::BuildingModel buildingModel(p.buildings());
+    engine.rootContext()->setContextProperty("StorageModel", &storageModel);
+    engine.rootContext()->setContextProperty("BuildingModel", &buildingModel);
 
     return lazyFarmerApp.exec();
 }
