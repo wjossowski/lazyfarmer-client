@@ -18,11 +18,15 @@
 
 #include "globalgamedata.h"
 
-#include <QtDebug>
+#include <QtCore/QJsonDocument>
+
+#include <QDebug>
 
 using namespace Core;
+using namespace Core::Data;
 
-QMap<QString, QSharedPointer<GlobalGameData>> GlobalGameData::m_gameData;
+QMap<QString, GlobalGameData::Ptr> GlobalGameData::m_gameData;
+QMap<int, BuildingType> GlobalGameData::m_buildingTypes;
 
 const QVariantMap childObject (const QVariant &object, const QString &property) {
     return object.toMap().value(property).toMap();
@@ -35,12 +39,39 @@ void GlobalGameData::registerGameData(const QString &domain,
         return;
     }
 
-    m_gameData.insert(domain, QSharedPointer<GlobalGameData>(new GlobalGameData(data)));
+    m_gameData.insert(domain, GlobalGameData::Ptr(new GlobalGameData(data)));
 }
 
-QSharedPointer<GlobalGameData> GlobalGameData::gameData(const QString &domain)
+GlobalGameData::Ptr GlobalGameData::gameData(const QString &domain)
 {
-    return m_gameData.value(domain, QSharedPointer<GlobalGameData>(new GlobalGameData()));
+    return m_gameData.value(domain, GlobalGameData::Ptr(new GlobalGameData));
+}
+
+bool GlobalGameData::loadBuildingTypes(const QByteArray &contents)
+{
+    const auto json = QJsonDocument::fromJson(contents).toVariant();
+
+    if (!json.isValid()) {
+        return false;
+    }
+
+    const QVariantList buildingInfoList = json.toList();
+    for (const auto &info : buildingInfoList) {
+        const QVariantMap data = info.toMap();
+
+        int id = data["id"].toInt();
+
+        QString category = data["category"].toString();
+        if (category == "Field") {
+            m_buildingTypes.insert(id, BuildingType::Farm);
+        } else if (category == "AnimalProduction") {
+            m_buildingTypes.insert(id, BuildingType::AnimalProduction);
+        } else if (category == "ResourceProduction") {
+            m_buildingTypes.insert(id, BuildingType::ResourceProduction);
+        }
+    }
+
+    return true;
 }
 
 GlobalGameData::GlobalGameData(const QVariant &data)
@@ -72,10 +103,10 @@ void GlobalGameData::createProductInfo(const QVariantMap &baseData, const QVaria
     const auto productY = childObject(constantsData, "product_y");
 
     const auto getSize = [&] (int xSize, int ySize) {
-        return ySize == 2 ? 4 : xSize == 2 ? 2 : 1;
+        return ySize == 2 ? 4 : (xSize == 2 ? 2 : 1);
     };
 
-    const QStringList productIds = productNames.keys();
+    const auto productIds = productNames.keys();
     for (const auto &id: productIds) {
         const QString name = productNames.value(id).toString();
         if (name.isEmpty()) continue;
@@ -86,10 +117,10 @@ void GlobalGameData::createProductInfo(const QVariantMap &baseData, const QVaria
         quint32 time = productTime.value(id).toString().toInt();
         if (time == 0) continue;
 
-        quint8 size = getSize(productY.value(id).toString().toInt(),
-                              productX.value(id).toString().toInt());
+        quint8 size = getSize(productX.value(id).toString().toInt(),
+                              productY.value(id).toString().toInt());
 
-        m_productInfos.insert(id, { name, size, price, time });
+        m_productInfos.insert(id.toInt(), { name, size, price, time });
     }
 }
 
@@ -97,12 +128,12 @@ void GlobalGameData::createBuildingInfo(const QVariantMap &baseData)
 {
     const auto buildingNames = childObject(baseData, "buildings");
 
-    const QStringList buildingIds = buildingNames.keys();
+    const auto buildingIds = buildingNames.keys();
     for (const auto &id: buildingIds) {
         const QString name = buildingNames.value(id).toString();
         if (name.isEmpty()) continue;
 
-        m_buildingInfos.insert(id, {name});
+        m_buildingInfos.insert(id.toInt(), {name});
     }
 }
 
@@ -110,11 +141,11 @@ void GlobalGameData::createForestryInfo(const QVariantMap &baseData)
 {
     const auto forestryNames = childObject(baseData, "forestry");
 
-    const QStringList forestryIds = forestryNames.keys();
+    const auto forestryIds = forestryNames.keys();
     for (const auto &id: forestryIds) {
         const QString name = forestryNames.value(id).toString();
         if (name.isEmpty()) continue;
 
-        m_forestryInfos.insert(id, {name});
+        m_forestryInfos.insert(id.toInt(), {name});
     }
 }

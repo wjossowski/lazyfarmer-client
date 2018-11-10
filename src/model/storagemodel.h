@@ -16,26 +16,40 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "getproduction.h"
-#include "../apigateway.h"
+#pragma once
 
-using namespace Core;
-using namespace Core::Api;
-using namespace Core::Api::Messages;
+#include "core/data/storage.h"
 
-GetProduction::GetProduction(ApiGateway *gateway,
-                             const Data::BuildingDetails &buindingData)
-    : OneWayMessage(gateway, MessageType::GetProduction, "farm"),
-      m_buildingData(buindingData)
-{
+#include <QAbstractListModel>
 
-}
+namespace Model {
 
-const QList<QPair<QString, QString> > GetProduction::constructedMessageData() const
-{
-    return {
-        { "mode", "harvestproduction" },
-        { "farm", QString::number(m_buildingData.farmId) },
-        { "position", QString::number(m_buildingData.positionId) }
+    class StorageModel : public QAbstractListModel
+    {
+        Q_OBJECT
+
+    public:
+
+        enum class StorageRoles {
+            Name    = Qt::DisplayRole,
+            Icon    = Qt::DecorationRole,
+            Id      = Qt::UserRole,
+            Amount
+        };
+
+        explicit StorageModel(const Core::Data::Storage::Ptr &storage, QObject *parent = nullptr);
+        ~StorageModel() override = default;
+
+        int rowCount(const QModelIndex &) const override;
+        QVariant data(const QModelIndex &index, int role) const override;
+        QHash<int, QByteArray> roleNames() const override;
+
+    private slots:
+        void reload();
+
+    private:
+       Core::Data::Storage::Ptr m_storage;
+
     };
+
 }

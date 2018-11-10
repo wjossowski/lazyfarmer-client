@@ -27,7 +27,11 @@ namespace Core {
 
             class GetConstantData : public ApiMessage
             {
+                Q_OBJECT
+
             public:
+                using Ptr = QSharedPointer<GetConstantData>;
+
                 explicit GetConstantData(ApiGateway *gateway, const QString &fileUrl);
 
                 const QUrl url() const override;

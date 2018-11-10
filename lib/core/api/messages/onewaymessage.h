@@ -28,7 +28,11 @@ namespace Core {
 
             class OneWayMessage : public ApiMessage
             {
+                Q_OBJECT
+
             public:
+                using Ptr = QSharedPointer<OneWayMessage>;
+
                 explicit OneWayMessage (ApiGateway *gateway,
                                         MessageType type = Messages::MessageType::Unknown,
                                         const QString &endpoint = QString());

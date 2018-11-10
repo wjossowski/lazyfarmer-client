@@ -18,11 +18,12 @@
 
 #include <QtTest>
 
-#include "core/model/data/storage.h"
+#include "core/globalgamedata.h"
+#include "core/data/storage.h"
+#include "core/player.h"
 
 using namespace Core;
-using namespace Core::Model;
-using namespace Core::Model::Data;
+using namespace Core::Data;
 
 class StorageTest : public QObject
 {
@@ -76,17 +77,14 @@ void StorageTest::update()
     QFETCH(QList<int>, indexes);
     QFETCH(QList<int>, amounts);
 
-    QScopedPointer<Storage> m_storage (new Storage);
+    Player p;
+    QScopedPointer<Storage> m_storage (new Storage(&p));
 
     m_storage->update(storage);
     QVERIFY2 (m_storage->size() == storage.size(), "Storage sizes must be equal");
 
-    int i = 0;
-    const auto &products = m_storage->products();
-    for (const auto &product : products) {
-        QVERIFY2 (product->id() == indexes[i], "Invalid Product index");
-        QVERIFY2 (product->amount() == amounts[i], "Invalid Product amount");
-        i++;
+    for (int i = 0, max = indexes.size(); i < max; i++) {
+        QVERIFY2 (m_storage->amount(indexes[i]) == amounts[i], "Invalid Product index");
     }
 }
 

@@ -64,12 +64,12 @@ GameInfoExtractor::~GameInfoExtractor()
 #endif
 }
 
-QSharedPointer<GameInfoExtractor> GameInfoExtractor::baseExtractor(const QString &domain)
+GameInfoExtractor::Ptr GameInfoExtractor::baseExtractor(const QString &domain)
 {
     return findOrCreateExtractor(domain, GameInfoExtractor::BaseFilters, m_baseExtractors);
 }
 
-QSharedPointer<GameInfoExtractor> GameInfoExtractor::constantsExtractor(const QString &domain)
+GameInfoExtractor::Ptr GameInfoExtractor::constantsExtractor(const QString &domain)
 {
     return findOrCreateExtractor(domain, GameInfoExtractor::ConstantsFilters, m_constantsExtractors);
 }
@@ -138,7 +138,7 @@ QVariantMap GameInfoExtractor::extractNameFromObject(QJsonObject &&object) const
         if (array.isEmpty())
             continue;
 
-        for (const auto &item : array) {
+        for (const auto item : array) {
             if (!item.isString())
                 continue;
 

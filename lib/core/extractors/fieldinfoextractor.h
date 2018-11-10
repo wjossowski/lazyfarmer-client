@@ -19,6 +19,7 @@
 #pragma once
 
 #include "datablockextractor.h"
+#include "../globalgamedata.h"
 
 namespace Core {
 
@@ -28,13 +29,16 @@ namespace Core {
         {
 
         public:
-            explicit FieldInfoExtractor(quint64 timestamp = 0);
+            explicit FieldInfoExtractor(qint64 timestamp = 0, GlobalGameData *data = nullptr);
+            ~FieldInfoExtractor() override = default;
 
         private:
+            QVariantList filterFields(const QVariantList &fieldsInfo) const;
             void extractSpecificData() override;
 
         private:
             qint64 m_timestamp;
+            GlobalGameData *m_gamedata;
 
         };
 

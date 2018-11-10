@@ -1,6 +1,6 @@
 /**
  ** This file is part of the LazyFarmer project.
- ** Copyright 2017 Wojciech Ossowski <w.j.ossowski@gmail.com>.
+ ** Copyright 2018 Wojciech Ossowski <w.j.ossowski@gmail.com>.
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU Lesser General Public License as
@@ -16,29 +16,31 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "../apigateway.h"
+#include "iplayerdata.h"
+#include "../player.h"
+#include "../globalgamedata.h"
 
 using namespace Core;
-using namespace Core::Api;
-using namespace Core::Api::Messages;
+using namespace Core::Data;
 
-ApiMessage::ApiMessage(ApiGateway *gateway,
-                       MessageType messageType,
-                       bool isLoginRequired)
-    : QObject(gateway),
-
-      m_gateway(gateway),
-
-      m_messageType(messageType),
-
-      m_isLoginRequired(isLoginRequired),
-      m_isSent(false)
+IPlayerData::IPlayerData(Player *parent)
+    : QObject(parent)
+    , m_owner(parent)
 {
 
 }
 
-ApiMessage::~ApiMessage() {
-#if DEBUG_MODE
-    qDebug() << "Destroying API Message" << MessageHelper::toString(this->m_messageType) << this;
-#endif
+QString IPlayerData::toString() const
+{
+    return "toString() not implemented.";
+}
+
+GlobalGameData::Ptr IPlayerData::gameData() const
+{
+    return m_owner->gameData();
+}
+
+Player *IPlayerData::owner() const
+{
+    return m_owner;
 }

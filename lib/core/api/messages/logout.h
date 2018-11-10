@@ -28,7 +28,11 @@ namespace Core {
 
             class Logout : public ApiMessage
             {
+                Q_OBJECT
+
             public:
+                using Ptr = QSharedPointer<Logout>;
+
                 explicit Logout(ApiGateway *gateway)
                     : ApiMessage (gateway, MessageType::Logout) { }
 

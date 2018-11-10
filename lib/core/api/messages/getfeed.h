@@ -19,7 +19,7 @@
 #pragma once
 
 #include "onewaymessage.h"
-#include "../helpers/querystructs.h"
+#include "../../data/common.h"
 
 namespace Core {
 
@@ -29,16 +29,21 @@ namespace Core {
 
             class GetFeed : public OneWayMessage
             {
-                explicit GetFeed(ApiGateway *gateway,
-                                 const BuildingData &buindingData = BuildingData());
+                Q_OBJECT
 
-                void setBuildingData(const BuildingData &buindingData) { m_buildingData = buindingData; }
+            public:
+                using Ptr = QSharedPointer<GetFeed>;
+
+                explicit GetFeed(ApiGateway *gateway,
+                                 const Data::BuildingDetails &buindingData = Data::BuildingDetails());
+
+                void setBuilding(const Data::BuildingDetails &buindingData) { m_buildingData = buindingData; }
 
             private:
                 const QList<QPair<QString, QString> > constructedMessageData() const override;
 
             private:
-                BuildingData m_buildingData;
+                Data::BuildingDetails m_buildingData;
             };
 
         }

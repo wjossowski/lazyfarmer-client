@@ -18,6 +18,8 @@
 
 #pragma once
 
+#include "data/common.h"
+
 #include <QtCore/QMap>
 #include <QtCore/QVariant>
 #include <QtCore/QSharedPointer>
@@ -45,24 +47,37 @@ namespace Core {
     class GlobalGameData
     {
     public:
+        using Ptr = QSharedPointer<GlobalGameData>;
+
         virtual ~GlobalGameData() = default;
 
-        const BuildingInfo buildingInfo (const QString &buildingId) const {
-            return m_buildingInfos.value(buildingId, { "Unknown Building" });
+        const BuildingInfo buildingInfo (const int buildingId) const {
+            return m_buildingInfos.value(buildingId, { "Unknown" });
         }
-        const ProductInfo productInfo (const QString &productId) const {
-            return m_productInfos.value(productId, { "Unknown Product", 0, 0, UINT32_MAX });
+
+        const ProductInfo productInfo (const int productId) const {
+            return m_productInfos.value(productId, { "Unknown", 0, 0, UINT32_MAX });
         }
-        const ForestryInfo forestryInfo (const QString &forestryId) const {
-            return m_forestryInfos.value(forestryId, { "Unknown Product" });
+        int productSize(const int productId) {
+            return productInfo(productId).size;
+        }
+
+        const ForestryInfo forestryInfo (const int forestryId) const {
+            return m_forestryInfos.value(forestryId, { "Unknown" });
+        }
+
+        static Data::BuildingType buildingType (const int buildingId) {
+            return m_buildingTypes.value(buildingId, Data::BuildingType::Unknown);
         }
 
         static void registerGameData(const QString &domain, const QVariant &data);
-        static QSharedPointer<GlobalGameData> gameData(const QString &domain);
+        static GlobalGameData::Ptr gameData(const QString &domain);
 
-        QMap<QString, BuildingInfo> buildingInfos() const { return m_buildingInfos; }
-        QMap<QString, ProductInfo> productInfos() const { return m_productInfos; }
-        QMap<QString, ForestryInfo> forestryInfos() const { return m_forestryInfos; }
+        static bool loadBuildingTypes(const QByteArray &contents);
+
+        QMap<int, BuildingInfo> buildingInfos() const { return m_buildingInfos; }
+        QMap<int, ProductInfo> productInfos() const { return m_productInfos; }
+        QMap<int, ForestryInfo> forestryInfos() const { return m_forestryInfos; }
 
     private:
         explicit GlobalGameData(const QVariant &data = QVariant());
@@ -72,11 +87,12 @@ namespace Core {
         void createForestryInfo(const QVariantMap &baseData);
 
     private:
-        QMap<QString, BuildingInfo> m_buildingInfos;
-        QMap<QString, ProductInfo> m_productInfos;
-        QMap<QString, ForestryInfo> m_forestryInfos;
+        QMap<int, BuildingInfo> m_buildingInfos;
+        QMap<int, ProductInfo> m_productInfos;
+        QMap<int, ForestryInfo> m_forestryInfos;
 
-        static QMap<QString, QSharedPointer<GlobalGameData>> m_gameData;
+        static QMap<QString, GlobalGameData::Ptr> m_gameData;
+        static QMap<int, Data::BuildingType> m_buildingTypes;
 
     };
 

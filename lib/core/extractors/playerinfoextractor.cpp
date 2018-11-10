@@ -51,8 +51,9 @@ struct PlayerParseException {
         case EmptyStorageInfo: return QObject::tr("Empty storage info");
         case EmptyFarmsInfo: return QObject::tr("Empty farms info");
         case TypeParsingError: return QObject::tr("Invalid puarsing type");
-        default: return QObject::tr("Unknown error");
         }
+
+        return QString();
     }
 
     PlayerParseException(Type exceptionType) : type(exceptionType) { }
@@ -143,7 +144,7 @@ void PlayerInfoExtractor::parseStorageInfo(const QJsonObject &storageInfo)
 
     for (const auto &node : storageInfo) {
         if (node.isObject()) {
-            for (const auto &rack : node.toObject()) {
+            for (const auto rack : node.toObject()) {
                 m_storageInfo.append(extractProductsFromRack(rack.toObject()));
             }
         } else {
@@ -152,7 +153,7 @@ void PlayerInfoExtractor::parseStorageInfo(const QJsonObject &storageInfo)
     }
 }
 
-QVariantMap extractBuildingInfo(int type, const QJsonObject &buildingObject)
+QVariantMap extractBuildingInfo(int id, const QJsonObject &buildingObject)
 {
     assertNotEmptyObject(buildingObject);
 
@@ -168,7 +169,7 @@ QVariantMap extractBuildingInfo(int type, const QJsonObject &buildingObject)
     };
 
     QVariantMap building;
-    building["Type"] = type;
+    building["Id"] = id;
     building["FarmId"] = buildingObject["farm"].toString().toInt();
     building["Position"] = buildingObject["position"].toString().toInt();
     building["Level"] = buildingObject["level"].toString().toInt();

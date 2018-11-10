@@ -28,7 +28,7 @@ using namespace Core::Api::Messages;
 using namespace Core::Extractors;
 
 GetFieldInfo::GetFieldInfo(ApiGateway *gateway,
-                           const BuildingData &buildingData)
+                           const Data::BuildingDetails &buildingData)
     : ApiMessage(gateway, MessageType::GetFieldInfo),
       m_buildingData(buildingData)
 {
@@ -46,15 +46,12 @@ const QUrl GetFieldInfo::url() const
 
 void GetFieldInfo::handleResponse(QIODevice *reply)
 {
-    FieldInfoExtractor extractor;
+    FieldInfoExtractor extractor(0, &*m_gateway->gameData());
     extractor.extract(reply->readAll());
 
-    qDebug() << QJsonDocument::fromVariant(extractor.result());
+    m_gateway->handleBuildingUpdate(m_buildingData.farmId,
+                                    m_buildingData.positionId,
+                                    extractor.result());
 
     emit finished();
-}
-
-void GetFieldInfo::setBuildingData(const BuildingData &buildingData)
-{
-    m_buildingData = buildingData;
 }

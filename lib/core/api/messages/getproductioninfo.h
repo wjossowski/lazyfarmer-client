@@ -19,7 +19,7 @@
 #pragma once
 
 #include "apimessage.h"
-#include "../helpers/querystructs.h"
+#include "../../data/common.h"
 
 namespace Core {
 
@@ -29,15 +29,19 @@ namespace Core {
 
             class GetProductionInfo : public ApiMessage
             {
+                Q_OBJECT
+
             public:
+                using Ptr = QSharedPointer<GetProductionInfo>;
+
                 explicit GetProductionInfo(ApiGateway *gateway,
-                                           const BuildingData &buildingData = BuildingData());
+                                           const Data::BuildingDetails &buildingData = Data::BuildingDetails());
 
                 const QUrl url() const override;
                 void handleResponse(QIODevice *reply) override;
 
             private:
-                BuildingData m_buildingData;
+                Data::BuildingDetails m_buildingData;
 
             };
 

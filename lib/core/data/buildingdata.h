@@ -1,6 +1,6 @@
 /**
  ** This file is part of the LazyFarmer project.
- ** Copyright 2017 Wojciech Ossowski <w.j.ossowski@gmail.com>.
+ ** Copyright 2018 Wojciech Ossowski <w.j.ossowski@gmail.com>.
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU Lesser General Public License as
@@ -16,30 +16,28 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "storage.h"
+#pragma once
 
-#include <QtDebug>
+#include "iplayerdata.h"
 
-using namespace Core;
-using namespace Core::Model;
-using namespace Core::Model::Data;
+namespace Core {
 
-Storage::Storage(QObject *parent)
-    : QObject(parent)
-{
+    namespace Data {
 
-}
+        class BuildingData : public IPlayerData
+        {
+            Q_OBJECT
 
-void Storage::update(const QVariantList &storage)
-{
-    m_products.clear();
+        public:
+            using Ptr = QSharedDataPointer<BuildingData>;
 
-    for (const auto &item : storage) {
-        const auto product = QSharedPointer<Product>(new Product(item.toMap()));
-        m_products.push_back(std::move(product));
+            explicit BuildingData (Player *parent = nullptr);
+
+        public:
+            void update(const QVariant &info);
+            QString toString() const;
+        };
+
     }
 
-    std::sort(std::begin(m_products), std::end(m_products));
-
-    emit storageChanged();
 }

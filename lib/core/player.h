@@ -19,12 +19,15 @@
 #pragma once
 
 #include "api/apigateway.h"
-#include "model/data/storage.h"
-#include "model/data/farm.h"
+#include "data/storage.h"
+#include "data/common.h"
+#include "data/buildinglist.h"
 
 #include <QtCore/QObject>
 
 namespace Core {
+
+    class GlobalGameData;
 
     class Player : public QObject
     {
@@ -38,7 +41,17 @@ namespace Core {
         Q_INVOKABLE inline int levelPercentage() const { return m_levelPercentage; }
         Q_INVOKABLE inline qreal money() const { return m_money; }
 
+        GlobalGameData::Ptr gameData() const;
+
+        Api::ApiGateway &gateway() { return m_gateway; }
+        Data::Storage::Ptr storage() const { return m_storage; }
+        Data::BuildingList::Ptr buildings() const { return m_buildingList; }
+
+    public slots:
         void update(const QByteArray &info);
+
+    signals:
+        void updateBuildingRequested(const Data::BuildingDetails &details, const Data::BuildingType &type) const;
 
     private:
         void updateBasicInfo(const QVariantMap &basicInfo);
@@ -48,11 +61,13 @@ namespace Core {
     private:
         int m_level;
         int m_levelPercentage;
+
         qreal m_money;
         QString m_levelDescription;
 
-        Model::Data::Storage m_storage;
-        Model::Data::Farm m_farm;
+        Data::Storage::Ptr m_storage;
+        Data::BuildingList::Ptr m_buildingList;
+
         Api::ApiGateway m_gateway;
     };
 

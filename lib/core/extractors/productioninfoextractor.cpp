@@ -41,7 +41,7 @@ void ProductionInfoExtractor::extractSpecificData()
     // Extract current production
     const QJsonValue currentProductionId = m_datablock.value("pid");
     if (currentProductionId.isString()) {
-        m_data.insert("CurrentProduction", currentProductionId.toString());
+        m_data.insert("CurrentProduction", currentProductionId.toString().toInt());
     }
 
     QVariantList availableProductions;
@@ -59,10 +59,10 @@ void ProductionInfoExtractor::extractSpecificData()
         int remaining = availableOutput.value("2").toInt();
 
         availableProductions.append(QVariantMap({
-            { "In", QString::number(inputId) },
-            { "Need", QString::number(inputNeeded) },
-            { "Out", QString::number(outputId) },
-            { "Remaining", QString::number(remaining) },
+            { "In", inputId },
+            { "Need", inputNeeded },
+            { "Out", outputId },
+            { "Remaining", remaining },
         }));
     }
 

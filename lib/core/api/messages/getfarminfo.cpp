@@ -43,13 +43,7 @@ void GetFarmInfo::handleResponse(QIODevice *reply)
 {
     const auto contents = reply->readAll();
 
-    PlayerInfoExtractor extractor;
-    bool ok = extractor.parseInfo(contents);
-    qDebug() << ok;
-
-    qDebug() << QJsonDocument::fromVariant(extractor.basicInfo()).toJson();
-    qDebug() << QJsonDocument::fromVariant(extractor.farmsInfo()).toJson();
-    qDebug() << QJsonDocument::fromVariant(extractor.storageInfo()).toJson();
+    m_gateway->handlePlayerData(contents);
 
     emit this->finished();
 }

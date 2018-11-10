@@ -30,7 +30,7 @@ using namespace Core::Api::Messages;
 using namespace Core::Extractors;
 
 GetProductionInfo::GetProductionInfo(ApiGateway *gateway,
-                                     const BuildingData &buildingData)
+                                     const Data::BuildingDetails &buildingData)
     : ApiMessage(gateway, MessageType::GetProductionInfo),
       m_buildingData(buildingData)
 {
@@ -51,7 +51,9 @@ void GetProductionInfo::handleResponse(QIODevice *reply)
     ProductionInfoExtractor extractor;
     extractor.extract(reply->readAll());
 
-    qDebug() << QJsonDocument::fromVariant(extractor.result());
+    m_gateway->handleBuildingUpdate(m_buildingData.farmId,
+                                    m_buildingData.positionId,
+                                    extractor.result());
 
     emit finished();
 }

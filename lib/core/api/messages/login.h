@@ -28,7 +28,11 @@ namespace Core {
 
             class Login : public ApiMessage
             {
+                Q_OBJECT
+
             public:
+                using Ptr = QSharedPointer<Login>;
+
                 explicit Login(ApiGateway *gateway)
                     : ApiMessage (gateway, MessageType::Login, false) { }
 

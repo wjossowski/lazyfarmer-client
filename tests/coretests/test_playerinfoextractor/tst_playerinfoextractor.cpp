@@ -217,7 +217,7 @@ void PlayerInfoExtractorTest::extractFarmsInfo()
         int animalsCount = getVariantMapValue(animals, farmId, position);
         int remainingTime = getVariantMapValue(remaining, farmId, position);
 
-        QVERIFY2(buildingInfo["Type"] == id, "Building type doesn't match");
+        QVERIFY2(buildingInfo["Id"] == id, "Building type doesn't match");
         QVERIFY2(buildingInfo["Level"] == level, "Building level doesn't  match");
         QVERIFY2(buildingInfo["Animals"] == animalsCount, "Animals count doesn't match");
         QVERIFY2(buildingInfo["Remaining"] == remainingTime, "Remaining time doesn't match");

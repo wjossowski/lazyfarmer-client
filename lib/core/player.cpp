@@ -17,6 +17,7 @@
  **/
 
 #include "player.h"
+#include "api/messages/messages.h"
 #include "extractors/playerinfoextractor.h"
 
 #include <QtCore/QJsonDocument>
@@ -26,7 +27,10 @@
 #include <QtDebug>
 
 using namespace Core;
-using namespace Extractors;
+using namespace Core::Data;
+using namespace Core::Extractors;
+using namespace Core::Api;
+using namespace Core::Api::Messages;
 
 Player::Player(QObject *parent)
     : QObject(parent)
@@ -38,14 +42,24 @@ Player::Player(QObject *parent)
     initializeConnections();
 }
 
+GlobalGameData::Ptr Player::gameData() const
+{
+    return m_gateway.gameData();
+}
+
 void Player::update(const QByteArray &info)
 {
     PlayerInfoExtractor extractor;
 
     if (extractor.parseInfo(info)) {
         updateBasicInfo(extractor.basicInfo());
-        m_storage.update(extractor.storageInfo());
-        m_farm.update(extractor.farmsInfo());
+
+        m_storage->update(extractor.storageInfo());
+        m_buildingList->update(extractor.farmsInfo());
+
+        qInfo() << "Player Info Updated:";
+        qInfo() << "Storage:" << m_storage->toString();
+        qInfo() << "Buildings:" << m_buildingList->toString();
     }
 }
 
@@ -54,15 +68,24 @@ void Player::updateBasicInfo(const QVariantMap &basicInfo)
     m_level = basicInfo["Level"].toInt();
     m_levelDescription = basicInfo["LevelDescription"].toString();
     m_levelPercentage = basicInfo["LevelPercentage"].toInt();
+
     m_money = basicInfo["Money"].toDouble();
 }
 
 void Player::initialize()
 {
-
+    m_storage.reset(new Data::Storage(this));
+    m_buildingList.reset(new Data::BuildingList(this));
 }
 
 void Player::initializeConnections() const
 {
+    connect(this,       &Player::updateBuildingRequested,
+            &m_gateway, &ApiGateway::requestBuildingUpdate);
 
+    connect(&m_gateway, &ApiGateway::playerDataUpdated,
+            this,       &Player::update);
+
+    connect(&m_gateway,         &ApiGateway::buildingDataUpdated,
+            &*m_buildingList,   &BuildingList::updateBuilding);
 }

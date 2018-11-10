@@ -16,9 +16,26 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
+#include "buildingdata.h"
 
-#include "building.h"
+#include <QDebug>
+#include <QJsonDocument>
 
 using namespace Core;
-using namespace Core::Model;
-using namespace Core::Model::Data;
+using namespace Core::Data;
+
+BuildingData::BuildingData(Player *parent)
+    : IPlayerData (parent)
+{
+
+}
+
+void BuildingData::update(const QVariant &info)
+{
+    qDebug() << "Trying to update" << QJsonDocument::fromVariant(info).toJson(QJsonDocument::Indented);
+}
+
+QString BuildingData::toString() const
+{
+    return "";
+}

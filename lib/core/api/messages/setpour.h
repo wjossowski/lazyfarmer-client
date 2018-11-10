@@ -19,7 +19,7 @@
 #pragma once
 
 #include "onewaymessage.h"
-#include "../helpers/querystructs.h"
+#include "../../data/common.h"
 
 namespace Core {
 
@@ -29,20 +29,24 @@ namespace Core {
 
             class SetPour : public OneWayMessage
             {
-            public:
-                explicit SetPour(ApiGateway *gateway,
-                                 const BuildingData &buildingData = BuildingData(),
-                                 const ProductData &productData = ProductData());
+                Q_OBJECT
 
-                void setBuildingData(const BuildingData &buindingData) { m_buildingData = buindingData; }
-                void setProductData(const ProductData &productData) { m_productData = productData; }
+            public:
+                using Ptr = QSharedPointer<SetPour>;
+
+                explicit SetPour(ApiGateway *gateway,
+                                 const Data::BuildingDetails &buildingData = Data::BuildingDetails(),
+                                 const Data::ProductDetails &productData = Data::ProductDetails());
+
+                void setBuilding(const Data::BuildingDetails &buindingData) { m_buildingData = buindingData; }
+                void setProduct(const Data::ProductDetails &productData) { m_productData = productData; }
 
             private:
                 const QList<QPair<QString, QString> > constructedMessageData() const override;
 
             private:
-                BuildingData m_buildingData;
-                ProductData m_productData;
+                Data::BuildingDetails m_buildingData;
+                Data::ProductDetails m_productData;
             };
 
         }

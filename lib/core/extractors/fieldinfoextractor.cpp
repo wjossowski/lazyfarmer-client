@@ -24,19 +24,50 @@
 
 using namespace Core;
 using namespace Core::Extractors;
+using namespace Core::Data;
 
-FieldInfoExtractor::FieldInfoExtractor(quint64 timestamp)
+FieldInfoExtractor::FieldInfoExtractor(qint64 timestamp, GlobalGameData *data)
     : DatablockExtractor()
+    , m_gamedata(data)
 {
     m_timestamp = timestamp == 0 ? QDateTime::currentMSecsSinceEpoch()/1000
                                  : timestamp;
+}
+
+QVariantList FieldInfoExtractor::filterFields(const QVariantList &fieldsInfo) const
+{
+    QMap<int, QVariant> placeholdList;
+    std::for_each(fieldsInfo.cbegin(), fieldsInfo.cend(), [&placeholdList](const QVariant& fieldInfo) {
+        int fieldNo = fieldInfo.toMap()["FieldId"].toInt();
+        placeholdList.insert(fieldNo, fieldInfo);
+    });
+
+
+    QMutableMapIterator<int, QVariant> iter (placeholdList);
+    QList<int> fieldsToRemove;
+    while(iter.hasNext()) {
+        const auto value = iter.next();
+        const auto fieldInfo = value->toMap();
+        int fieldId = fieldInfo["FieldId"].toInt();
+        int plantId = fieldInfo["Id"].toInt();
+
+        if (fieldsToRemove.contains(fieldId)) {
+            fieldsToRemove.removeOne(fieldId);
+            iter.remove();
+        } else {
+            fieldsToRemove << ProductDetails::neighbours(fieldId, m_gamedata->productSize(plantId));
+        }
+
+    }
+
+    return placeholdList.values();
 }
 
 void FieldInfoExtractor::extractSpecificData()
 {
     QVariantList fieldsInfo;
 
-    for (const auto &field : m_datablock) {
+    for (const auto field : m_datablock) {
         // Field should be an object
         if (!field.isObject()) {
             break;
@@ -50,17 +81,17 @@ void FieldInfoExtractor::extractSpecificData()
 
         // Calculate remaining time
         int storedRemaining = info["zeit"].toString().toInt();
-        int remaining = storedRemaining - ((storedRemaining == 0) ? 0 : m_timestamp);
+        qint64 remaining = storedRemaining - ((storedRemaining == 0) ? 0 : m_timestamp);
 
         // Build FieldInfo object
         fieldsInfo.append(QVariantMap({
-            { "Id", info["inhalt"].toString() },
-            { "FieldId", info["teil_nr"].toString() },
-            { "Remaining", QString::number(qMax(-1, remaining)) },
-            { "IsWater", QString::number(info["iswater"].toBool()) }
+            { "Id", info["inhalt"].toString().toInt() },
+            { "FieldId", info["teil_nr"].toString().toInt() },
+            { "Remaining", QString::number(qMax(qint64(-1), remaining)).toInt() },
+            { "IsWater", QString::number(info["iswater"].toBool()).toInt() }
         }));
 
     }
 
-    m_data.insert("FieldsInfo", fieldsInfo);
+    m_data.insert("FieldsInfo", m_gamedata ? filterFields(fieldsInfo) : fieldsInfo);
 }

@@ -24,8 +24,8 @@ using namespace Core::Api;
 using namespace Core::Api::Messages;
 
 SetFeed::SetFeed(ApiGateway *gateway,
-                 const BuildingData &buindingData,
-                 const ProductData &productData)
+                 const Data::BuildingDetails &buindingData,
+                 const Data::ProductDetails &productData)
     : OneWayMessage(gateway, MessageType::SetFeed, "farm"),
       m_buildingData(buindingData),
       m_productData(productData)

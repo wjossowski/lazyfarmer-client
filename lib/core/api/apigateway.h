@@ -20,6 +20,7 @@
 
 #include "apigatewayerror.h"
 #include "messages/apimessage.h"
+#include "../globalgamedata.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QQueue>
@@ -32,6 +33,7 @@
 #include <functional>
 
 class QNetworkReply;
+
 
 namespace Core {
 
@@ -46,6 +48,11 @@ namespace Core {
             Q_OBJECT
 
         public:
+            enum class PushMessageTo {
+                Top,
+                Bottom
+            };
+
             explicit ApiGateway(QObject *parent = nullptr);
 
             bool isConfigured() const;
@@ -65,7 +72,7 @@ namespace Core {
 
             void setApiOptions(const ApiOptions &options);
 
-            void queueMessage(const QSharedPointer<Messages::ApiMessage> &message, bool pushToTop = false);
+            void queueMessage(const Messages::ApiMessage::Ptr &message, PushMessageTo placement = PushMessageTo::Bottom);
             void start();
 
             QUrl buildStaticUrl(const QString &endpoint);
@@ -83,12 +90,20 @@ namespace Core {
                                    const std::function<void (QIODevice *)> &callback);
             void sendMessage(Messages::ApiMessage *message);
 
-            QNetworkAccessManager *accessManager() { return &m_manager; }
-
             void extractGameData();
+            GlobalGameData::Ptr gameData() const;
+
+            void handlePlayerData(const QByteArray &playerData) const;
+            void handleBuildingUpdate(int farm, int pos, const QVariant &data) const;
+
             void handleError(ApiGatewayError::ErrorType errorType, const QStringList &args = QStringList());
 
+        public slots:
+            void requestBuildingUpdate(const Data::BuildingDetails &details, const Data::BuildingType &type);
+
         signals:
+            void buildingDataUpdated(int farm, int pos, const QVariant &data) const;
+            void playerDataUpdated(const QByteArray &data) const;
             void loggedInChanged(bool changed) const;
             void errorRaised(const QString &message) const;
 
@@ -106,8 +121,9 @@ namespace Core {
 
             QString m_rid;
 
-            QQueue<QSharedPointer<Messages::ApiMessage>> m_messageQueue;
-            QSharedPointer<Messages::ApiMessage> m_currentMessage;
+            QQueue<Messages::ApiMessage::Ptr> m_messageQueue;
+            Messages::ApiMessage::Ptr m_currentMessage;
+
             QNetworkAccessManager m_manager;
         };
 

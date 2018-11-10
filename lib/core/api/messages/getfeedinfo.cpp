@@ -29,7 +29,7 @@ using namespace Core::Api::Messages;
 using namespace Core::Extractors;
 
 GetFeedInfo::GetFeedInfo(ApiGateway *gateway,
-                         const BuildingData &buildingData)
+                         const Data::BuildingDetails &buildingData)
     : ApiMessage(gateway, MessageType::GetFeedInfo),
       m_buildingData(buildingData)
 {
@@ -50,7 +50,9 @@ void GetFeedInfo::handleResponse(QIODevice *reply)
     FeedInfoExtractor extractor;
     extractor.extract(reply->readAll());
 
-    qDebug() << QJsonDocument::fromVariant(extractor.result());
+    m_gateway->handleBuildingUpdate(m_buildingData.farmId,
+                                    m_buildingData.positionId,
+                                    extractor.result());
 
     emit finished();
 }

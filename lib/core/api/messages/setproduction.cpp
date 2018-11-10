@@ -24,9 +24,9 @@ using namespace Core::Api;
 using namespace Core::Api::Messages;
 
 SetProduction::SetProduction(ApiGateway *gateway,
-                        const BuildingData &buindingData,
-                        const ProductData &productData,
-                        const ProductionData &productionData)
+                        const Data::BuildingDetails &buindingData,
+                        const Data::ProductDetails &productData,
+                        const Data::ProductionDetails &productionData)
     : OneWayMessage(gateway, MessageType::SetProduction, "farm"),
       m_buildingData(buindingData),
       m_productData(productData),

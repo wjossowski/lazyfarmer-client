@@ -24,8 +24,8 @@ using namespace Core::Api;
 using namespace Core::Api::Messages;
 
 SetPour::SetPour(ApiGateway *gateway,
-                 const BuildingData &buildingData,
-                 const ProductData &productData)
+                 const Data::BuildingDetails &buildingData,
+                 const Data::ProductDetails &productData)
     : OneWayMessage(gateway, MessageType::SetPour, "farm"),
       m_buildingData(buildingData),
       m_productData(productData)

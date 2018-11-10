@@ -37,6 +37,8 @@ namespace Core {
                 Q_OBJECT
 
             public:
+                using Ptr = QSharedPointer<ApiMessage>;
+
                 explicit ApiMessage(ApiGateway *gateway,
                                     MessageType messageType = MessageType::Unknown,
                                     bool isLoginRequired = true);
@@ -52,8 +54,8 @@ namespace Core {
                 virtual void handleResponse(QIODevice *reply) = 0;
 
             signals:
-                void raiseError(ApiGatewayError::ErrorType errorType, const QStringList &args = QStringList());
-                void finished();
+                void raiseError(ApiGatewayError::ErrorType errorType, const QStringList &args = QStringList()) const;
+                void finished() const;
 
             protected:
                 ApiGateway *m_gateway;

@@ -18,38 +18,40 @@
 
 #pragma once
 
-#include "product.h"
-
-#include <QtCore/QObject>
-#include <QtCore/QSharedPointer>
-#include <QtCore/QVariantMap>
+#include "iplayerdata.h"
 
 namespace Core {
 
-    namespace Model {
+    class Player;
 
-        namespace Data {
+    namespace Data {
 
-            class Storage : public QObject
-            {
-                Q_OBJECT
+        class Storage : public IPlayerData
+        {
+            Q_OBJECT
 
-            public:
-                explicit Storage(QObject *parent = nullptr);
-                void update(const QVariantList &storage);
+        public:
+            using Ptr = QSharedPointer<Storage>;
 
-                inline int size() const { return m_products.size(); }
-                inline const QList<QSharedPointer<Product>> &products () const { return m_products; }
-                inline void clear() { m_products.clear(); }
+            explicit Storage(Player *parent = nullptr) : IPlayerData(parent) { }
 
-            signals:
-                void storageChanged();
+            int idAtRow(int row) const { return m_products.keys().at(row); }
+            QString nameAtRow(int row) const;
+            int amountAtRow(int row) const { return m_products.values().at(row); }
 
-            private:
-                QList<QSharedPointer<Product>> m_products;
-            };
+            int amount(int id) const { return m_products.value(id, 0); }
+            int size() const { return m_products.size(); }
 
-        }
+            void update(const QVariant &info) override;
+            QString toString() const override;
+
+        signals:
+            void storageChanged() const;
+
+        private:
+            QMap<int, int> m_products;
+
+        };
 
     }
 
