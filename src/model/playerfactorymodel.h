@@ -18,16 +18,15 @@
 
 #pragma once
 
-#include "player.h"
+#include "core/player.h"
 
 #include <QtCore/QAbstractListModel>
 
-namespace Core {
+namespace Model {
 
     class PlayerFactoryModel : public QAbstractListModel
     {
         Q_OBJECT
-        Q_PROPERTY(int size READ size NOTIFY sizeChanged)
 
     public:
 
@@ -37,7 +36,8 @@ namespace Core {
             LevelDescription,
             LevelPercentage,
             Money,
-            CurrentJob
+            CurrentJob,
+            PlayerObject
         };
 
         explicit PlayerFactoryModel(QObject *parent = nullptr);
@@ -47,17 +47,11 @@ namespace Core {
         QVariant data(const QModelIndex &index, int role) const override;
         QHash<int, QByteArray> roleNames() const override;
 
-
-        Q_INVOKABLE QSharedPointer<Player> create();
-        Q_INVOKABLE void remove(int i);
-
-        int size() { return m_players.size(); }
-
-    signals:
-        void sizeChanged(int size) const;
+        Q_INVOKABLE QSharedPointer<Core::Player> create();
+        Q_INVOKABLE void removeAt(int row);
 
     private:
-        QList<QSharedPointer<Player>> m_players;
+        QList<Core::Player::Ptr> m_players;
 
     };
 

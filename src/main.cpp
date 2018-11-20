@@ -22,6 +22,7 @@
 #ifdef DEBUG_MODE
 #include "model/storagemodel.h"
 #include "model/buildingmodel.h"
+#include "model/playerfactorymodel.h"
 #include "core/api/apigateway.h"
 #include "core/api/messages/messages.h"
 #include "core/player.h"
@@ -229,9 +230,7 @@ int main(int argc, char *argv[])
 #ifdef DEBUG_MODE
     qDebug() << "Debug storage located in:" << QFileInfo(debugFile).absoluteFilePath();
 
-    Player p;
-    Api::ApiGateway &debugGateway = p.gateway();
-    createDebugEnvironment(debugGateway, parser);
+//    createDebugEnvironment(debugGateway, parser);
 //    queryDebug(debugGateway);
 #endif
 
@@ -240,11 +239,21 @@ int main(int argc, char *argv[])
     }
 
     QQmlApplicationEngine engine;
-    Model::StorageModel storageModel(p.storage());
-    engine.rootContext()->setContextProperty("StorageModel", &storageModel);
 
-    Model::BuildingModel buildingModel(p.buildings());
-    engine.rootContext()->setContextProperty("BuildingModel", &buildingModel);
+    Model::PlayerFactoryModel playerFactory;
+    engine.rootContext()->setContextProperty("PlayerFactoryModel", &playerFactory);
+    auto player = playerFactory.create();
+
+    QTimer::singleShot(5000, [&] () {
+       createDebugEnvironment(player->gateway(), parser);
+       queryDebug(player->gateway());
+    });
+
+//    Model::StorageModel storageModel(p.storage());
+//    engine.rootContext()->setContextProperty("StorageModel", &storageModel);
+
+//    Model::BuildingModel buildingModel(p.buildings());
+//    engine.rootContext()->setContextProperty("BuildingModel", &buildingModel);
 
     Translator translator;
     engine.rootContext()->setContextProperty("t", &translator);

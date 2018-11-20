@@ -20,6 +20,7 @@
 #include "playerfactorymodel.h"
 
 using namespace Core;
+using namespace Model;
 
 PlayerFactoryModel::PlayerFactoryModel(QObject *parent)
     : QAbstractListModel (parent)
@@ -40,9 +41,13 @@ QVariant PlayerFactoryModel::data(const QModelIndex &index, int role) const
 
     try {
         const auto player = m_players.at(index.row());
-        const QByteArray roleName = roleNames() [role];
 
-        return player->property(roleName);
+        if (static_cast<PlayerRoles>(role) == PlayerRoles::PlayerObject) {
+            return QVariant::fromValue(player);
+        } else {
+            const QByteArray roleName = roleNames() [role];
+            return player->property(roleName);
+        }
 
     } catch (...) { }
 
@@ -65,14 +70,22 @@ QSharedPointer<Player> PlayerFactoryModel::create()
 {
     QSharedPointer<Player> player(new Player());
 
+    int row = m_players.count();
+    beginInsertRows(QModelIndex(), row, row);
+
     m_players.append(player);
-    emit this->sizeChanged(this->size());
+    connect(&*player,   &Player::dataChanged, [this, row] () {
+        emit dataChanged(index(row), index(row));
+    });
+
+    endInsertRows();
 
     return player;
 }
 
-void PlayerFactoryModel::remove(int i)
+void PlayerFactoryModel::removeAt(int row)
 {
-    m_players.removeAt(i);
-    emit this->sizeChanged(this->size());
+    beginRemoveRows(QModelIndex(), row, row);
+    m_players.removeAt(row);
+    endRemoveRows();
 }

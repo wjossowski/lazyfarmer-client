@@ -16,14 +16,40 @@ ApplicationWindow {
 
     }
 
+    ListView {
+        anchors.fill: parent
+
+        model: PlayerFactoryModel
+
+        delegate: Rectangle {
+            width: parent.width;
+            height: 50;
+
+            RowLayout {
+                anchors.fill: parent
+
+                Text {
+                    text: description;
+                }
+
+                Text {
+                    text: job
+                }
+            }
+
+
+        }
+
+    }
+
 //    StackView {
 //        id: stack
 //        anchors.fill: parent
 //    }
 
-    LoginView {
-        anchors.fill: parent;
-    }
+//    LoginView {
+//        anchors.fill: parent;
+//    }
 
 //    Views.StorageView {
 //        anchors {

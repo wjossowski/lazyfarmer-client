@@ -116,4 +116,23 @@ void Player::initializeConnections() const
 
     connect(&m_gateway,         &ApiGateway::buildingDataUpdated,
             &*m_buildingList,   &BuildingList::updateBuilding);
+
+    // Signal forwarding
+    connect(this,       &Player::levelChanged,
+            this,       &Player::dataChanged);
+
+    connect(this,       &Player::levelDescriptionChanged,
+            this,       &Player::dataChanged);
+
+    connect(this,       &Player::levelPercentageChanged,
+            this,       &Player::dataChanged);
+
+    connect(this,       &Player::moneyChanged,
+            this,       &Player::dataChanged);
+
+    connect(this,       &Player::playerDescriptionChanged,
+            this,       &Player::dataChanged);
+
+    connect(this,       &Player::currentJobChanged,
+            this,       &Player::dataChanged);
 }

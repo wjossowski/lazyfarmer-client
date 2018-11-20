@@ -42,6 +42,8 @@ namespace Core {
         Q_PROPERTY(QString job READ currentJob NOTIFY currentJobChanged)
 
     public:
+        using Ptr = QSharedPointer<Player>;
+
         explicit Player(QObject *parent = nullptr);
 
         GlobalGameData::Ptr gameData() const;
@@ -66,6 +68,8 @@ namespace Core {
 
         void playerDescriptionChanged() const;
         void currentJobChanged() const;
+
+        void dataChanged() const;
 
     private:
         void updateBasicInfo(const QVariantMap &basicInfo);
