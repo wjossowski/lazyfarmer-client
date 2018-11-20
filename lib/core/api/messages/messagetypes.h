@@ -35,6 +35,7 @@ namespace Core {
 
             enum class MessageType {
                 Login, // Done
+                CheckCredentials, // Done
                 Logout, // Done
 
                 GetConstantData, // Done
@@ -70,6 +71,7 @@ namespace Core {
                 {
                     switch (type) {
                     case MessageType::Login:                return "Login";
+                    case MessageType::CheckCredentials:     return "CheckCredentials";
                     case MessageType::Logout:               return "Logout";
                     case MessageType::GetConstantData:      return "GetConstantData";
                     case MessageType::GetFarmInfo:          return "GetFarmInfo";

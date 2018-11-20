@@ -105,7 +105,7 @@ void queryDebug(Api::ApiGateway &debugGateway)
 {
     const auto getInfo = [&](){
         QVector<int> fields {};
-        debugGateway.queueMessage(GetFarmInfo::Ptr(new GetFarmInfo(&debugGateway)));
+        debugGateway.queueMessage(CheckCredentials::Ptr(new CheckCredentials(&debugGateway)));
         debugGateway.start();
     };
 
@@ -232,7 +232,7 @@ int main(int argc, char *argv[])
     Player p;
     Api::ApiGateway &debugGateway = p.gateway();
     createDebugEnvironment(debugGateway, parser);
-//    queryDebug(debugGateway);
+    queryDebug(debugGateway);
 #endif
 
     if (parser.isSet("no-gui")) {

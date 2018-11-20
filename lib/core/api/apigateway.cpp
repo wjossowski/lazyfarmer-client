@@ -37,7 +37,7 @@
 #include <QtCore/QUrl>
 #include <QtCore/QUrlQuery>
 
-#include <QtDebug>
+#include <QtCore/QDebug>
 
 using namespace Core;
 using namespace Core::Api;
@@ -160,6 +160,8 @@ void ApiGateway::start()
             m_currentMessage.reset();
             return;
         }
+    } else if (m_messageQueue.first()->messageType() == MessageType::CheckCredentials) {
+
     } else if (!m_loggedIn) {
         queueMessage(Login::Ptr(new Login(this)), PushMessageTo::Top);
     }

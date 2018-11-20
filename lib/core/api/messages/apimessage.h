@@ -53,6 +53,8 @@ namespace Core {
 
                 virtual void handleResponse(QIODevice *reply) = 0;
 
+                MessageType messageType() const { return m_messageType; }
+
             signals:
                 void raiseError(ApiGatewayError::ErrorType errorType, const QStringList &args = QStringList()) const;
                 void finished() const;

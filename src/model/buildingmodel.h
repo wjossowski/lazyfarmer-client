@@ -20,7 +20,7 @@
 
 #include "core/data/buildinglist.h"
 
-#include <QAbstractListModel>
+#include <QtCore/QAbstractListModel>
 
 namespace Model {
 

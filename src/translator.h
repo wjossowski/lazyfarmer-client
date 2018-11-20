@@ -32,5 +32,5 @@ public:
     bool eventFilter(QObject *watched, QEvent *event) override;
 
 signals:
-    void languageChanged();
+    void languageChanged(const QString & = QString()) const;
 };
