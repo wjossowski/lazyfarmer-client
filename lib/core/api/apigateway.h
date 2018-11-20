@@ -89,6 +89,7 @@ namespace Core {
             void recursiveRedirect(const QUrl &url,
                                    const std::function<void (QIODevice *)> &callback);
             void sendMessage(Messages::ApiMessage *message);
+            QString currentJobName() const;
 
             void extractGameData();
             GlobalGameData::Ptr gameData() const;
@@ -106,6 +107,8 @@ namespace Core {
             void playerDataUpdated(const QByteArray &data) const;
             void loggedInChanged(bool changed) const;
             void errorRaised(const QString &message) const;
+            void accountConfigurationChanged() const;
+            void currentJobChanged() const;
 
         private:
             void queueConstantData(const QString &content);

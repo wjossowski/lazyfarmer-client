@@ -20,28 +20,45 @@
 
 #include "player.h"
 
-#include <QtCore/QObject>
+#include <QtCore/QAbstractListModel>
 
 namespace Core {
 
-    class PlayerFactory : public QObject
+    class PlayerFactoryModel : public QAbstractListModel
     {
         Q_OBJECT
+        Q_PROPERTY(int size READ size NOTIFY sizeChanged)
 
     public:
-        explicit PlayerFactory(QObject *parent = nullptr);
 
-        Q_PROPERTY(int size READ size NOTIFY sizeChanged)
-        Q_INVOKABLE int size() { return m_players.size(); }
+        enum class PlayerRoles {
+            Description     = Qt::DisplayRole,
+            Level           = Qt::UserRole,
+            LevelDescription,
+            LevelPercentage,
+            Money,
+            CurrentJob
+        };
 
-        QSharedPointer<Player> create();
-        void remove(int i);
+        explicit PlayerFactoryModel(QObject *parent = nullptr);
+        ~PlayerFactoryModel() override = default;
+
+        int rowCount(const QModelIndex &parent) const override;
+        QVariant data(const QModelIndex &index, int role) const override;
+        QHash<int, QByteArray> roleNames() const override;
+
+
+        Q_INVOKABLE QSharedPointer<Player> create();
+        Q_INVOKABLE void remove(int i);
+
+        int size() { return m_players.size(); }
 
     signals:
         void sizeChanged(int size) const;
 
     private:
         QList<QSharedPointer<Player>> m_players;
+
     };
 
 }

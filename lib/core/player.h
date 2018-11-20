@@ -33,13 +33,16 @@ namespace Core {
     {
         Q_OBJECT
 
+        Q_PROPERTY(int level MEMBER m_level NOTIFY levelChanged)
+        Q_PROPERTY(QString levelDescription MEMBER m_levelDescription NOTIFY levelDescriptionChanged)
+        Q_PROPERTY(int levelPercentage MEMBER m_levelPercentage NOTIFY levelPercentageChanged)
+        Q_PROPERTY(qreal money MEMBER m_money NOTIFY moneyChanged)
+
+        Q_PROPERTY(QString description READ playerDescription NOTIFY playerDescriptionChanged)
+        Q_PROPERTY(QString job READ currentJob NOTIFY currentJobChanged)
+
     public:
         explicit Player(QObject *parent = nullptr);
-
-        Q_INVOKABLE inline int level() const { return m_level; }
-        Q_INVOKABLE inline QString levelDescription() const { return m_levelDescription; }
-        Q_INVOKABLE inline int levelPercentage() const { return m_levelPercentage; }
-        Q_INVOKABLE inline qreal money() const { return m_money; }
 
         GlobalGameData::Ptr gameData() const;
 
@@ -47,11 +50,22 @@ namespace Core {
         Data::Storage::Ptr storage() const { return m_storage; }
         Data::BuildingList::Ptr buildings() const { return m_buildingList; }
 
+        QString playerDescription() const;
+        QString currentJob() const;
+
     public slots:
         void update(const QByteArray &info);
 
     signals:
         void updateBuildingRequested(const Data::BuildingDetails &details, const Data::BuildingType &type) const;
+
+        void levelChanged(int) const;
+        void levelDescriptionChanged(const QString&) const;
+        void levelPercentageChanged(int) const;
+        void moneyChanged(qreal) const;
+
+        void playerDescriptionChanged() const;
+        void currentJobChanged() const;
 
     private:
         void updateBasicInfo(const QVariantMap &basicInfo);

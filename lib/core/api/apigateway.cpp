@@ -125,6 +125,8 @@ void ApiGateway::setApiOptions(const ApiOptions &options)
     m_serverDomain = options.serverDomain;
     m_login = options.login;
     m_password = options.password;
+
+    emit accountConfigurationChanged();
 }
 
 /**
@@ -153,27 +155,32 @@ void ApiGateway::queueMessage(const ApiMessage::Ptr &message, PushMessageTo plac
 void ApiGateway::start()
 {
     // Handle automatic logout if message queue is empty
-    if (m_messageQueue.size() == 0) {
+    if (m_messageQueue.isEmpty()) {
         if (m_loggedIn) {
             queueMessage(Logout::Ptr(new Logout(this)));
         } else {
-            qInfo() << "No messages left";
             m_currentMessage.reset();
-            return;
         }
     }
 
-    // Handle if current message requires to be logged in
-    const auto topMessage = m_messageQueue.first();
-    if (!m_loggedIn && topMessage->isLoginRequired()) {
-        queueMessage(Login::Ptr(new Login(this)), PushMessageTo::Top);
+    // Check if Logout has been added
+    if (!m_messageQueue.isEmpty()) {
+
+        // Handle if current message requires to be logged in
+        const auto topMessage = m_messageQueue.first();
+        if (!m_loggedIn && topMessage->isLoginRequired()) {
+            queueMessage(Login::Ptr(new Login(this)), PushMessageTo::Top);
+        }
+
+        // Assign current message and reduce stack
+        m_currentMessage = m_messageQueue.first();
+        m_messageQueue.pop_front();
+
+        sendMessage(&*m_currentMessage);
     }
 
-    // Assign current message and reduce stack
-    m_currentMessage = m_messageQueue.first();
-    m_messageQueue.pop_front();
-
-    sendMessage(&*m_currentMessage);
+    // Notify about job change
+    emit currentJobChanged();
 }
 
 /**
@@ -312,6 +319,19 @@ void ApiGateway::sendMessage(ApiMessage *message)
 
         connect(message, &ApiMessage::finished,
                 this,    &ApiGateway::start);
+    }
+}
+
+/**
+ * @brief ApiGateway::currentMessageName
+ * @return Currently performed message
+ */
+QString ApiGateway::currentJobName() const
+{
+    if (!m_currentMessage) {
+        return tr("Idle");
+    } else {
+        return m_currentMessage->toString();
     }
 }
 

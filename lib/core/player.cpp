@@ -47,6 +47,22 @@ GlobalGameData::Ptr Player::gameData() const
     return m_gateway.gameData();
 }
 
+QString Player::playerDescription() const
+{
+    if (!m_gateway.isConfigured()) {
+        return tr("Unconfigured Account");
+    } else {
+        return QString("%1 @ %2")
+                .arg(m_gateway.login())
+                .arg(m_gateway.serverDomain());
+    }
+}
+
+QString Player::currentJob() const
+{
+    return m_gateway.currentJobName();
+}
+
 void Player::update(const QByteArray &info)
 {
     PlayerInfoExtractor extractor;
@@ -66,10 +82,16 @@ void Player::update(const QByteArray &info)
 void Player::updateBasicInfo(const QVariantMap &basicInfo)
 {
     m_level = basicInfo["Level"].toInt();
+    emit levelChanged(m_level);
+
     m_levelDescription = basicInfo["LevelDescription"].toString();
+    emit levelDescriptionChanged(m_levelDescription);
+
     m_levelPercentage = basicInfo["LevelPercentage"].toInt();
+    emit levelPercentageChanged(m_levelPercentage);
 
     m_money = basicInfo["Money"].toDouble();
+    emit moneyChanged(m_money);
 }
 
 void Player::initialize()
@@ -85,6 +107,12 @@ void Player::initializeConnections() const
 
     connect(&m_gateway, &ApiGateway::playerDataUpdated,
             this,       &Player::update);
+
+    connect(&m_gateway, &ApiGateway::accountConfigurationChanged,
+            this,       &Player::playerDescriptionChanged);
+
+    connect(&m_gateway, &ApiGateway::currentJobChanged,
+            this,       &Player::currentJobChanged);
 
     connect(&m_gateway,         &ApiGateway::buildingDataUpdated,
             &*m_buildingList,   &BuildingList::updateBuilding);

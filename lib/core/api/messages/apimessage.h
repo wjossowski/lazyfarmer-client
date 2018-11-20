@@ -46,6 +46,7 @@ namespace Core {
                 virtual ~ApiMessage();
 
                 virtual QueryType queryType() const { return QueryType::Get; }
+                QString toString() const { return MessageHelper::toString(m_messageType); }
 
                 virtual const QUrl url() const = 0;
                 virtual void configureRequest(QNetworkRequest &request) const { Q_UNUSED (request) }

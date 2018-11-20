@@ -111,8 +111,6 @@ void queryDebug(Api::ApiGateway &debugGateway)
 
     getInfo();
 
-    QTimer::singleShot(12000, getInfo);
-
 }
 #endif
 
@@ -234,7 +232,7 @@ int main(int argc, char *argv[])
     Player p;
     Api::ApiGateway &debugGateway = p.gateway();
     createDebugEnvironment(debugGateway, parser);
-    queryDebug(debugGateway);
+//    queryDebug(debugGateway);
 #endif
 
     if (parser.isSet("no-gui")) {
