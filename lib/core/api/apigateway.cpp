@@ -152,6 +152,7 @@ void ApiGateway::queueMessage(const ApiMessage::Ptr &message, PushMessageTo plac
  */
 void ApiGateway::start()
 {
+    // Handle automatic logout if message queue is empty
     if (m_messageQueue.size() == 0) {
         if (m_loggedIn) {
             queueMessage(Logout::Ptr(new Logout(this)));
@@ -160,12 +161,15 @@ void ApiGateway::start()
             m_currentMessage.reset();
             return;
         }
-    } else if (m_messageQueue.first()->messageType() == MessageType::CheckCredentials) {
+    }
 
-    } else if (!m_loggedIn) {
+    // Handle if current message requires to be logged in
+    const auto topMessage = m_messageQueue.first();
+    if (!m_loggedIn && topMessage->isLoginRequired()) {
         queueMessage(Login::Ptr(new Login(this)), PushMessageTo::Top);
     }
 
+    // Assign current message and reduce stack
     m_currentMessage = m_messageQueue.first();
     m_messageQueue.pop_front();
 
@@ -249,7 +253,7 @@ void ApiGateway::buildHeaders(QNetworkRequest &request) const
  * @param url Url to be reached
  * @param callback Function to be called
  */
-void ApiGateway::recursiveRedirect(const QString &url, const std::function<void (QIODevice *)> &callback)
+void ApiGateway::recursiveRedirect(const QUrl &url, const std::function<void (QIODevice *)> &callback)
 {
     QNetworkRequest request(url);
     buildHeaders(request);
@@ -413,21 +417,4 @@ void ApiGateway::queueConstantData(const QString &content)
 
     // TODO: Add message to obtain library
     queueMessage(messagePtr, PushMessageTo::Top);
-}
-
-/**
- * @brief ApiGateway::handleNotLogged
- * Handles error when player is not logged in.
- * @param operation Operation to be reached.
- * @return Is Logged In status
- */
-bool ApiGateway::handleNotLogged(const QString &operation)
-{
-    bool notLogged = !m_loggedIn;
-    if (notLogged) {
-        handleError(ApiGatewayError::ErrorType::NotLogged,
-            { tr("Action %1 requires to be logged in.").arg(operation) });
-    }
-
-    return notLogged;
 }

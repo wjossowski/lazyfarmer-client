@@ -42,5 +42,3 @@ ApiMessage::~ApiMessage() {
     qDebug() << "Destroying API Message" << MessageHelper::toString(this->m_messageType) << this;
 #endif
 }
-
-

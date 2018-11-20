@@ -86,7 +86,7 @@ namespace Core {
                                       bool includeRid = true) const;
 
             void buildHeaders(QNetworkRequest &request) const;
-            void recursiveRedirect(const QString &url,
+            void recursiveRedirect(const QUrl &url,
                                    const std::function<void (QIODevice *)> &callback);
             void sendMessage(Messages::ApiMessage *message);
 
@@ -109,7 +109,6 @@ namespace Core {
 
         private:
             void queueConstantData(const QString &content);
-            bool handleNotLogged(const QString &operation);
 
         private:
             bool m_loggedIn;

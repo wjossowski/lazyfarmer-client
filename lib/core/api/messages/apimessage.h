@@ -55,6 +55,8 @@ namespace Core {
 
                 MessageType messageType() const { return m_messageType; }
 
+                bool isLoginRequired() const { return m_isLoginRequired; }
+
             signals:
                 void raiseError(ApiGatewayError::ErrorType errorType, const QStringList &args = QStringList()) const;
                 void finished() const;

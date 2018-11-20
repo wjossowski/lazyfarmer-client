@@ -49,10 +49,10 @@ const QList<QPair<QString, QString> > Core::Api::Messages::CheckCredentials::pos
 
 void Core::Api::Messages::CheckCredentials::handleResponse(QIODevice *reply)
 {
-    const auto data = QJsonDocument::fromJson(reply->readAll());
-    if (data.isArray()) {
-        const QString url = data.array().last().toString();
-        qDebug() << url;
+    const auto response = QJsonDocument::fromJson(reply->readAll());
+    const auto redirectUrl = QUrl(response.array().last().toString());
+
+    if (redirectUrl.isValid()) {
         emit finished();
     } else {
         emit raiseError(ApiGatewayError::ErrorType::InvalidCredentials);

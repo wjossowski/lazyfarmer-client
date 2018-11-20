@@ -105,11 +105,13 @@ void queryDebug(Api::ApiGateway &debugGateway)
 {
     const auto getInfo = [&](){
         QVector<int> fields {};
-        debugGateway.queueMessage(CheckCredentials::Ptr(new CheckCredentials(&debugGateway)));
+        debugGateway.queueMessage(GetFarmInfo::Ptr(new GetFarmInfo(&debugGateway)));
         debugGateway.start();
     };
 
     getInfo();
+
+    QTimer::singleShot(12000, getInfo);
 
 }
 #endif

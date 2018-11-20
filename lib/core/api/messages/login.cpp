@@ -57,10 +57,11 @@ const QList<QPair<QString, QString> > Login::postData() const
 
 void Login::handleResponse(QIODevice *reply)
 {
-    const auto data = QJsonDocument::fromJson(reply->readAll());
-    if (data.isArray()) {
-        const QString url = data.array().last().toString();
-        m_gateway->recursiveRedirect(url, [this] (QIODevice *reply) {
+    const auto response = QJsonDocument::fromJson(reply->readAll());
+    const auto redirectUrl = QUrl(response.array().last().toString());
+
+    if (redirectUrl.isValid()) {
+        m_gateway->recursiveRedirect(redirectUrl, [this] (QIODevice *reply) {
             this->extractRid(reply);
         });
     } else {
