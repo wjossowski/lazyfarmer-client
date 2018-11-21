@@ -34,7 +34,6 @@
 
 class QNetworkReply;
 
-
 namespace Core {
 
     namespace Api {

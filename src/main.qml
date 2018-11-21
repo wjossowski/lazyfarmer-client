@@ -26,15 +26,19 @@ ApplicationWindow {
             height: 50;
 
             RowLayout {
-                anchors.fill: parent
+                anchors.fill: parent;
+                property var parameters: [
+                    description, level + ' (' +levelDescription+ ')', job
+                ];
 
-                Text {
-                    text: description;
+                Repeater {
+                    model: parent.parameters;
+
+                    Text {
+                        text: modelData;
+                    }
                 }
 
-                Text {
-                    text: job
-                }
             }
 
 

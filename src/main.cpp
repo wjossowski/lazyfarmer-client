@@ -107,6 +107,15 @@ void queryDebug(Api::ApiGateway &debugGateway)
     const auto getInfo = [&](){
         QVector<int> fields {};
         debugGateway.queueMessage(GetFarmInfo::Ptr(new GetFarmInfo(&debugGateway)));
+
+        for (int i = 0; i < 120; i++) {
+            const Data::BuildingDetails buildingDetails = {1, 1};
+            const Data::ProductDetails produceDetails = {17, 1, i};
+            debugGateway.queueMessage(GetCollect::Ptr(new GetCollect(&debugGateway, buildingDetails, produceDetails)));
+            debugGateway.queueMessage(SetPlant::Ptr(new SetPlant(&debugGateway, buildingDetails, produceDetails)));
+            debugGateway.queueMessage(SetPour::Ptr(new SetPour(&debugGateway, buildingDetails, produceDetails)));
+        }
+
         debugGateway.start();
     };
 

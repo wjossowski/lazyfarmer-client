@@ -52,8 +52,9 @@ QString Player::playerDescription() const
     if (!m_gateway.isConfigured()) {
         return tr("Unconfigured Account");
     } else {
-        return QString("%1 @ %2")
+        return QString("%1@s%2.%3")
                 .arg(m_gateway.login())
+                .arg(m_gateway.serverId())
                 .arg(m_gateway.serverDomain());
     }
 }
@@ -117,22 +118,11 @@ void Player::initializeConnections() const
     connect(&m_gateway,         &ApiGateway::buildingDataUpdated,
             &*m_buildingList,   &BuildingList::updateBuilding);
 
-    // Signal forwarding
-    connect(this,       &Player::levelChanged,
-            this,       &Player::dataChanged);
-
-    connect(this,       &Player::levelDescriptionChanged,
-            this,       &Player::dataChanged);
-
-    connect(this,       &Player::levelPercentageChanged,
-            this,       &Player::dataChanged);
-
-    connect(this,       &Player::moneyChanged,
-            this,       &Player::dataChanged);
-
-    connect(this,       &Player::playerDescriptionChanged,
-            this,       &Player::dataChanged);
-
-    connect(this,       &Player::currentJobChanged,
-            this,       &Player::dataChanged);
+    // Signal forwarding (needed for PlayerFactory)
+    connect(this, &Player::levelChanged,                this, &Player::dataChanged);
+    connect(this, &Player::levelDescriptionChanged,     this, &Player::dataChanged);
+    connect(this, &Player::levelPercentageChanged,      this, &Player::dataChanged);
+    connect(this, &Player::moneyChanged,                this, &Player::dataChanged);
+    connect(this, &Player::playerDescriptionChanged,    this, &Player::dataChanged);
+    connect(this, &Player::currentJobChanged,           this, &Player::dataChanged);
 }
