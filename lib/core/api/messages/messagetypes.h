@@ -19,6 +19,7 @@
 #pragma once
 
 #include <QtCore/QString>
+#include <QtCore/QCoreApplication>
 
 namespace Core {
 
@@ -70,26 +71,26 @@ namespace Core {
                 static QString toString(MessageType type)
                 {
                     switch (type) {
-                    case MessageType::Login:                return "Login";
-                    case MessageType::CheckCredentials:     return "CheckCredentials";
-                    case MessageType::Logout:               return "Logout";
-                    case MessageType::GetConstantData:      return "GetConstantData";
-                    case MessageType::GetFarmInfo:          return "GetFarmInfo";
-                    case MessageType::GetFieldInfo:         return "GetFieldInfo";
-                    case MessageType::SetPlant:             return "SetPlant";
-                    case MessageType::SetPour:              return "SetPour";
-                    case MessageType::GetCollect:           return "GetCollect";
-                    case MessageType::SetFeed:              return "SetFeed";
-                    case MessageType::GetFeed:              return "GetFeed";
-                    case MessageType::GetFeedInfo:          return "GetFeedInfo";
-                    case MessageType::SetProduction:        return "SetProduction";
-                    case MessageType::GetProduction:        return "GetProduction";
-                    case MessageType::GetProductionInfo:    return "GetProductionInfo";
-                    case MessageType::SetBuyer:             return "SetBuyer";
-                    case MessageType::GetBuyer:             return "GetBuyer";
-                    case MessageType::GetPricesOnMarket:    return "GetPricesOnMarket";
-                    case MessageType::SetOfferOnMarket:     return "SetOfferOnMarket";
-                    default:                                return "Unknown";
+                    case MessageType::Login:                return qApp->translate("MessageTypes", "Login");
+                    case MessageType::CheckCredentials:     return qApp->translate("MessageTypes", "CheckCredentials");
+                    case MessageType::Logout:               return qApp->translate("MessageTypes", "Logout");
+                    case MessageType::GetConstantData:      return qApp->translate("MessageTypes", "GetConstantData");
+                    case MessageType::GetFarmInfo:          return qApp->translate("MessageTypes", "GetFarmInfo");
+                    case MessageType::GetFieldInfo:         return qApp->translate("MessageTypes", "GetFieldInfo");
+                    case MessageType::SetPlant:             return qApp->translate("MessageTypes", "SetPlant");
+                    case MessageType::SetPour:              return qApp->translate("MessageTypes", "SetPour");
+                    case MessageType::GetCollect:           return qApp->translate("MessageTypes", "GetCollect");
+                    case MessageType::SetFeed:              return qApp->translate("MessageTypes", "SetFeed");
+                    case MessageType::GetFeed:              return qApp->translate("MessageTypes", "GetFeed");
+                    case MessageType::GetFeedInfo:          return qApp->translate("MessageTypes", "GetFeedInfo");
+                    case MessageType::SetProduction:        return qApp->translate("MessageTypes", "SetProduction");
+                    case MessageType::GetProduction:        return qApp->translate("MessageTypes", "GetProduction");
+                    case MessageType::GetProductionInfo:    return qApp->translate("MessageTypes", "GetProductionInfo");
+                    case MessageType::SetBuyer:             return qApp->translate("MessageTypes", "SetBuyer");
+                    case MessageType::GetBuyer:             return qApp->translate("MessageTypes", "GetBuyer");
+                    case MessageType::GetPricesOnMarket:    return qApp->translate("MessageTypes", "GetPricesOnMarket");
+                    case MessageType::SetOfferOnMarket:     return qApp->translate("MessageTypes", "SetOfferOnMarket");
+                    default:                                return qApp->translate("MessageTypes", "Unknown");
                     }
                 }
             };

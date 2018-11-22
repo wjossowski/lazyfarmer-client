@@ -23,22 +23,39 @@ ApplicationWindow {
 
         delegate: Rectangle {
             width: parent.width;
-            height: 50;
+            height: 60;
 
-            RowLayout {
-                anchors.fill: parent;
-                property var parameters: [
-                    description, level + ' (' +levelDescription+ ')', job
-                ];
+            ColumnLayout {
+                anchors.fill: parent
 
-                Repeater {
-                    model: parent.parameters;
+                RowLayout {
+                    id: info
 
-                    Text {
-                        text: modelData;
+                    anchors.left: parent.left;
+                    anchors.right: parent.right;
+                    anchors.top: parent.top;
+
+                    property var parameters: [
+                        description, level + ' (' +levelDescription+ ')'
+                    ];
+
+                    Repeater {
+                        model: parent.parameters;
+
+                        Text {
+                            text: modelData;
+                        }
                     }
+
                 }
 
+                Text {
+                    anchors.top: info.bottom;
+                    anchors.left: parent.left;
+                    anchors.right: parent.right;
+
+                    text: job
+                }
             }
 
 
