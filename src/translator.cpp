@@ -17,13 +17,41 @@
  **/
 
 #include "translator.h"
+#include "core/data/common.h"
 
 #include <QtCore/QEvent>
+#include <QtCore/QDir>
+#include <QtCore/QCoreApplication>
+#include <QtCore/QSettings>
+#include <QtCore/QLocale>
+#include <QtCore/QTimer>
+
+#include <QtDebug>
 
 Translator::Translator(QObject *parent)
     : QObject(parent)
 {
     installEventFilter(this);
+    initializeTranslations();
+
+    QTimer::singleShot(10000, [=] () {
+       this->setLanguage("en_US");
+    });
+}
+
+void Translator::setLanguage(const QString &language)
+{
+    if (m_availableTranslations.contains(language)) {
+        qDebug() << "Changing language name to" << language << m_availableTranslations[language];
+
+        m_translator.load(m_availableTranslations[language]);
+        qApp->installTranslator(&m_translator);
+
+        QSettings settings;
+        settings.setValue(S_TranslationsPath, language);
+
+        emit languageChanged();
+    }
 }
 
 bool Translator::eventFilter(QObject *watched, QEvent *event)
@@ -33,4 +61,27 @@ bool Translator::eventFilter(QObject *watched, QEvent *event)
     }
 
     return QObject::eventFilter(watched, event);
+}
+
+void Translator::initializeTranslations()
+{
+#ifdef DEBUG_MODE
+    QDir assetsDirectory(ASSETS_DIRECTORY);
+#else
+    QDir assetsDirectory(qApp->applicationDirPath());
+#endif
+    if (!assetsDirectory.cd("translations")) {
+        throw std::ios_base::failure(qApp->translate("main", "Could not find translations directory").toStdString());
+    }
+
+    const auto translations = assetsDirectory.entryInfoList({"*.qm"}, QDir::Files | QDir::Readable, QDir::Name);
+    for (const auto &t : translations) {
+        m_availableTranslations.insert(t.baseName(), t.absoluteFilePath());
+    }
+
+    qApp->setProperty("AvailableTranslations", QStringList(m_availableTranslations.keys()));
+
+    QSettings settings;
+    const QString language = settings.value(S_TranslationsPath).toString();
+    setLanguage(language.isEmpty() ? QLocale::system().name() : language);
 }

@@ -99,99 +99,175 @@
 <context>
     <name>MessageTypes</name>
     <message>
-        <location filename="../../lib/core/api/messages/messagetypes.h" line="74"/>
         <source>Login</source>
-        <translation>Login</translation>
+        <translation type="vanished">Login</translation>
+    </message>
+    <message>
+        <source>CheckCredentials</source>
+        <translation type="vanished">SprawdzDaneLogowania</translation>
+    </message>
+    <message>
+        <source>Logout</source>
+        <translation type="vanished">Wylogowanie</translation>
+    </message>
+    <message>
+        <source>GetConstantData</source>
+        <translation type="vanished">PobierzStaleDane</translation>
+    </message>
+    <message>
+        <source>GetFarmInfo</source>
+        <translation type="vanished">PobierzInfoFarmy</translation>
+    </message>
+    <message>
+        <source>GetFieldInfo</source>
+        <translation type="vanished">PobierzInfoPola</translation>
+    </message>
+    <message>
+        <source>SetPlant</source>
+        <translation type="vanished">UstawRosline</translation>
+    </message>
+    <message>
+        <source>SetPour</source>
+        <translation type="vanished">UstawPodlewanie</translation>
+    </message>
+    <message>
+        <source>GetCollect</source>
+        <translation type="vanished">PobierzZbiory</translation>
+    </message>
+    <message>
+        <source>SetFeed</source>
+        <translation type="vanished">UstawKarmienie</translation>
+    </message>
+    <message>
+        <source>GetFeed</source>
+        <translation type="vanished">PobierzKarmienie</translation>
+    </message>
+    <message>
+        <source>GetFeedInfo</source>
+        <translation type="vanished">PobierzInfoKarmienia</translation>
+    </message>
+    <message>
+        <source>SetProduction</source>
+        <translation type="vanished">UstawProdukcje</translation>
+    </message>
+    <message>
+        <source>GetProduction</source>
+        <translation type="vanished">PobierzProdukcje</translation>
+    </message>
+    <message>
+        <source>GetProductionInfo</source>
+        <translation type="vanished">PobierzInfoProdukcji</translation>
+    </message>
+    <message>
+        <source>SetBuyer</source>
+        <translation type="vanished">UstawKupca</translation>
+    </message>
+    <message>
+        <source>GetBuyer</source>
+        <translation type="vanished">PobierzKupca</translation>
+    </message>
+    <message>
+        <source>GetPricesOnMarket</source>
+        <translation type="vanished">PobierzCenyZRynku</translation>
+    </message>
+    <message>
+        <source>SetOfferOnMarket</source>
+        <translation type="vanished">UstawOferteNaRynku</translation>
+    </message>
+    <message>
+        <location filename="../../lib/core/api/messages/messagetypes.h" line="74"/>
+        <source>Login in</source>
+        <translation>Loguję się</translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="75"/>
-        <source>CheckCredentials</source>
-        <translation>SprawdzDaneLogowania</translation>
+        <source>Checking Credentials</source>
+        <translation>Uwierzytelniam</translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="76"/>
-        <source>Logout</source>
-        <translation>Wylogowanie</translation>
+        <source>Logging out</source>
+        <translation>Wylogowuję się</translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="77"/>
-        <source>GetConstantData</source>
-        <translation>PobierzStaleDane</translation>
+        <source>Getting Constant Data</source>
+        <translation>Pobieram statyczne dane</translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="78"/>
-        <source>GetFarmInfo</source>
-        <translation>PobierzInfoFarmy</translation>
+        <source>Getting Farm Info</source>
+        <translation>Pobieram info farmy</translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="79"/>
-        <source>GetFieldInfo</source>
-        <translation>PobierzInfoPola</translation>
+        <source>Getting Field Info</source>
+        <translation>Pobieram info pola</translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="80"/>
-        <source>SetPlant</source>
-        <translation>UstawRosline</translation>
+        <source>Setting Plant</source>
+        <translation>Ustawiam sadzonkę</translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="81"/>
-        <source>SetPour</source>
-        <translation>UstawPodlewanie</translation>
+        <source>Setting Pour</source>
+        <translation>Ustawiam podlewanie</translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="82"/>
-        <source>GetCollect</source>
-        <translation>PobierzZbiory</translation>
+        <source>Getting Collect</source>
+        <translation>Pobieram zbiór</translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="83"/>
-        <source>SetFeed</source>
-        <translation>UstawKarmienie</translation>
+        <source>Setting Feed</source>
+        <translation>Ustawiam hodowlę</translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="84"/>
-        <source>GetFeed</source>
-        <translation>PobierzKarmienie</translation>
+        <source>Getting Feed</source>
+        <translation>Pobieram hodowlę</translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="85"/>
-        <source>GetFeedInfo</source>
-        <translation>PobierzInfoKarmienia</translation>
+        <source>Getting Feed Info</source>
+        <translation>Pobieram info hodowli</translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="86"/>
-        <source>SetProduction</source>
-        <translation>UstawProdukcje</translation>
+        <source>Setting Production</source>
+        <translation>Ustawiam produkcję</translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="87"/>
-        <source>GetProduction</source>
-        <translation>PobierzProdukcje</translation>
+        <source>Getting Production</source>
+        <translation>Pobieram produkcję</translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="88"/>
-        <source>GetProductionInfo</source>
-        <translation>PobierzInfoProdukcji</translation>
+        <source>Getting Production Info</source>
+        <translation>Pobieram info produkcji</translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="89"/>
-        <source>SetBuyer</source>
-        <translation>UstawKupca</translation>
+        <source>Setting Buyer</source>
+        <translation>Ustawiam kupującego</translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="90"/>
-        <source>GetBuyer</source>
-        <translation>PobierzKupca</translation>
+        <source>Getting Buyer</source>
+        <translation>Pobieram kupującego</translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="91"/>
-        <source>GetPricesOnMarket</source>
-        <translation>PobierzCenyZRynku</translation>
+        <source>Getting Prices On Market</source>
+        <translation>Pobieram ceny z targowiska</translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="92"/>
-        <source>SetOfferOnMarket</source>
-        <translation>UstawOferteNaRynku</translation>
+        <source>Setting Offer On Market</source>
+        <translation>Ustawiam ofertę na targowisku</translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="93"/>
@@ -235,84 +311,89 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../../src/main.cpp" line="129"/>
+        <location filename="../../src/main.cpp" line="130"/>
         <source>Lazy farmer - My Free Farm bot</source>
         <translation>Lazy farmer - WolniFarmerzy bot</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="134"/>
+        <location filename="../../src/main.cpp" line="135"/>
         <source>Specifies login on startup.</source>
         <translation>Ustawia login podczas uruchomienia.</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="135"/>
+        <location filename="../../src/main.cpp" line="136"/>
         <source>User&apos;s login.</source>
         <translation>Login użytkownika.</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="137"/>
+        <location filename="../../src/main.cpp" line="138"/>
         <source>Specifies password on startup.</source>
         <translation>Ustawia hasło.</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="138"/>
+        <location filename="../../src/main.cpp" line="139"/>
         <source>User&apos;s password.</source>
         <translation>Hasło.</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="140"/>
+        <location filename="../../src/main.cpp" line="141"/>
         <source>Specifies game&apos;s domain on startup.</source>
         <translation>Ustawia domenę gry.</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="141"/>
+        <location filename="../../src/main.cpp" line="142"/>
         <source>Domain (myfreefarm.de / wolnifarmerzy.pl).</source>
         <translation>Domena (wolnifarmerzy.pl / myfreefarm.de).</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="143"/>
+        <location filename="../../src/main.cpp" line="144"/>
         <source>Specifies server number on startup.</source>
         <translation>Ustawia numer serwera.</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="144"/>
+        <location filename="../../src/main.cpp" line="145"/>
         <source>Server number.</source>
         <translation>Numer serwera.</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="146"/>
+        <location filename="../../src/main.cpp" line="147"/>
         <source>Specifies config file on startup.</source>
         <translation>Ustawia plik konfiguracyjny.</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="147"/>
+        <location filename="../../src/main.cpp" line="148"/>
         <source>Task manager&apos;s configuration file.</source>
         <translation>Plik konfiguracyjny menedżera zadań.</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="149"/>
+        <location filename="../../src/main.cpp" line="150"/>
         <source>Disables UI Mode.</source>
         <translation>Wyłącza interfejs użytkownika.</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="160"/>
+        <location filename="../../src/main.cpp" line="161"/>
         <source>Unable to create path to application data.</source>
         <translation>Nie można utwożyć ścieżki do appdata.</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="169"/>
+        <location filename="../../src/main.cpp" line="170"/>
         <source>Unable to open logging file.</source>
         <translation>Nie można otworzyć pliku logów.</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="189"/>
+        <location filename="../../src/main.cpp" line="187"/>
         <source>Unable to read building-config.json</source>
         <translation>Nie można przeczytać pliku config.json</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="192"/>
+        <location filename="../../src/main.cpp" line="190"/>
         <source>Unable to load building-config.json</source>
         <translation>Nie można załadować pliku config.json</translation>
+    </message>
+    <message>
+        <location filename="../../src/translator.cpp" line="70"/>
+        <source>Could not find translations directory</source>
+        <translation>Nie można wczytać katalogi z translacjami</translation>
     </message>
 </context>
 </TS>

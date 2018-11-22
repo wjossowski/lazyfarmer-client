@@ -100,98 +100,98 @@
     <name>MessageTypes</name>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="74"/>
-        <source>Login</source>
-        <translation></translation>
+        <source>Login in</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="75"/>
-        <source>CheckCredentials</source>
-        <translation></translation>
+        <source>Checking Credentials</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="76"/>
-        <source>Logout</source>
-        <translation></translation>
+        <source>Logging out</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="77"/>
-        <source>GetConstantData</source>
-        <translation></translation>
+        <source>Getting Constant Data</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="78"/>
-        <source>GetFarmInfo</source>
-        <translation></translation>
+        <source>Getting Farm Info</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="79"/>
-        <source>GetFieldInfo</source>
-        <translation></translation>
+        <source>Getting Field Info</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="80"/>
-        <source>SetPlant</source>
-        <translation></translation>
+        <source>Setting Plant</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="81"/>
-        <source>SetPour</source>
-        <translation></translation>
+        <source>Setting Pour</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="82"/>
-        <source>GetCollect</source>
-        <translation></translation>
+        <source>Getting Collect</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="83"/>
-        <source>SetFeed</source>
-        <translation></translation>
+        <source>Setting Feed</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="84"/>
-        <source>GetFeed</source>
-        <translation></translation>
+        <source>Getting Feed</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="85"/>
-        <source>GetFeedInfo</source>
-        <translation></translation>
+        <source>Getting Feed Info</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="86"/>
-        <source>SetProduction</source>
-        <translation></translation>
+        <source>Setting Production</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="87"/>
-        <source>GetProduction</source>
-        <translation></translation>
+        <source>Getting Production</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="88"/>
-        <source>GetProductionInfo</source>
-        <translation></translation>
+        <source>Getting Production Info</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="89"/>
-        <source>SetBuyer</source>
-        <translation></translation>
+        <source>Setting Buyer</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="90"/>
-        <source>GetBuyer</source>
-        <translation></translation>
+        <source>Getting Buyer</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="91"/>
-        <source>GetPricesOnMarket</source>
-        <translation></translation>
+        <source>Getting Prices On Market</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="92"/>
-        <source>SetOfferOnMarket</source>
-        <translation></translation>
+        <source>Setting Offer On Market</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../lib/core/api/messages/messagetypes.h" line="93"/>
@@ -235,84 +235,89 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="../../src/main.cpp" line="129"/>
+        <location filename="../../src/main.cpp" line="130"/>
         <source>Lazy farmer - My Free Farm bot</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="134"/>
+        <location filename="../../src/main.cpp" line="135"/>
         <source>Specifies login on startup.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="135"/>
+        <location filename="../../src/main.cpp" line="136"/>
         <source>User&apos;s login.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="137"/>
+        <location filename="../../src/main.cpp" line="138"/>
         <source>Specifies password on startup.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="138"/>
+        <location filename="../../src/main.cpp" line="139"/>
         <source>User&apos;s password.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="140"/>
+        <location filename="../../src/main.cpp" line="141"/>
         <source>Specifies game&apos;s domain on startup.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="141"/>
+        <location filename="../../src/main.cpp" line="142"/>
         <source>Domain (myfreefarm.de / wolnifarmerzy.pl).</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="143"/>
+        <location filename="../../src/main.cpp" line="144"/>
         <source>Specifies server number on startup.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="144"/>
+        <location filename="../../src/main.cpp" line="145"/>
         <source>Server number.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="146"/>
+        <location filename="../../src/main.cpp" line="147"/>
         <source>Specifies config file on startup.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="147"/>
+        <location filename="../../src/main.cpp" line="148"/>
         <source>Task manager&apos;s configuration file.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="149"/>
+        <location filename="../../src/main.cpp" line="150"/>
         <source>Disables UI Mode.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="160"/>
+        <location filename="../../src/main.cpp" line="161"/>
         <source>Unable to create path to application data.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="169"/>
+        <location filename="../../src/main.cpp" line="170"/>
         <source>Unable to open logging file.</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="189"/>
+        <location filename="../../src/main.cpp" line="187"/>
         <source>Unable to read building-config.json</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="192"/>
+        <location filename="../../src/main.cpp" line="190"/>
         <source>Unable to load building-config.json</source>
         <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/translator.cpp" line="70"/>
+        <source>Could not find translations directory</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

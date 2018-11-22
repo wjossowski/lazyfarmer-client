@@ -38,6 +38,7 @@
 #include <QtCore/QDir>
 #include <QtCore/QDateTime>
 #include <QtCore/QCommandLineParser>
+#include <QtCore/QTranslator>
 
 #include <QtGui/QGuiApplication>
 
@@ -152,16 +153,16 @@ void initializeCommandLineInterface(const QCoreApplication &application, QComman
     parser.process(application);
 }
 
-void initializeLoggingEnvironment()
+void initializeCacheEnvironment()
 {
     // Inilialize cache directory
     QDir applicationDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-    if (!applicationDir.mkpath("."))
+    if (!applicationDir.mkpath("./logs") && !applicationDir.cd("./logs"))
         throw std::ios_base::failure(qApp->translate("main", "Unable to create path to application data.").toStdString());
 
     // Initalize log directory
     const QString fileName = QDateTime::currentDateTime().toString("yyyy_MM_dd-HH_mm.log");
-    debugFile.setFileName(applicationDir.absoluteFilePath(fileName));
+    debugFile.setFileName(applicationDir.absoluteFilePath(QString("logs/%1").arg(fileName)));
 
     // Create debug prompt device
     debugStream.setDevice(&debugFile);
@@ -171,9 +172,6 @@ void initializeLoggingEnvironment()
     // Initialize message handler
     qSetMessagePattern("[%{time HH:mm:ss.zzz}] %{type}: %{message} (%{function}, %{file}, %{line})");
     qInstallMessageHandler(handleMessage);
-
-    qDebug() << debugFile.fileName();
-
 }
 
 void initializeStaticGameData()
@@ -222,13 +220,14 @@ int main(int argc, char *argv[])
 
     // Set default configuration format
     QSettings::setDefaultFormat(QSettings::IniFormat);
+    Translator translator(qApp);
 
     // Initialize command-line parser
     QCommandLineParser parser;
     initializeCommandLineInterface(lazyFarmerApp, parser);
 
     try {
-        initializeLoggingEnvironment();
+        initializeCacheEnvironment();
         initializeStaticGameData();
         registerCustomMetatypes();
     } catch (std::exception &e) {
@@ -264,7 +263,6 @@ int main(int argc, char *argv[])
 //    Model::BuildingModel buildingModel(p.buildings());
 //    engine.rootContext()->setContextProperty("BuildingModel", &buildingModel);
 
-    Translator translator;
     engine.rootContext()->setContextProperty("t", &translator);
 
     engine.load(QUrl(QLatin1String("qrc:/qml/main.qml")));

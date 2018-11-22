@@ -331,7 +331,7 @@ QString ApiGateway::currentJobName() const
     if (!m_currentMessage) {
         return tr("Idle");
     } else {
-        return m_currentMessage->toString();
+        return m_currentMessage->toReadableString();
     }
 }
 

@@ -17,8 +17,6 @@ ApplicationWindow {
     }
 
     ListView {
-        anchors.fill: parent
-
         model: PlayerFactoryModel
 
         delegate: Rectangle {

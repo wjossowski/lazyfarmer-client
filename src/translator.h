@@ -19,6 +19,8 @@
 #pragma once
 
 #include <QtCore/QObject>
+#include <QtCore/QMap>
+#include <QtCore/QTranslator>
 
 class Translator : public QObject
 {
@@ -26,11 +28,21 @@ class Translator : public QObject
     Q_PROPERTY(QString r READ emptyString NOTIFY languageChanged)
 
 public:
-    Translator(QObject *parent = nullptr);
+    explicit Translator(QObject *parent = nullptr);
+    ~Translator() override = default;
+
+    Q_INVOKABLE void setLanguage(const QString &language);
 
     QString emptyString () const { return QString(); }
     bool eventFilter(QObject *watched, QEvent *event) override;
 
 signals:
-    void languageChanged(const QString & = QString()) const;
+    void languageChanged() const;
+
+private:
+    void initializeTranslations();
+
+private:
+    QMap<QString, QString> m_availableTranslations;
+    QTranslator m_translator;
 };
