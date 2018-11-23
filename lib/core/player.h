@@ -41,6 +41,8 @@ namespace Core {
         Q_PROPERTY(QString description READ playerDescription NOTIFY playerDescriptionChanged)
         Q_PROPERTY(QString job READ currentJob NOTIFY currentJobChanged)
 
+        Q_PROPERTY(QString lastError MEMBER m_lastError NOTIFY lastErrorChanged)
+
     public:
         using Ptr = QSharedPointer<Player>;
 
@@ -70,12 +72,17 @@ namespace Core {
         void playerDescriptionChanged() const;
         void currentJobChanged() const;
 
+        void lastErrorChanged() const;
+
         void dataChanged() const;
 
     private:
         void updateBasicInfo(const QVariantMap &basicInfo);
         void initialize();
         void initializeConnections() const;
+
+    private slots:
+        void handleGatewayError(const QString &errorMessage);
 
     private:
         int m_level;
@@ -88,6 +95,7 @@ namespace Core {
         Data::BuildingList::Ptr m_buildingList;
 
         Api::ApiGateway m_gateway;
+        QString m_lastError;
     };
 
 }

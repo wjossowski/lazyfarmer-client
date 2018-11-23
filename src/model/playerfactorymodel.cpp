@@ -63,6 +63,7 @@ QHash<int, QByteArray> PlayerFactoryModel::roleNames() const
     roles.insert(static_cast<int>(PlayerRoles::Money), "money");
     roles.insert(static_cast<int>(PlayerRoles::Description), "description");
     roles.insert(static_cast<int>(PlayerRoles::CurrentJob), "job");
+    roles.insert(static_cast<int>(PlayerRoles::LastError), "lastError");
     return roles;
 }
 

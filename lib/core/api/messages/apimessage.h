@@ -43,7 +43,7 @@ namespace Core {
                                     MessageType messageType = MessageType::Unknown,
                                     bool isLoginRequired = true);
 
-                virtual ~ApiMessage();
+                ~ApiMessage() override = default;
 
                 virtual QueryType queryType() const { return QueryType::Get; }
                 QString toReadableString() const { return MessageHelper::toReadableString(m_messageType); }

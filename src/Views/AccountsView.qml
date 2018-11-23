@@ -30,6 +30,16 @@ Item {
 
             }
 
+            Label {
+//                visible: lastError;
+
+                anchors.centerIn: parent;
+
+                text: lastError;
+
+                Material.foreground: Material.DeepOrange;
+            }
+
             RowLayout {
                 anchors.verticalCenter: parent.verticalCenter;
                 anchors.right: parent.right;
@@ -81,6 +91,7 @@ Item {
         anchors {
             bottom: parent.bottom;
             right: parent.right;
+            margins: 10;
         }
 
         width: 80;

@@ -159,6 +159,8 @@ void ApiGateway::queueMessage(const ApiMessage::Ptr &message, PushMessageTo plac
  */
 void ApiGateway::start()
 {
+    emit clearError();
+
     // Handle automatic logout if message queue is empty
     if (m_messageQueue.isEmpty()) {
         if (m_loggedIn) {

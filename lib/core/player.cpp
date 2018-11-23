@@ -123,6 +123,12 @@ void Player::initializeConnections() const
     connect(&m_gateway,         &ApiGateway::buildingDataUpdated,
             &*m_buildingList,   &BuildingList::updateBuilding);
 
+    connect(&m_gateway, &ApiGateway::errorRaised,
+            this,       &Player::handleGatewayError);
+
+    connect(&m_gateway, &ApiGateway::clearError,
+            this,       &Player::handleGatewayError);
+
     // Signal forwarding (needed for PlayerFactory)
     connect(this, &Player::levelChanged,                this, &Player::dataChanged);
     connect(this, &Player::levelDescriptionChanged,     this, &Player::dataChanged);
@@ -130,4 +136,11 @@ void Player::initializeConnections() const
     connect(this, &Player::moneyChanged,                this, &Player::dataChanged);
     connect(this, &Player::playerDescriptionChanged,    this, &Player::dataChanged);
     connect(this, &Player::currentJobChanged,           this, &Player::dataChanged);
+    connect(this, &Player::lastErrorChanged,            this, &Player::dataChanged);
+}
+
+void Player::handleGatewayError(const QString &errorMessage)
+{
+    this->m_lastError = errorMessage;
+    emit lastErrorChanged();
 }

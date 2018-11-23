@@ -107,6 +107,8 @@ namespace Core {
             void playerDataUpdated(const QByteArray &data) const;
             void loggedInChanged(bool changed) const;
             void errorRaised(const QString &message) const;
+            void clearError(const QString &message = QString()) const;
+
             void accountConfigurationChanged() const;
             void currentJobChanged() const;
 

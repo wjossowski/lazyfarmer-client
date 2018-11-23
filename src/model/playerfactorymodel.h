@@ -37,7 +37,8 @@ namespace Model {
             LevelPercentage,
             Money,
             CurrentJob,
-            PlayerObject
+            PlayerObject,
+            LastError
         };
 
         explicit PlayerFactoryModel(QObject *parent = nullptr);

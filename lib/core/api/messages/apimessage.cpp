@@ -37,8 +37,4 @@ ApiMessage::ApiMessage(ApiGateway *gateway,
 
 }
 
-ApiMessage::~ApiMessage() {
-#if DEBUG_MODE
-    qDebug() << "Destroying API Message" << MessageHelper::toString(this->m_messageType) << this;
-#endif
-}
+
