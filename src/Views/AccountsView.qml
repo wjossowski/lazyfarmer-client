@@ -24,16 +24,8 @@ Item {
 
                 spacing: 10
 
-                property var parameters: [
-                    description, level + ' (' +levelDescription+ ')'
-                ];
-
-                Repeater {
-                    model: parent.parameters;
-
-                    Label {
-                        text: modelData;
-                    }
+                Label {
+                    text: description + "(" + level + ")";
                 }
 
             }

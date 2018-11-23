@@ -74,8 +74,8 @@ QSharedPointer<Player> PlayerFactoryModel::create()
     beginInsertRows(QModelIndex(), row, row);
 
     m_players.append(player);
-    connect(&*player,   &Player::dataChanged, [this, row] () {
-        emit dataChanged(index(row), index(row));
+    connect(&*player,   &Player::dataChanged, [&] () {
+        emit dataChanged(index(0), index(m_players.size()-1));
     });
 
     endInsertRows();

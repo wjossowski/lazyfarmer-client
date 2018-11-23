@@ -16,37 +16,8 @@ ApplicationWindow {
 
     title: Qt.application.name + ' v. ' + Qt.application.version
 
-    header: ToolBar {
-        RowLayout {
-            anchors.fill: parent;
-
-            spacing: 10;
-
-            ToolButton {
-                text: "<"
-
-                onClicked: {
-                    stack.pop()
-                }
-            }
-
-        }
-    }
-
-    StackView {
-        id: stack;
-
-        Component.onCompleted: {
-            stack.push()
-        }
-    }
-
     AccountsView {
         anchors.fill: parent;
-    }
-
-    footer: ToolBar {
-
     }
 
 }
