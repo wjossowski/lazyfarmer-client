@@ -33,10 +33,6 @@ Translator::Translator(QObject *parent)
 {
     installEventFilter(this);
     initializeTranslations();
-
-    QTimer::singleShot(10000, [=] () {
-       this->setLanguage("en_US");
-    });
 }
 
 void Translator::setLanguage(const QString &language)
@@ -52,6 +48,11 @@ void Translator::setLanguage(const QString &language)
 
         emit languageChanged();
     }
+}
+
+QStringList Translator::translations() const
+{
+    return m_availableTranslations.keys();
 }
 
 bool Translator::eventFilter(QObject *watched, QEvent *event)

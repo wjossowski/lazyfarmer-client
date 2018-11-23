@@ -47,7 +47,9 @@ namespace Model {
         QVariant data(const QModelIndex &index, int role) const override;
         QHash<int, QByteArray> roleNames() const override;
 
-        Q_INVOKABLE QSharedPointer<Core::Player> create();
+        QSharedPointer<Core::Player> create();
+        Q_INVOKABLE void createPlayer() { create(); }
+
         Q_INVOKABLE void removeAt(int row);
 
     private:

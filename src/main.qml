@@ -1,6 +1,8 @@
 import QtQuick 2.7
-import QtQuick.Controls 2.0
 import QtQuick.Layouts 1.3
+
+import QtQuick.Controls 2.1
+import QtQuick.Controls.Material 2.1
 
 import "Views"
 
@@ -10,87 +12,41 @@ ApplicationWindow {
     width: 640
     height: 480
 
+    Material.theme: Material.Green;
+
     title: Qt.application.name + ' v. ' + Qt.application.version
 
     header: ToolBar {
+        RowLayout {
+            anchors.fill: parent;
 
-    }
+            spacing: 10;
 
-    ListView {
-        model: PlayerFactoryModel
+            ToolButton {
+                text: "<"
 
-        delegate: Rectangle {
-            width: parent.width;
-            height: 60;
-
-            ColumnLayout {
-                anchors.fill: parent
-
-                RowLayout {
-                    id: info
-
-                    anchors.left: parent.left;
-                    anchors.right: parent.right;
-                    anchors.top: parent.top;
-
-                    property var parameters: [
-                        description, level + ' (' +levelDescription+ ')'
-                    ];
-
-                    Repeater {
-                        model: parent.parameters;
-
-                        Text {
-                            text: modelData;
-                        }
-                    }
-
-                }
-
-                Text {
-                    anchors.top: info.bottom;
-                    anchors.left: parent.left;
-                    anchors.right: parent.right;
-
-                    text: job
+                onClicked: {
+                    stack.pop()
                 }
             }
 
-
         }
-
     }
 
-//    StackView {
-//        id: stack
-//        anchors.fill: parent
-//    }
+    StackView {
+        id: stack;
 
-//    LoginView {
-//        anchors.fill: parent;
-//    }
+        Component.onCompleted: {
+            stack.push()
+        }
+    }
 
-//    Views.StorageView {
-//        anchors {
-//            top: parent.top
-//            left: parent.left
-//            right: parent.right
-//        }
-
-//        height: parent.height/2
-//    }
-
-//    Views.FarmView {
-//        anchors {
-//            bottom: parent.bottom
-//            left: parent.left
-//            right: parent.right
-//        }
-
-//        height: parent.height/2
-//    }
+    AccountsView {
+        anchors.fill: parent;
+    }
 
     footer: ToolBar {
 
     }
+
 }

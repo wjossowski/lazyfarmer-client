@@ -45,7 +45,7 @@ namespace Core {
         using Ptr = QSharedPointer<Player>;
 
         explicit Player(QObject *parent = nullptr);
-        ~Player() = default;
+        ~Player() override;
 
         GlobalGameData::Ptr gameData() const;
 

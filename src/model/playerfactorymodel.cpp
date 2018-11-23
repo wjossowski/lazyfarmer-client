@@ -86,6 +86,9 @@ QSharedPointer<Player> PlayerFactoryModel::create()
 void PlayerFactoryModel::removeAt(int row)
 {
     beginRemoveRows(QModelIndex(), row, row);
+    auto player = m_players.at(row);
+    player->deleteLater();
+
     m_players.removeAt(row);
     endRemoveRows();
 }

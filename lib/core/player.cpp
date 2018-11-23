@@ -42,6 +42,11 @@ Player::Player(QObject *parent)
     initializeConnections();
 }
 
+Player::~Player()
+{
+    qDebug() << "Removing player" << playerDescription();
+}
+
 GlobalGameData::Ptr Player::gameData() const
 {
     return m_gateway.gameData();

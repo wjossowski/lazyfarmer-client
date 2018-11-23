@@ -26,12 +26,14 @@ class Translator : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString r READ emptyString NOTIFY languageChanged)
+    Q_PROPERTY(QStringList translations READ translations)
 
 public:
     explicit Translator(QObject *parent = nullptr);
     ~Translator() override = default;
 
     Q_INVOKABLE void setLanguage(const QString &language);
+    Q_INVOKABLE QStringList translations() const;
 
     QString emptyString () const { return QString(); }
     bool eventFilter(QObject *watched, QEvent *event) override;

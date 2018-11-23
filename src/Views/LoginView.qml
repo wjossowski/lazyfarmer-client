@@ -1,11 +1,20 @@
 import QtQuick 2.7
-import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.3
 
-// Login, Password, Server, Domain
+import QtQuick.Controls 2.1
+import QtQuick.Controls.Material 2.1
 
-Rectangle {
+Item {
     id: root;
+
+    property alias login: loginField.text;
+    property alias password: passwordField.text;
+    property alias domain: domainField.text;
+    property alias server: serverField.text;
+
+    signal submitClicked(string login, string password, string domain, string server);
+
+    anchors.margins: 10;
 
     ColumnLayout {
         anchors{
@@ -16,14 +25,14 @@ Rectangle {
         spacing: 5;
 
         TextField {
-            id: login;
+            id: loginField;
 
             Layout.fillWidth: true;
             placeholderText: qsTr("Username") + t.r;
         }
 
         TextField {
-            id: password;
+            id: passwordField;
 
             Layout.fillWidth: true;
             placeholderText: qsTr("Password") + t.r;
@@ -32,14 +41,14 @@ Rectangle {
         }
 
         TextField {
-            id: domain;
+            id: domainField;
 
             Layout.fillWidth: true;
             placeholderText: qsTr("Domain") + t.r;
         }
 
         TextField {
-            id: server;
+            id: serverField;
 
             Layout.fillWidth: true;
             placeholderText: qsTr("Server") + t.r;
@@ -51,10 +60,14 @@ Rectangle {
         }
 
         Button {
-            id: submit
+            id: submitButton
 
             Layout.fillWidth: true;
             text: qsTr("Login") + t.r;
+
+            onClicked: {
+                submitClicked(login, password, domain, server);
+            }
         }
 
     }

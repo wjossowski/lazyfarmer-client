@@ -235,13 +235,6 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-#ifdef DEBUG_MODE
-    qDebug() << "Debug storage located in:" << QFileInfo(debugFile).absoluteFilePath();
-
-//    createDebugEnvironment(debugGateway, parser);
-//    queryDebug(debugGateway);
-#endif
-
     if (parser.isSet("no-gui")) {
         return lazyFarmerApp.exec();
     }
@@ -250,18 +243,14 @@ int main(int argc, char *argv[])
 
     Model::PlayerFactoryModel playerFactory;
     engine.rootContext()->setContextProperty("PlayerFactoryModel", &playerFactory);
+    playerFactory.create();
     auto player = playerFactory.create();
+    playerFactory.create();
 
-    QTimer::singleShot(5000, [&] () {
+    QTimer::singleShot(1000, [&] () {
        createDebugEnvironment(player->gateway(), parser);
        queryDebug(player->gateway());
     });
-
-//    Model::StorageModel storageModel(p.storage());
-//    engine.rootContext()->setContextProperty("StorageModel", &storageModel);
-
-//    Model::BuildingModel buildingModel(p.buildings());
-//    engine.rootContext()->setContextProperty("BuildingModel", &buildingModel);
 
     engine.rootContext()->setContextProperty("t", &translator);
 

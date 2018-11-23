@@ -53,6 +53,7 @@ namespace Core {
             };
 
             explicit ApiGateway(QObject *parent = nullptr);
+            ~ApiGateway() override;
 
             bool isConfigured() const;
 
