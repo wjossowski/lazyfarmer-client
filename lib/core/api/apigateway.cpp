@@ -44,6 +44,11 @@ using namespace Core::Api;
 using namespace Core::Api::Messages;
 using namespace Core::Extractors;
 
+constexpr const char* KEY_LOGIN = "Login";
+constexpr const char* KEY_PASSWORD = "Password";
+constexpr const char* KEY_SERVER_ID = "ServerDomain";
+constexpr const char* KEY_SERVER_DOMAIN = "ServerDomain";
+
 ApiGateway::ApiGateway(QObject *parent)
     : QObject(parent)
     , m_loggedIn(false)
@@ -358,6 +363,30 @@ void ApiGateway::extractGameData()
 GlobalGameData::Ptr ApiGateway::gameData() const
 {
     return GlobalGameData::gameData(m_serverDomain);
+}
+
+QJsonObject ApiGateway::toJson() const
+{
+    return {
+        { KEY_SERVER_DOMAIN, m_serverDomain },
+        { KEY_SERVER_ID, m_serverId },
+        { KEY_LOGIN, m_login },
+        { KEY_PASSWORD, m_password },
+    };
+}
+
+void ApiGateway::fromJson(const QJsonObject &json)
+{
+    const auto getStringValue = [&](const QString &key) {
+        return json[key].toString();
+    };
+
+    this->setApiOptions({
+        getStringValue(KEY_SERVER_DOMAIN),
+        getStringValue(KEY_SERVER_ID),
+        getStringValue(KEY_LOGIN),
+        getStringValue(KEY_PASSWORD)
+    });
 }
 
 /**

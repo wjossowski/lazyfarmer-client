@@ -51,12 +51,17 @@ namespace Core {
 
         GlobalGameData::Ptr gameData() const;
 
-        Api::ApiGateway &gateway() { return m_gateway; }
+        Api::ApiGateway::Ptr gateway() { return m_gateway; }
         Data::Storage::Ptr storage() const { return m_storage; }
         Data::BuildingList::Ptr buildings() const { return m_buildingList; }
 
+        QJsonObject toJson() const;
+        void fromJson(const QJsonObject &json);
+
         QString playerDescription() const;
         QString currentJob() const;
+
+        Q_INVOKABLE void setApiOptions(const Api::ApiOptions &options);
 
     public slots:
         void update(const QByteArray &info);
@@ -93,8 +98,8 @@ namespace Core {
 
         Data::Storage::Ptr m_storage;
         Data::BuildingList::Ptr m_buildingList;
+        Api::ApiGateway::Ptr m_gateway;
 
-        Api::ApiGateway m_gateway;
         QString m_lastError;
     };
 

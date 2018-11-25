@@ -32,6 +32,8 @@ using namespace Core::Extractors;
 using namespace Core::Api;
 using namespace Core::Api::Messages;
 
+constexpr const char* KEY_GATEWAY = "GatewayOptions";
+
 Player::Player(QObject *parent)
     : QObject(parent)
     , m_level(0)
@@ -49,24 +51,41 @@ Player::~Player()
 
 GlobalGameData::Ptr Player::gameData() const
 {
-    return m_gateway.gameData();
+    return m_gateway->gameData();
+}
+
+QJsonObject Player::toJson() const
+{
+    return {
+        { KEY_GATEWAY, m_gateway->toJson()}
+    };
+}
+
+void Player::fromJson(const QJsonObject &json)
+{
+    m_gateway->fromJson(json[KEY_GATEWAY].toObject());
 }
 
 QString Player::playerDescription() const
 {
-    if (!m_gateway.isConfigured()) {
+    if (!m_gateway->isConfigured()) {
         return tr("Unconfigured Account");
     } else {
         return QString("%1@s%2.%3")
-                .arg(m_gateway.login())
-                .arg(m_gateway.serverId())
-                .arg(m_gateway.serverDomain());
+                .arg(m_gateway->login())
+                .arg(m_gateway->serverId())
+                .arg(m_gateway->serverDomain());
     }
 }
 
 QString Player::currentJob() const
 {
-    return m_gateway.currentJobName();
+    return m_gateway->currentJobName();
+}
+
+void Player::setApiOptions(const ApiOptions &options)
+{
+    m_gateway->setApiOptions(options);
 }
 
 void Player::update(const QByteArray &info)
@@ -104,30 +123,31 @@ void Player::initialize()
 {
     m_storage.reset(new Data::Storage(this));
     m_buildingList.reset(new Data::BuildingList(this));
+    m_gateway.reset(new ApiGateway(this));
 }
 
 void Player::initializeConnections() const
 {
-    connect(this,       &Player::updateBuildingRequested,
-            &m_gateway, &ApiGateway::requestBuildingUpdate);
+    connect(this,         &Player::updateBuildingRequested,
+            &*m_gateway,  &ApiGateway::requestBuildingUpdate);
 
-    connect(&m_gateway, &ApiGateway::playerDataUpdated,
-            this,       &Player::update);
+    connect(&*m_gateway,  &ApiGateway::playerDataUpdated,
+            this,         &Player::update);
 
-    connect(&m_gateway, &ApiGateway::accountConfigurationChanged,
-            this,       &Player::playerDescriptionChanged);
+    connect(&*m_gateway,  &ApiGateway::accountConfigurationChanged,
+            this,         &Player::playerDescriptionChanged);
 
-    connect(&m_gateway, &ApiGateway::currentJobChanged,
-            this,       &Player::currentJobChanged);
+    connect(&*m_gateway,  &ApiGateway::currentJobChanged,
+            this,         &Player::currentJobChanged);
 
-    connect(&m_gateway,         &ApiGateway::buildingDataUpdated,
-            &*m_buildingList,   &BuildingList::updateBuilding);
+    connect(&*m_gateway,          &ApiGateway::buildingDataUpdated,
+            &*m_buildingList,     &BuildingList::updateBuilding);
 
-    connect(&m_gateway, &ApiGateway::errorRaised,
-            this,       &Player::handleGatewayError);
+    connect(&*m_gateway, &ApiGateway::errorRaised,
+            this,        &Player::handleGatewayError);
 
-    connect(&m_gateway, &ApiGateway::clearError,
-            this,       &Player::handleGatewayError);
+    connect(&*m_gateway,  &ApiGateway::clearError,
+            this,         &Player::handleGatewayError);
 
     // Signal forwarding (needed for PlayerFactory)
     connect(this, &Player::levelChanged,                this, &Player::dataChanged);

@@ -85,25 +85,23 @@ void handleMessage(QtMsgType type,
     }
 }
 
-#ifdef DEBUG_MODE
-void createDebugEnvironment(Api::ApiGateway &gateway, const QCommandLineParser &parser)
+Api::ApiOptions extractApiOptions(const QCommandLineParser &parser)
 {
-    qDebug() << "Entering" << APPLICATION_NAME << " v." << CURRENT_VERSION << "debug mode";
     qDebug() << "Selected following configuration:";
     qDebug() << "Domain:  " << parser.value("domain");
     qDebug() << "Server:  " << parser.value("server");
     qDebug() << "Login:   " << parser.value("login");
     qDebug() << "Password:" << parser.value("password");
 
-    gateway.setApiOptions({
+    return {
         parser.value("server"),
         parser.value("domain"),
         parser.value("login"),
         parser.value("password")
-    });
-
-    qDebug() << "Account" << (gateway.isConfigured() ? "configured!" : "unconfigured ;(");
+    };
 }
+
+#ifdef DEBUG_MODE
 
 void queryDebug(Api::ApiGateway &debugGateway)
 {
@@ -125,6 +123,7 @@ void queryDebug(Api::ApiGateway &debugGateway)
     getInfo();
 
 }
+
 #endif
 
 void initializeCommandLineInterface(const QCoreApplication &application, QCommandLineParser &parser)
@@ -248,13 +247,13 @@ int main(int argc, char *argv[])
 
     Model::PlayerFactoryModel playerFactory;
     engine.rootContext()->setContextProperty("PlayerFactoryModel", &playerFactory);
-    playerFactory.create();
-    auto player = playerFactory.create();
-    playerFactory.create();
+    auto player1 = playerFactory.create();
+    auto player2 = playerFactory.create();
+    auto player3 = playerFactory.create();
 
     QTimer::singleShot(100, [&] () {
-//       createDebugEnvironment(player->gateway(), parser);
-       queryDebug(player->gateway());
+        queryDebug(*player1->gateway());
+        queryDebug(*player2->gateway());
     });
 
     engine.rootContext()->setContextProperty("t", &translator);

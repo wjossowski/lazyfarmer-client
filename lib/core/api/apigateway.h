@@ -39,7 +39,7 @@ namespace Core {
     namespace Api {
 
         struct ApiOptions {
-            QString serverId, serverDomain, login, password;
+            QString serverDomain, serverId, login, password;
         };
 
         class ApiGateway : public QObject
@@ -51,6 +51,8 @@ namespace Core {
                 Top,
                 Bottom
             };
+
+            using Ptr = QSharedPointer<ApiGateway>;
 
             explicit ApiGateway(QObject *parent = nullptr);
             ~ApiGateway() override;
@@ -93,6 +95,9 @@ namespace Core {
 
             void extractGameData();
             GlobalGameData::Ptr gameData() const;
+
+            QJsonObject toJson() const;
+            void fromJson(const QJsonObject &json);
 
             void handlePlayerData(const QByteArray &playerData) const;
             void handleBuildingUpdate(int farm, int pos, const QVariant &data) const;

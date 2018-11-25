@@ -91,7 +91,7 @@ Item {
 
         add: Transition {
             ParallelAnimation {
-                NumberAnimation { property: "opacity"; from: 0;    duration: 1000 }
+                NumberAnimation { property: "opacity"; from: 0; to: 1; duration: 1000 }
                 NumberAnimation { property: "x";       from: -100; duration: 400 }
             }
         }
