@@ -14,59 +14,77 @@ Item {
 
         anchors.fill: parent;
         anchors.margins: 10;
+        anchors.topMargin: 20;
+        anchors.bottomMargin: 20;
 
         delegate: Item {
             width: parent.width;
-            height: 55;
+            height: 100;
 
-            RowLayout {
-                anchors.verticalCenter: parent.verticalCenter;
+            ColumnLayout {
+                spacing: 10;
 
-                spacing: 10
+                anchors.top: parent.top;
+                anchors.topMargin: 15;
 
                 Label {
                     text: description + "(" + level + ")";
                 }
 
+                Label {
+                    text: qsTr("Job: ") + job + t.r;
+                }
+
             }
 
-            Label {
-//                visible: lastError;
-
-                anchors.centerIn: parent;
-
-                text: lastError;
-
-                Material.foreground: Material.DeepOrange;
-            }
-
-            RowLayout {
-                anchors.verticalCenter: parent.verticalCenter;
+            ColumnLayout {
                 anchors.right: parent.right;
+                anchors.verticalCenter: parent.verticalCenter;
 
-                Layout.alignment: Qt.AlignRight;
-
-                spacing: 10
+                spacing: 5;
 
                 Label {
-                    text: job
+                    Layout.fillWidth: true;
+                    horizontalAlignment: "AlignHCenter"
+
+                    text: lastError;
+                    Material.foreground: Material.DeepOrange;
                 }
 
-                RoundButton {
-                    id: editButton
-                    text: "\u270E"
-                }
+                RowLayout {
+                    Layout.alignment: Qt.AlignRight;
 
-                RoundButton {
-                    id: deleteButton
-                    Material.background: Material.DeepOrange;
-                    text: "x"
+                    spacing: 10;
 
-                    onClicked: {
-                        PlayerFactoryModel.removeAt(index);
+                    RoundButton {
+                        id: editButton;
+                        text: "\u270E";
                     }
+
+                    RoundButton {
+                        id: deleteButton;
+                        Material.background: Material.DeepOrange;
+                        text: "x";
+
+                        onClicked: {
+                            PlayerFactoryModel.removeAt(index);
+                        }
+                    }
+
                 }
 
+            }
+
+            Rectangle {
+                anchors {
+                    bottom: parent.bottom;
+                    left: parent.left;
+                    right: parent.right;
+                }
+
+                color: Material.accent;
+
+                height: 1
             }
 
         }
@@ -93,6 +111,8 @@ Item {
             right: parent.right;
             margins: 10;
         }
+
+        Material.background: Material.primary;
 
         width: 80;
         height: 80;

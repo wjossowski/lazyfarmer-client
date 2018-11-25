@@ -45,6 +45,8 @@
 #include <QtQml/QQmlApplicationEngine>
 #include <QtQml/QQmlContext>
 
+#include <QtQuickControls2/QQuickStyle>
+
 #include <QtDebug>
 
 #ifdef DEBUG_MODE
@@ -197,6 +199,7 @@ void registerCustomMetatypes()
     qRegisterMetaType<Core::Data::BuildingDetails>("Core::Data::BuildingDetails");
     qRegisterMetaType<Core::Data::ProductDetails>("Core::Data::ProductDetails");
     qRegisterMetaType<Core::Data::ProductionDetails>("Core::Data::ProductionDetails");
+    qRegisterMetaType<Core::Api::ApiOptions>("Core::Api::ApiOptions");
 }
 
 int main(int argc, char *argv[])
@@ -237,6 +240,8 @@ int main(int argc, char *argv[])
 
     if (parser.isSet("no-gui")) {
         return lazyFarmerApp.exec();
+    } else {
+        QQuickStyle::setStyle("Material");
     }
 
     QQmlApplicationEngine engine;
@@ -247,8 +252,8 @@ int main(int argc, char *argv[])
     auto player = playerFactory.create();
     playerFactory.create();
 
-    QTimer::singleShot(1000, [&] () {
-       createDebugEnvironment(player->gateway(), parser);
+    QTimer::singleShot(100, [&] () {
+//       createDebugEnvironment(player->gateway(), parser);
        queryDebug(player->gateway());
     });
 

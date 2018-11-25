@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-QT       += core gui widgets network qml quick
+QT       += core gui widgets network qml quick quickcontrols2
 CONFIG   += c++14
 
 TARGET = LazyFarmer
@@ -48,4 +48,6 @@ DISTFILES += \
     Common/Palette.qml
 
 RESOURCES += resources.qrc
+
+OTHER_FILES += qtquickcontrols2.conf
 

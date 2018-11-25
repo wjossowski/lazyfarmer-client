@@ -7,5 +7,6 @@
         <file>Views/FarmView.qml</file>
         <file>Views/StorageView.qml</file>
         <file>Views/LoginView.qml</file>
+        <file>qtquickcontrols2.conf</file>
     </qresource>
 </RCC>
