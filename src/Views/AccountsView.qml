@@ -1,21 +1,29 @@
-import QtQuick 2.7
+import QtQuick 2.11
 import QtQuick.Layouts 1.3
 
-import QtQuick.Controls 2.1
-import QtQuick.Controls.Material 2.1
+import QtQuick.Controls 2.4
+import QtQuick.Controls.Material 2.3
 
 Item {
     id: root;
+
+    property string title: qsTr("Accounts") + t.r;
 
     ListView {
         id: playersList;
 
         model: PlayerFactoryModel;
 
-        anchors.fill: parent;
-        anchors.margins: 10;
-        anchors.topMargin: 20;
-        anchors.bottomMargin: 20;
+        anchors {
+            top: parent.top;
+            left: parent.left;
+            right: parent.right
+            bottom: addButton.top
+
+            margins: 10;
+            topMargin: 20;
+            bottomMargin: 20;
+        }
 
         delegate: Item {
             width: parent.width;
@@ -106,6 +114,8 @@ Item {
     }
 
     RoundButton {
+        id: addButton;
+
         anchors {
             bottom: parent.bottom;
             right: parent.right;

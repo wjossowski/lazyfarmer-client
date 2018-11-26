@@ -1,6 +1,6 @@
 pragma Singleton
 
-import QtQuick 2.0
+import QtQuick 2.11
 
 QtObject {
     readonly property color colorPrimary: "#1b5e20";

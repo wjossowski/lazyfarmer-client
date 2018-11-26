@@ -26,7 +26,8 @@ class Translator : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString r READ emptyString NOTIFY languageChanged)
-    Q_PROPERTY(QStringList translations READ translations)
+    Q_PROPERTY(QStringList translations READ translations NOTIFY translationsChanged)
+    Q_PROPERTY(QString language MEMBER m_currentLanguage NOTIFY languageChanged)
 
 public:
     explicit Translator(QObject *parent = nullptr);
@@ -36,10 +37,10 @@ public:
     Q_INVOKABLE QStringList translations() const;
 
     QString emptyString () const { return QString(); }
-    bool eventFilter(QObject *watched, QEvent *event) override;
 
 signals:
-    void languageChanged() const;
+    void languageChanged(const QString &language) const;
+    void translationsChanged() const;
 
 private:
     void initializeTranslations();
@@ -47,4 +48,5 @@ private:
 private:
     QMap<QString, QString> m_availableTranslations;
     QTranslator m_translator;
+    QString m_currentLanguage;
 };

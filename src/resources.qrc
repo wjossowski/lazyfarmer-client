@@ -3,6 +3,8 @@
         <file>main.qml</file>
         <file>Items/Product.qml</file>
         <file>Items/Account.qml</file>
+        <file>Items/SideMenu.qml</file>
+        <file>Items/MainToolbar.qml</file>
         <file>Views/AccountsView.qml</file>
         <file>Views/FarmView.qml</file>
         <file>Views/StorageView.qml</file>

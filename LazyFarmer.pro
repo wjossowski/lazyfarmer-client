@@ -36,8 +36,8 @@ CONFIG(debug, debug|release) {
 
 # Translations
 TRANSLATIONS += \
-    $${PWD}/assets/translations/en_US.ts \
-    $${PWD}/assets/translations/pl_PL.ts
+    $${PWD}/assets/translations/english.ts \
+    $${PWD}/assets/translations/polski.ts
 
 # Additional files
 OTHER_FILES+=notes

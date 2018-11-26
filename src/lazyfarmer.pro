@@ -20,7 +20,7 @@ CONFIG   += c++14
 TARGET = LazyFarmer
 TEMPLATE = app
 
-VERSION = 0.1.0.0
+VERSION = 0.1.0
 
 # Libs:
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../lib/core/release/ -lCoreLib

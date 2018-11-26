@@ -247,12 +247,13 @@ int main(int argc, char *argv[])
 
     Model::PlayerFactoryModel playerFactory;
     engine.rootContext()->setContextProperty("PlayerFactoryModel", &playerFactory);
-    auto player1 = playerFactory.create();
-    auto player2 = playerFactory.create();
-    auto player3 = playerFactory.create();
+    playerFactory.create();
 
     QTimer::singleShot(100, [&] () {
+        auto player1 = playerFactory.create();
         queryDebug(*player1->gateway());
+
+        auto player2 = playerFactory.create();
         queryDebug(*player2->gateway());
     });
 

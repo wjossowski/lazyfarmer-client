@@ -31,13 +31,12 @@
 Translator::Translator(QObject *parent)
     : QObject(parent)
 {
-    installEventFilter(this);
     initializeTranslations();
 }
 
 void Translator::setLanguage(const QString &language)
 {
-    if (m_availableTranslations.contains(language)) {
+    if (m_availableTranslations.contains(language) && m_currentLanguage != language) {
         qDebug() << "Changing language name to" << language << m_availableTranslations[language];
 
         m_translator.load(m_availableTranslations[language]);
@@ -46,22 +45,14 @@ void Translator::setLanguage(const QString &language)
         QSettings settings;
         settings.setValue(S_TranslationsPath, language);
 
-        emit languageChanged();
+        m_currentLanguage = language;
+        emit languageChanged(language);
     }
 }
 
 QStringList Translator::translations() const
 {
     return m_availableTranslations.keys();
-}
-
-bool Translator::eventFilter(QObject *watched, QEvent *event)
-{
-    if (event->type() == QEvent::LanguageChange) {
-        emit languageChanged();
-    }
-
-    return QObject::eventFilter(watched, event);
 }
 
 void Translator::initializeTranslations()
@@ -79,6 +70,7 @@ void Translator::initializeTranslations()
     for (const auto &t : translations) {
         m_availableTranslations.insert(t.baseName(), t.absoluteFilePath());
     }
+    emit translationsChanged();
 
     qApp->setProperty("AvailableTranslations", QStringList(m_availableTranslations.keys()));
 

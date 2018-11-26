@@ -10,6 +10,19 @@
     </message>
 </context>
 <context>
+    <name>AccountsView</name>
+    <message>
+        <location filename="../../src/Views/AccountsView.qml" line="10"/>
+        <source>Accounts</source>
+        <translation>Konta</translation>
+    </message>
+    <message>
+        <location filename="../../src/Views/AccountsView.qml" line="44"/>
+        <source>Job: </source>
+        <translation>Zadanie: </translation>
+    </message>
+</context>
+<context>
     <name>ApiGatewayError</name>
     <message>
         <location filename="../../lib/core/api/apigatewayerror.h" line="53"/>
@@ -40,22 +53,22 @@
 <context>
     <name>Core::Api::ApiGateway</name>
     <message>
-        <location filename="../../lib/core/api/apigateway.cpp" line="77"/>
+        <location filename="../../lib/core/api/apigateway.cpp" line="87"/>
         <source>%1 successfully logged in, rid: &apos;%2&apos;</source>
         <translation>Zalogowano na %1, rid: %2</translation>
     </message>
     <message>
-        <location filename="../../lib/core/api/apigateway.cpp" line="80"/>
+        <location filename="../../lib/core/api/apigateway.cpp" line="90"/>
         <source>Logged out</source>
         <translation>Wylogowano</translation>
     </message>
     <message>
-        <location filename="../../lib/core/api/apigateway.cpp" line="332"/>
+        <location filename="../../lib/core/api/apigateway.cpp" line="344"/>
         <source>Idle</source>
         <translation>Bezczynny</translation>
     </message>
     <message>
-        <location filename="../../lib/core/api/apigateway.cpp" line="386"/>
+        <location filename="../../lib/core/api/apigateway.cpp" line="422"/>
         <source>Error on `%1` raised. %2</source>
         <translation>Wykryto błąd %1: %2</translation>
     </message>
@@ -63,7 +76,7 @@
 <context>
     <name>Core::Player</name>
     <message>
-        <location filename="../../lib/core/player.cpp" line="53"/>
+        <location filename="../../lib/core/player.cpp" line="72"/>
         <source>Unconfigured Account</source>
         <translation>Nieskonfigurowane konto</translation>
     </message>
@@ -71,27 +84,27 @@
 <context>
     <name>LoginView</name>
     <message>
-        <location filename="../../src/Views/LoginView.qml" line="22"/>
+        <location filename="../../src/Views/LoginView.qml" line="31"/>
         <source>Username</source>
         <translation>Użytkownik</translation>
     </message>
     <message>
-        <location filename="../../src/Views/LoginView.qml" line="29"/>
+        <location filename="../../src/Views/LoginView.qml" line="38"/>
         <source>Password</source>
         <translation>Hasło</translation>
     </message>
     <message>
-        <location filename="../../src/Views/LoginView.qml" line="38"/>
+        <location filename="../../src/Views/LoginView.qml" line="47"/>
         <source>Domain</source>
         <translation>Domena</translation>
     </message>
     <message>
-        <location filename="../../src/Views/LoginView.qml" line="45"/>
+        <location filename="../../src/Views/LoginView.qml" line="54"/>
         <source>Server</source>
         <translation>Serwer</translation>
     </message>
     <message>
-        <location filename="../../src/Views/LoginView.qml" line="57"/>
+        <location filename="../../src/Views/LoginView.qml" line="66"/>
         <source>Login</source>
         <translation>Login</translation>
     </message>
@@ -309,84 +322,97 @@
     </message>
 </context>
 <context>
+    <name>SideMenu</name>
+    <message>
+        <location filename="../../src/Items/SideMenu.qml" line="23"/>
+        <source>Preferences</source>
+        <translation>Ustawienia</translation>
+    </message>
+    <message>
+        <location filename="../../src/Items/SideMenu.qml" line="45"/>
+        <source>Language</source>
+        <translation>Język</translation>
+    </message>
+</context>
+<context>
     <name>main</name>
     <message>
-        <location filename="../../src/main.cpp" line="130"/>
+        <location filename="../../src/main.cpp" line="131"/>
         <source>Lazy farmer - My Free Farm bot</source>
         <translation>Lazy farmer - WolniFarmerzy bot</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="135"/>
+        <location filename="../../src/main.cpp" line="136"/>
         <source>Specifies login on startup.</source>
         <translation>Ustawia login podczas uruchomienia.</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="136"/>
+        <location filename="../../src/main.cpp" line="137"/>
         <source>User&apos;s login.</source>
         <translation>Login użytkownika.</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="138"/>
+        <location filename="../../src/main.cpp" line="139"/>
         <source>Specifies password on startup.</source>
         <translation>Ustawia hasło.</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="139"/>
+        <location filename="../../src/main.cpp" line="140"/>
         <source>User&apos;s password.</source>
         <translation>Hasło.</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="141"/>
+        <location filename="../../src/main.cpp" line="142"/>
         <source>Specifies game&apos;s domain on startup.</source>
         <translation>Ustawia domenę gry.</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="142"/>
+        <location filename="../../src/main.cpp" line="143"/>
         <source>Domain (myfreefarm.de / wolnifarmerzy.pl).</source>
         <translation>Domena (wolnifarmerzy.pl / myfreefarm.de).</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="144"/>
+        <location filename="../../src/main.cpp" line="145"/>
         <source>Specifies server number on startup.</source>
         <translation>Ustawia numer serwera.</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="145"/>
+        <location filename="../../src/main.cpp" line="146"/>
         <source>Server number.</source>
         <translation>Numer serwera.</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="147"/>
+        <location filename="../../src/main.cpp" line="148"/>
         <source>Specifies config file on startup.</source>
         <translation>Ustawia plik konfiguracyjny.</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="148"/>
+        <location filename="../../src/main.cpp" line="149"/>
         <source>Task manager&apos;s configuration file.</source>
         <translation>Plik konfiguracyjny menedżera zadań.</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="150"/>
+        <location filename="../../src/main.cpp" line="151"/>
         <source>Disables UI Mode.</source>
         <translation>Wyłącza interfejs użytkownika.</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="161"/>
+        <location filename="../../src/main.cpp" line="162"/>
         <source>Unable to create path to application data.</source>
         <translation>Nie można utwożyć ścieżki do appdata.</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="170"/>
+        <location filename="../../src/main.cpp" line="171"/>
         <source>Unable to open logging file.</source>
         <translation>Nie można otworzyć pliku logów.</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="187"/>
+        <location filename="../../src/main.cpp" line="188"/>
         <source>Unable to read building-config.json</source>
         <translation>Nie można przeczytać pliku config.json</translation>
     </message>
     <message>
-        <location filename="../../src/main.cpp" line="190"/>
+        <location filename="../../src/main.cpp" line="191"/>
         <source>Unable to load building-config.json</source>
         <translation>Nie można załadować pliku config.json</translation>
     </message>

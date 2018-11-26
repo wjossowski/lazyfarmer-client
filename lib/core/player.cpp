@@ -106,17 +106,29 @@ void Player::update(const QByteArray &info)
 
 void Player::updateBasicInfo(const QVariantMap &basicInfo)
 {
-    m_level = basicInfo["Level"].toInt();
-    emit levelChanged(m_level);
+    int level = basicInfo["Level"].toInt();
+    if (m_level != level) {
+        m_level = level;
+        emit levelChanged(m_level);
+    }
 
-    m_levelDescription = basicInfo["LevelDescription"].toString();
-    emit levelDescriptionChanged(m_levelDescription);
+    QString levelDescription = basicInfo["LevelDescription"].toString();
+    if (m_levelDescription != levelDescription) {
+        m_levelDescription = levelDescription;
+        emit levelDescriptionChanged(m_levelDescription);
+    }
 
-    m_levelPercentage = basicInfo["LevelPercentage"].toInt();
-    emit levelPercentageChanged(m_levelPercentage);
+    int levelPercentage = basicInfo["LevelPercentage"].toInt();
+    if (m_levelPercentage != levelPercentage) {
+        m_levelPercentage = levelPercentage;
+        emit levelPercentageChanged(m_levelPercentage);
+    }
 
-    m_money = basicInfo["Money"].toDouble();
-    emit moneyChanged(m_money);
+    double money = basicInfo["Money"].toDouble();
+    if (qFuzzyCompare(m_money, money)) {
+        m_money = money;
+        emit moneyChanged(m_money);
+    }
 }
 
 void Player::initialize()
