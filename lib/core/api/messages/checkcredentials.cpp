@@ -1,6 +1,6 @@
 /**
  ** This file is part of the LazyFarmer project.
- ** Copyright 2017 Wojciech Ossowski <w.j.ossowski@gmail.com>.
+ ** Copyright 2018 Wojciech Ossowski <w.j.ossowski@gmail.com>.
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU Lesser General Public License as
@@ -16,35 +16,27 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "login.h"
+#include "checkcredentials.h"
 #include "../apigateway.h"
-
-#include <QtNetwork/QNetworkRequest>
 
 #include <QtCore/QJsonDocument>
 #include <QtCore/QJsonArray>
-#include <QtCore/QRegularExpression>
-#include <QtCore/QSettings>
 
-using namespace Core;
-using namespace Core::Api;
-using namespace Core::Api::Messages;
-
-const QUrl Login::url() const
+const QUrl Core::Api::Messages::CheckCredentials::url() const
 {
     return QUrl(QString("https://www.%1/ajax/createtoken2.php?n=%2")
                 .arg(m_gateway->serverDomain())
                 .arg(QDateTime::currentMSecsSinceEpoch()));
 }
 
-void Login::configureRequest(QNetworkRequest &request) const
+void Core::Api::Messages::CheckCredentials::configureRequest(QNetworkRequest &request) const
 {
     QSslConfiguration config = QSslConfiguration::defaultConfiguration();
     config.setProtocol(QSsl::TlsV1SslV3);
     request.setSslConfiguration(config);
 }
 
-const QList<QPair<QString, QString> > Login::postData() const
+const QList<QPair<QString, QString> > Core::Api::Messages::CheckCredentials::postData() const
 {
     return {
         { "server", m_gateway->serverId() },
@@ -55,37 +47,14 @@ const QList<QPair<QString, QString> > Login::postData() const
     };
 }
 
-void Login::handleResponse(QIODevice *reply)
+void Core::Api::Messages::CheckCredentials::handleResponse(QIODevice *reply)
 {
     const auto response = QJsonDocument::fromJson(reply->readAll());
     const auto redirectUrl = QUrl(response.array().last().toString());
 
     if (redirectUrl.isValid()) {
-        m_gateway->recursiveRedirect(redirectUrl, [this] (QIODevice *reply) {
-            this->extractRid(reply);
-        });
+        emit finished();
     } else {
         emit raiseError(ApiGatewayError::ErrorType::InvalidCredentials);
     }
-}
-
-void Login::extractRid(QIODevice *reply)
-{
-    QSettings settings;
-    settings.beginGroup("Lookup");
-
-    bool firstRun = m_gateway->rid().isEmpty();
-    const QString content = firstRun ? reply->readAll()
-                                     : reply->read(settings.value("RidExtractorDeep", 1024).toInt());
-
-    QRegularExpression ridRegex("var rid = '(?<rid>.*)'");
-    const QString rid = ridRegex.match(content).captured("rid");
-
-    m_gateway->setRid(rid);
-
-    if (firstRun) {
-        m_gateway->setBaseInfo(content);
-    }
-
-    emit finished();
 }

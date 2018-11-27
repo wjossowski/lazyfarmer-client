@@ -37,18 +37,28 @@
 #include <QtCore/QUrl>
 #include <QtCore/QUrlQuery>
 
-#include <QtDebug>
+#include <QtCore/QDebug>
 
 using namespace Core;
 using namespace Core::Api;
 using namespace Core::Api::Messages;
 using namespace Core::Extractors;
 
+constexpr const char* KEY_LOGIN = "Login";
+constexpr const char* KEY_PASSWORD = "Password";
+constexpr const char* KEY_SERVER_ID = "ServerDomain";
+constexpr const char* KEY_SERVER_DOMAIN = "ServerDomain";
+
 ApiGateway::ApiGateway(QObject *parent)
     : QObject(parent)
     , m_loggedIn(false)
 {
 
+}
+
+ApiGateway::~ApiGateway()
+{
+    qDebug() << "Removing ApiGateway" << m_login;
 }
 
 /**
@@ -125,6 +135,8 @@ void ApiGateway::setApiOptions(const ApiOptions &options)
     m_serverDomain = options.serverDomain;
     m_login = options.login;
     m_password = options.password;
+
+    emit accountConfigurationChanged();
 }
 
 /**
@@ -152,22 +164,35 @@ void ApiGateway::queueMessage(const ApiMessage::Ptr &message, PushMessageTo plac
  */
 void ApiGateway::start()
 {
-    if (m_messageQueue.size() == 0) {
+    emit clearError();
+
+    // Handle automatic logout if message queue is empty
+    if (m_messageQueue.isEmpty()) {
         if (m_loggedIn) {
             queueMessage(Logout::Ptr(new Logout(this)));
         } else {
-            qInfo() << "No messages left";
             m_currentMessage.reset();
-            return;
         }
-    } else if (!m_loggedIn) {
-        queueMessage(Login::Ptr(new Login(this)), PushMessageTo::Top);
     }
 
-    m_currentMessage = m_messageQueue.first();
-    m_messageQueue.pop_front();
+    // Check if Logout has been added
+    if (!m_messageQueue.isEmpty()) {
 
-    sendMessage(&*m_currentMessage);
+        // Handle if current message requires to be logged in
+        const auto topMessage = m_messageQueue.first();
+        if (!m_loggedIn && topMessage->isLoginRequired()) {
+            queueMessage(Login::Ptr(new Login(this)), PushMessageTo::Top);
+        }
+
+        // Assign current message and reduce stack
+        m_currentMessage = m_messageQueue.first();
+        m_messageQueue.pop_front();
+
+        sendMessage(&*m_currentMessage);
+    }
+
+    // Notify about job change
+    emit currentJobChanged();
 }
 
 /**
@@ -247,7 +272,7 @@ void ApiGateway::buildHeaders(QNetworkRequest &request) const
  * @param url Url to be reached
  * @param callback Function to be called
  */
-void ApiGateway::recursiveRedirect(const QString &url, const std::function<void (QIODevice *)> &callback)
+void ApiGateway::recursiveRedirect(const QUrl &url, const std::function<void (QIODevice *)> &callback)
 {
     QNetworkRequest request(url);
     buildHeaders(request);
@@ -310,6 +335,19 @@ void ApiGateway::sendMessage(ApiMessage *message)
 }
 
 /**
+ * @brief ApiGateway::currentMessageName
+ * @return Currently performed message
+ */
+QString ApiGateway::currentJobName() const
+{
+    if (!m_currentMessage) {
+        return tr("Idle");
+    } else {
+        return m_currentMessage->toReadableString();
+    }
+}
+
+/**
  * @brief ApiGateway::extractGameData
  * Places `Game Data` under specified domain to `GlobalGameData`
  */
@@ -325,6 +363,30 @@ void ApiGateway::extractGameData()
 GlobalGameData::Ptr ApiGateway::gameData() const
 {
     return GlobalGameData::gameData(m_serverDomain);
+}
+
+QJsonObject ApiGateway::toJson() const
+{
+    return {
+        { KEY_SERVER_DOMAIN, m_serverDomain },
+        { KEY_SERVER_ID, m_serverId },
+        { KEY_LOGIN, m_login },
+        { KEY_PASSWORD, m_password },
+    };
+}
+
+void ApiGateway::fromJson(const QJsonObject &json)
+{
+    const auto getStringValue = [&](const QString &key) {
+        return json[key].toString();
+    };
+
+    this->setApiOptions({
+        getStringValue(KEY_SERVER_DOMAIN),
+        getStringValue(KEY_SERVER_ID),
+        getStringValue(KEY_LOGIN),
+        getStringValue(KEY_PASSWORD)
+    });
 }
 
 /**
@@ -354,7 +416,7 @@ void ApiGateway::handleError(ApiGatewayError::ErrorType errorType, const QString
 
     auto message = error.message();
     for (const auto &arg : args) {
-        message.arg(arg);
+        message = message.arg(arg);
     }
 
     const QString errorMessage = tr("Error on `%1` raised. %2").arg(error.toString()).arg(message);
@@ -411,21 +473,4 @@ void ApiGateway::queueConstantData(const QString &content)
 
     // TODO: Add message to obtain library
     queueMessage(messagePtr, PushMessageTo::Top);
-}
-
-/**
- * @brief ApiGateway::handleNotLogged
- * Handles error when player is not logged in.
- * @param operation Operation to be reached.
- * @return Is Logged In status
- */
-bool ApiGateway::handleNotLogged(const QString &operation)
-{
-    bool notLogged = !m_loggedIn;
-    if (notLogged) {
-        handleError(ApiGatewayError::ErrorType::NotLogged,
-            { tr("Action %1 requires to be logged in.").arg(operation) });
-    }
-
-    return notLogged;
 }

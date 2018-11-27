@@ -19,6 +19,7 @@
 #pragma once
 
 #include <QtCore/QString>
+#include <QtCore/QCoreApplication>
 
 namespace Core {
 
@@ -35,6 +36,7 @@ namespace Core {
 
             enum class MessageType {
                 Login, // Done
+                CheckCredentials, // Done
                 Logout, // Done
 
                 GetConstantData, // Done
@@ -66,10 +68,37 @@ namespace Core {
             struct MessageHelper
             {
 
+                static QString toReadableString(MessageType type)
+                {
+                    switch (type) {
+                    case MessageType::Login:                return qApp->translate("MessageTypes", "Login in");
+                    case MessageType::CheckCredentials:     return qApp->translate("MessageTypes", "Checking Credentials");
+                    case MessageType::Logout:               return qApp->translate("MessageTypes", "Logging out");
+                    case MessageType::GetConstantData:      return qApp->translate("MessageTypes", "Getting Constant Data");
+                    case MessageType::GetFarmInfo:          return qApp->translate("MessageTypes", "Getting Farm Info");
+                    case MessageType::GetFieldInfo:         return qApp->translate("MessageTypes", "Getting Field Info");
+                    case MessageType::SetPlant:             return qApp->translate("MessageTypes", "Setting Plant");
+                    case MessageType::SetPour:              return qApp->translate("MessageTypes", "Setting Pour");
+                    case MessageType::GetCollect:           return qApp->translate("MessageTypes", "Getting Collect");
+                    case MessageType::SetFeed:              return qApp->translate("MessageTypes", "Setting Feed");
+                    case MessageType::GetFeed:              return qApp->translate("MessageTypes", "Getting Feed");
+                    case MessageType::GetFeedInfo:          return qApp->translate("MessageTypes", "Getting Feed Info");
+                    case MessageType::SetProduction:        return qApp->translate("MessageTypes", "Setting Production");
+                    case MessageType::GetProduction:        return qApp->translate("MessageTypes", "Getting Production");
+                    case MessageType::GetProductionInfo:    return qApp->translate("MessageTypes", "Getting Production Info");
+                    case MessageType::SetBuyer:             return qApp->translate("MessageTypes", "Setting Buyer");
+                    case MessageType::GetBuyer:             return qApp->translate("MessageTypes", "Getting Buyer");
+                    case MessageType::GetPricesOnMarket:    return qApp->translate("MessageTypes", "Getting Prices On Market");
+                    case MessageType::SetOfferOnMarket:     return qApp->translate("MessageTypes", "Setting Offer On Market");
+                    default:                                return qApp->translate("MessageTypes", "Unknown");
+                    }
+                }
+
                 static QString toString(MessageType type)
                 {
                     switch (type) {
                     case MessageType::Login:                return "Login";
+                    case MessageType::CheckCredentials:     return "CheckCredentials";
                     case MessageType::Logout:               return "Logout";
                     case MessageType::GetConstantData:      return "GetConstantData";
                     case MessageType::GetFarmInfo:          return "GetFarmInfo";
@@ -90,6 +119,7 @@ namespace Core {
                     default:                                return "Unknown";
                     }
                 }
+
             };
 
         }

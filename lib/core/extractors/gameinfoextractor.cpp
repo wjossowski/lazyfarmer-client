@@ -57,13 +57,6 @@ GameInfoExtractor::GameInfoExtractor(const QVariantMap &filters,
 #endif
 }
 
-GameInfoExtractor::~GameInfoExtractor()
-{
-#ifdef DEBUG_MODE
-    qDebug() << "Destructing GameInfoExtractor" << m_filters;
-#endif
-}
-
 GameInfoExtractor::Ptr GameInfoExtractor::baseExtractor(const QString &domain)
 {
     return findOrCreateExtractor(domain, GameInfoExtractor::BaseFilters, m_baseExtractors);

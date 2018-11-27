@@ -25,6 +25,7 @@ source.depends = corelib
 
 SUBDIRS += corelib source
 
+# Configure test environment
 CONFIG(debug, debug|release) {
     unit_tests.subdir = $${PWD}/tests
     unit_tests.target = UnitTests
@@ -33,4 +34,10 @@ CONFIG(debug, debug|release) {
     SUBDIRS += unit_tests
 }
 
+# Translations
+TRANSLATIONS += \
+    $${PWD}/assets/translations/english.ts \
+    $${PWD}/assets/translations/polski.ts
+
+# Additional files
 OTHER_FILES+=notes

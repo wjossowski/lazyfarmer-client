@@ -43,15 +43,20 @@ namespace Core {
                                     MessageType messageType = MessageType::Unknown,
                                     bool isLoginRequired = true);
 
-                virtual ~ApiMessage();
+                ~ApiMessage() override = default;
 
                 virtual QueryType queryType() const { return QueryType::Get; }
+                QString toReadableString() const { return MessageHelper::toReadableString(m_messageType); }
 
                 virtual const QUrl url() const = 0;
                 virtual void configureRequest(QNetworkRequest &request) const { Q_UNUSED (request) }
                 virtual const QList<QPair<QString, QString>> postData() const { return {}; }
 
                 virtual void handleResponse(QIODevice *reply) = 0;
+
+                MessageType messageType() const { return m_messageType; }
+
+                bool isLoginRequired() const { return m_isLoginRequired; }
 
             signals:
                 void raiseError(ApiGatewayError::ErrorType errorType, const QStringList &args = QStringList()) const;

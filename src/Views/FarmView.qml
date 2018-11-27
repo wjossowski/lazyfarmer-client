@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.11
 
 ListView {
     id: storage;
@@ -9,7 +9,7 @@ ListView {
         width: parent.width;
 
         Text {
-            text: name + '(level ' + level + ' )' + '<(' + farm + ', ' + position + ')>';
+            text: name + '(level ' + level + ') @(' + farm + ', ' + position + ')' ;
             anchors.centerIn: parent;
         }
 

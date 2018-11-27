@@ -21,6 +21,9 @@
 #include <QtCore/QString>
 #include <QtCore/QList>
 
+constexpr const char* S_TranslationsPath = "Core/Translations";
+constexpr const char* P_AvailableTranslations = "AvailableTranslations";
+
 namespace Core {
 
     namespace Data {

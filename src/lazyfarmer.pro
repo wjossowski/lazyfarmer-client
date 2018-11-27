@@ -14,13 +14,13 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-QT       += core gui widgets network qml quick
-CONFIG   += c++17
+QT       += core gui widgets network qml quick quickcontrols2
+CONFIG   += c++14
 
 TARGET = LazyFarmer
 TEMPLATE = app
 
-VERSION = 0.1.0.0
+VERSION = 0.1.0
 
 # Libs:
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../lib/core/release/ -lCoreLib
@@ -34,8 +34,8 @@ SOURCES += \
     $$PWD/*.cpp
 
 HEADERS += \
-    $$PWD/model/*.h
-
+    $$PWD/model/*.h \
+    $$PWD/*.h
 
 include($${PWD}/../common.pri)
 include($${PWD}/../installs.pri)
@@ -45,7 +45,9 @@ DISTFILES += \
     Views/*.qml \
     Items/*.qml \
     *.qml \
-    Views/qmldir
+    Common/Palette.qml
 
 RESOURCES += resources.qrc
+
+OTHER_FILES += qtquickcontrols2.conf
 

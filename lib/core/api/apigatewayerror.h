@@ -39,10 +39,11 @@ namespace Core {
                 switch (type) {
                 case ErrorType::NotConfigured: return "NotConfigured";
                 case ErrorType::InvalidCredentials: return "InvalidCredentials";
-                case ErrorType::NotLogged: return "Action %1 requires to be logged in.";
-                case ErrorType::RidNotParsed: return "Unable to extract `rid`. Login failed.";
-                default: return "Unknown error";
+                case ErrorType::NotLogged: return "NotLogged";
+                case ErrorType::RidNotParsed: return "RidNotParsed";
                 }
+
+                return "Unknown error";
             }
 
             QString message() const
@@ -53,17 +54,16 @@ namespace Core {
                                            "Unable to login with unspecified credentials.");
                 case ErrorType::InvalidCredentials:
                     return qApp->translate("ApiGatewayError",
-                                           "Unable to extract `rid`. Login failed.");
+                                           "Login failed.");
                 case ErrorType::NotLogged:
                     return qApp->translate("ApiGatewayError",
                                            "Action %1 requires to be logged in.");
                 case ErrorType::RidNotParsed:
                     return qApp->translate("ApiGatewayError",
-                                           "Unable to extract `rid`. Login failed.");
-                default:
-                    return qApp->translate("ApiGatewayError",
-                                           "Unknown error");
+                                           "Unable to extract `rid`.");
                 }
+
+                return qApp->translate("ApiGatewayError", "Unknown error");
             }
 
             ApiGatewayError (ErrorType exceptionType) : type(exceptionType) { }

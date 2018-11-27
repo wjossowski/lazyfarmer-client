@@ -32,6 +32,8 @@ using namespace Core::Extractors;
 using namespace Core::Api;
 using namespace Core::Api::Messages;
 
+constexpr const char* KEY_GATEWAY = "GatewayOptions";
+
 Player::Player(QObject *parent)
     : QObject(parent)
     , m_level(0)
@@ -42,9 +44,57 @@ Player::Player(QObject *parent)
     initializeConnections();
 }
 
+Player::~Player()
+{
+    qDebug() << "Removing player" << playerDescription();
+}
+
 GlobalGameData::Ptr Player::gameData() const
 {
-    return m_gateway.gameData();
+    return m_gateway->gameData();
+}
+
+QJsonObject Player::toJson() const
+{
+    return {
+        { KEY_GATEWAY, m_gateway->toJson()}
+    };
+}
+
+void Player::fromJson(const QJsonObject &json)
+{
+    m_gateway->fromJson(json[KEY_GATEWAY].toObject());
+}
+
+QString Player::playerDescription() const
+{
+    if (!m_gateway->isConfigured()) {
+        return tr("Unconfigured Account");
+    } else {
+        return QString("%1@s%2.%3")
+                .arg(m_gateway->login())
+                .arg(m_gateway->serverId())
+                .arg(m_gateway->serverDomain());
+    }
+}
+
+QString Player::currentJob() const
+{
+    return m_gateway->currentJobName();
+}
+
+void Player::setApiOptions(const ApiOptions &options)
+{
+    m_gateway->setApiOptions(options);
+    if (m_gateway->isConfigured()) {
+        m_gateway->queueMessage(GetFarmInfo::Ptr(new GetFarmInfo(&*m_gateway)));
+        m_gateway->start();
+    }
+}
+
+void Player::setApiOptions(const QString &domain, const QString &serverId, const QString &login, const QString &password)
+{
+    setApiOptions({ domain, serverId, login, password });
 }
 
 void Player::update(const QByteArray &info)
@@ -65,27 +115,73 @@ void Player::update(const QByteArray &info)
 
 void Player::updateBasicInfo(const QVariantMap &basicInfo)
 {
-    m_level = basicInfo["Level"].toInt();
-    m_levelDescription = basicInfo["LevelDescription"].toString();
-    m_levelPercentage = basicInfo["LevelPercentage"].toInt();
+    int level = basicInfo["Level"].toInt();
+    if (m_level != level) {
+        m_level = level;
+        emit levelChanged(m_level);
+    }
 
-    m_money = basicInfo["Money"].toDouble();
+    QString levelDescription = basicInfo["LevelDescription"].toString();
+    if (m_levelDescription != levelDescription) {
+        m_levelDescription = levelDescription;
+        emit levelDescriptionChanged(m_levelDescription);
+    }
+
+    int levelPercentage = basicInfo["LevelPercentage"].toInt();
+    if (m_levelPercentage != levelPercentage) {
+        m_levelPercentage = levelPercentage;
+        emit levelPercentageChanged(m_levelPercentage);
+    }
+
+    double money = basicInfo["Money"].toDouble();
+    if (qFuzzyCompare(m_money, money)) {
+        m_money = money;
+        emit moneyChanged(m_money);
+    }
 }
 
 void Player::initialize()
 {
     m_storage.reset(new Data::Storage(this));
     m_buildingList.reset(new Data::BuildingList(this));
+    m_gateway.reset(new ApiGateway(this));
 }
 
 void Player::initializeConnections() const
 {
-    connect(this,       &Player::updateBuildingRequested,
-            &m_gateway, &ApiGateway::requestBuildingUpdate);
+    connect(this,         &Player::updateBuildingRequested,
+            &*m_gateway,  &ApiGateway::requestBuildingUpdate);
 
-    connect(&m_gateway, &ApiGateway::playerDataUpdated,
-            this,       &Player::update);
+    connect(&*m_gateway,  &ApiGateway::playerDataUpdated,
+            this,         &Player::update);
 
-    connect(&m_gateway,         &ApiGateway::buildingDataUpdated,
-            &*m_buildingList,   &BuildingList::updateBuilding);
+    connect(&*m_gateway,  &ApiGateway::accountConfigurationChanged,
+            this,         &Player::playerDescriptionChanged);
+
+    connect(&*m_gateway,  &ApiGateway::currentJobChanged,
+            this,         &Player::currentJobChanged);
+
+    connect(&*m_gateway,          &ApiGateway::buildingDataUpdated,
+            &*m_buildingList,     &BuildingList::updateBuilding);
+
+    connect(&*m_gateway, &ApiGateway::errorRaised,
+            this,        &Player::handleGatewayError);
+
+    connect(&*m_gateway,  &ApiGateway::clearError,
+            this,         &Player::handleGatewayError);
+
+    // Signal forwarding (needed for PlayerFactory)
+    connect(this, &Player::levelChanged,                this, &Player::dataChanged);
+    connect(this, &Player::levelDescriptionChanged,     this, &Player::dataChanged);
+    connect(this, &Player::levelPercentageChanged,      this, &Player::dataChanged);
+    connect(this, &Player::moneyChanged,                this, &Player::dataChanged);
+    connect(this, &Player::playerDescriptionChanged,    this, &Player::dataChanged);
+    connect(this, &Player::currentJobChanged,           this, &Player::dataChanged);
+    connect(this, &Player::lastErrorChanged,            this, &Player::dataChanged);
+}
+
+void Player::handleGatewayError(const QString &errorMessage)
+{
+    this->m_lastError = errorMessage;
+    emit lastErrorChanged();
 }

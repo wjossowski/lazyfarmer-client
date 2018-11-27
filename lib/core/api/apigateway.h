@@ -34,13 +34,12 @@
 
 class QNetworkReply;
 
-
 namespace Core {
 
     namespace Api {
 
         struct ApiOptions {
-            QString serverId, serverDomain, login, password;
+            QString serverDomain, serverId, login, password;
         };
 
         class ApiGateway : public QObject
@@ -53,7 +52,10 @@ namespace Core {
                 Bottom
             };
 
+            using Ptr = QSharedPointer<ApiGateway>;
+
             explicit ApiGateway(QObject *parent = nullptr);
+            ~ApiGateway() override;
 
             bool isConfigured() const;
 
@@ -86,12 +88,16 @@ namespace Core {
                                       bool includeRid = true) const;
 
             void buildHeaders(QNetworkRequest &request) const;
-            void recursiveRedirect(const QString &url,
+            void recursiveRedirect(const QUrl &url,
                                    const std::function<void (QIODevice *)> &callback);
             void sendMessage(Messages::ApiMessage *message);
+            QString currentJobName() const;
 
             void extractGameData();
             GlobalGameData::Ptr gameData() const;
+
+            QJsonObject toJson() const;
+            void fromJson(const QJsonObject &json);
 
             void handlePlayerData(const QByteArray &playerData) const;
             void handleBuildingUpdate(int farm, int pos, const QVariant &data) const;
@@ -106,10 +112,13 @@ namespace Core {
             void playerDataUpdated(const QByteArray &data) const;
             void loggedInChanged(bool changed) const;
             void errorRaised(const QString &message) const;
+            void clearError(const QString &message = QString()) const;
+
+            void accountConfigurationChanged() const;
+            void currentJobChanged() const;
 
         private:
             void queueConstantData(const QString &content);
-            bool handleNotLogged(const QString &operation);
 
         private:
             bool m_loggedIn;

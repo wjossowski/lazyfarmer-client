@@ -17,10 +17,12 @@
  **/
 
 #include "core/globalgamedata.h"
+#include "translator.h"
 
 #ifdef DEBUG_MODE
 #include "model/storagemodel.h"
 #include "model/buildingmodel.h"
+#include "model/playerfactorymodel.h"
 #include "core/api/apigateway.h"
 #include "core/api/messages/messages.h"
 #include "core/player.h"
@@ -36,11 +38,14 @@
 #include <QtCore/QDir>
 #include <QtCore/QDateTime>
 #include <QtCore/QCommandLineParser>
+#include <QtCore/QTranslator>
 
 #include <QtGui/QGuiApplication>
 
 #include <QtQml/QQmlApplicationEngine>
 #include <QtQml/QQmlContext>
+
+#include <QtQuickControls2/QQuickStyle>
 
 #include <QtDebug>
 
@@ -80,37 +85,45 @@ void handleMessage(QtMsgType type,
     }
 }
 
-#ifdef DEBUG_MODE
-void createDebugEnvironment(Api::ApiGateway &gateway, const QCommandLineParser &parser)
+Api::ApiOptions extractApiOptions(const QCommandLineParser &parser)
 {
-    qDebug() << "Entering" << APPLICATION_NAME << " v." << CURRENT_VERSION << "debug mode";
     qDebug() << "Selected following configuration:";
     qDebug() << "Domain:  " << parser.value("domain");
     qDebug() << "Server:  " << parser.value("server");
     qDebug() << "Login:   " << parser.value("login");
     qDebug() << "Password:" << parser.value("password");
 
-    gateway.setApiOptions({
+    return {
         parser.value("server"),
         parser.value("domain"),
         parser.value("login"),
         parser.value("password")
-    });
-
-    qDebug() << "Account" << (gateway.isConfigured() ? "configured!" : "unconfigured ;(");
+    };
 }
+
+#ifdef DEBUG_MODE
 
 void queryDebug(Api::ApiGateway &debugGateway)
 {
     const auto getInfo = [&](){
         QVector<int> fields {};
         debugGateway.queueMessage(GetFarmInfo::Ptr(new GetFarmInfo(&debugGateway)));
+
+        for (int i = 0; i < 120; i++) {
+            const Data::BuildingDetails buildingDetails = {1, 1};
+            const Data::ProductDetails produceDetails = {17, 1, i};
+            debugGateway.queueMessage(GetCollect::Ptr(new GetCollect(&debugGateway, buildingDetails, produceDetails)));
+            debugGateway.queueMessage(SetPlant::Ptr(new SetPlant(&debugGateway, buildingDetails, produceDetails)));
+            debugGateway.queueMessage(SetPour::Ptr(new SetPour(&debugGateway, buildingDetails, produceDetails)));
+        }
+
         debugGateway.start();
     };
 
     getInfo();
 
 }
+
 #endif
 
 void initializeCommandLineInterface(const QCoreApplication &application, QCommandLineParser &parser)
@@ -141,16 +154,16 @@ void initializeCommandLineInterface(const QCoreApplication &application, QComman
     parser.process(application);
 }
 
-void initializeLoggingEnvironment()
+void initializeCacheEnvironment()
 {
     // Inilialize cache directory
     QDir applicationDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
-    if (!applicationDir.mkpath("."))
+    if (!applicationDir.mkpath("./logs") && !applicationDir.cd("./logs"))
         throw std::ios_base::failure(qApp->translate("main", "Unable to create path to application data.").toStdString());
 
     // Initalize log directory
     const QString fileName = QDateTime::currentDateTime().toString("yyyy_MM_dd-HH_mm.log");
-    debugFile.setFileName(applicationDir.absoluteFilePath(fileName));
+    debugFile.setFileName(applicationDir.absoluteFilePath(QString("logs/%1").arg(fileName)));
 
     // Create debug prompt device
     debugStream.setDevice(&debugFile);
@@ -160,9 +173,6 @@ void initializeLoggingEnvironment()
     // Initialize message handler
     qSetMessagePattern("[%{time HH:mm:ss.zzz}] %{type}: %{message} (%{function}, %{file}, %{line})");
     qInstallMessageHandler(handleMessage);
-
-    qDebug() << debugFile.fileName();
-
 }
 
 void initializeStaticGameData()
@@ -188,6 +198,7 @@ void registerCustomMetatypes()
     qRegisterMetaType<Core::Data::BuildingDetails>("Core::Data::BuildingDetails");
     qRegisterMetaType<Core::Data::ProductDetails>("Core::Data::ProductDetails");
     qRegisterMetaType<Core::Data::ProductionDetails>("Core::Data::ProductionDetails");
+    qRegisterMetaType<Core::Api::ApiOptions>("Core::Api::ApiOptions");
 }
 
 int main(int argc, char *argv[])
@@ -211,13 +222,14 @@ int main(int argc, char *argv[])
 
     // Set default configuration format
     QSettings::setDefaultFormat(QSettings::IniFormat);
+    Translator translator(qApp);
 
     // Initialize command-line parser
     QCommandLineParser parser;
     initializeCommandLineInterface(lazyFarmerApp, parser);
 
     try {
-        initializeLoggingEnvironment();
+        initializeCacheEnvironment();
         initializeStaticGameData();
         registerCustomMetatypes();
     } catch (std::exception &e) {
@@ -225,29 +237,32 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-#ifdef DEBUG_MODE
-    qDebug() << "Debug storage located in:" << QFileInfo(debugFile).absoluteFilePath();
-
-    Player p;
-    Api::ApiGateway &debugGateway = p.gateway();
-    createDebugEnvironment(debugGateway, parser);
-    queryDebug(debugGateway);
-#endif
-
     if (parser.isSet("no-gui")) {
         return lazyFarmerApp.exec();
+    } else {
+        QQuickStyle::setStyle("Material");
     }
 
     QQmlApplicationEngine engine;
+
+    Model::PlayerFactoryModel playerFactory;
+    engine.rootContext()->setContextProperty("PlayerFactoryModel", &playerFactory);
+    playerFactory.create();
+
+//    QTimer::singleShot(100, [&] () {
+//        auto player1 = playerFactory.create();
+//        queryDebug(*player1->gateway());
+
+//        auto player2 = playerFactory.create();
+//        queryDebug(*player2->gateway());
+//    });
+
+    engine.rootContext()->setContextProperty("t", &translator);
+
     engine.load(QUrl(QLatin1String("qrc:/qml/main.qml")));
     if (engine.rootObjects().isEmpty()){
         return -1;
     }
-
-    Model::StorageModel storageModel(p.storage());
-    Model::BuildingModel buildingModel(p.buildings());
-    engine.rootContext()->setContextProperty("StorageModel", &storageModel);
-    engine.rootContext()->setContextProperty("BuildingModel", &buildingModel);
 
     return lazyFarmerApp.exec();
 }

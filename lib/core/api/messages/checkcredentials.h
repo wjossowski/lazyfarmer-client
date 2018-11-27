@@ -18,38 +18,36 @@
 
 #pragma once
 
-#include "core/data/storage.h"
+#include "apimessage.h"
 
-#include <QtCore/QAbstractListModel>
+namespace Core {
 
-namespace Model {
+    namespace Api {
 
-    class StorageModel : public QAbstractListModel
-    {
-        Q_OBJECT
+        namespace Messages {
 
-    public:
+            class CheckCredentials : public ApiMessage
+            {
+                Q_OBJECT
 
-        enum class StorageRoles {
-            Name    = Qt::DisplayRole,
-            Icon    = Qt::DecorationRole,
-            Id      = Qt::UserRole,
-            Amount
-        };
+            public:
+                using Ptr = QSharedPointer<CheckCredentials>;
 
-        explicit StorageModel(const Core::Data::Storage::Ptr &storage, QObject *parent = nullptr);
-        ~StorageModel() override = default;
+                explicit CheckCredentials(ApiGateway *gateway)
+                    : ApiMessage (gateway, MessageType::CheckCredentials, false) { }
 
-        int rowCount(const QModelIndex &) const override;
-        QVariant data(const QModelIndex &index, int role) const override;
-        QHash<int, QByteArray> roleNames() const override;
+                QueryType queryType() const override { return QueryType::Post; }
 
-    private slots:
-        void reload();
+                const QUrl url() const override;
+                void configureRequest(QNetworkRequest &request) const override;
+                const QList<QPair<QString, QString> > postData() const override;
 
-    private:
-       Core::Data::Storage::Ptr m_storage;
+                void handleResponse(QIODevice *reply) override;
 
-    };
+            };
+
+        }
+
+    }
 
 }

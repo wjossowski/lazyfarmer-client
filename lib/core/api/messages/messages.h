@@ -21,6 +21,7 @@
 // Account management
 #include "login.h"
 #include "logout.h"
+#include "checkcredentials.h"
 
 // Getters
 #include "getcollect.h"

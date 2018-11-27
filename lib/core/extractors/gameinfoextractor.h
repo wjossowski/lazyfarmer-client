@@ -42,8 +42,7 @@ namespace Core {
 
             explicit GameInfoExtractor(const QVariantMap &filters,
                                        const QString &domain = QString());
-
-            virtual ~GameInfoExtractor();
+            virtual ~GameInfoExtractor() = default;
 
             static Ptr baseExtractor(const QString &domain = QString());
             static Ptr constantsExtractor(const QString &domain = QString());

@@ -18,7 +18,7 @@
 
 #include "buildingmodel.h"
 
-#include <QDebug>
+#include <QtCore/QDebug>
 
 using namespace Core;
 using namespace Model;

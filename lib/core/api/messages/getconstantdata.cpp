@@ -28,7 +28,7 @@ using namespace Core::Extractors;
 
 GetConstantData::GetConstantData(ApiGateway *gateway,
                                  const QString &fileUrl)
-    : ApiMessage(gateway, MessageType::GetConstantData),
+    : ApiMessage(gateway, MessageType::GetConstantData, false),
       m_fileUrl(fileUrl)
 {
 
