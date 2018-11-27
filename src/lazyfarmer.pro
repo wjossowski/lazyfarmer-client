@@ -49,5 +49,6 @@ DISTFILES += \
 
 RESOURCES += resources.qrc
 
-OTHER_FILES += qtquickcontrols2.conf
+OTHER_FILES += \
+    qtquickcontrols2.conf
 

@@ -73,11 +73,16 @@ namespace Core {
         static void registerGameData(const QString &domain, const QVariant &data);
         static GlobalGameData::Ptr gameData(const QString &domain);
 
-        static bool loadBuildingTypes(const QByteArray &contents);
+        static bool loadConfig(const QByteArray &contents);
 
         QMap<int, BuildingInfo> buildingInfos() const { return m_buildingInfos; }
         QMap<int, ProductInfo> productInfos() const { return m_productInfos; }
         QMap<int, ForestryInfo> forestryInfos() const { return m_forestryInfos; }
+
+        static QUrl m_buildingsUrl;
+        static QUrl m_productsUrl;
+
+//        static QMap<QString, QImage> m_images;
 
     private:
         explicit GlobalGameData(const QVariant &data = QVariant());

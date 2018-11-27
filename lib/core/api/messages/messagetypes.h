@@ -62,6 +62,8 @@ namespace Core {
                 GetPricesOnMarket,
                 SetOfferOnMarket,
 
+                GetResource,
+
                 Unknown
             };
 

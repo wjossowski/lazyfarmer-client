@@ -182,9 +182,9 @@ void initializeStaticGameData()
 #else
     QDir assetsDirectory(qApp->applicationDirPath());
 #endif
-    QFile buildingConfig(assetsDirectory.absoluteFilePath("building-config.json"));
+    QFile buildingConfig(assetsDirectory.absoluteFilePath("config.json"));
     if (buildingConfig.open(QIODevice::ReadOnly)) {
-        if (!GlobalGameData::loadBuildingTypes(buildingConfig.readAll())) {
+        if (!GlobalGameData::loadConfig(buildingConfig.readAll())) {
             throw std::ios_base::failure(qApp->translate("main", "Unable to read building-config.json").toStdString());
         }
     } else {

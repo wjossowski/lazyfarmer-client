@@ -19,6 +19,7 @@
 #include "globalgamedata.h"
 
 #include <QtCore/QJsonDocument>
+#include <QtCore/QUrl>
 
 #include <QDebug>
 
@@ -27,6 +28,11 @@ using namespace Core::Data;
 
 QMap<QString, GlobalGameData::Ptr> GlobalGameData::m_gameData;
 QMap<int, BuildingType> GlobalGameData::m_buildingTypes;
+
+QUrl GlobalGameData::m_buildingsUrl;
+QUrl GlobalGameData::m_productsUrl;
+
+//QMap<QString, QImage> GlobalGameData::m_images;
 
 const QVariantMap childObject (const QVariant &object, const QString &property) {
     return object.toMap().value(property).toMap();
@@ -47,7 +53,7 @@ GlobalGameData::Ptr GlobalGameData::gameData(const QString &domain)
     return m_gameData.value(domain, GlobalGameData::Ptr(new GlobalGameData));
 }
 
-bool GlobalGameData::loadBuildingTypes(const QByteArray &contents)
+bool GlobalGameData::loadConfig(const QByteArray &contents)
 {
     const auto json = QJsonDocument::fromJson(contents).toVariant();
 
@@ -55,7 +61,13 @@ bool GlobalGameData::loadBuildingTypes(const QByteArray &contents)
         return false;
     }
 
-    const QVariantList buildingInfoList = json.toList();
+    const auto configObject = json.toMap();
+
+    const QVariantMap imageUrls = configObject["image-urls"].toMap();
+    m_buildingsUrl = QUrl(imageUrls["buildings"].toString());
+    m_productsUrl  = QUrl(imageUrls["products"].toString());
+
+    const QVariantList buildingInfoList = configObject["building-config"].toList();
     for (const auto &info : buildingInfoList) {
         const QVariantMap data = info.toMap();
 

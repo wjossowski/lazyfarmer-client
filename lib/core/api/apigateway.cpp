@@ -433,7 +433,7 @@ void ApiGateway::handleError(ApiGatewayError::ErrorType errorType, const QString
  * @param type Building Type
  */
 void ApiGateway::requestBuildingUpdate(const Data::BuildingDetails &details,
-                                const Data::BuildingType &type)
+                                       const Data::BuildingType &type)
 {
     switch (type) {
     case Data::BuildingType::Farm:
