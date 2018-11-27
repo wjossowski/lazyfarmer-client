@@ -97,3 +97,12 @@ void PlayerFactoryModel::removeAt(int row)
     m_players.removeAt(row);
     endRemoveRows();
 }
+
+QVariant PlayerFactoryModel::at(int row)
+{
+    if (m_players.size() <= row) {
+        return QVariant();
+    }
+
+    return QVariant::fromValue(&*m_players.at(row));
+}

@@ -53,6 +53,8 @@ namespace Model {
 
         Q_INVOKABLE void removeAt(int row);
 
+        Q_INVOKABLE QVariant at(int row);
+
     private:
         QList<Core::Player::Ptr> m_players;
 

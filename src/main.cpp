@@ -249,13 +249,13 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("PlayerFactoryModel", &playerFactory);
     playerFactory.create();
 
-    QTimer::singleShot(100, [&] () {
-        auto player1 = playerFactory.create();
-        queryDebug(*player1->gateway());
+//    QTimer::singleShot(100, [&] () {
+//        auto player1 = playerFactory.create();
+//        queryDebug(*player1->gateway());
 
-        auto player2 = playerFactory.create();
-        queryDebug(*player2->gateway());
-    });
+//        auto player2 = playerFactory.create();
+//        queryDebug(*player2->gateway());
+//    });
 
     engine.rootContext()->setContextProperty("t", &translator);
 

@@ -7,7 +7,10 @@ import QtQuick.Controls.Material 2.3
 Item {
     id: root;
 
+    anchors.fill: parent;
+
     property string title: qsTr("Accounts") + t.r;
+    property var loginDialog;
 
     ListView {
         id: playersList;
@@ -66,7 +69,15 @@ Item {
 
                     RoundButton {
                         id: editButton;
+
+                        visible: !level;
+
                         text: "\u270E";
+
+                        onClicked: {
+                            loginDialog.setUp(PlayerFactoryModel.at(index));
+                            loginDialog.open();
+                        }
                     }
 
                     RoundButton {

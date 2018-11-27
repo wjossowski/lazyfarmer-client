@@ -12,12 +12,12 @@
 <context>
     <name>AccountsView</name>
     <message>
-        <location filename="../../src/Views/AccountsView.qml" line="10"/>
+        <location filename="../../src/Views/AccountsView.qml" line="12"/>
         <source>Accounts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/Views/AccountsView.qml" line="44"/>
+        <location filename="../../src/Views/AccountsView.qml" line="46"/>
         <source>Job: </source>
         <translation type="unfinished"></translation>
     </message>
@@ -82,31 +82,31 @@
     </message>
 </context>
 <context>
-    <name>LoginView</name>
+    <name>LoginDialog</name>
     <message>
-        <location filename="../../src/Views/LoginView.qml" line="31"/>
+        <location filename="../../src/Dialogs/LoginDialog.qml" line="9"/>
+        <source>Account Settings</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../src/Dialogs/LoginDialog.qml" line="60"/>
         <source>Username</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/Views/LoginView.qml" line="38"/>
+        <location filename="../../src/Dialogs/LoginDialog.qml" line="69"/>
         <source>Password</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/Views/LoginView.qml" line="47"/>
+        <location filename="../../src/Dialogs/LoginDialog.qml" line="80"/>
         <source>Domain</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/Views/LoginView.qml" line="54"/>
+        <location filename="../../src/Dialogs/LoginDialog.qml" line="89"/>
         <source>Server</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../src/Views/LoginView.qml" line="66"/>
-        <source>Login</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -248,12 +248,12 @@
 <context>
     <name>SideMenu</name>
     <message>
-        <location filename="../../src/Items/SideMenu.qml" line="23"/>
+        <location filename="../../src/Items/SideMenu.qml" line="22"/>
         <source>Preferences</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../src/Items/SideMenu.qml" line="45"/>
+        <location filename="../../src/Items/SideMenu.qml" line="44"/>
         <source>Language</source>
         <translation type="unfinished"></translation>
     </message>
@@ -341,7 +341,7 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/translator.cpp" line="70"/>
+        <location filename="../../src/translator.cpp" line="66"/>
         <source>Could not find translations directory</source>
         <translation type="unfinished"></translation>
     </message>

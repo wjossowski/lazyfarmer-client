@@ -61,7 +61,16 @@ namespace Core {
         QString playerDescription() const;
         QString currentJob() const;
 
-        Q_INVOKABLE void setApiOptions(const Api::ApiOptions &options);
+        void setApiOptions(const Api::ApiOptions &options);
+
+        Q_INVOKABLE inline QString login () const { return m_gateway->login(); }
+        Q_INVOKABLE inline QString domain () const { return m_gateway->serverDomain(); }
+        Q_INVOKABLE inline QString server () const { return m_gateway->serverId(); }
+
+        Q_INVOKABLE void setApiOptions(const QString &domain,
+                                       const QString &serverId,
+                                       const QString &login,
+                                       const QString &password);
 
     public slots:
         void update(const QByteArray &info);

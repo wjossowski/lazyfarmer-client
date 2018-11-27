@@ -86,6 +86,15 @@ QString Player::currentJob() const
 void Player::setApiOptions(const ApiOptions &options)
 {
     m_gateway->setApiOptions(options);
+    if (m_gateway->isConfigured()) {
+        m_gateway->queueMessage(GetFarmInfo::Ptr(new GetFarmInfo(&*m_gateway)));
+        m_gateway->start();
+    }
+}
+
+void Player::setApiOptions(const QString &domain, const QString &serverId, const QString &login, const QString &password)
+{
+    setApiOptions({ domain, serverId, login, password });
 }
 
 void Player::update(const QByteArray &info)

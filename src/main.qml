@@ -8,13 +8,14 @@ import QtGraphicalEffects 1.0
 
 import "Views"
 import "Items"
+import "Dialogs"
 
 ApplicationWindow {
     id: root;
     visible: true
 
-    width: 640
-    height: 480
+    minimumHeight: 480;
+    minimumWidth: 640;
 
     Material.theme: Material.Light;
     Material.primary: Material.color(Material.Green);
@@ -25,7 +26,7 @@ ApplicationWindow {
     header: MainToolbar {
         id: topMenu
 
-        visible: !dialogContainer.visible
+        enabled: !dialogContainer.visible;
 
         stack: stack;
         title: stack.currentItem.title;
@@ -43,14 +44,23 @@ ApplicationWindow {
         height: root.height;
     }
 
+
     Rectangle {
         id: dialogContainer
 
-        visible: false;
+        visible: loginDialog.visible;
 
         anchors.fill: parent;
         z: 1;
+
         color: Qt.rgba(0.2, 0.2, 0.2, 0.9);
+
+        LoginDialog {
+            id: loginDialog
+
+            x: (dialogContainer.width  - loginDialog.width) / 2
+            y: (dialogContainer.height - loginDialog.height) / 2
+        }
 
         FastBlur {
             anchors.fill: parent
@@ -63,10 +73,12 @@ ApplicationWindow {
     StackView {
         id: stack
 
+        enabled: !dialogContainer.visible;
+
         anchors.fill: parent;
 
         initialItem: AccountsView {
-            anchors.fill: parent;
+            loginDialog: loginDialog;
         }
 
     }
