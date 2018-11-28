@@ -21,8 +21,8 @@
 #include "../apigatewayerror.h"
 #include "messagetypes.h"
 
-class QIODevice;
 #include <QtNetwork/QNetworkRequest>
+#include <QtNetwork/QNetworkReply>
 
 namespace Core {
 
@@ -46,13 +46,13 @@ namespace Core {
                 ~ApiMessage() override = default;
 
                 virtual QueryType queryType() const { return QueryType::Get; }
-                QString toReadableString() const { return MessageHelper::toReadableString(m_messageType); }
+                virtual QString toReadableString() const { return MessageHelper::toReadableString(m_messageType); }
 
                 virtual const QUrl url() const = 0;
                 virtual void configureRequest(QNetworkRequest &request) const { Q_UNUSED (request) }
                 virtual const QList<QPair<QString, QString>> postData() const { return {}; }
 
-                virtual void handleResponse(QIODevice *reply) = 0;
+                virtual void handleResponse(QNetworkReply *reply) = 0;
 
                 MessageType messageType() const { return m_messageType; }
 

@@ -247,6 +247,7 @@ int main(int argc, char *argv[])
 
     Model::PlayerFactoryModel playerFactory;
     engine.rootContext()->setContextProperty("PlayerFactoryModel", &playerFactory);
+    engine.rootContext()->setContextProperty("AvailableDomains", GlobalGameData::availableDomains());
     playerFactory.create();
 
 //    QTimer::singleShot(100, [&] () {

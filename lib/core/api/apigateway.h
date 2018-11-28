@@ -66,6 +66,7 @@ namespace Core {
             void setRid(const QString &rid);
 
             void setBaseInfo(const QString &content);
+            void queueConfigResources();
 
             const QString &serverId() const { return m_serverId; }
             const QString &serverDomain() const { return m_serverDomain; }

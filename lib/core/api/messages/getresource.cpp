@@ -37,7 +37,14 @@ GetResource::GetResource(ApiGateway *gateway,
 
 }
 
-void GetResource::handleResponse(QIODevice */*reply*/)
+void GetResource::handleResponse(QNetworkReply *reply)
 {
-//    GlobalGameData::m_images.insert(m_context, QImage::)
+    if (reply->error()) {
+        emit raiseError(ApiGatewayError::ErrorType::HttpResponseError, { reply->errorString() });
+        return;
+    }
+
+    GlobalGameData::storeResource(m_context, reply->readAll());
+
+    emit finished();
 }

@@ -50,7 +50,7 @@ QVariant BuildingModel::data(const QModelIndex &index, int role) const
     auto dataRole = static_cast<BuildingRoles>(role);
     switch (dataRole) {
     case BuildingRoles::Name: return building->name();
-    case BuildingRoles::Icon: return 0; // TODO: Pixmap from sprite
+    case BuildingRoles::Icon: return GlobalGameData::pixmapAt("buildings", building->id());
     case BuildingRoles::Id: return building->id();
     case BuildingRoles::Type: return static_cast<int>(building->type());
     case BuildingRoles::FarmId: return building->farmId();

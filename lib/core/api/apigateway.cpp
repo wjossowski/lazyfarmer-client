@@ -124,6 +124,23 @@ void ApiGateway::setBaseInfo(const QString &content)
     queueConstantData(content);
 }
 
+void ApiGateway::queueConfigResources()
+{
+    QMapIterator<QString, ResourceInfo::Ptr> p = GlobalGameData::resourceInfo();
+    while (p.hasNext()) {
+        const auto resourceConfig = p.next();
+        const auto context = resourceConfig.key();
+        const auto resourceData = resourceConfig.value();
+
+        const QUrl requestUrl = resourceData->url;
+        if (requestUrl.isValid()) {
+            queueMessage(GetResource::Ptr::create(this, context, std::move(requestUrl)),
+                         PushMessageTo::Top);
+        }
+
+    }
+}
+
 /**
  * @brief ApiGateway::setApiOptions
  * Sets internal login configuration

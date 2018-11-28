@@ -39,7 +39,7 @@ const QUrl GetFarmInfo::url() const
     });
 }
 
-void GetFarmInfo::handleResponse(QIODevice *reply)
+void GetFarmInfo::handleResponse(QNetworkReply *reply)
 {
     const auto contents = reply->readAll();
 

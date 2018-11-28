@@ -39,7 +39,7 @@ namespace Core {
                                       const Data::BuildingDetails &buildingData = Data::BuildingDetails());
 
                 const QUrl url() const override;
-                void handleResponse(QIODevice *reply) override;
+                void handleResponse(QNetworkReply *reply) override;
 
                 void setBuilding(const Data::BuildingDetails &buildingData) {
                     m_buildingData = buildingData;

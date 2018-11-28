@@ -47,7 +47,7 @@ const QList<QPair<QString, QString> > Core::Api::Messages::CheckCredentials::pos
     };
 }
 
-void Core::Api::Messages::CheckCredentials::handleResponse(QIODevice *reply)
+void Core::Api::Messages::CheckCredentials::handleResponse(QNetworkReply *reply)
 {
     const auto response = QJsonDocument::fromJson(reply->readAll());
     const auto redirectUrl = QUrl(response.array().last().toString());

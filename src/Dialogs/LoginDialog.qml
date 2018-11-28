@@ -12,7 +12,7 @@ Dialog {
 
     property alias login: loginField.text;
     property alias password: passwordField.text;
-    property alias domain: domainField.text;
+    property alias domain: domainField.currentText;
     property alias server: serverField.text;
 
     width: 350;
@@ -22,7 +22,10 @@ Dialog {
 
         login = currentAccount.login();
         password = "";
-        domain = currentAccount.domain();
+
+        var domainIndex = domainField.model.indexOf(account.domain())
+        domainField.currentIndex = (domainIndex >= 0) ? domainIndex : 0;
+
         server = currentAccount.server();
 
         loginField.forceActiveFocus();
@@ -73,14 +76,6 @@ Dialog {
                 Keys.onReturnPressed: accept()
             }
 
-            TextField {
-                id: domainField;
-
-                Layout.fillWidth: true;
-                placeholderText: qsTr("Domain") + t.r;
-
-                Keys.onReturnPressed: accept()
-            }
 
             TextField {
                 id: serverField;
@@ -95,6 +90,15 @@ Dialog {
                     top: 100
                 }
 
+            }
+
+            ComboBox {
+                id: domainField;
+
+                Layout.fillWidth: true;
+
+                model: AvailableDomains;
+                Keys.onReturnPressed: accept()
             }
 
         }

@@ -38,9 +38,11 @@ namespace Core {
                                      const QString &context,
                                      const QUrl &url);
 
+                QString toReadableString() const override { return ApiMessage::toReadableString().arg(m_context); }
+
                 const QUrl url() const override { return m_url; }
 
-                void handleResponse(QIODevice */*reply*/) override;
+                void handleResponse(QNetworkReply *reply) override;
 
             private:
                 QString m_context;

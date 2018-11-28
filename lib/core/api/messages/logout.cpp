@@ -33,7 +33,7 @@ const QUrl Logout::url() const
     }, false);
 }
 
-void Logout::handleResponse(QIODevice *reply)
+void Logout::handleResponse(QNetworkReply *reply)
 {
     Q_UNUSED (reply)
 

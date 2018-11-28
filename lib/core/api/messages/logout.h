@@ -37,7 +37,7 @@ namespace Core {
                     : ApiMessage (gateway, MessageType::Logout) { }
 
                 const QUrl url() const override;
-                void handleResponse(QIODevice *reply) override;
+                void handleResponse(QNetworkReply *reply) override;
             };
 
         }

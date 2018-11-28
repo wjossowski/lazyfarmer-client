@@ -55,7 +55,7 @@ const QList<QPair<QString, QString> > Login::postData() const
     };
 }
 
-void Login::handleResponse(QIODevice *reply)
+void Login::handleResponse(QNetworkReply *reply)
 {
     const auto response = QJsonDocument::fromJson(reply->readAll());
     const auto redirectUrl = QUrl(response.array().last().toString());
@@ -85,6 +85,10 @@ void Login::extractRid(QIODevice *reply)
 
     if (firstRun) {
         m_gateway->setBaseInfo(content);
+    }
+
+    if (!GlobalGameData::hasDownloadedResources()) {
+        m_gateway->queueConfigResources();
     }
 
     emit finished();
