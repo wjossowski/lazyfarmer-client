@@ -164,12 +164,14 @@ void GlobalGameData::storeResource(const QString &key, const QByteArray &data)
         }
     }
 
+#ifdef DEBUG_MODE
     for (int i = 0; i < icons.size(); i++) {
         const auto icon = icons.at(i);
         QDir temp("/tmp");
         temp.mkdir(key);
         icon.save(QString("/tmp/%1/%1_%2.png").arg(key).arg(i+1));
     }
+#endif
 
     resource->icons = std::move(icons);
 
