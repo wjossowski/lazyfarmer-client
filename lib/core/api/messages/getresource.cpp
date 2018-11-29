@@ -44,6 +44,12 @@ void GetResource::handleResponse(QNetworkReply *reply)
         return;
     }
 
+    const auto contentHeader = reply->header(QNetworkRequest::ContentTypeHeader).toString();
+    if (!contentHeader.startsWith("image")) {
+        emit raiseError(ApiGatewayError::ErrorType::InvalidContentHeaderError, { contentHeader });
+        return;
+    }
+
     GlobalGameData::storeResource(m_context, reply->readAll());
 
     emit finished();
