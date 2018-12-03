@@ -50,7 +50,6 @@ QVariant BuildingModel::data(const QModelIndex &index, int role) const
     auto dataRole = static_cast<BuildingRoles>(role);
     switch (dataRole) {
     case BuildingRoles::Name: return building->name();
-    case BuildingRoles::Icon: return ConfigReader::instance().pixmapAt("buildings", building->id());
     case BuildingRoles::Id: return building->id();
     case BuildingRoles::Type: return static_cast<int>(building->type());
     case BuildingRoles::FarmId: return building->farmId();
@@ -67,7 +66,6 @@ QHash<int, QByteArray> BuildingModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
     roles.insert(static_cast<int>(BuildingRoles::Name), "name");
-    roles.insert(static_cast<int>(BuildingRoles::Icon), "icon");
     roles.insert(static_cast<int>(BuildingRoles::Id), "id");
     roles.insert(static_cast<int>(BuildingRoles::Type), "type");
     roles.insert(static_cast<int>(BuildingRoles::FarmId), "farm");

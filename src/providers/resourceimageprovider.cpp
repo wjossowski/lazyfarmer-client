@@ -16,39 +16,35 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#pragma once
+#include "resourceimageprovider.h"
 
-#include "core/data/storage.h"
+#include "core/configreader.h"
 
-#include <QtCore/QAbstractListModel>
+using namespace Core;
 
-namespace Model {
+ResourceImageProvider::ResourceImageProvider()
+    : QQuickImageProvider(QQuickImageProvider::Pixmap)
+{
 
-    class StorageModel : public QAbstractListModel
-    {
-        Q_OBJECT
+}
 
-    public:
+QPixmap ResourceImageProvider::requestPixmap(const QString &id,
+                                             QSize *size,
+                                             const QSize &requestedSize)
+{
+    const QStringList path = id.split('/');
 
-        enum class StorageRoles {
-            Name    = Qt::DisplayRole,
-            Id      = Qt::UserRole,
-            Amount
-        };
+    const QString resourceType = path[0];
+    const int resourceId = path[1].toInt();
 
-        explicit StorageModel(const Core::Data::Storage::Ptr &storage, QObject *parent = nullptr);
-        ~StorageModel() override = default;
+    QPixmap resource = ConfigReader::instance()
+            .pixmapAt(resourceType, resourceId);
 
-        int rowCount(const QModelIndex &) const override;
-        QVariant data(const QModelIndex &index, int role) const override;
-        QHash<int, QByteArray> roleNames() const override;
+    if (requestedSize.isValid()) {
+        resource = resource.scaled(requestedSize, Qt::KeepAspectRatio);
+    }
 
-    private slots:
-        void reload();
+    *size = QSize(resource.width(), resource.height());
 
-    private:
-       Core::Data::Storage::Ptr m_storage;
-
-    };
-
+    return resource;
 }

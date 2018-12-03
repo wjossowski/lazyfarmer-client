@@ -32,7 +32,6 @@ namespace Model {
 
         enum class BuildingRoles {
             Name        = Qt::DisplayRole,
-            Icon        = Qt::DecorationRole,
             Id          = Qt::UserRole,
             Type,
             FarmId,

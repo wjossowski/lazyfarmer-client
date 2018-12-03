@@ -19,7 +19,7 @@
 #pragma once
 
 #include "../globalgamedata.h"
-#include "../configreader.h"
+//#include "../configreader.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QVariant>

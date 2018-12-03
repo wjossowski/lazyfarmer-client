@@ -38,6 +38,12 @@ Item {
                 anchors.top: parent.top;
                 anchors.topMargin: 15;
 
+                Image {
+                    source: "image://resources/buildings/2"
+                    width: 50
+                    height: 50
+                }
+
                 Label {
                     text: description + "(" + level + ")";
                 }

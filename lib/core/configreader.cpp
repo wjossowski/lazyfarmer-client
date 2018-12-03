@@ -103,7 +103,7 @@ QUrl ConfigReader::urlAt(const QString &key)
 QPixmap ConfigReader::pixmapAt(const QString &key, int id)
 {
     const auto icons = m_resourceInfos.value(key, ResourceInfo::Ptr::create())->icons;
-    return (icons.size() <= id) ? icons.at(id -1) : QPixmap();
+    return (icons.size() >= id) ? icons.at(id -1) : QPixmap();
 }
 
 void ConfigReader::storeResource(const QString &key, const QByteArray &data)

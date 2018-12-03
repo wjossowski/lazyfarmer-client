@@ -17,6 +17,7 @@
  **/
 
 #include "core/configreader.h"
+#include "providers/resourceimageprovider.h"
 #include "translator.h"
 
 #ifdef DEBUG_MODE
@@ -229,7 +230,6 @@ int main(int argc, char *argv[])
     initializeCommandLineInterface(lazyFarmerApp, parser);
 
     ConfigReader &reader = ConfigReader::instance();
-
     try {
         initializeCacheEnvironment();
         initializeStaticGameData(reader);
@@ -245,13 +245,12 @@ int main(int argc, char *argv[])
         QQuickStyle::setStyle("Material");
     }
 
-    QQmlApplicationEngine engine;
-
-
     Model::PlayerFactoryModel playerFactory;
+
+    QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("PlayerFactoryModel", &playerFactory);
     engine.rootContext()->setContextProperty("AvailableDomains", reader.availableDomains());
-    playerFactory.create();
+    engine.addImageProvider("resources", new ResourceImageProvider);
 
 //    QTimer::singleShot(100, [&] () {
 //        auto player1 = playerFactory.create();
