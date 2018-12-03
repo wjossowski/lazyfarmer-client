@@ -126,7 +126,7 @@ void ApiGateway::setBaseInfo(const QString &content)
 
 void ApiGateway::queueConfigResources()
 {
-    QMapIterator<QString, ResourceInfo::Ptr> p = GlobalGameData::resourceInfo();
+    QMapIterator<QString, ResourceInfo::Ptr> p = ConfigReader::instance().resourceInfo();
     while (p.hasNext()) {
         const auto resourceConfig = p.next();
         const auto context = resourceConfig.key();

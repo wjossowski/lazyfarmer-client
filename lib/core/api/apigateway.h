@@ -21,6 +21,7 @@
 #include "apigatewayerror.h"
 #include "messages/apimessage.h"
 #include "../globalgamedata.h"
+#include "../configreader.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QQueue>

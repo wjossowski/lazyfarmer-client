@@ -19,10 +19,6 @@
 #include "globalgamedata.h"
 
 #include <QtCore/QJsonDocument>
-#include <QtCore/QUrl>
-#include <QtCore/QFile>
-#include <QtCore/QDir>
-#include <QtCore/QVariantList>
 
 #include <QDebug>
 
@@ -30,21 +26,6 @@ using namespace Core;
 using namespace Core::Data;
 
 QMap<QString, GlobalGameData::Ptr> GlobalGameData::s_gameData;
-QMap<int, BuildingType> GlobalGameData::s_buildingTypes;
-QMap<QString, ResourceInfo::Ptr> GlobalGameData::s_resourceInfos;
-QStringList GlobalGameData::s_availableDomains;
-
-ResourceInfo::ResourceInfo(const QString &url,
-                           const QVariantList eraseAt,
-                           int baseSize)
-    : url(url)
-    , baseSize(baseSize)
-{
-    for (auto ommiter : eraseAt) {
-        spritesToOmmit.append(ommiter.toInt());
-    }
-}
-
 
 const QVariantMap childObject (const QVariant &object,
                                const QString &property)
@@ -65,116 +46,6 @@ void GlobalGameData::registerGameData(const QString &domain,
 GlobalGameData::Ptr GlobalGameData::gameData(const QString &domain)
 {
     return s_gameData.value(domain, GlobalGameData::Ptr(new GlobalGameData));
-}
-
-bool GlobalGameData::loadConfig(const QByteArray &contents)
-{
-    const auto json = QJsonDocument::fromJson(contents).toVariant();
-
-    if (!json.isValid()) {
-        return false;
-    }
-
-    const auto configObject = json.toMap();
-
-    const auto imageUrls = configObject["urls-images"].toMap();
-    for (auto iterator = imageUrls.cbegin(); iterator != imageUrls.cend(); iterator++) {
-        const QVariantMap resource = iterator.value().toMap();
-
-        const int size = resource.value("size").toInt();
-        const QString url = resource.value("url").toString();
-        const QVariantList eraseAt = resource.value("erase-at").toList();
-
-        s_resourceInfos.insert(iterator.key(), ResourceInfo::Ptr::create(url, eraseAt, size));
-    }
-
-    s_availableDomains = configObject["available-domains"].toStringList();
-
-    const QVariantList buildingInfoList = configObject["building-config"].toList();
-    for (const auto &info : buildingInfoList) {
-        const QVariantMap data = info.toMap();
-
-        int id = data["id"].toInt();
-
-        QString category = data["category"].toString();
-        if (category == "Field") {
-            s_buildingTypes.insert(id, BuildingType::Farm);
-        } else if (category == "AnimalProduction") {
-            s_buildingTypes.insert(id, BuildingType::AnimalProduction);
-        } else if (category == "ResourceProduction") {
-            s_buildingTypes.insert(id, BuildingType::ResourceProduction);
-        }
-    }
-
-    return true;
-}
-
-bool GlobalGameData::hasDownloadedResources()
-{
-    if (s_resourceInfos.isEmpty())
-        return false;
-
-    auto found = std::find_if (s_resourceInfos.cbegin(), s_resourceInfos.cend(), [] (const ResourceInfo::Ptr &iterator) {
-        return iterator->icons.isEmpty();
-    });
-
-    return found == s_resourceInfos.cend();
-}
-
-QUrl GlobalGameData::urlAt(const QString &key)
-{
-    return s_resourceInfos.value(key, ResourceInfo::Ptr::create())->url;
-}
-
-QPixmap GlobalGameData::pixmapAt(const QString &key, int id)
-{
-    const auto icons = s_resourceInfos.value(key, ResourceInfo::Ptr::create())->icons;
-    return (icons.size() <= id) ? icons.at(id -1) : QPixmap();
-}
-
-void GlobalGameData::storeResource(const QString &key, const QByteArray &data)
-{
-    auto info = s_resourceInfos.find(key);
-    if (info == s_resourceInfos.end()) {
-        return;
-    }
-
-    auto resource = *info;
-    const auto image = QImage::fromData(data);
-
-    int baseSize = resource->baseSize;
-    int totalWidth = image.width();
-    int totalHeight = image.height();
-
-    if (totalWidth % baseSize != 0) {
-        return;
-    } else if (totalHeight % baseSize != 0) {
-        return;
-    }
-
-    QList<QPixmap> icons;
-    int index = 0; // used for filtering unnecessary pictures
-    for (int h = 0; h < totalHeight; h += baseSize) {
-        for (int w = 0; w < totalWidth; w += baseSize) {
-            if (!resource->spritesToOmmit.contains(index)) {
-                icons.append(QPixmap::fromImage(image.copy(w, h, baseSize, baseSize)));
-            }
-
-            index++;
-        }
-    }
-
-#ifdef DEBUG_MODE
-    for (int i = 0; i < icons.size(); i++) {
-        const auto icon = icons.at(i);
-        QDir temp("/tmp");
-        temp.mkdir(key);
-        icon.save(QString("/tmp/%1/%1_%2.png").arg(key).arg(i+1));
-    }
-#endif
-
-    resource->icons = std::move(icons);
-
 }
 
 GlobalGameData::GlobalGameData(const QVariant &data)

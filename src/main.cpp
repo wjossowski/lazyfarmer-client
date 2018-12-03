@@ -16,7 +16,7 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "core/globalgamedata.h"
+#include "core/configreader.h"
 #include "translator.h"
 
 #ifdef DEBUG_MODE
@@ -175,7 +175,7 @@ void initializeCacheEnvironment()
     qInstallMessageHandler(handleMessage);
 }
 
-void initializeStaticGameData()
+void initializeStaticGameData(ConfigReader &reader)
 {
 #ifdef DEBUG_MODE
     QDir assetsDirectory(ASSETS_DIRECTORY);
@@ -184,7 +184,7 @@ void initializeStaticGameData()
 #endif
     QFile buildingConfig(assetsDirectory.absoluteFilePath("config.json"));
     if (buildingConfig.open(QIODevice::ReadOnly)) {
-        if (!GlobalGameData::loadConfig(buildingConfig.readAll())) {
+        if (!reader.loadConfig(buildingConfig.readAll())) {
             throw std::ios_base::failure(qApp->translate("main", "Unable to read building-config.json").toStdString());
         }
     } else {
@@ -228,9 +228,11 @@ int main(int argc, char *argv[])
     QCommandLineParser parser;
     initializeCommandLineInterface(lazyFarmerApp, parser);
 
+    ConfigReader &reader = ConfigReader::instance();
+
     try {
         initializeCacheEnvironment();
-        initializeStaticGameData();
+        initializeStaticGameData(reader);
         registerCustomMetatypes();
     } catch (std::exception &e) {
         qCritical() << e.what();
@@ -245,9 +247,10 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
+
     Model::PlayerFactoryModel playerFactory;
     engine.rootContext()->setContextProperty("PlayerFactoryModel", &playerFactory);
-    engine.rootContext()->setContextProperty("AvailableDomains", GlobalGameData::availableDomains());
+    engine.rootContext()->setContextProperty("AvailableDomains", reader.availableDomains());
     playerFactory.create();
 
 //    QTimer::singleShot(100, [&] () {

@@ -18,7 +18,7 @@
 
 #include "building.h"
 #include "player.h"
-#include "globalgamedata.h"
+#include "configreader.h"
 
 using namespace Core;
 using namespace Core::Data;
@@ -69,7 +69,7 @@ void Building::update(const QVariant &info)
     {
         m_id = id;
 
-        m_type = GlobalGameData::buildingType(id);
+        m_type = ConfigReader::instance().buildingType(id);
 
         m_farmId = farmId;
         m_position = position;

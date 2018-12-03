@@ -87,7 +87,7 @@ void Login::extractRid(QIODevice *reply)
         m_gateway->setBaseInfo(content);
     }
 
-    if (!GlobalGameData::hasDownloadedResources()) {
+    if (!ConfigReader::instance().hasDownloadedResources()) {
         m_gateway->queueConfigResources();
     }
 

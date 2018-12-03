@@ -19,7 +19,7 @@
 #include "getresource.h"
 #include "../apigateway.h"
 
-#include "globalgamedata.h"
+#include "configreader.h"
 
 #include <QtCore/QMap>
 
@@ -50,7 +50,7 @@ void GetResource::handleResponse(QNetworkReply *reply)
         return;
     }
 
-    GlobalGameData::storeResource(m_context, reply->readAll());
+    ConfigReader::instance().storeResource(m_context, reply->readAll());
 
     emit finished();
 }

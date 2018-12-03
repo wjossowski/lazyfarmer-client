@@ -22,29 +22,8 @@
 
 #include <QtCore/QMap>
 #include <QtCore/QVariant>
-#include <QtCore/QSharedPointer>
-#include <QtCore/QUrl>
-
-#include <QtGui/QPixmap>
-#include <QtGui/QIcon>
-#include <QtDebug>
 
 namespace Core {
-
-    struct ResourceInfo
-    {
-        using Ptr = QSharedPointer<ResourceInfo>;
-
-        ResourceInfo(const QString &url = QString(),
-                     const QVariantList eraseAt = QVariantList(),
-                     int baseSize = 0);
-
-        QString url;
-        int baseSize;
-
-        QList<int> spritesToOmmit = QList<int>();
-        QList<QPixmap> icons = QList<QPixmap>();
-    };
 
     struct BuildingInfo
     {
@@ -86,22 +65,8 @@ namespace Core {
             return m_forestryInfos.value(forestryId, { "Unknown" });
         }
 
-        static Data::BuildingType buildingType (const int buildingId) {
-            return s_buildingTypes.value(buildingId, Data::BuildingType::Unknown);
-        }
-
         static void registerGameData(const QString &domain, const QVariant &data);
         static GlobalGameData::Ptr gameData(const QString &domain);
-
-        static bool loadConfig(const QByteArray &contents);
-        static bool hasDownloadedResources();
-
-        static QStringList &availableDomains() { return s_availableDomains; }
-
-        static QMap<QString, ResourceInfo::Ptr> &resourceInfo() { return s_resourceInfos; }
-        static QUrl urlAt(const QString &key);
-        static QPixmap pixmapAt(const QString &key, int id);
-        static void storeResource(const QString &key, const QByteArray &data);
 
         QMap<int, BuildingInfo> buildingInfos() const { return m_buildingInfos; }
         QMap<int, ProductInfo> productInfos() const { return m_productInfos; }
@@ -120,9 +85,6 @@ namespace Core {
         QMap<int, ForestryInfo> m_forestryInfos;
 
         static QMap<QString, GlobalGameData::Ptr> s_gameData;
-        static QMap<int, Data::BuildingType> s_buildingTypes;
-        static QMap<QString, ResourceInfo::Ptr> s_resourceInfos;
-        static QStringList s_availableDomains;
 
     };
 
