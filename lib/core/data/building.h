@@ -62,7 +62,7 @@ namespace Core {
 
         signals:
             void fetchBuildingRequested(BuildingDetails details, BuildingType type) const;
-            void buildingChanged(int farmId, int position) const;
+            void buildingChanged() const;
 
         private:
             void assignAnother(const Building& another);

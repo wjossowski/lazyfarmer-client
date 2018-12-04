@@ -27,8 +27,9 @@ BuildingModel::BuildingModel(const Data::BuildingList::Ptr &buildings, QObject *
     : QAbstractListModel (parent)
     , m_buildings(buildings)
 {
-    connect(&*buildings,    &Data::BuildingList::buildingListChanged,
-            this,           &BuildingModel::reload);
+    connect(&*buildings,    &Data::BuildingList::buildingChanged, [&] (int row) {
+        emit dataChanged(index(row), index(row));
+    });
 }
 
 int BuildingModel::rowCount(const QModelIndex &) const
@@ -74,12 +75,4 @@ QHash<int, QByteArray> BuildingModel::roleNames() const
     roles.insert(static_cast<int>(BuildingRoles::Animals), "animals");
     roles.insert(static_cast<int>(BuildingRoles::Remaining), "remaining");
     return roles;
-}
-
-void BuildingModel::reload()
-{
-    qDebug() << "Reloading Building Model" << m_buildings->size();
-
-    beginResetModel();
-    endResetModel();
 }

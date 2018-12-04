@@ -47,7 +47,7 @@ namespace Core {
             int size() const { return m_buildings.size(); }
 
         signals:
-            void buildingListChanged() const;
+            void buildingChanged(int index) const;
 
         public slots:
             void updateBuilding(int farm, int position, const QVariant &info);

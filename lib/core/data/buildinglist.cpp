@@ -20,6 +20,10 @@ Building::Ptr BuildingList::buildingAt(int farm, int position)
 
     if (buildingIterator == m_buildings.cend()) {
         auto building = Building::Ptr(new Building(m_owner));
+        connect(&*building, &Building::buildingChanged, [=] () {
+            emit buildingChanged(m_buildings.indexOf(building));
+        });
+
         m_buildings.append(building);
 
         return building;
@@ -50,8 +54,6 @@ void BuildingList::update(const QVariant &info)
         auto building = buildingAt(farm, position);
         building->update(buildingInfoMap);
     }
-
-    emit buildingListChanged();
 }
 
 QString BuildingList::toString() const

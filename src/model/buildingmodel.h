@@ -48,9 +48,6 @@ namespace Model {
         QVariant data(const QModelIndex &index, int role) const override;
         QHash<int, QByteArray> roleNames() const override;
 
-    private slots:
-        void reload();
-
     private:
         Core::Data::BuildingList::Ptr m_buildings;
 
