@@ -30,12 +30,10 @@ else:unix: LIBS += -L$$OUT_PWD/../lib/core/ -lCoreLib
 INCLUDEPATH += $$PWD/../lib
 
 SOURCES += \
-    $$PWD/model/*.cpp \
     $$PWD/providers/*.cpp \
     $$PWD/*.cpp
 
 HEADERS += \
-    $$PWD/model/*.h \
     $$PWD/providers/*.h \
     $$PWD/*.h
 

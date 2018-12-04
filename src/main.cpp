@@ -21,9 +21,10 @@
 #include "translator.h"
 
 #ifdef DEBUG_MODE
-#include "model/storagemodel.h"
-#include "model/buildingmodel.h"
-#include "model/playerfactorymodel.h"
+#include "core/model/storagemodel.h"
+#include "core/model/buildingmodel.h"
+#include "core/playerfactorymodel.h"
+
 #include "core/api/apigateway.h"
 #include "core/api/messages/messages.h"
 #include "core/player.h"

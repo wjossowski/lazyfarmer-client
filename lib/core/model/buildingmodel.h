@@ -18,36 +18,38 @@
 
 #pragma once
 
-#include "core/data/storage.h"
+#include "../data/buildinglist.h"
 
 #include <QtCore/QAbstractListModel>
 
 namespace Model {
 
-    class StorageModel : public QAbstractListModel
+    class BuildingModel : public QAbstractListModel
     {
         Q_OBJECT
 
     public:
 
-        enum class StorageRoles {
-            Name    = Qt::DisplayRole,
-            Id      = Qt::UserRole,
-            Amount
+        enum class BuildingRoles {
+            Name        = Qt::DisplayRole,
+            Id          = Qt::UserRole,
+            Type,
+            FarmId,
+            Position,
+            Level,
+            Animals,
+            Remaining,
         };
 
-        explicit StorageModel(const Core::Data::Storage::Ptr &storage, QObject *parent = nullptr);
-        ~StorageModel() override = default;
+        explicit BuildingModel(const Core::Data::BuildingList::Ptr &buildings, QObject *parent = nullptr);
+        ~BuildingModel() override = default;
 
         int rowCount(const QModelIndex &) const override;
         QVariant data(const QModelIndex &index, int role) const override;
         QHash<int, QByteArray> roleNames() const override;
 
-    private slots:
-        void reload();
-
     private:
-       Core::Data::Storage::Ptr m_storage;
+        Core::Data::BuildingList::Ptr m_buildings;
 
     };
 

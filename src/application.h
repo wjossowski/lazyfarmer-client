@@ -19,7 +19,7 @@
 #pragma once
 
 #include "core/configreader.h"
-#include "model/playerfactorymodel.h"
+#include "core/playerfactorymodel.h"
 
 #include <QtGui/QGuiApplication>
 #include <QtCore/QCommandLineParser>

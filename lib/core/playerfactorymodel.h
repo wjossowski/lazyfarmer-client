@@ -1,6 +1,6 @@
 /**
  ** This file is part of the LazyFarmer project.
- ** Copyright 2018 Wojciech Ossowski <w.j.ossowski@gmail.com>.
+ ** Copyright 2017 Wojciech Ossowski <w.j.ossowski@gmail.com>.
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU Lesser General Public License as
@@ -18,38 +18,45 @@
 
 #pragma once
 
-#include "core/data/buildinglist.h"
+#include "player.h"
 
 #include <QtCore/QAbstractListModel>
 
 namespace Model {
 
-    class BuildingModel : public QAbstractListModel
+    class PlayerFactoryModel : public QAbstractListModel
     {
         Q_OBJECT
 
     public:
 
-        enum class BuildingRoles {
-            Name        = Qt::DisplayRole,
-            Id          = Qt::UserRole,
-            Type,
-            FarmId,
-            Position,
-            Level,
-            Animals,
-            Remaining,
+        enum class PlayerRoles {
+            Description     = Qt::DisplayRole,
+            Level           = Qt::UserRole,
+            LevelDescription,
+            LevelPercentage,
+            Money,
+            CurrentJob,
+            PlayerObject,
+            LastError
         };
 
-        explicit BuildingModel(const Core::Data::BuildingList::Ptr &buildings, QObject *parent = nullptr);
-        ~BuildingModel() override = default;
+        explicit PlayerFactoryModel(QObject *parent = nullptr);
+        ~PlayerFactoryModel() override = default;
 
-        int rowCount(const QModelIndex &) const override;
+        int rowCount(const QModelIndex &parent) const override;
         QVariant data(const QModelIndex &index, int role) const override;
         QHash<int, QByteArray> roleNames() const override;
 
+        QSharedPointer<Core::Player> create();
+        Q_INVOKABLE void createPlayer() { create(); }
+
+        Q_INVOKABLE void removeAt(int row);
+
+        Q_INVOKABLE QVariant at(int row);
+
     private:
-        Core::Data::BuildingList::Ptr m_buildings;
+        QList<Core::Player::Ptr> m_players;
 
     };
 

@@ -28,6 +28,7 @@ SOURCES += \
         $${PWD}/api/messages/*.cpp \
         $${PWD}/data/*.cpp  \
         $${PWD}/extractors/*.cpp \
+        $${PWD}/model/*.cpp \
         $${PWD}/*.cpp
 
 HEADERS += \
@@ -35,6 +36,7 @@ HEADERS += \
         $${PWD}/api/messages/*.h \
         $${PWD}/data/*.h \
         $${PWD}/extractors/*.h \
+        $${PWD}/model/*.h \
         $${PWD}/*.h
 
 include($${PWD}/../../common.pri)

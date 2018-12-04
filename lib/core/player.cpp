@@ -17,6 +17,7 @@
  **/
 
 #include "player.h"
+
 #include "api/messages/messages.h"
 #include "extractors/playerinfoextractor.h"
 

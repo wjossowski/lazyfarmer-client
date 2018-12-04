@@ -19,6 +19,7 @@
 #pragma once
 
 #include "api/apigateway.h"
+
 #include "data/storage.h"
 #include "data/common.h"
 #include "data/buildinglist.h"
