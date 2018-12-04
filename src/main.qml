@@ -12,6 +12,7 @@ import "Dialogs"
 
 ApplicationWindow {
     id: root;
+
     visible: true
 
     minimumHeight: 480;
@@ -21,7 +22,7 @@ ApplicationWindow {
     Material.primary: Material.color(Material.Green);
     Material.accent: Material.color(Material.LightGreen);
 
-    title: Qt.application.name + ' v. ' + Qt.application.version
+    title: Qt.application.name + ' v. ' + Qt.application.version;
 
     header: MainToolbar {
         id: topMenu
@@ -29,7 +30,6 @@ ApplicationWindow {
         enabled: !dialogContainer.visible;
 
         stack: stack;
-        title: stack.currentItem.title;
 
         onMenuClicked: {
             sideMenu.visible = true;

@@ -8,7 +8,7 @@ ToolBar {
     id: root;
 
     property var stack;
-    property string title;
+    readonly property string title: stack.currentItem.title;
 
     signal menuClicked();
 

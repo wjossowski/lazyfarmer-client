@@ -1,8 +1,11 @@
 import QtQuick 2.11
 
 ListView {
-    id: storage;
-    model: BuildingModel;
+    id: root;
+
+    Component.onCompleted: {
+
+    }
 
     delegate: Rectangle {
         height: 20;

@@ -46,8 +46,8 @@ DISTFILES += \
     Dialogs/*.qml \
     Views/*.qml \
     Items/*.qml \
-    *.qml \
-    Common/Palette.qml
+    Common/* \
+    *.qml
 
 RESOURCES += resources.qrc
 

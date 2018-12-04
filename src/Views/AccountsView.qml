@@ -29,20 +29,18 @@ Item {
         }
 
         delegate: Item {
+            id: player;
+
             width: parent.width;
             height: 100;
+
+            readonly property bool isReady: !!level
 
             ColumnLayout {
                 spacing: 10;
 
                 anchors.top: parent.top;
                 anchors.topMargin: 15;
-
-                Image {
-                    source: "image://resources/buildings/2"
-                    width: 50
-                    height: 50
-                }
 
                 Label {
                     text: description + "(" + level + ")";
@@ -74,9 +72,21 @@ Item {
                     spacing: 10;
 
                     RoundButton {
+                        id: showButton;
+
+                        visible: player.isReady;
+
+                        text: "\u1f4dc";
+
+                        onClicked: {
+                            LazyFarmer.showPage("Foo", PlayerFactoryModel.at(index));
+                        }
+                    }
+
+                    RoundButton {
                         id: editButton;
 
-                        visible: !level;
+                        visible: !player.isReady;
 
                         text: "\u270E";
 

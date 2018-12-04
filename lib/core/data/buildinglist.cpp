@@ -26,7 +26,6 @@ Building::Ptr BuildingList::buildingAt(int farm, int position)
     } else {
         return *buildingIterator;
     }
-
 }
 
 Building::Ptr BuildingList::buildingAt(int index)
