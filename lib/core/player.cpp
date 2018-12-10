@@ -40,8 +40,15 @@ Player::Player(QObject *parent)
     , m_level(0)
     , m_levelPercentage(0)
     , m_money(0.0)
+
+    , m_storage(Data::Storage::Ptr::create(this))
+    , m_buildingList(Data::BuildingList::Ptr::create(this))
+
+    , m_storageModel(m_storage)
+    , m_buildingModel(m_buildingList)
+
+    , m_gateway(ApiGateway::Ptr::create(this))
 {
-    initialize();
     initializeConnections();
 }
 
@@ -139,13 +146,6 @@ void Player::updateBasicInfo(const QVariantMap &basicInfo)
         m_money = money;
         emit moneyChanged(m_money);
     }
-}
-
-void Player::initialize()
-{
-    m_storage.reset(new Data::Storage(this));
-    m_buildingList.reset(new Data::BuildingList(this));
-    m_gateway.reset(new ApiGateway(this));
 }
 
 void Player::initializeConnections() const

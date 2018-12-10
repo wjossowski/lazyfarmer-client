@@ -24,6 +24,9 @@
 #include "data/common.h"
 #include "data/buildinglist.h"
 
+#include "model/buildingmodel.h"
+#include "model/storagemodel.h"
+
 #include <QtCore/QObject>
 
 namespace Core {
@@ -64,7 +67,7 @@ namespace Core {
 
         void setApiOptions(const Api::ApiOptions &options);
 
-        Q_INVOKABLE inline QString login () const { return m_gateway->login(); }
+        Q_INVOKABLE inline QString login ()  const { return m_gateway->login(); }
         Q_INVOKABLE inline QString domain () const { return m_gateway->serverDomain(); }
         Q_INVOKABLE inline QString server () const { return m_gateway->serverId(); }
 
@@ -73,11 +76,15 @@ namespace Core {
                                        const QString &login,
                                        const QString &password);
 
+        Model::StorageModel  &storageModel()  { return m_storageModel; }
+        Model::BuildingModel &buildingModel() { return m_buildingModel; }
+
     public slots:
         void update(const QByteArray &info);
 
     signals:
-        void updateBuildingRequested(const Data::BuildingDetails &details, const Data::BuildingType &type) const;
+        void updateBuildingRequested(const Data::BuildingDetails &details,
+                                     const Data::BuildingType    &type) const;
 
         void levelChanged(int) const;
         void levelDescriptionChanged(const QString&) const;
@@ -93,7 +100,6 @@ namespace Core {
 
     private:
         void updateBasicInfo(const QVariantMap &basicInfo);
-        void initialize();
         void initializeConnections() const;
 
     private slots:
@@ -108,6 +114,10 @@ namespace Core {
 
         Data::Storage::Ptr m_storage;
         Data::BuildingList::Ptr m_buildingList;
+
+        Model::StorageModel m_storageModel;
+        Model::BuildingModel m_buildingModel;
+
         Api::ApiGateway::Ptr m_gateway;
 
         QString m_lastError;

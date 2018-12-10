@@ -41,7 +41,8 @@ namespace Model {
             Remaining,
         };
 
-        explicit BuildingModel(const Core::Data::BuildingList::Ptr &buildings, QObject *parent = nullptr);
+        explicit BuildingModel(const Core::Data::BuildingList::Ptr &buildings,
+                               QObject *parent = nullptr);
         ~BuildingModel() override = default;
 
         int rowCount(const QModelIndex &) const override;

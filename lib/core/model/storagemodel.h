@@ -36,7 +36,8 @@ namespace Model {
             Amount
         };
 
-        explicit StorageModel(const Core::Data::Storage::Ptr &storage, QObject *parent = nullptr);
+        explicit StorageModel(const Core::Data::Storage::Ptr &storage,
+                              QObject *parent = nullptr);
         ~StorageModel() override = default;
 
         int rowCount(const QModelIndex &) const override;
