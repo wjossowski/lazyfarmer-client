@@ -27,6 +27,11 @@ PlayerFactoryModel::PlayerFactoryModel(QObject *parent)
 
 }
 
+PlayerFactoryModel::~PlayerFactoryModel()
+{
+    qDebug() << "Removing PlayerFactoryModel" << this;
+}
+
 int PlayerFactoryModel::rowCount(const QModelIndex &) const
 {
     return m_players.size();

@@ -32,7 +32,7 @@ BuildingData::BuildingData(Player *parent)
 
 BuildingData::~BuildingData()
 {
-    qDebug() << this;
+    qDebug() << "Removing BuildingData" << this;
 }
 
 void BuildingData::update(const QVariant &info)

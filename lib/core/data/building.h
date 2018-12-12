@@ -67,6 +67,8 @@ namespace Core {
 
         private:
             void assignAnother(const Building& another);
+
+            void initialize();
             void initializeConnections();
 
         private:

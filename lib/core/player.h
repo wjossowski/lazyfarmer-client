@@ -100,6 +100,8 @@ namespace Core {
 
     private:
         void updateBasicInfo(const QVariantMap &basicInfo);
+
+        void initialize();
         void initializeConnections() const;
 
     private slots:

@@ -35,9 +35,8 @@ Building::Building(Player *parent)
     , m_level(0)
     , m_animals(0)
     , m_remaining(0)
-
-    , m_buildingData(BuildingData::Ptr::create(parent))
 {
+    initialize();
     initializeConnections();
 }
 
@@ -49,7 +48,7 @@ Building::Building(const Building &another)
 
 Building::~Building()
 {
-    qDebug() << "Removing" << this;
+    qDebug() << "Removing" << this << m_owner;
 }
 
 const Building &Building::operator=(const Building &another)
@@ -121,6 +120,11 @@ void Building::assignAnother(const Building &another)
     m_level = another.level();
     m_animals = another.animals();
     m_remaining = another.remaining();
+}
+
+void Building::initialize()
+{
+    m_buildingData = BuildingData::Ptr::create(m_owner);
 }
 
 void Building::initializeConnections()

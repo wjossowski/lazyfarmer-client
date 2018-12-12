@@ -42,7 +42,7 @@ namespace Model {
         };
 
         explicit PlayerFactoryModel(QObject *parent = nullptr);
-        ~PlayerFactoryModel() override = default;
+        ~PlayerFactoryModel() override;
 
         int rowCount(const QModelIndex &parent) const override;
         QVariant data(const QModelIndex &index, int role) const override;

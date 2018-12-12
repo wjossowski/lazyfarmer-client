@@ -156,6 +156,7 @@ void registerCustomMetatypes()
     qRegisterMetaType<Core::Data::BuildingDetails>("Core::Data::BuildingDetails");
     qRegisterMetaType<Core::Data::ProductDetails>("Core::Data::ProductDetails");
     qRegisterMetaType<Core::Data::ProductionDetails>("Core::Data::ProductionDetails");
+
     qRegisterMetaType<Core::Api::ApiOptions>("Core::Api::ApiOptions");
 }
 

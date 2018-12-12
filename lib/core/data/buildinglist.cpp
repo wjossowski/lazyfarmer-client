@@ -14,7 +14,7 @@ BuildingList::BuildingList(Player *parent)
 
 BuildingList::~BuildingList()
 {
-    qDebug() << this;
+    qDebug() << "Removing BuildingList" << this;
 }
 
 Building::Ptr BuildingList::buildingAt(int farm, int position)
