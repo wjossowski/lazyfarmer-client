@@ -87,6 +87,8 @@ void handleMessage(QtMsgType type,
     }
 }
 
+#ifdef DEBUG_MODE
+
 Api::ApiOptions extractApiOptions(const QCommandLineParser &parser)
 {
     qDebug() << "Selected following configuration:";
@@ -103,7 +105,6 @@ Api::ApiOptions extractApiOptions(const QCommandLineParser &parser)
     };
 }
 
-#ifdef DEBUG_MODE
 
 void queryDebug(Api::ApiGateway &debugGateway)
 {
@@ -194,7 +195,11 @@ int main(int argc, char *argv[])
         QQuickStyle::setStyle("Material");
     }
 
-    Model::PlayerFactoryModel playerFactory;
+    auto &factory = lazyFarmerApp.playerFactory();
+    auto player = factory.create();
+#ifdef DEBUG_MODE
+    player->setApiOptions(extractApiOptions(parser));
+#endif
 
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("LazyFarmer", &lazyFarmerApp);

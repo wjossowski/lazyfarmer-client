@@ -76,8 +76,8 @@ namespace Core {
                                        const QString &login,
                                        const QString &password);
 
-        Model::StorageModel  &storageModel()  { return m_storageModel; }
-        Model::BuildingModel &buildingModel() { return m_buildingModel; }
+        Model::StorageModel::Ptr  storageModel()  const { return m_storageModel; }
+        Model::BuildingModel::Ptr buildingModel() const { return m_buildingModel; }
 
     public slots:
         void update(const QByteArray &info);
@@ -115,8 +115,8 @@ namespace Core {
         Data::Storage::Ptr m_storage;
         Data::BuildingList::Ptr m_buildingList;
 
-        Model::StorageModel m_storageModel;
-        Model::BuildingModel m_buildingModel;
+        Model::StorageModel::Ptr m_storageModel;
+        Model::BuildingModel::Ptr m_buildingModel;
 
         Api::ApiGateway::Ptr m_gateway;
 

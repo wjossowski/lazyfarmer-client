@@ -29,6 +29,7 @@ namespace Model {
         Q_OBJECT
 
     public:
+        using Ptr = QSharedPointer<BuildingModel>;
 
         enum class BuildingRoles {
             Name        = Qt::DisplayRole,
@@ -48,6 +49,8 @@ namespace Model {
         int rowCount(const QModelIndex &) const override;
         QVariant data(const QModelIndex &index, int role) const override;
         QHash<int, QByteArray> roleNames() const override;
+
+        Core::Data::BuildingList::Ptr buildings() const { return m_buildings; }
 
     private:
         Core::Data::BuildingList::Ptr m_buildings;

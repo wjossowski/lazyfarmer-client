@@ -7,8 +7,6 @@ import QtQuick.Controls.Material 2.3
 Item {
     id: root;
 
-    anchors.fill: parent;
-
     property string title: qsTr("Accounts") + t.r;
     property var loginDialog;
 
@@ -79,7 +77,7 @@ Item {
                         text: "\u1f4dc";
 
                         onClicked: {
-                            LazyFarmer.showPage("Foo", PlayerFactoryModel.at(index));
+                            LazyFarmer.showOverviewPage(PlayerFactoryModel.at(index));
                         }
                     }
 

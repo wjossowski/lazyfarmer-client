@@ -30,6 +30,11 @@ BuildingData::BuildingData(Player *parent)
 
 }
 
+BuildingData::~BuildingData()
+{
+    qDebug() << this;
+}
+
 void BuildingData::update(const QVariant &info)
 {
     qDebug() << "Trying to update" << QJsonDocument::fromVariant(info).toJson(QJsonDocument::Indented);

@@ -29,6 +29,16 @@ class Application : public QGuiApplication
     Q_OBJECT
 
 public:
+    enum class Screens {
+        OverviewScreen  =   1,
+        FieldScreen,
+        AnimalsProductionScreen,
+        ResourceProductionScreen,
+
+        Unknown
+    };
+    Q_ENUM(Screens)
+
     explicit Application(int &argc, char **argv);
     ~Application() override = default;
 
@@ -38,7 +48,10 @@ public:
     Core::ConfigReader &reader() { return Core::ConfigReader::instance(); }
     Model::PlayerFactoryModel &playerFactory() { return m_playerFactory; }
 
-    Q_INVOKABLE void showPage(const QString &page, const QVariant &data);
+    Q_INVOKABLE void showOverviewPage(const QVariant &playerVariant);
+
+signals:
+    void pushToStack(const QString &qml, const QVariant &data) const;
 
 private:
     Model::PlayerFactoryModel m_playerFactory;

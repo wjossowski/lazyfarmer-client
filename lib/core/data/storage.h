@@ -34,6 +34,7 @@ namespace Core {
             using Ptr = QSharedPointer<Storage>;
 
             explicit Storage(Player *parent = nullptr) : IPlayerData(parent) { }
+            ~Storage() override;
 
             int idAtRow(int row) const { return m_products.keys().at(row); }
             QString nameAtRow(int row) const;

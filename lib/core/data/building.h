@@ -39,6 +39,7 @@ namespace Core {
 
             explicit Building(Player *parent = nullptr);
             Building (const Building& another);
+            ~Building() override;
 
             const Building &operator= (const Building &another);
 
@@ -78,7 +79,7 @@ namespace Core {
             int m_remaining;
             QString m_name;
 
-            BuildingData m_buildingData;
+            BuildingData::Ptr m_buildingData;
 
         };
 

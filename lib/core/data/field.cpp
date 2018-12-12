@@ -33,6 +33,11 @@ Field::Field(Player *parent)
 
 }
 
+Field::~Field()
+{
+    qDebug() << this;
+}
+
 ProductDetails Field::details() const
 {
     return {

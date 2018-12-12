@@ -29,6 +29,7 @@ namespace Model {
         Q_OBJECT
 
     public:
+        using Ptr = QSharedPointer<StorageModel>;
 
         enum class StorageRoles {
             Name    = Qt::DisplayRole,
@@ -43,6 +44,8 @@ namespace Model {
         int rowCount(const QModelIndex &) const override;
         QVariant data(const QModelIndex &index, int role) const override;
         QHash<int, QByteArray> roleNames() const override;
+
+        Core::Data::Storage::Ptr storage() const { return m_storage; }
 
     private slots:
         void reload();

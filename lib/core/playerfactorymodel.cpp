@@ -66,9 +66,9 @@ QHash<int, QByteArray> PlayerFactoryModel::roleNames() const
     return roles;
 }
 
-QSharedPointer<Player> PlayerFactoryModel::create()
+Player::Ptr PlayerFactoryModel::create()
 {
-    QSharedPointer<Player> player(new Player());
+    Player::Ptr player = Player::Ptr::create();
 
     int row = m_players.count();
     beginInsertRows(QModelIndex(), row, row);

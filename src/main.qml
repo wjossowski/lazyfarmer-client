@@ -81,6 +81,23 @@ ApplicationWindow {
             loginDialog: loginDialog;
         }
 
+        Component.onCompleted: function () {
+            LazyFarmer.pushToStack.connect(function(qml, data) {
+                var widget = Qt.createComponent(qml);
+                if (widget.status === Component.Ready) {
+                    var object = widget.createObject(stack)
+                    if (object.initialize && object.initialize instanceof Function) {
+                        object.initialize(data);
+                    }
+
+                    stack.push(object, {
+                        destroyOnPop: true
+                    });
+                }
+
+            });
+        }
+
     }
 
     footer: Item {

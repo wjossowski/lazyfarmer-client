@@ -12,6 +12,11 @@ BuildingList::BuildingList(Player *parent)
 
 }
 
+BuildingList::~BuildingList()
+{
+    qDebug() << this;
+}
+
 Building::Ptr BuildingList::buildingAt(int farm, int position)
 {
     const auto buildingIterator = std::find_if(m_buildings.cbegin(), m_buildings.cend(), [=] (const auto &ptr){

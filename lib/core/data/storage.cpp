@@ -27,6 +27,11 @@
 using namespace Core;
 using namespace Core::Data;
 
+Storage::~Storage()
+{
+    qDebug() << this;
+}
+
 QString Storage::nameAtRow(int row) const
 {
     return gameData()->productInfo(idAtRow(row)).name;

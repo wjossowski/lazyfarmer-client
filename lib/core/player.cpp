@@ -32,6 +32,7 @@ using namespace Core::Data;
 using namespace Core::Extractors;
 using namespace Core::Api;
 using namespace Core::Api::Messages;
+using namespace Model;
 
 constexpr const char* KEY_GATEWAY = "GatewayOptions";
 
@@ -41,11 +42,11 @@ Player::Player(QObject *parent)
     , m_levelPercentage(0)
     , m_money(0.0)
 
-    , m_storage(Data::Storage::Ptr::create(this))
-    , m_buildingList(Data::BuildingList::Ptr::create(this))
+    , m_storage(Storage::Ptr::create(this))
+    , m_buildingList(BuildingList::Ptr::create(this))
 
-    , m_storageModel(m_storage)
-    , m_buildingModel(m_buildingList)
+    , m_storageModel(StorageModel::Ptr::create(m_storage))
+    , m_buildingModel(BuildingModel::Ptr::create(m_buildingList))
 
     , m_gateway(ApiGateway::Ptr::create(this))
 {

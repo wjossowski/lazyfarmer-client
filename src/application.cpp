@@ -22,6 +22,7 @@
 
 #include <QtCore/QSettings>
 #include <QtCore/QDir>
+#include <QtCore/QTimer>
 
 #include <QtDebug>
 
@@ -37,6 +38,10 @@ Application::Application(int &argc, char **argv)
     setOrganizationName(COMPANY_NAME);
 
     QSettings::setDefaultFormat(QSettings::IniFormat);
+
+    QTimer::singleShot(1000, [&] () {
+        emit pushToStack("CH U J", QVariantMap { {"Foo", "Bar"} });
+    });
 }
 
 void Application::initializeCommandLineInterface(QCommandLineParser &parser)
@@ -85,10 +90,17 @@ void Application::initializeStaticGameData()
     }
 }
 
-void Application::showPage(const QString &page, const QVariant &data)
+void Application::showOverviewPage(const QVariant &playerVariant)
 {
-    Core::Player *p = data.value<Core::Player*>();
-    qDebug() << page << p->buildings()->toString();
-    qDebug() << page << p->storage()->toString();
-}
+    if (!playerVariant.isValid()) {
+        return;
+    }
 
+    Core::Player *p = playerVariant.value<Core::Player*>();
+    QVariant value = QVariant::fromValue(&*p->buildingModel());
+
+    emit pushToStack("qrc:/qml/Views/FarmView.qml", value);
+
+//    qDebug() << p->buildings()->toString();
+//    qDebug() << p->storage()->toString();
+}

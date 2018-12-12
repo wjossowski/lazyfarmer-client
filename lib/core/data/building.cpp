@@ -26,12 +26,17 @@ using namespace Core::Data;
 Building::Building(Player *parent)
     : IPlayerData(parent)
     , m_id(0)
+
     , m_type(BuildingType::Unknown)
+
     , m_farmId(0)
     , m_position(0)
+
     , m_level(0)
     , m_animals(0)
     , m_remaining(0)
+
+    , m_buildingData(BuildingData::Ptr::create(parent))
 {
     initializeConnections();
 }
@@ -40,6 +45,11 @@ Building::Building(const Building &another)
     : IPlayerData(another.owner())
 {
     assignAnother(another);
+}
+
+Building::~Building()
+{
+    qDebug() << "Removing" << this;
 }
 
 const Building &Building::operator=(const Building &another)
@@ -87,7 +97,7 @@ void Building::update(const QVariant &info)
 
 void Building::updateBuildingData(const QVariant &info)
 {
-    m_buildingData.update(info);
+    m_buildingData->update(info);
 }
 
 QString Building::toString() const
