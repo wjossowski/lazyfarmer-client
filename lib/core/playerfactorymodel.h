@@ -29,7 +29,6 @@ namespace Model {
         Q_OBJECT
 
     public:
-
         enum class PlayerRoles {
             Description     = Qt::DisplayRole,
             Level           = Qt::UserRole,
@@ -42,7 +41,7 @@ namespace Model {
         };
 
         explicit PlayerFactoryModel(QObject *parent = nullptr);
-        ~PlayerFactoryModel() override;
+        ~PlayerFactoryModel() override = default;
 
         int rowCount(const QModelIndex &parent) const override;
         QVariant data(const QModelIndex &index, int role) const override;

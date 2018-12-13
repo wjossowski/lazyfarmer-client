@@ -50,6 +50,24 @@ namespace Core {
                 default: return "Unknown";
                 }
             }
+
+            static bool isBuildingValid(BuildingType type)
+            {
+                return type != BuildingType::Unknown;
+            }
+
+            static BuildingType fromString (const QString &buildingType)
+            {
+                if (buildingType == "Field") {
+                    return BuildingType::Farm;
+                } else if (buildingType == "AnimalProduction") {
+                    return BuildingType::AnimalProduction;
+                } else if (buildingType == "ResourceProduction") {
+                    return BuildingType::ResourceProduction;
+                } else {
+                    return BuildingType::Unknown;
+                }
+            }
         };
 
         struct BuildingDetails

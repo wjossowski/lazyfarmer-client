@@ -38,10 +38,7 @@ namespace Core {
             using Ptr = QSharedPointer<Building>;
 
             explicit Building(Player *parent = nullptr);
-            Building (const Building& another);
-            ~Building() override;
-
-            const Building &operator= (const Building &another);
+            ~Building() override = default;
 
             int id() const { return m_id; }
             BuildingType type() const { return m_type; }
@@ -66,10 +63,7 @@ namespace Core {
             void buildingChanged() const;
 
         private:
-            void assignAnother(const Building& another);
-
-            void initialize();
-            void initializeConnections();
+            void initializeConnections() const;
 
         private:
             int m_id;
@@ -81,7 +75,7 @@ namespace Core {
             int m_remaining;
             QString m_name;
 
-            BuildingData::Ptr m_buildingData;
+            BuildingData m_buildingData;
 
         };
 

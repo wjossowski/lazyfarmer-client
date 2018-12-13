@@ -30,14 +30,9 @@ BuildingData::BuildingData(Player *parent)
 
 }
 
-BuildingData::~BuildingData()
+void BuildingData::update(const QVariant &/*info*/)
 {
-    qDebug() << "Removing BuildingData" << this;
-}
-
-void BuildingData::update(const QVariant &info)
-{
-    qDebug() << "Trying to update" << QJsonDocument::fromVariant(info).toJson(QJsonDocument::Indented);
+    qDebug() << "Trying to update";
 }
 
 QString BuildingData::toString() const

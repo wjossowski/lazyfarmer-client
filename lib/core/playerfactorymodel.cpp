@@ -18,6 +18,8 @@
 
 #include "playerfactorymodel.h"
 
+#include <QtQml/QQmlEngine>
+
 using namespace Core;
 using namespace Model;
 
@@ -25,11 +27,6 @@ PlayerFactoryModel::PlayerFactoryModel(QObject *parent)
     : QAbstractListModel (parent)
 {
 
-}
-
-PlayerFactoryModel::~PlayerFactoryModel()
-{
-    qDebug() << "Removing PlayerFactoryModel" << this;
 }
 
 int PlayerFactoryModel::rowCount(const QModelIndex &) const
@@ -47,7 +44,7 @@ QVariant PlayerFactoryModel::data(const QModelIndex &index, int role) const
         const auto player = m_players.at(index.row());
 
         if (static_cast<PlayerRoles>(role) == PlayerRoles::PlayerObject) {
-            return QVariant::fromValue(player);
+            return QVariant::fromValue(player.data());
         } else {
             const QByteArray roleName = roleNames() [role];
             return player->property(roleName);
@@ -108,5 +105,8 @@ QVariant PlayerFactoryModel::at(int row)
         return QVariant();
     }
 
-    return QVariant::fromValue(&*m_players.at(row));
+    auto player = m_players.at(row);
+
+    QQmlEngine::setObjectOwnership(player.data(), QQmlEngine::CppOwnership);
+    return QVariant::fromValue(player.data());
 }

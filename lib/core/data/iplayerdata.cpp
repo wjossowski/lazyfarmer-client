@@ -30,11 +30,6 @@ IPlayerData::IPlayerData(Player *parent)
 
 }
 
-IPlayerData::~IPlayerData()
-{
-    qDebug() << this;
-}
-
 QString IPlayerData::toString() const
 {
     return "toString() not implemented.";

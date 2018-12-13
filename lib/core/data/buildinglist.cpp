@@ -12,11 +12,6 @@ BuildingList::BuildingList(Player *parent)
 
 }
 
-BuildingList::~BuildingList()
-{
-    qDebug() << "Removing BuildingList" << this;
-}
-
 Building::Ptr BuildingList::buildingAt(int farm, int position)
 {
     const auto buildingIterator = std::find_if(m_buildings.cbegin(), m_buildings.cend(), [=] (const auto &ptr){
@@ -24,8 +19,8 @@ Building::Ptr BuildingList::buildingAt(int farm, int position)
     });
 
     if (buildingIterator == m_buildings.cend()) {
-        auto building = Building::Ptr(new Building(m_owner));
-        connect(&*building, &Building::buildingChanged, [=] () {
+        auto building = Building::Ptr::create(m_owner);
+        connect(&*building, &Building::buildingChanged, [&] () {
             emit buildingChanged(m_buildings.indexOf(building));
         });
 
@@ -40,7 +35,7 @@ Building::Ptr BuildingList::buildingAt(int farm, int position)
 Building::Ptr BuildingList::buildingAt(int index)
 {
     if (m_buildings.count() < index) {
-        return Building::Ptr(new Building(m_owner));
+        return Building::Ptr();
     } else {
         return m_buildings.at(index);
     }

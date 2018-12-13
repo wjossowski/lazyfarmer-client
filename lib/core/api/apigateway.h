@@ -56,7 +56,7 @@ namespace Core {
             using Ptr = QSharedPointer<ApiGateway>;
 
             explicit ApiGateway(QObject *parent = nullptr);
-            ~ApiGateway() override;
+            ~ApiGateway() override = default;
 
             bool isConfigured() const;
 

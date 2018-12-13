@@ -27,6 +27,7 @@
 #include <QtDebug>
 
 using namespace Core;
+using namespace Model;
 
 Application::Application(int &argc, char **argv)
     : QGuiApplication(argc, argv)
@@ -97,10 +98,7 @@ void Application::showOverviewPage(const QVariant &playerVariant)
     }
 
     Core::Player *p = playerVariant.value<Core::Player*>();
-    QVariant value = QVariant::fromValue(&*p->buildingModel());
+    QVariant value = QVariant::fromValue(p->buildingModel().data());
 
     emit pushToStack("qrc:/qml/Views/FarmView.qml", value);
-
-//    qDebug() << p->buildings()->toString();
-//    qDebug() << p->storage()->toString();
 }

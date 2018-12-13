@@ -86,7 +86,7 @@ ApplicationWindow {
                 var widget = Qt.createComponent(qml);
                 if (widget.status === Component.Ready) {
                     var object = widget.createObject(stack)
-                    if (object.initialize && object.initialize instanceof Function) {
+                    if (data && object.initialize && object.initialize instanceof Function) {
                         object.initialize(data);
                     }
 

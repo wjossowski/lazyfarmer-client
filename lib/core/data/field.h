@@ -38,7 +38,7 @@ namespace Core {
             using Ptr = QSharedPointer<Field>;
 
             explicit Field (Player *parent = nullptr);
-            ~Field() override;
+            ~Field() override = default;
 
             int id() const { return m_id; }
             int fieldId() const { return m_fieldNo; }

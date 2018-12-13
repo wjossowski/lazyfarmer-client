@@ -51,7 +51,7 @@ namespace Core {
         using Ptr = QSharedPointer<Player>;
 
         explicit Player(QObject *parent = nullptr);
-        ~Player() override;
+        ~Player() override = default;
 
         GlobalGameData::Ptr gameData() const;
 
@@ -114,11 +114,11 @@ namespace Core {
         qreal m_money;
         QString m_levelDescription;
 
-        Data::Storage::Ptr m_storage;
         Data::BuildingList::Ptr m_buildingList;
-
-        Model::StorageModel::Ptr m_storageModel;
         Model::BuildingModel::Ptr m_buildingModel;
+
+        Data::Storage::Ptr m_storage;
+        Model::StorageModel::Ptr m_storageModel;
 
         Api::ApiGateway::Ptr m_gateway;
 

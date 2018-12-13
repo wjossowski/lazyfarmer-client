@@ -56,11 +56,6 @@ ApiGateway::ApiGateway(QObject *parent)
 
 }
 
-ApiGateway::~ApiGateway()
-{
-    qDebug() << "Removing ApiGateway" << m_login;
-}
-
 /**
  * @brief ApiGateway::isConfigured
  * Returns true if all configuration fields are filled

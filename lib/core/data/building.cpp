@@ -35,27 +35,10 @@ Building::Building(Player *parent)
     , m_level(0)
     , m_animals(0)
     , m_remaining(0)
+
+    , m_buildingData(parent)
 {
-    initialize();
     initializeConnections();
-}
-
-Building::Building(const Building &another)
-    : IPlayerData(another.owner())
-{
-    assignAnother(another);
-}
-
-Building::~Building()
-{
-    qDebug() << "Removing" << this << m_owner;
-}
-
-const Building &Building::operator=(const Building &another)
-{
-    assignAnother(another);
-
-    return *this;
 }
 
 void Building::update(const QVariant &info)
@@ -96,7 +79,7 @@ void Building::update(const QVariant &info)
 
 void Building::updateBuildingData(const QVariant &info)
 {
-    m_buildingData->update(info);
+    m_buildingData.update(info);
 }
 
 QString Building::toString() const
@@ -111,23 +94,7 @@ QString Building::toString() const
             .arg(m_remaining);
 }
 
-void Building::assignAnother(const Building &another)
-{
-    m_id = another.id();
-    m_type = another.type();
-    m_farmId = another.farmId();
-    m_position = another.position();
-    m_level = another.level();
-    m_animals = another.animals();
-    m_remaining = another.remaining();
-}
-
-void Building::initialize()
-{
-    m_buildingData = BuildingData::Ptr::create(m_owner);
-}
-
-void Building::initializeConnections()
+void Building::initializeConnections() const
 {
     connect(this,       &Building::fetchBuildingRequested,
             m_owner,    &Player::updateBuildingRequested);

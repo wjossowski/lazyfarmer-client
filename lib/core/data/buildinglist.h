@@ -37,7 +37,7 @@ namespace Core {
             using Ptr = QSharedPointer<BuildingList>;
 
             explicit BuildingList (Player *parent = nullptr);
-            ~BuildingList() override;
+            ~BuildingList() override = default;
 
             Building::Ptr buildingAt(int farm, int position);
             Building::Ptr buildingAt(int index);

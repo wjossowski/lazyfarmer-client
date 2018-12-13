@@ -62,19 +62,18 @@ bool ConfigReader::loadConfig(const QByteArray &contents)
 
     m_availableDomains = configObject["available-domains"].toStringList();
 
-    const QVariantList buildingInfoList = configObject["building-config"].toList();
-    for (const auto &info : buildingInfoList) {
-        const QVariantMap data = info.toMap();
+    const auto buildingTypeInfo = configObject["building-config"].toMap();
+    for (auto iterator = buildingTypeInfo.cbegin(); iterator != buildingTypeInfo.cend(); iterator++) {
+        const auto storedBuildingType = iterator.key();
+        const auto buildingTypeIds = iterator.value().toList();
 
-        int id = data["id"].toInt();
+        BuildingType mappedBuildingType = BuildingHelper::fromString(storedBuildingType);
+        if (!BuildingHelper::isBuildingValid(mappedBuildingType)) {
+            continue;
+        }
 
-        QString category = data["category"].toString();
-        if (category == "Field") {
-            m_buildingTypes.insert(id, BuildingType::Farm);
-        } else if (category == "AnimalProduction") {
-            m_buildingTypes.insert(id, BuildingType::AnimalProduction);
-        } else if (category == "ResourceProduction") {
-            m_buildingTypes.insert(id, BuildingType::ResourceProduction);
+        for (auto id : buildingTypeIds) {
+            m_buildingTypes.insert(id.toInt(), mappedBuildingType);
         }
     }
 
