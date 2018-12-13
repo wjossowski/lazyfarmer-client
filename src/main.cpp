@@ -196,6 +196,13 @@ int main(int argc, char *argv[])
         QQuickStyle::setStyle("Material");
     }
 
+#ifdef DEBUG_MODE
+    auto &factory = lazyFarmerApp.playerFactory();
+    auto player = factory.create();
+
+    player->setApiOptions(extractApiOptions(parser));
+#endif
+
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("LazyFarmer", &lazyFarmerApp);
     engine.rootContext()->setContextProperty("PlayerFactoryModel", &lazyFarmerApp.playerFactory());

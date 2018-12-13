@@ -40,6 +40,7 @@ namespace Model {
             Level,
             Animals,
             Remaining,
+            IsSetUp,
         };
 
         explicit BuildingModel(const Core::Data::BuildingList::Ptr &buildings,

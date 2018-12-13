@@ -58,6 +58,7 @@ QVariant BuildingModel::data(const QModelIndex &index, int role) const
     case BuildingRoles::Level: return building->level();
     case BuildingRoles::Animals: return building->animals();
     case BuildingRoles::Remaining: return building->remaining();
+    case BuildingRoles::IsSetUp: return building->isSetUp();
     }
 
     return QVariant();
@@ -74,5 +75,6 @@ QHash<int, QByteArray> BuildingModel::roleNames() const
     roles.insert(static_cast<int>(BuildingRoles::Level), "level");
     roles.insert(static_cast<int>(BuildingRoles::Animals), "animals");
     roles.insert(static_cast<int>(BuildingRoles::Remaining), "remaining");
+    roles.insert(static_cast<int>(BuildingRoles::IsSetUp), "isSetUp");
     return roles;
 }

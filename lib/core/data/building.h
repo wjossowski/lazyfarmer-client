@@ -49,6 +49,8 @@ namespace Core {
             int remaining() const { return m_remaining; }
             QString name() const { return m_name; }
 
+            bool isSetUp() const { return false; }
+
             bool isValid() const { return m_type != BuildingType::Unknown; }
 
             BuildingDetails details() const { return { m_farmId, m_position }; }

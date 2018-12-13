@@ -87,21 +87,18 @@ Player::Ptr PlayerFactoryModel::create()
 
 void PlayerFactoryModel::removeAt(int row)
 {
-    if (m_players.size() <= row) {
+    if (m_players.size() < row) {
         return;
     }
 
     beginRemoveRows(QModelIndex(), row, row);
-    auto player = m_players.at(row);
-    player->deleteLater();
-
     m_players.removeAt(row);
     endRemoveRows();
 }
 
 QVariant PlayerFactoryModel::at(int row)
 {
-    if (m_players.size() <= row) {
+    if (m_players.size() < row) {
         return QVariant();
     }
 

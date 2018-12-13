@@ -93,8 +93,10 @@ ApplicationWindow {
                     stack.push(object, {
                         destroyOnPop: true
                     });
-                }
 
+                } else {
+                    console.error(widget.errorString())
+                }
             });
         }
 
