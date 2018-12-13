@@ -44,7 +44,7 @@ QVariant PlayerFactoryModel::data(const QModelIndex &index, int role) const
         const auto player = m_players.at(index.row());
 
         if (static_cast<PlayerRoles>(role) == PlayerRoles::PlayerObject) {
-            return QVariant::fromValue(player.data());
+            return QVariant::fromValue(&*player);
         } else {
             const QByteArray roleName = roleNames() [role];
             return player->property(roleName);
@@ -107,6 +107,6 @@ QVariant PlayerFactoryModel::at(int row)
 
     auto player = m_players.at(row);
 
-    QQmlEngine::setObjectOwnership(player.data(), QQmlEngine::CppOwnership);
-    return QVariant::fromValue(player.data());
+    QQmlEngine::setObjectOwnership(&*player, QQmlEngine::CppOwnership);
+    return QVariant::fromValue(&*player);
 }
