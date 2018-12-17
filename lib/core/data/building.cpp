@@ -35,8 +35,6 @@ Building::Building(Player *parent)
     , m_level(0)
     , m_animals(0)
     , m_remaining(0)
-
-    , m_buildingData(parent)
 {
     initializeConnections();
 }
@@ -61,7 +59,12 @@ void Building::update(const QVariant &info)
     {
         m_id = id;
 
-        m_type = ConfigReader::instance().buildingType(id);
+        // Lazy-load for BuildingDetails object
+        BuildingType type = ConfigReader::instance().buildingType(id);
+        if (m_type != type) {
+            m_type = type;
+            m_buildingData = BuildingData::create(m_owner, type);
+        }
 
         m_farmId = farmId;
         m_position = position;
@@ -79,7 +82,9 @@ void Building::update(const QVariant &info)
 
 void Building::updateBuildingData(const QVariant &info)
 {
-    m_buildingData.update(info);
+    if (m_buildingData) {
+        m_buildingData->update(info);
+    }
 }
 
 QString Building::toString() const

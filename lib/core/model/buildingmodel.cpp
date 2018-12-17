@@ -87,7 +87,7 @@ QVariant BuildingModel::at(int row)
     }
 
     auto building = m_buildings->buildingAt(row);
-    if (!building.isNull()) {
+    if (!building) {
         return QVariant();
     }
 
