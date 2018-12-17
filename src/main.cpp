@@ -105,7 +105,6 @@ Api::ApiOptions extractApiOptions(const QCommandLineParser &parser)
     };
 }
 
-
 void queryDebug(Api::ApiGateway &debugGateway)
 {
     const auto getInfo = [&](){

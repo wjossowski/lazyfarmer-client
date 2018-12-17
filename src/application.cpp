@@ -29,6 +29,15 @@
 using namespace Core;
 using namespace Model;
 
+const QMap<Application::Screens, QString> s_screenUrls = {
+    { Application::Screens::AccountsViewScreen,          "qrc:/qml/Views/AccountsView.qml" },
+    { Application::Screens::FarmOverviewScreen,          "qrc:/qml/Views/FarmView.qml" },
+    { Application::Screens::FieldScreen,                 "qrc:/qml/Views/FieldView.qml" },
+    { Application::Screens::AnimalsProductionScreen,     "qrc:/qml/Views/AnimalProductionView.qml" },
+    { Application::Screens::ResourceProductionScreen,    "qrc:/qml/Views/ResourceProductionView.qml" },
+    { Application::Screens::TaskQueueScreen,             "qrc:/qml/Views/TaskQueueView.qml" },
+};
+
 Application::Application(int &argc, char **argv)
     : QGuiApplication(argc, argv)
 {
@@ -39,10 +48,6 @@ Application::Application(int &argc, char **argv)
     setOrganizationName(COMPANY_NAME);
 
     QSettings::setDefaultFormat(QSettings::IniFormat);
-
-    QTimer::singleShot(1000, [&] () {
-        emit pushToStack("CH U J", QVariantMap { {"Foo", "Bar"} });
-    });
 }
 
 void Application::initializeCommandLineInterface(QCommandLineParser &parser)
@@ -100,5 +105,14 @@ void Application::showOverviewPage(const QVariant &playerVariant)
     Core::Player *p = playerVariant.value<Core::Player*>();
     QVariant value = QVariant::fromValue(p->buildingModel().data());
 
-    emit pushToStack("qrc:/qml/Views/FarmView.qml", value);
+    showScreen(Screens::FarmOverviewScreen, value);
+}
+
+void Application::showScreen(Application::Screens screenToShow, const QVariant &data) const
+{
+    const QString screenUrl = s_screenUrls.value(screenToShow);
+
+    if (!screenUrl.isEmpty()) {
+        emit pushToStack(screenUrl, data);
+    }
 }
