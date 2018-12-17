@@ -77,6 +77,10 @@ Drawer {
             Layout.alignment: Qt.AlignHCenter;
         }
 
+        Item {
+            height: 10;
+        }
+
     }
     
 }
