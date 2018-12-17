@@ -30,10 +30,13 @@ class Application : public QGuiApplication
 
 public:
     enum class Screens {
-        OverviewScreen  =   1,
+        AccountsViewScreen = 1,
+        FarmOverviewScreen,
         FieldScreen,
         AnimalsProductionScreen,
         ResourceProductionScreen,
+
+        TaskQueueScreen,
 
         Unknown
     };
@@ -52,6 +55,9 @@ public:
 
 signals:
     void pushToStack(const QString &qml, const QVariant &data) const;
+
+private:
+    void showScreen(Screens screenToShow, const QVariant &data) const;
 
 private:
     Model::PlayerFactoryModel m_playerFactory;
