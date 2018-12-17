@@ -203,13 +203,15 @@ int main(int argc, char *argv[])
 #endif
 
     QQmlApplicationEngine engine;
-    engine.rootContext()->setContextProperty("LazyFarmer", &lazyFarmerApp);
-    engine.rootContext()->setContextProperty("PlayerFactoryModel", &lazyFarmerApp.playerFactory());
-    engine.rootContext()->setContextProperty("AvailableDomains", lazyFarmerApp.reader().availableDomains());
+    auto engineRootContext = engine.rootContext();
+    engineRootContext->setContextProperty("LazyFarmer", &lazyFarmerApp);
+    engineRootContext->setContextProperty("PlayerFactoryModel", &lazyFarmerApp.playerFactory());
+    engineRootContext->setContextProperty("AvailableDomains", lazyFarmerApp.reader().availableDomains());
+
     engine.addImageProvider("resources", new ResourceImageProvider);
 
     Translator t(&lazyFarmerApp);
-    engine.rootContext()->setContextProperty("t", &t);
+    engineRootContext->setContextProperty("t", &t);
 
     engine.load(QUrl(QLatin1String("qrc:/qml/main.qml")));
     if (engine.rootObjects().isEmpty()){

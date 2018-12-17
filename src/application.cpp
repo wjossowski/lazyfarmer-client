@@ -27,6 +27,7 @@
 #include <QtDebug>
 
 using namespace Core;
+using namespace Core::Data;
 using namespace Model;
 
 const QMap<Application::Screens, QString> s_screenUrls = {
@@ -96,16 +97,38 @@ void Application::initializeStaticGameData()
     }
 }
 
-void Application::showOverviewPage(const QVariant &playerVariant)
+void Application::requestOverviewScreen(int playerId)
 {
-    if (!playerVariant.isValid()) {
+    auto playerVariant = m_playerFactory.at(playerId);
+    if (playerVariant.isValid()) {
+        Core::Player *player = playerVariant.value<Core::Player*>();
+        QVariant buildingInfo = QVariant::fromValue(player->buildingModel().data());
+
+        showScreen(Screens::FarmOverviewScreen, buildingInfo);
+    }
+}
+
+void Application::requestBuildingInfoScreen(BuildingModel *buildingModel, int buildingId)
+{
+    const auto building = buildingModel->buildings()->buildingAt(buildingId);
+    if (building.isNull()) {
         return;
     }
 
-    Core::Player *p = playerVariant.value<Core::Player*>();
-    QVariant value = QVariant::fromValue(p->buildingModel().data());
+    const auto screenType = [] (BuildingType type) -> Screens {
+        switch (type) {
+        case BuildingType::Farm:                return Screens::FieldScreen;
+        case BuildingType::AnimalProduction:    return Screens::AnimalsProductionScreen;
+        case BuildingType::ResourceProduction:  return Screens::ResourceProductionScreen;
 
-    showScreen(Screens::FarmOverviewScreen, value);
+        default:                                return Screens::Unknown;
+        }
+    };
+
+    showScreen(screenType(building->type()), QVariant());
+
+    // Todo: Kurwa zbadać builing details !!!!
+
 }
 
 void Application::showScreen(Application::Screens screenToShow, const QVariant &data) const

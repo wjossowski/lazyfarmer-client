@@ -74,10 +74,10 @@ Item {
 
                         visible: player.isReady;
 
-                        text: "\u1f4dc";
+                        text: "i"
 
                         onClicked: {
-                            LazyFarmer.showOverviewPage(PlayerFactoryModel.at(index));
+                            LazyFarmer.requestOverviewScreen(index);
                         }
                     }
 
@@ -86,7 +86,7 @@ Item {
 
                         visible: !player.isReady;
 
-                        text: "\u270E";
+                        text: "\u270e";
 
                         onClicked: {
                             loginDialog.setUp(PlayerFactoryModel.at(index));

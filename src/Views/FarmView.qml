@@ -36,6 +36,13 @@ Item {
             width: root.gridWidth;
             height: root.gridHeight;
 
+            MouseArea {
+                anchors.fill: parent;
+                onClicked: function () {
+                    LazyFarmer.requestBuildingInfoScreen(buildings.model, index);
+                }
+            }
+
             Rectangle {
                 anchors {
                     fill: parent;

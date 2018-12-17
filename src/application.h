@@ -51,7 +51,8 @@ public:
     Core::ConfigReader &reader() { return Core::ConfigReader::instance(); }
     Model::PlayerFactoryModel &playerFactory() { return m_playerFactory; }
 
-    Q_INVOKABLE void showOverviewPage(const QVariant &playerVariant);
+    Q_INVOKABLE void requestOverviewScreen(int playerId);
+    Q_INVOKABLE void requestBuildingInfoScreen(Model::BuildingModel *buildingModel, int buildingId);
 
 signals:
     void pushToStack(const QString &qml, const QVariant &data) const;
