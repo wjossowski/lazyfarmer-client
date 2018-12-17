@@ -45,7 +45,7 @@ const QUrl GetFeedInfo::url() const
     });
 }
 
-void GetFeedInfo::handleResponse(QIODevice *reply)
+void GetFeedInfo::handleResponse(QNetworkReply *reply)
 {
     FeedInfoExtractor extractor;
     extractor.extract(reply->readAll());

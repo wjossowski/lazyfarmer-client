@@ -40,6 +40,7 @@ namespace Core {
                 Logout, // Done
 
                 GetConstantData, // Done
+                GetResource, // Done
 
                 GetFarmInfo, // Todo
                 GetFieldInfo,
@@ -75,6 +76,7 @@ namespace Core {
                     case MessageType::CheckCredentials:     return qApp->translate("MessageTypes", "Checking Credentials");
                     case MessageType::Logout:               return qApp->translate("MessageTypes", "Logging out");
                     case MessageType::GetConstantData:      return qApp->translate("MessageTypes", "Getting Constant Data");
+                    case MessageType::GetResource:          return qApp->translate("MessageTypes", "Getting Resource (%1)");
                     case MessageType::GetFarmInfo:          return qApp->translate("MessageTypes", "Getting Farm Info");
                     case MessageType::GetFieldInfo:         return qApp->translate("MessageTypes", "Getting Field Info");
                     case MessageType::SetPlant:             return qApp->translate("MessageTypes", "Setting Plant");
@@ -101,6 +103,7 @@ namespace Core {
                     case MessageType::CheckCredentials:     return "CheckCredentials";
                     case MessageType::Logout:               return "Logout";
                     case MessageType::GetConstantData:      return "GetConstantData";
+                    case MessageType::GetResource:          return "GetResource";
                     case MessageType::GetFarmInfo:          return "GetFarmInfo";
                     case MessageType::GetFieldInfo:         return "GetFieldInfo";
                     case MessageType::SetPlant:             return "SetPlant";

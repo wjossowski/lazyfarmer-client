@@ -1,6 +1,6 @@
 /**
  ** This file is part of the LazyFarmer project.
- ** Copyright 2018 Wojciech Ossowski <w.j.ossowski@gmail.com>.
+ ** Copyright 2018 Wojciech Ossowski <zavafoj@gmail.com>.
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU Lesser General Public License as
@@ -18,8 +18,8 @@
 
 #pragma once
 
+
 #include "apimessage.h"
-#include "../../data/common.h"
 
 namespace Core {
 
@@ -27,21 +27,26 @@ namespace Core {
 
         namespace Messages {
 
-            class GetProductionInfo : public ApiMessage
+            class GetResource : public ApiMessage
             {
                 Q_OBJECT
 
             public:
-                using Ptr = QSharedPointer<GetProductionInfo>;
+                using Ptr = QSharedPointer<GetResource>;
 
-                explicit GetProductionInfo(ApiGateway *gateway,
-                                           const Data::BuildingDetails &buildingData = Data::BuildingDetails());
+                explicit GetResource(ApiGateway *gateway,
+                                     const QString &context,
+                                     const QUrl &url);
 
-                const QUrl url() const override;
+                QString toReadableString() const override { return ApiMessage::toReadableString().arg(m_context); }
+
+                const QUrl url() const override { return m_url; }
+
                 void handleResponse(QNetworkReply *reply) override;
 
             private:
-                Data::BuildingDetails m_buildingData;
+                QString m_context;
+                QUrl m_url;
 
             };
 

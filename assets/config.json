@@ -1,0 +1,38 @@
+{
+    "building-config": {
+        "AnimalProduction": [2, 3, 4, 5, 11, 12, 15],
+        "Field": [1],
+        "ResourceProduction": [7, 8, 9, 10, 13, 14, 16, 17, 18, 20, 21]
+    },
+    "urls-images": {
+        "buildings": {
+            "url": "http://mff.wavecdn.de/mff/maps/buildings32.gif",
+            "size": 129,
+            "erase-at": [ 6, 7, 8, 9, 10 ]
+        },
+        "products": {
+            "url": "http://mff.wavecdn.de/mff/maps/tafel_map.32.jpg",
+            "size": 40
+        }
+    },
+    "available-domains": [
+        "wolnifarmerzy.pl",
+        "myfreefarm.de",
+        "myfreefarm.com",
+        "tr.myfreefarm.com",
+        "veselaferma.com",
+        "myfreefarm.cz",
+        "myfreefarm.dk",
+        "myfreefarm.gr",
+        "migranjalinda.es",
+        "mabelleferme.fr",
+        "myfreefarm.com.hr",
+        "myfreefarm.ir",
+        "myfreefarm.it",
+        "enkicsitanyam.hu",
+        "myfreefarm.nl",
+        "fermavesela.ro",
+        "mojaderewnja.ru",
+        "myfreefarm.se"
+    ]
+}

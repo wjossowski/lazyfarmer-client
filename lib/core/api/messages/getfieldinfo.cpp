@@ -44,7 +44,7 @@ const QUrl GetFieldInfo::url() const
     });
 }
 
-void GetFieldInfo::handleResponse(QIODevice *reply)
+void GetFieldInfo::handleResponse(QNetworkReply *reply)
 {
     FieldInfoExtractor extractor(0, &*m_gateway->gameData());
     extractor.extract(reply->readAll());

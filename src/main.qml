@@ -12,16 +12,17 @@ import "Dialogs"
 
 ApplicationWindow {
     id: root;
+
     visible: true
 
     minimumHeight: 480;
-    minimumWidth: 640;
+    minimumWidth: 420;
 
     Material.theme: Material.Light;
     Material.primary: Material.color(Material.Green);
     Material.accent: Material.color(Material.LightGreen);
 
-    title: Qt.application.name + ' v. ' + Qt.application.version
+    title: Qt.application.name + ' v. ' + Qt.application.version;
 
     header: MainToolbar {
         id: topMenu
@@ -29,7 +30,6 @@ ApplicationWindow {
         enabled: !dialogContainer.visible;
 
         stack: stack;
-        title: stack.currentItem.title;
 
         onMenuClicked: {
             sideMenu.visible = true;
@@ -79,6 +79,25 @@ ApplicationWindow {
 
         initialItem: AccountsView {
             loginDialog: loginDialog;
+        }
+
+        Component.onCompleted: function () {
+            LazyFarmer.pushToStack.connect(function(qml, data) {
+                var widget = Qt.createComponent(qml);
+                if (widget.status === Component.Ready) {
+                    var object = widget.createObject(stack)
+                    if (data && object.initialize && object.initialize instanceof Function) {
+                        object.initialize(data);
+                    }
+
+                    stack.push(object, {
+                        destroyOnPop: true
+                    });
+
+                } else {
+                    console.error(widget.errorString())
+                }
+            });
         }
 
     }

@@ -19,9 +19,13 @@
 #pragma once
 
 #include "api/apigateway.h"
+
 #include "data/storage.h"
 #include "data/common.h"
 #include "data/buildinglist.h"
+
+#include "model/buildingmodel.h"
+#include "model/storagemodel.h"
 
 #include <QtCore/QObject>
 
@@ -47,7 +51,7 @@ namespace Core {
         using Ptr = QSharedPointer<Player>;
 
         explicit Player(QObject *parent = nullptr);
-        ~Player() override;
+        ~Player() override = default;
 
         GlobalGameData::Ptr gameData() const;
 
@@ -63,7 +67,7 @@ namespace Core {
 
         void setApiOptions(const Api::ApiOptions &options);
 
-        Q_INVOKABLE inline QString login () const { return m_gateway->login(); }
+        Q_INVOKABLE inline QString login ()  const { return m_gateway->login(); }
         Q_INVOKABLE inline QString domain () const { return m_gateway->serverDomain(); }
         Q_INVOKABLE inline QString server () const { return m_gateway->serverId(); }
 
@@ -72,11 +76,15 @@ namespace Core {
                                        const QString &login,
                                        const QString &password);
 
+        Model::StorageModel::Ptr  storageModel()  const { return m_storageModel; }
+        Model::BuildingModel::Ptr buildingModel() const { return m_buildingModel; }
+
     public slots:
         void update(const QByteArray &info);
 
     signals:
-        void updateBuildingRequested(const Data::BuildingDetails &details, const Data::BuildingType &type) const;
+        void updateBuildingRequested(const Data::BuildingDetails &details,
+                                     const Data::BuildingType    &type) const;
 
         void levelChanged(int) const;
         void levelDescriptionChanged(const QString&) const;
@@ -92,6 +100,7 @@ namespace Core {
 
     private:
         void updateBasicInfo(const QVariantMap &basicInfo);
+
         void initialize();
         void initializeConnections() const;
 
@@ -105,8 +114,12 @@ namespace Core {
         qreal m_money;
         QString m_levelDescription;
 
-        Data::Storage::Ptr m_storage;
         Data::BuildingList::Ptr m_buildingList;
+        Model::BuildingModel::Ptr m_buildingModel;
+
+        Data::Storage::Ptr m_storage;
+        Model::StorageModel::Ptr m_storageModel;
+
         Api::ApiGateway::Ptr m_gateway;
 
         QString m_lastError;

@@ -13,7 +13,6 @@ Drawer {
         anchors {
             fill: parent;
             topMargin: 10
-            bottomMargin: 20
         }
 
         spacing: 10

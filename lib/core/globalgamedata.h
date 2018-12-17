@@ -22,7 +22,6 @@
 
 #include <QtCore/QMap>
 #include <QtCore/QVariant>
-#include <QtCore/QSharedPointer>
 
 namespace Core {
 
@@ -66,14 +65,8 @@ namespace Core {
             return m_forestryInfos.value(forestryId, { "Unknown" });
         }
 
-        static Data::BuildingType buildingType (const int buildingId) {
-            return m_buildingTypes.value(buildingId, Data::BuildingType::Unknown);
-        }
-
         static void registerGameData(const QString &domain, const QVariant &data);
         static GlobalGameData::Ptr gameData(const QString &domain);
-
-        static bool loadBuildingTypes(const QByteArray &contents);
 
         QMap<int, BuildingInfo> buildingInfos() const { return m_buildingInfos; }
         QMap<int, ProductInfo> productInfos() const { return m_productInfos; }
@@ -91,8 +84,7 @@ namespace Core {
         QMap<int, ProductInfo> m_productInfos;
         QMap<int, ForestryInfo> m_forestryInfos;
 
-        static QMap<QString, GlobalGameData::Ptr> m_gameData;
-        static QMap<int, Data::BuildingType> m_buildingTypes;
+        static QMap<QString, GlobalGameData::Ptr> s_gameData;
 
     };
 

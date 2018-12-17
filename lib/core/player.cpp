@@ -17,6 +17,7 @@
  **/
 
 #include "player.h"
+
 #include "api/messages/messages.h"
 #include "extractors/playerinfoextractor.h"
 
@@ -31,6 +32,7 @@ using namespace Core::Data;
 using namespace Core::Extractors;
 using namespace Core::Api;
 using namespace Core::Api::Messages;
+using namespace Model;
 
 constexpr const char* KEY_GATEWAY = "GatewayOptions";
 
@@ -42,11 +44,6 @@ Player::Player(QObject *parent)
 {
     initialize();
     initializeConnections();
-}
-
-Player::~Player()
-{
-    qDebug() << "Removing player" << playerDescription();
 }
 
 GlobalGameData::Ptr Player::gameData() const
@@ -142,9 +139,13 @@ void Player::updateBasicInfo(const QVariantMap &basicInfo)
 
 void Player::initialize()
 {
-    m_storage.reset(new Data::Storage(this));
-    m_buildingList.reset(new Data::BuildingList(this));
-    m_gateway.reset(new ApiGateway(this));
+    m_storage = Storage::Ptr::create(this);
+    m_buildingList = BuildingList::Ptr::create(this);
+
+    m_storageModel = StorageModel::Ptr::create(m_storage);
+    m_buildingModel = BuildingModel::Ptr::create(m_buildingList);
+
+    m_gateway = ApiGateway::Ptr::create(this);
 }
 
 void Player::initializeConnections() const

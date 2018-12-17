@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-QT       += core network
+QT       += core network gui qml
 CONFIG   += c++14 dll
 
 TARGET = CoreLib
@@ -28,6 +28,7 @@ SOURCES += \
         $${PWD}/api/messages/*.cpp \
         $${PWD}/data/*.cpp  \
         $${PWD}/extractors/*.cpp \
+        $${PWD}/model/*.cpp \
         $${PWD}/*.cpp
 
 HEADERS += \
@@ -35,6 +36,7 @@ HEADERS += \
         $${PWD}/api/messages/*.h \
         $${PWD}/data/*.h \
         $${PWD}/extractors/*.h \
+        $${PWD}/model/*.h \
         $${PWD}/*.h
 
 include($${PWD}/../../common.pri)

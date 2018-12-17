@@ -46,7 +46,7 @@ const QUrl GetProductionInfo::url() const
     });
 }
 
-void GetProductionInfo::handleResponse(QIODevice *reply)
+void GetProductionInfo::handleResponse(QNetworkReply *reply)
 {
     ProductionInfoExtractor extractor;
     extractor.extract(reply->readAll());

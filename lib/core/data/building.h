@@ -38,9 +38,7 @@ namespace Core {
             using Ptr = QSharedPointer<Building>;
 
             explicit Building(Player *parent = nullptr);
-            Building (const Building& another);
-
-            const Building &operator= (const Building &another);
+            ~Building() override = default;
 
             int id() const { return m_id; }
             BuildingType type() const { return m_type; }
@@ -50,6 +48,8 @@ namespace Core {
             int animals() const { return m_animals; }
             int remaining() const { return m_remaining; }
             QString name() const { return m_name; }
+
+            bool isSetUp() const { return false; }
 
             bool isValid() const { return m_type != BuildingType::Unknown; }
 
@@ -62,11 +62,10 @@ namespace Core {
 
         signals:
             void fetchBuildingRequested(BuildingDetails details, BuildingType type) const;
-            void buildingChanged(int farmId, int position) const;
+            void buildingChanged() const;
 
         private:
-            void assignAnother(const Building& another);
-            void initializeConnections();
+            void initializeConnections() const;
 
         private:
             int m_id;

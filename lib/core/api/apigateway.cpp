@@ -56,11 +56,6 @@ ApiGateway::ApiGateway(QObject *parent)
 
 }
 
-ApiGateway::~ApiGateway()
-{
-    qDebug() << "Removing ApiGateway" << m_login;
-}
-
 /**
  * @brief ApiGateway::isConfigured
  * Returns true if all configuration fields are filled
@@ -122,6 +117,23 @@ void ApiGateway::setBaseInfo(const QString &content)
     const auto extractor = GameInfoExtractor::baseExtractor(m_serverDomain);
     extractor->extract(content);
     queueConstantData(content);
+}
+
+void ApiGateway::queueConfigResources()
+{
+    QMapIterator<QString, ResourceInfo::Ptr> p = ConfigReader::instance().resourceInfo();
+    while (p.hasNext()) {
+        const auto resourceConfig = p.next();
+        const auto context = resourceConfig.key();
+        const auto resourceData = resourceConfig.value();
+
+        const QUrl requestUrl = resourceData->url;
+        if (requestUrl.isValid()) {
+            queueMessage(GetResource::Ptr::create(this, context, std::move(requestUrl)),
+                         PushMessageTo::Top);
+        }
+
+    }
 }
 
 /**
@@ -433,7 +445,7 @@ void ApiGateway::handleError(ApiGatewayError::ErrorType errorType, const QString
  * @param type Building Type
  */
 void ApiGateway::requestBuildingUpdate(const Data::BuildingDetails &details,
-                                const Data::BuildingType &type)
+                                       const Data::BuildingType &type)
 {
     switch (type) {
     case Data::BuildingType::Farm:

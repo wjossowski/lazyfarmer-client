@@ -16,8 +16,9 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-
 #include "playerfactorymodel.h"
+
+#include <QtQml/QQmlEngine>
 
 using namespace Core;
 using namespace Model;
@@ -43,7 +44,7 @@ QVariant PlayerFactoryModel::data(const QModelIndex &index, int role) const
         const auto player = m_players.at(index.row());
 
         if (static_cast<PlayerRoles>(role) == PlayerRoles::PlayerObject) {
-            return QVariant::fromValue(player);
+            return QVariant::fromValue(&*player);
         } else {
             const QByteArray roleName = roleNames() [role];
             return player->property(roleName);
@@ -67,9 +68,9 @@ QHash<int, QByteArray> PlayerFactoryModel::roleNames() const
     return roles;
 }
 
-QSharedPointer<Player> PlayerFactoryModel::create()
+Player::Ptr PlayerFactoryModel::create()
 {
-    QSharedPointer<Player> player(new Player());
+    Player::Ptr player = Player::Ptr::create();
 
     int row = m_players.count();
     beginInsertRows(QModelIndex(), row, row);
@@ -86,23 +87,23 @@ QSharedPointer<Player> PlayerFactoryModel::create()
 
 void PlayerFactoryModel::removeAt(int row)
 {
-    if (m_players.size() <= row) {
+    if (m_players.size() < row) {
         return;
     }
 
     beginRemoveRows(QModelIndex(), row, row);
-    auto player = m_players.at(row);
-    player->deleteLater();
-
     m_players.removeAt(row);
     endRemoveRows();
 }
 
 QVariant PlayerFactoryModel::at(int row)
 {
-    if (m_players.size() <= row) {
+    if (m_players.size() < row) {
         return QVariant();
     }
 
-    return QVariant::fromValue(&*m_players.at(row));
+    auto player = m_players.at(row);
+
+    QQmlEngine::setObjectOwnership(&*player, QQmlEngine::CppOwnership);
+    return QVariant::fromValue(&*player);
 }

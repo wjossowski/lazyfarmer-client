@@ -18,7 +18,7 @@
 
 #include "building.h"
 #include "player.h"
-#include "globalgamedata.h"
+#include "configreader.h"
 
 using namespace Core;
 using namespace Core::Data;
@@ -26,27 +26,19 @@ using namespace Core::Data;
 Building::Building(Player *parent)
     : IPlayerData(parent)
     , m_id(0)
+
     , m_type(BuildingType::Unknown)
+
     , m_farmId(0)
     , m_position(0)
+
     , m_level(0)
     , m_animals(0)
     , m_remaining(0)
+
+    , m_buildingData(parent)
 {
     initializeConnections();
-}
-
-Building::Building(const Building &another)
-    : IPlayerData(another.owner())
-{
-    assignAnother(another);
-}
-
-const Building &Building::operator=(const Building &another)
-{
-    assignAnother(another);
-
-    return *this;
 }
 
 void Building::update(const QVariant &info)
@@ -69,7 +61,7 @@ void Building::update(const QVariant &info)
     {
         m_id = id;
 
-        m_type = GlobalGameData::buildingType(id);
+        m_type = ConfigReader::instance().buildingType(id);
 
         m_farmId = farmId;
         m_position = position;
@@ -79,7 +71,7 @@ void Building::update(const QVariant &info)
 
         m_name = m_owner->gameData()->buildingInfo(m_id).name;
 
-        emit buildingChanged(farmId, position);
+        emit buildingChanged();
         emit fetchBuildingRequested(details(), m_type);
     }
 
@@ -102,18 +94,7 @@ QString Building::toString() const
             .arg(m_remaining);
 }
 
-void Building::assignAnother(const Building &another)
-{
-    m_id = another.id();
-    m_type = another.type();
-    m_farmId = another.farmId();
-    m_position = another.position();
-    m_level = another.level();
-    m_animals = another.animals();
-    m_remaining = another.remaining();
-}
-
-void Building::initializeConnections()
+void Building::initializeConnections() const
 {
     connect(this,       &Building::fetchBuildingRequested,
             m_owner,    &Player::updateBuildingRequested);

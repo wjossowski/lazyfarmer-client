@@ -35,7 +35,7 @@ namespace Core {
                 explicit GetConstantData(ApiGateway *gateway, const QString &fileUrl);
 
                 const QUrl url() const override;
-                void handleResponse(QIODevice *reply) override;
+                void handleResponse(QNetworkReply *reply) override;
 
             private:
                 QString m_fileUrl;

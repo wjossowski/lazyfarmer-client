@@ -16,41 +16,35 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#pragma once
+#include "resourceimageprovider.h"
 
-#include "../globalgamedata.h"
-//#include "../configreader.h"
+#include "core/configreader.h"
 
-#include <QtCore/QObject>
-#include <QtCore/QVariant>
-#include <QtCore/QSharedPointer>
+using namespace Core;
 
-namespace Core {
+ResourceImageProvider::ResourceImageProvider()
+    : QQuickImageProvider(QQuickImageProvider::Pixmap)
+{
 
-    class Player;
+}
 
-    namespace Data {
+QPixmap ResourceImageProvider::requestPixmap(const QString &id,
+                                             QSize *size,
+                                             const QSize &requestedSize)
+{
+    const QStringList path = id.split('/');
 
-        class IPlayerData : public QObject
-        {
-            Q_OBJECT
+    const QString resourceType = path[0];
+    const int resourceId = path[1].toInt();
 
-        public:
-            explicit IPlayerData(Player *parent = nullptr);
-            ~IPlayerData() override = default;
+    QPixmap resource = ConfigReader::instance()
+            .pixmapAt(resourceType, resourceId);
 
-            virtual void update(const QVariant &info) = 0;
-            virtual QString toString() const;
-
-            GlobalGameData::Ptr gameData() const;
-
-            Player *owner() const;
-
-        protected:
-            Player *m_owner;
-
-        };
-
+    if (requestedSize.isValid()) {
+        resource = resource.scaled(requestedSize, Qt::KeepAspectRatio);
     }
 
+    *size = QSize(resource.width(), resource.height());
+
+    return resource;
 }

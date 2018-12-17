@@ -31,6 +31,7 @@
 #include "getfieldinfo.h"
 #include "getproduction.h"
 #include "getproductioninfo.h"
+#include "getresource.h"
 
 // Setters
 #include "setplant.h"

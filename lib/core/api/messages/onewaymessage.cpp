@@ -40,7 +40,7 @@ const QUrl OneWayMessage::url() const
                                            this->constructedMessageData());
 }
 
-void OneWayMessage::handleResponse(QIODevice *reply)
+void OneWayMessage::handleResponse(QNetworkReply *reply)
 {
     Q_UNUSED (reply)
     emit finished();

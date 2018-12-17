@@ -16,13 +16,15 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "core/globalgamedata.h"
+#include "providers/resourceimageprovider.h"
+#include "application.h"
 #include "translator.h"
 
 #ifdef DEBUG_MODE
-#include "model/storagemodel.h"
-#include "model/buildingmodel.h"
-#include "model/playerfactorymodel.h"
+#include "core/model/storagemodel.h"
+#include "core/model/buildingmodel.h"
+#include "core/playerfactorymodel.h"
+
 #include "core/api/apigateway.h"
 #include "core/api/messages/messages.h"
 #include "core/player.h"
@@ -85,6 +87,8 @@ void handleMessage(QtMsgType type,
     }
 }
 
+#ifdef DEBUG_MODE
+
 Api::ApiOptions extractApiOptions(const QCommandLineParser &parser)
 {
     qDebug() << "Selected following configuration:";
@@ -101,7 +105,6 @@ Api::ApiOptions extractApiOptions(const QCommandLineParser &parser)
     };
 }
 
-#ifdef DEBUG_MODE
 
 void queryDebug(Api::ApiGateway &debugGateway)
 {
@@ -126,34 +129,6 @@ void queryDebug(Api::ApiGateway &debugGateway)
 
 #endif
 
-void initializeCommandLineInterface(const QCoreApplication &application, QCommandLineParser &parser)
-{
-    parser.setApplicationDescription(qApp->translate("main", "Lazy farmer - My Free Farm bot"));
-    parser.addHelpOption();
-    parser.addVersionOption();
-    parser.addOptions({
-        { { "l", "login" },
-          qApp->translate("main", "Specifies login on startup."),
-          qApp->translate("main", "User's login.") },
-        { { "p", "password" },
-          qApp->translate("main", "Specifies password on startup."),
-          qApp->translate("main", "User's password.") },
-        { { "d", "domain" },
-          qApp->translate("main", "Specifies game's domain on startup."),
-          qApp->translate("main", "Domain (myfreefarm.de / wolnifarmerzy.pl).") },
-        { { "s", "server" },
-          qApp->translate("main", "Specifies server number on startup."),
-          qApp->translate("main", "Server number.") },
-        { { "c", "config" },
-          qApp->translate("main", "Specifies config file on startup."),
-          qApp->translate("main", "Task manager's configuration file.") },
-        { { "n", "no-gui" },
-          qApp->translate("main", "Disables UI Mode.") }
-    });
-    // Execute CLI Parser
-    parser.process(application);
-}
-
 void initializeCacheEnvironment()
 {
     // Inilialize cache directory
@@ -175,29 +150,13 @@ void initializeCacheEnvironment()
     qInstallMessageHandler(handleMessage);
 }
 
-void initializeStaticGameData()
-{
-#ifdef DEBUG_MODE
-    QDir assetsDirectory(ASSETS_DIRECTORY);
-#else
-    QDir assetsDirectory(qApp->applicationDirPath());
-#endif
-    QFile buildingConfig(assetsDirectory.absoluteFilePath("building-config.json"));
-    if (buildingConfig.open(QIODevice::ReadOnly)) {
-        if (!GlobalGameData::loadBuildingTypes(buildingConfig.readAll())) {
-            throw std::ios_base::failure(qApp->translate("main", "Unable to read building-config.json").toStdString());
-        }
-    } else {
-        throw std::ios_base::failure(qApp->translate("main", "Unable to load building-config.json").toStdString());
-    }
-}
-
 void registerCustomMetatypes()
 {
     qRegisterMetaType<Core::Data::BuildingType>("Core::Data::BuildingType");
     qRegisterMetaType<Core::Data::BuildingDetails>("Core::Data::BuildingDetails");
     qRegisterMetaType<Core::Data::ProductDetails>("Core::Data::ProductDetails");
     qRegisterMetaType<Core::Data::ProductionDetails>("Core::Data::ProductionDetails");
+
     qRegisterMetaType<Core::Api::ApiOptions>("Core::Api::ApiOptions");
 }
 
@@ -213,27 +172,21 @@ int main(int argc, char *argv[])
     }
 #endif
 
-    // Initialize Application
-    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
-    QGuiApplication lazyFarmerApp(argc, argv);
-    lazyFarmerApp.setApplicationVersion(CURRENT_VERSION);
-    lazyFarmerApp.setApplicationName(APPLICATION_NAME);
-    lazyFarmerApp.setOrganizationName(COMPANY_NAME);
-
-    // Set default configuration format
-    QSettings::setDefaultFormat(QSettings::IniFormat);
-    Translator translator(qApp);
+    // Initialize Applicatio
+    Application lazyFarmerApp(argc, argv);
 
     // Initialize command-line parser
     QCommandLineParser parser;
-    initializeCommandLineInterface(lazyFarmerApp, parser);
 
     try {
+        lazyFarmerApp.initializeCommandLineInterface(parser);
+        lazyFarmerApp.initializeStaticGameData();
+
         initializeCacheEnvironment();
-        initializeStaticGameData();
         registerCustomMetatypes();
     } catch (std::exception &e) {
         qCritical() << e.what();
+        qInfo() << parser.helpText();
         return -1;
     }
 
@@ -243,21 +196,21 @@ int main(int argc, char *argv[])
         QQuickStyle::setStyle("Material");
     }
 
+#ifdef DEBUG_MODE
+    auto &factory = lazyFarmerApp.playerFactory();
+    auto player = factory.create();
+
+    player->setApiOptions(extractApiOptions(parser));
+#endif
+
     QQmlApplicationEngine engine;
+    engine.rootContext()->setContextProperty("LazyFarmer", &lazyFarmerApp);
+    engine.rootContext()->setContextProperty("PlayerFactoryModel", &lazyFarmerApp.playerFactory());
+    engine.rootContext()->setContextProperty("AvailableDomains", lazyFarmerApp.reader().availableDomains());
+    engine.addImageProvider("resources", new ResourceImageProvider);
 
-    Model::PlayerFactoryModel playerFactory;
-    engine.rootContext()->setContextProperty("PlayerFactoryModel", &playerFactory);
-    playerFactory.create();
-
-//    QTimer::singleShot(100, [&] () {
-//        auto player1 = playerFactory.create();
-//        queryDebug(*player1->gateway());
-
-//        auto player2 = playerFactory.create();
-//        queryDebug(*player2->gateway());
-//    });
-
-    engine.rootContext()->setContextProperty("t", &translator);
+    Translator t(&lazyFarmerApp);
+    engine.rootContext()->setContextProperty("t", &t);
 
     engine.load(QUrl(QLatin1String("qrc:/qml/main.qml")));
     if (engine.rootObjects().isEmpty()){

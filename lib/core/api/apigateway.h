@@ -21,6 +21,7 @@
 #include "apigatewayerror.h"
 #include "messages/apimessage.h"
 #include "../globalgamedata.h"
+#include "../configreader.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QQueue>
@@ -55,7 +56,7 @@ namespace Core {
             using Ptr = QSharedPointer<ApiGateway>;
 
             explicit ApiGateway(QObject *parent = nullptr);
-            ~ApiGateway() override;
+            ~ApiGateway() override = default;
 
             bool isConfigured() const;
 
@@ -66,6 +67,7 @@ namespace Core {
             void setRid(const QString &rid);
 
             void setBaseInfo(const QString &content);
+            void queueConfigResources();
 
             const QString &serverId() const { return m_serverId; }
             const QString &serverDomain() const { return m_serverDomain; }

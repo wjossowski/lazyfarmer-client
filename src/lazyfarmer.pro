@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 QT       += core gui widgets network qml quick quickcontrols2
-CONFIG   += c++14
+CONFIG   += c++14 rtti
 
 TARGET = LazyFarmer
 TEMPLATE = app
@@ -30,11 +30,11 @@ else:unix: LIBS += -L$$OUT_PWD/../lib/core/ -lCoreLib
 INCLUDEPATH += $$PWD/../lib
 
 SOURCES += \
-    $$PWD/model/*.cpp \
+    $$PWD/providers/*.cpp \
     $$PWD/*.cpp
 
 HEADERS += \
-    $$PWD/model/*.h \
+    $$PWD/providers/*.h \
     $$PWD/*.h
 
 include($${PWD}/../common.pri)
@@ -44,10 +44,11 @@ DISTFILES += \
     Dialogs/*.qml \
     Views/*.qml \
     Items/*.qml \
-    *.qml \
-    Common/Palette.qml
+    Common/* \
+    *.qml
 
 RESOURCES += resources.qrc
 
-OTHER_FILES += qtquickcontrols2.conf
+OTHER_FILES += \
+    qtquickcontrols2.conf
 

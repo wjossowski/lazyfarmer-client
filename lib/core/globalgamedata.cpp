@@ -25,53 +25,27 @@
 using namespace Core;
 using namespace Core::Data;
 
-QMap<QString, GlobalGameData::Ptr> GlobalGameData::m_gameData;
-QMap<int, BuildingType> GlobalGameData::m_buildingTypes;
+QMap<QString, GlobalGameData::Ptr> GlobalGameData::s_gameData;
 
-const QVariantMap childObject (const QVariant &object, const QString &property) {
+const QVariantMap childObject (const QVariant &object,
+                               const QString &property)
+{
     return object.toMap().value(property).toMap();
 }
 
 void GlobalGameData::registerGameData(const QString &domain,
                                       const QVariant &data)
 {
-    if (m_gameData.contains(domain)) {
+    if (s_gameData.contains(domain)) {
         return;
     }
 
-    m_gameData.insert(domain, GlobalGameData::Ptr(new GlobalGameData(data)));
+    s_gameData.insert(domain, GlobalGameData::Ptr(new GlobalGameData(data)));
 }
 
 GlobalGameData::Ptr GlobalGameData::gameData(const QString &domain)
 {
-    return m_gameData.value(domain, GlobalGameData::Ptr(new GlobalGameData));
-}
-
-bool GlobalGameData::loadBuildingTypes(const QByteArray &contents)
-{
-    const auto json = QJsonDocument::fromJson(contents).toVariant();
-
-    if (!json.isValid()) {
-        return false;
-    }
-
-    const QVariantList buildingInfoList = json.toList();
-    for (const auto &info : buildingInfoList) {
-        const QVariantMap data = info.toMap();
-
-        int id = data["id"].toInt();
-
-        QString category = data["category"].toString();
-        if (category == "Field") {
-            m_buildingTypes.insert(id, BuildingType::Farm);
-        } else if (category == "AnimalProduction") {
-            m_buildingTypes.insert(id, BuildingType::AnimalProduction);
-        } else if (category == "ResourceProduction") {
-            m_buildingTypes.insert(id, BuildingType::ResourceProduction);
-        }
-    }
-
-    return true;
+    return s_gameData.value(domain, GlobalGameData::Ptr(new GlobalGameData));
 }
 
 GlobalGameData::GlobalGameData(const QVariant &data)
@@ -111,14 +85,16 @@ void GlobalGameData::createProductInfo(const QVariantMap &baseData, const QVaria
         const QString name = productNames.value(id).toString();
         if (name.isEmpty()) continue;
 
-        quint32 price = productPrices.value(id).toString().toDouble() * 100;
+        quint32 price = static_cast<quint32>(productPrices.value(id).toString().toDouble() * 100);
         if (price == 0) continue;
 
-        quint32 time = productTime.value(id).toString().toInt();
+        quint32 time = static_cast<quint32>(productTime.value(id).toString().toInt());
         if (time == 0) continue;
 
-        quint8 size = getSize(productX.value(id).toString().toInt(),
-                              productY.value(id).toString().toInt());
+        int x = productX.value(id).toString().toInt();
+        int y = productY.value(id).toString().toInt();
+
+        quint8 size = static_cast<quint8>(getSize(x, y));
 
         m_productInfos.insert(id.toInt(), { name, size, price, time });
     }

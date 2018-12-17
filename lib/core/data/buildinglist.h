@@ -37,6 +37,7 @@ namespace Core {
             using Ptr = QSharedPointer<BuildingList>;
 
             explicit BuildingList (Player *parent = nullptr);
+            ~BuildingList() override = default;
 
             Building::Ptr buildingAt(int farm, int position);
             Building::Ptr buildingAt(int index);
@@ -47,7 +48,7 @@ namespace Core {
             int size() const { return m_buildings.size(); }
 
         signals:
-            void buildingListChanged() const;
+            void buildingChanged(int index) const;
 
         public slots:
             void updateBuilding(int farm, int position, const QVariant &info);

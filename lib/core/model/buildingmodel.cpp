@@ -27,8 +27,9 @@ BuildingModel::BuildingModel(const Data::BuildingList::Ptr &buildings, QObject *
     : QAbstractListModel (parent)
     , m_buildings(buildings)
 {
-    connect(&*buildings,    &Data::BuildingList::buildingListChanged,
-            this,           &BuildingModel::reload);
+    connect(&*buildings,    &Data::BuildingList::buildingChanged, [&] (int row) {
+        emit dataChanged(index(row), index(row));
+    });
 }
 
 int BuildingModel::rowCount(const QModelIndex &) const
@@ -50,7 +51,6 @@ QVariant BuildingModel::data(const QModelIndex &index, int role) const
     auto dataRole = static_cast<BuildingRoles>(role);
     switch (dataRole) {
     case BuildingRoles::Name: return building->name();
-    case BuildingRoles::Icon: return 0; // TODO: Pixmap from sprite
     case BuildingRoles::Id: return building->id();
     case BuildingRoles::Type: return static_cast<int>(building->type());
     case BuildingRoles::FarmId: return building->farmId();
@@ -58,6 +58,7 @@ QVariant BuildingModel::data(const QModelIndex &index, int role) const
     case BuildingRoles::Level: return building->level();
     case BuildingRoles::Animals: return building->animals();
     case BuildingRoles::Remaining: return building->remaining();
+    case BuildingRoles::IsSetUp: return building->isSetUp();
     }
 
     return QVariant();
@@ -67,7 +68,6 @@ QHash<int, QByteArray> BuildingModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
     roles.insert(static_cast<int>(BuildingRoles::Name), "name");
-    roles.insert(static_cast<int>(BuildingRoles::Icon), "icon");
     roles.insert(static_cast<int>(BuildingRoles::Id), "id");
     roles.insert(static_cast<int>(BuildingRoles::Type), "type");
     roles.insert(static_cast<int>(BuildingRoles::FarmId), "farm");
@@ -75,13 +75,6 @@ QHash<int, QByteArray> BuildingModel::roleNames() const
     roles.insert(static_cast<int>(BuildingRoles::Level), "level");
     roles.insert(static_cast<int>(BuildingRoles::Animals), "animals");
     roles.insert(static_cast<int>(BuildingRoles::Remaining), "remaining");
+    roles.insert(static_cast<int>(BuildingRoles::IsSetUp), "isSetUp");
     return roles;
-}
-
-void BuildingModel::reload()
-{
-    qDebug() << "Reloading Building Model" << m_buildings->size();
-
-    beginResetModel();
-    endResetModel();
 }

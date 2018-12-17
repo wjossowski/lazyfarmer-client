@@ -48,7 +48,6 @@ QVariant StorageModel::data(const QModelIndex &index, int role) const
     switch (dataRole) {
     case StorageRoles::Id:       return m_storage->idAtRow(row);
     case StorageRoles::Name:     return m_storage->nameAtRow(row);
-    case StorageRoles::Icon:     return 0; // TODO: Pixmap from sprite
     case StorageRoles::Amount:   return m_storage->amountAtRow(row);
     }
 
@@ -60,7 +59,6 @@ QHash<int, QByteArray> StorageModel::roleNames() const
     QHash<int, QByteArray> roles;
     roles.insert(static_cast<int>(StorageRoles::Id), "id");
     roles.insert(static_cast<int>(StorageRoles::Name), "name");
-    roles.insert(static_cast<int>(StorageRoles::Icon), "icon");
     roles.insert(static_cast<int>(StorageRoles::Amount), "amount");
     return roles;
 }
@@ -72,3 +70,5 @@ void StorageModel::reload()
     beginResetModel();
     endResetModel();
 }
+
+

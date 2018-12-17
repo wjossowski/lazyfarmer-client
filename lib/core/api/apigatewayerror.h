@@ -31,7 +31,9 @@ namespace Core {
                 NotConfigured,
                 InvalidCredentials,
                 NotLogged,
-                RidNotParsed
+                RidNotParsed,
+                HttpResponseError,
+                InvalidContentHeaderError
             } type;
 
             QString toString() const
@@ -41,6 +43,8 @@ namespace Core {
                 case ErrorType::InvalidCredentials: return "InvalidCredentials";
                 case ErrorType::NotLogged: return "NotLogged";
                 case ErrorType::RidNotParsed: return "RidNotParsed";
+                case ErrorType::HttpResponseError: return "HttpResponseError";
+                case ErrorType::InvalidContentHeaderError: return "InvalidHeaderError";
                 }
 
                 return "Unknown error";
@@ -61,6 +65,12 @@ namespace Core {
                 case ErrorType::RidNotParsed:
                     return qApp->translate("ApiGatewayError",
                                            "Unable to extract `rid`.");
+                case ErrorType::HttpResponseError:
+                    return qApp->translate("ApiGatewayError",
+                                           "Http Request error: %1.");
+                case ErrorType::InvalidContentHeaderError:
+                    return qApp->translate("ApiGatewayError",
+                                           "Invalid content-type Header: %1.");
                 }
 
                 return qApp->translate("ApiGatewayError", "Unknown error");

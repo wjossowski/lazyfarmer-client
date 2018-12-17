@@ -40,4 +40,7 @@ TRANSLATIONS += \
     $${PWD}/assets/translations/polski.ts
 
 # Additional files
-OTHER_FILES+=notes
+OTHER_FILES += \
+    notes \
+    assets/translations/*.ts \
+    assets/*.json

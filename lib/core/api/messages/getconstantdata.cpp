@@ -39,7 +39,7 @@ const QUrl GetConstantData::url() const
     return m_gateway->buildStaticUrl(m_fileUrl);
 }
 
-void GetConstantData::handleResponse(QIODevice *reply)
+void GetConstantData::handleResponse(QNetworkReply *reply)
 {
     const auto extractor = GameInfoExtractor::constantsExtractor(m_gateway->serverDomain());
     extractor->extract(reply->readAll());

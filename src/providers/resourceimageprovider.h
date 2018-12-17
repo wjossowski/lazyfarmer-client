@@ -18,38 +18,11 @@
 
 #pragma once
 
-#include "core/data/storage.h"
+#include <QtQuick/QQuickImageProvider>
 
-#include <QtCore/QAbstractListModel>
-
-namespace Model {
-
-    class StorageModel : public QAbstractListModel
-    {
-        Q_OBJECT
-
-    public:
-
-        enum class StorageRoles {
-            Name    = Qt::DisplayRole,
-            Icon    = Qt::DecorationRole,
-            Id      = Qt::UserRole,
-            Amount
-        };
-
-        explicit StorageModel(const Core::Data::Storage::Ptr &storage, QObject *parent = nullptr);
-        ~StorageModel() override = default;
-
-        int rowCount(const QModelIndex &) const override;
-        QVariant data(const QModelIndex &index, int role) const override;
-        QHash<int, QByteArray> roleNames() const override;
-
-    private slots:
-        void reload();
-
-    private:
-       Core::Data::Storage::Ptr m_storage;
-
-    };
-
-}
+class ResourceImageProvider : public QQuickImageProvider
+{
+public:
+    ResourceImageProvider();
+    QPixmap requestPixmap(const QString &id, QSize *size, const QSize &requestedSize) override;
+};

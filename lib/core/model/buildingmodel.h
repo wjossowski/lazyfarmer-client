@@ -1,6 +1,6 @@
 /**
  ** This file is part of the LazyFarmer project.
- ** Copyright 2017 Wojciech Ossowski <w.j.ossowski@gmail.com>.
+ ** Copyright 2018 Wojciech Ossowski <w.j.ossowski@gmail.com>.
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU Lesser General Public License as
@@ -18,45 +18,43 @@
 
 #pragma once
 
-#include "core/player.h"
+#include "../data/buildinglist.h"
 
 #include <QtCore/QAbstractListModel>
 
 namespace Model {
 
-    class PlayerFactoryModel : public QAbstractListModel
+    class BuildingModel : public QAbstractListModel
     {
         Q_OBJECT
 
     public:
+        using Ptr = QSharedPointer<BuildingModel>;
 
-        enum class PlayerRoles {
-            Description     = Qt::DisplayRole,
-            Level           = Qt::UserRole,
-            LevelDescription,
-            LevelPercentage,
-            Money,
-            CurrentJob,
-            PlayerObject,
-            LastError
+        enum class BuildingRoles {
+            Name        = Qt::DisplayRole,
+            Id          = Qt::UserRole,
+            Type,
+            FarmId,
+            Position,
+            Level,
+            Animals,
+            Remaining,
+            IsSetUp,
         };
 
-        explicit PlayerFactoryModel(QObject *parent = nullptr);
-        ~PlayerFactoryModel() override = default;
+        explicit BuildingModel(const Core::Data::BuildingList::Ptr &buildings,
+                               QObject *parent = nullptr);
+        ~BuildingModel() override = default;
 
-        int rowCount(const QModelIndex &parent) const override;
+        int rowCount(const QModelIndex &) const override;
         QVariant data(const QModelIndex &index, int role) const override;
         QHash<int, QByteArray> roleNames() const override;
 
-        QSharedPointer<Core::Player> create();
-        Q_INVOKABLE void createPlayer() { create(); }
-
-        Q_INVOKABLE void removeAt(int row);
-
-        Q_INVOKABLE QVariant at(int row);
+        Core::Data::BuildingList::Ptr buildings() const { return m_buildings; }
 
     private:
-        QList<Core::Player::Ptr> m_players;
+        Core::Data::BuildingList::Ptr m_buildings;
 
     };
 
