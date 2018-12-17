@@ -48,8 +48,8 @@ namespace Model {
         QHash<int, QByteArray> roleNames() const override;
 
         Core::Player::Ptr create();
-        Q_INVOKABLE void createPlayer() { create(); }
 
+        Q_INVOKABLE void createPlayer() { create(); }
         Q_INVOKABLE void removeAt(int row);
 
         Q_INVOKABLE QVariant at(int row);

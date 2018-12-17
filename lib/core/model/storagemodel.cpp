@@ -57,9 +57,9 @@ QVariant StorageModel::data(const QModelIndex &index, int role) const
 QHash<int, QByteArray> StorageModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
-    roles.insert(static_cast<int>(StorageRoles::Id), "id");
-    roles.insert(static_cast<int>(StorageRoles::Name), "name");
-    roles.insert(static_cast<int>(StorageRoles::Amount), "amount");
+    roles.insert(static_cast<int>(StorageRoles::Id),        "id");
+    roles.insert(static_cast<int>(StorageRoles::Name),      "name");
+    roles.insert(static_cast<int>(StorageRoles::Amount),    "amount");
     return roles;
 }
 
