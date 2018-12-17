@@ -32,7 +32,7 @@ using namespace Model;
 
 const QMap<Application::Screens, QString> s_screenUrls = {
     { Application::Screens::AccountsViewScreen,          "qrc:/qml/Views/AccountsView.qml" },
-    { Application::Screens::FarmOverviewScreen,          "qrc:/qml/Views/FarmView.qml" },
+    { Application::Screens::FarmOverviewScreen,          "qrc:/qml/Views/FarmOverView.qml" },
     { Application::Screens::FieldScreen,                 "qrc:/qml/Views/FieldView.qml" },
     { Application::Screens::AnimalsProductionScreen,     "qrc:/qml/Views/AnimalProductionView.qml" },
     { Application::Screens::ResourceProductionScreen,    "qrc:/qml/Views/ResourceProductionView.qml" },
@@ -111,11 +111,11 @@ void Application::requestOverviewScreen(int playerId)
 void Application::requestBuildingInfoScreen(BuildingModel *buildingModel, int buildingId)
 {
     const auto building = buildingModel->buildings()->buildingAt(buildingId);
-    if (building.isNull()) {
+    if (!building) {
         return;
     }
 
-    const auto screenType = [] (BuildingType type) -> Screens {
+    const auto screenType = [] (BuildingType type) {
         switch (type) {
         case BuildingType::Farm:                return Screens::FieldScreen;
         case BuildingType::AnimalProduction:    return Screens::AnimalsProductionScreen;
@@ -125,7 +125,9 @@ void Application::requestBuildingInfoScreen(BuildingModel *buildingModel, int bu
         }
     };
 
-    showScreen(screenType(building->type()), QVariant());
+    showScreen(screenType(building->type()), QVariantMap {
+                   { "Foo", "Bar" }
+               });
 
     // Todo: Kurwa zbadać builing details !!!!
 

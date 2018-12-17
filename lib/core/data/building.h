@@ -77,7 +77,7 @@ namespace Core {
             int m_remaining;
             QString m_name;
 
-            BuildingData m_buildingData;
+            BuildingData::Ptr m_buildingData;
 
         };
 
