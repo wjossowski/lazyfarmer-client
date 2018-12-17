@@ -1,2 +1,2 @@
 module src.Common
-singleton Palette 1.0 Palette.qml
+singleton Palette 1.0 qml://Common/Palette.qml

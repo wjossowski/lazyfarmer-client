@@ -11,79 +11,125 @@ Item {
 
     readonly property string title: qsTr("Overview") + t.r;
 
+    readonly property int gridWidth: 400;
+    readonly property int gridHeight: 170;
+
     function initialize (buildingModel) {
         buildings.model = buildingModel;
     }
 
-    ListView {
+    GridView {
         id: buildings;
 
-        spacing: 10;
+        cellWidth: root.gridWidth;
+        cellHeight: root.gridHeight;
 
         anchors {
             fill: parent;
 
-            margins: 20;
+            margins: 10;
         }
 
-        delegate: Rectangle {
+        delegate: Item {
             id: building;
 
-            width: parent.width;
-            height: 150;
+            width: root.gridWidth;
+            height: root.gridHeight;
 
-            radius: 10;
-
-            border.color: "#0c0c0c";
-
-            RowLayout {
-                spacing: 10;
-
-                Item {
-                    anchors.margins: 10;
-
-                    Image {
-                        x: 10;
-                        y: 10;
-                        source: "image://resources/buildings/" + id;
-                    }
-                }
-
-            }
-
-            ColumnLayout {
-                spacing: 5;
-
+            Rectangle {
                 anchors {
-                    top: parent.top;
-                    right: parent.right;
+                    fill: parent;
+                    margins: 5;
                 }
 
+                radius: 10;
 
-                Label {
-                    Layout.alignment: Qt.AlignRight;
+                border.color: "#0c0c0c";
+                color: "#0c2c2c2c";
 
-                    Layout.topMargin: 10;
-                    Layout.rightMargin: 10;
+                RowLayout {
+                    spacing: 10;
 
-                    text: name;
-                    font.pixelSize: 28;
+                    Item {
+                        anchors.margins: 10;
+
+                        Image {
+                            x: 10;
+                            y: 10;
+                            source: "image://resources/buildings/" + id;
+                        }
+                    }
+
                 }
 
-                Label {
-                    Layout.alignment: Qt.AlignRight;
-                    Layout.rightMargin: 10;
-                    text: qsTr("Level:") + " " + level + t.r;
+                ColumnLayout {
+                    spacing: 5;
+
+                    anchors {
+                        top: parent.top;
+                        right: parent.right;
+                    }
+
+                    Label {
+                        Layout.alignment: Qt.AlignRight;
+                        Layout.topMargin: 10;
+                        Layout.rightMargin: 10;
+
+                        Layout.maximumWidth: root.gridWidth - root.gridHeight;
+
+                        font.pixelSize: 28;
+
+                        wrapMode: Text.WrapAnywhere;
+                        maximumLineCount: 1;
+
+                        text: name
+                    }
+
+                    Label {
+                        Layout.alignment: Qt.AlignRight;
+                        Layout.rightMargin: 10;
+
+                        text: qsTr("Level:") + " " + level + t.r;
+                    }
+
+                    Label {
+                        visible: animals > 0;
+
+                        Layout.alignment: Qt.AlignRight;
+                        Layout.rightMargin: 10;
+
+                        font.pixelSize: 10;
+                        text: qsTr("Animals:") + " " + animals + t.r;
+                    }
+
                 }
 
-                Label {
-                    visible: animals > 0;
+                ColumnLayout {
+                    spacing: 5;
 
-                    Layout.alignment: Qt.AlignRight;
-                    Layout.rightMargin: 10;
+                    anchors {
+                        bottom: parent.bottom;
+                        right: parent.right;
 
-                    font.pixelSize: 10;
-                    text: qsTr("Animals:") + " " + animals + t.r;
+                        margins: 10;
+                    }
+
+                    Label {
+                        font.pixelSize: 10;
+
+                        Layout.alignment: Qt.AlignRight;
+
+                        text: qsTr("Farm:") + farm + t.r
+                    }
+
+                    Label {
+                        font.pixelSize: 10;
+
+                        Layout.alignment: Qt.AlignRight;
+
+                        text: qsTr("Position:") + position + t.r
+                    }
+
                 }
 
             }

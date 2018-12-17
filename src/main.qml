@@ -16,7 +16,7 @@ ApplicationWindow {
     visible: true
 
     minimumHeight: 480;
-    minimumWidth: 640;
+    minimumWidth: 420;
 
     Material.theme: Material.Light;
     Material.primary: Material.color(Material.Green);
