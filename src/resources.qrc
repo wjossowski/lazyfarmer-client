@@ -7,10 +7,12 @@
         <file>Views/AccountsView.qml</file>
         <file>Views/FarmView.qml</file>
         <file>Views/StorageView.qml</file>
+        <file>Views/FieldView.qml</file>
+        <file>Views/AnimalProductionView.qml</file>
+        <file>Views/ResourceProductionView.qml</file>
         <file>Dialogs/LoginDialog.qml</file>
         <file>Common/Palette.qml</file>
         <file>Common/qmldir</file>
         <file>qtquickcontrols2.conf</file>
-        <file>Views/FieldView.qml</file>
     </qresource>
 </RCC>
