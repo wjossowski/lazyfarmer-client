@@ -28,15 +28,29 @@ namespace Core {
         {
             Q_OBJECT
 
+
         public:
             using Ptr = QSharedPointer<AnimalProductionData>;
 
-            explicit AnimalProductionData (Player *parent = nullptr) : BuildingData (parent) { }
+            explicit AnimalProductionData (Player *parent = nullptr);
             ~AnimalProductionData() override = default;
+
+            Q_INVOKABLE void foo();
 
             void update(const QVariant &info) override;
             QString toString() const override;
-            QVariant toVariant() const override;
+
+            QVariant toVariant() override;
+            int totalTime() const override { return m_totalTime; }
+
+        signals:
+            void dataChanged() const;
+
+        private:
+            int m_outputId;
+            int m_totalTime;
+            int m_timeLeft;
+            int m_timeToRefeed;
 
         };
 

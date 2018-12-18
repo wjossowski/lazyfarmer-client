@@ -18,14 +18,25 @@
 
 #include "animalproductiondata.h"
 #include <QtCore/QDebug>
+#include <QtCore/QTimer>
 
 using namespace Core;
 using namespace Core::Data;
 
+AnimalProductionData::AnimalProductionData(Player *parent)
+    : BuildingData (parent)
+{
+
+}
+
+void AnimalProductionData::foo()
+{
+    qDebug() << "Fooooooo kurwy jebane";
+}
 
 void AnimalProductionData::update(const QVariant &info)
 {
-    qDebug() << "Update called!" << info;
+    IPlayerData::update(info);
 }
 
 QString AnimalProductionData::toString() const
@@ -33,10 +44,7 @@ QString AnimalProductionData::toString() const
     return QString ("FooBarAnimalProduction");
 }
 
-QVariant AnimalProductionData::toVariant() const
+QVariant AnimalProductionData::toVariant()
 {
-    return QVariantMap {
-        { "Foo", "Bar" },
-        { "Bar", "Bar" }
-    };
+    return QVariant::fromValue<AnimalProductionData*>(this);
 }

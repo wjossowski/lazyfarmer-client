@@ -34,6 +34,29 @@ Item {
             width: root.gridWidth;
             height: root.gridHeight;
 
+            property bool isInProgress: !Number.isNaN(doneTimestamp)
+
+            function updateTiming() {
+                if (!building.isInProgress) {
+                    return 0;
+                } else {
+                    var now = Date.now();
+
+                    var coeff = (doneTimestamp - now)/(1000*60*60*12);
+                    buildingProgress.value = coeff;
+                }
+            }
+
+            Timer {
+                id: updateTimer
+
+                interval: 1000
+                running: building.isInProgress
+                repeat: true;
+
+                onTriggered: building.updateTiming()
+            }
+
             MouseArea {
                 anchors.fill: parent;
                 onClicked: function () {
@@ -105,6 +128,28 @@ Item {
 
                         font.pixelSize: 10;
                         text: qsTr("Animals:") + " " + animals + t.r;
+                    }
+
+                    ProgressBar {
+                        id: buildingProgress;
+
+                        visible: building.isInProgress;
+
+                        Layout.alignment: Qt.AlignRight;
+                        Layout.rightMargin: 10;
+                    }
+
+                    Label {
+                        Layout.alignment: Qt.AlignRight;
+                        Layout.rightMargin: 10;
+
+                        text: (function (timestamp) {
+                            if (building.isInProgress) {
+                                return qsTr("Done at:") + " " + timestamp;
+                            } else {
+                                return qsTr("Idle")
+                            }
+                        })(doneTimestamp, t.r)
                     }
 
                 }
