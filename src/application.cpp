@@ -112,10 +112,17 @@ void Application::requestBuildingInfoScreen(BuildingModel *buildingModel, int bu
 {
     const auto building = buildingModel->buildings()->buildingAt(buildingId);
     if (!building) {
+        qWarning() << tr("Invalid building request") << buildingId;
         return;
     }
 
-    const auto screenType = [] (BuildingType type) {
+    const auto buildingData = building->buildingData();
+    if (!buildingData) {
+        qWarning() << tr("This building has no BuildingData") << buildingId;
+        return;
+    }
+
+    const auto mapToScreenType = [] (BuildingType type) {
         switch (type) {
         case BuildingType::Farm:                return Screens::FieldScreen;
         case BuildingType::AnimalProduction:    return Screens::AnimalsProductionScreen;
@@ -125,12 +132,9 @@ void Application::requestBuildingInfoScreen(BuildingModel *buildingModel, int bu
         }
     };
 
-    showScreen(screenType(building->type()), QVariantMap {
+    showScreen(mapToScreenType(building->type()), QVariantMap {
                    { "Foo", "Bar" }
                });
-
-    // Todo: Kurwa zbadać builing details !!!!
-
 }
 
 void Application::showScreen(Application::Screens screenToShow, const QVariant &data) const
