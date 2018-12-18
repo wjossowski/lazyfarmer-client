@@ -8,9 +8,19 @@ Item {
     id: root;
 
     readonly property string title: qsTr("Animals") + t.r;
+    property var rootContext
+
+    function initialize (buildingData) {
+        root.rootContext = buildingData
+    }
 
     Rectangle {
         anchors.fill: parent;
+
+        Text {
+            anchors.centerIn: parent;
+            text: rootContext.Foo;
+        }
 
         color: "#00ffaa";
     }

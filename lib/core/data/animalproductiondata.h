@@ -18,25 +18,25 @@
 
 #pragma once
 
-#include "iplayerdata.h"
+#include "buildingdata.h"
 
 namespace Core {
 
     namespace Data {
 
-        class BuildingData : public IPlayerData
+        class AnimalProductionData : public BuildingData
         {
             Q_OBJECT
 
         public:
-            using Ptr = QSharedPointer<BuildingData>;
+            using Ptr = QSharedPointer<AnimalProductionData>;
 
-            explicit BuildingData (Player *parent = nullptr) : IPlayerData (parent) { }
-            ~BuildingData() override = default;
+            explicit AnimalProductionData (Player *parent = nullptr) : BuildingData (parent) { }
+            ~AnimalProductionData() override = default;
 
-            virtual QVariant toVariant() const = 0;
-
-            static BuildingData::Ptr create(Player *player, BuildingType type);
+            void update(const QVariant &info) override;
+            QString toString() const override;
+            QVariant toVariant() const override;
 
         };
 
