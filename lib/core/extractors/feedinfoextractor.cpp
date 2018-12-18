@@ -49,16 +49,14 @@ void FeedInfoExtractor::extractSpecificData()
 
     m_data.insert("FeedInputInfo", feedInputInfo);
 
-
     // Extract feed output data
+    int outputId = info.value("pid").toInt(-1);
+    int totalTime = info.value("time").toInt(-1);
+    int timeLeft = info.value("remain").toInt(-1);
+    int timeToRefeed = info.value("rest").toInt(-1);
 
-    int outputId = info.value("pid").toInt();
-    int outputRemaining = info.value("time").toInt();
-
-    const QVariantMap outputInfo = {
-        { "Out", outputId },
-        { "Remaining", outputRemaining }
-    };
-
-    m_data.insert("FeedOutputInfo", outputInfo);
+    m_data.insert("OutputProduct", outputId);
+    m_data.insert("TotalTime", totalTime);
+    m_data.insert("TimeLeft", timeLeft);
+    m_data.insert("TimeToRefeed", timeToRefeed);
 }

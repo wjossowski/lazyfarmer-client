@@ -63,6 +63,8 @@ void Field::update(const QVariant &info)
         m_isWater = isWater;
 
         emit fieldChanged();
+
+        IPlayerData::update(info);
     }
 }
 

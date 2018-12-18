@@ -30,6 +30,12 @@ IPlayerData::IPlayerData(Player *parent)
 
 }
 
+void IPlayerData::update(const QVariant &info)
+{
+    Q_UNUSED(info);
+    m_fetchedAt = QDateTime::currentDateTime();
+}
+
 QString IPlayerData::toString() const
 {
     return "toString() not implemented.";
@@ -38,9 +44,4 @@ QString IPlayerData::toString() const
 GlobalGameData::Ptr IPlayerData::gameData() const
 {
     return m_owner->gameData();
-}
-
-Player *IPlayerData::owner() const
-{
-    return m_owner;
 }

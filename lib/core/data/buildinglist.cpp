@@ -54,6 +54,8 @@ void BuildingList::update(const QVariant &info)
         auto building = buildingAt(farm, position);
         building->update(buildingInfoMap);
     }
+
+    IPlayerData::update(info);
 }
 
 QString BuildingList::toString() const

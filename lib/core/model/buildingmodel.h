@@ -39,7 +39,7 @@ namespace Model {
             Position,
             Level,
             Animals,
-            Remaining,
+            DoneTimestamp,
             IsSetUp,
         };
 

@@ -8,10 +8,10 @@ Item {
     id: root;
 
     readonly property string title: qsTr("Animals") + t.r;
-    property var rootContext
+    property var animalProduction: QtObject {}
 
     function initialize (buildingData) {
-        root.rootContext = buildingData
+        root.animalProduction = buildingData
     }
 
     Rectangle {
@@ -19,7 +19,15 @@ Item {
 
         Text {
             anchors.centerIn: parent;
-            text: rootContext.Foo;
+            text: animalProduction.bar || "";
+        }
+
+        MouseArea {
+            anchors.fill: parent;
+
+            onClicked: function () {
+                animalProduction.foo();
+            }
         }
 
         color: "#00ffaa";

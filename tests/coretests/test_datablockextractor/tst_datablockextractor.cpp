@@ -101,7 +101,6 @@ void DatablockExtractorTest::feedInfoExtractorTest()
     QVERIFY2(info.length() == 2,
              "Invalid info length");
 
-
     const QVariantMap expectedInfo1 = {
         { "In", "108" },
         { "Remaining", "1200" }
@@ -118,17 +117,17 @@ void DatablockExtractorTest::feedInfoExtractorTest()
     QVERIFY2(info.last().toMap() == expectedInfo2,
              "Second Input info doesnt match");
 
-    const QVariantMap output = result["FeedOutputInfo"].toMap();
-    QVERIFY2(!output.isEmpty(),
-             "Feed output info not exported");
+    QVERIFY2(result["OutputProduct"].toInt() == 110,
+             "Invalid Output Product");
 
-    QVariantMap expectedOutputInfo = {
-        { "Out", "110" },
-        { "Remaining", "129600" }
-    };
+    QVERIFY2(result["TotalTime"].toInt() == 129600,
+            "Invalid Total Time");
 
-    QVERIFY2(output == expectedOutputInfo,
-             "Second info doesnt match");
+    QVERIFY2(result["TimeLeft"].toInt() == -1,
+            "Invalid Time Left");
+
+    QVERIFY2(result["TimeToRefeed"].toInt() == 64800,
+            "Invalid Time to Refeed");
 }
 
 QTEST_MAIN(DatablockExtractorTest)

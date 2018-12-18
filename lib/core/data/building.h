@@ -23,6 +23,7 @@
 #include "buildingdata.h"
 
 #include <QtCore/QVariantMap>
+#include <QtCore/QDateTime>
 
 namespace Core {
 
@@ -47,6 +48,10 @@ namespace Core {
             int level() const { return m_level; }
             int animals() const { return m_animals; }
             int remaining() const { return m_remaining; }
+
+            QDateTime doneTimestamp() const { return m_doneTimestamp; }
+            int baseTimeout() const { return (m_buildingData) ? m_buildingData->totalTime() : -1; }
+
             QString name() const { return m_name; }
 
             bool isSetUp() const { return false; }
@@ -76,6 +81,8 @@ namespace Core {
             int m_level;
             int m_animals;
             int m_remaining;
+
+            QDateTime m_doneTimestamp;
             QString m_name;
 
             BuildingData::Ptr m_buildingData;
