@@ -59,6 +59,7 @@ QVariant BuildingModel::data(const QModelIndex &index, int role) const
     case BuildingRoles::Level:          return building->level();
     case BuildingRoles::Animals:        return building->animals();
     case BuildingRoles::DoneTimestamp:  return building->doneTimestamp();
+    case BuildingRoles::BaseTimeout:    return building->baseTimeout();
     case BuildingRoles::IsSetUp:        return building->isSetUp();
     }
 
@@ -76,6 +77,7 @@ QHash<int, QByteArray> BuildingModel::roleNames() const
     roles.insert(static_cast<int>(BuildingRoles::Level),            "level");
     roles.insert(static_cast<int>(BuildingRoles::Animals),          "animals");
     roles.insert(static_cast<int>(BuildingRoles::DoneTimestamp),    "doneTimestamp");
+    roles.insert(static_cast<int>(BuildingRoles::BaseTimeout),      "baseTimeout");
     roles.insert(static_cast<int>(BuildingRoles::IsSetUp),          "isSetUp");
     return roles;
 }

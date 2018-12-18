@@ -34,27 +34,59 @@ Item {
             width: root.gridWidth;
             height: root.gridHeight;
 
-            property bool isInProgress: !Number.isNaN(doneTimestamp)
+            property bool isInProgress: !Number.isNaN(doneTimestamp) && baseTimeout > 0
 
-            function updateTiming() {
-                if (!building.isInProgress) {
-                    return 0;
-                } else {
-                    var now = Date.now();
+            function calculateTimeLeft (timestamp) {
+                return (timestamp - Date.now())/1000;
+            }
 
-                    var coeff = (doneTimestamp - now)/(1000*60*60*12);
-                    buildingProgress.value = coeff;
+            function calculateJobPercentage (millisecondsToEnd) {
+                return (baseTimeout - millisecondsToEnd) / baseTimeout;
+            }
+
+            function modifyDate (timeLeft, part, modulo) {
+                var partValue = Math.floor(timeLeft / part);
+                if (modulo) {
+                    partValue %= modulo;
                 }
+
+                timeLeft -= partValue;
+                return partValue;
             }
 
             Timer {
                 id: updateTimer
 
+                readonly property int secondsInDate: 1;
+                readonly property int minutesInDate: secondsInDate * 60;
+                readonly property int hoursInDate: minutesInDate * 60;
+
                 interval: 1000
                 running: building.isInProgress
                 repeat: true;
 
-                onTriggered: building.updateTiming()
+                onTriggered: function () {
+                    if (!building.isInProgress) {
+                        return;
+                    }
+
+                    var timeLeft = calculateTimeLeft(doneTimestamp)
+                    var jobPercentage = calculateJobPercentage(timeLeft);
+
+                    var seconds = modifyDate(timeLeft, secondsInDate, 60);
+                    var minutes = modifyDate(timeLeft, minutesInDate, 60);
+                    var hours   = modifyDate(timeLeft, hoursInDate,   0 );
+
+                    var timeString = [ hours, minutes, seconds ]
+                        .map(function (seg) {
+                            return ("00" + seg).slice(-2);
+                        }).join(':');
+
+                    workTimeoutLabel.timeLeft = timeString;
+                    workProgressBar.value = jobPercentage;
+                    workPercentIndicatorLabel.percentage = (100*jobPercentage).toFixed(2);
+
+                }
             }
 
             MouseArea {
@@ -131,7 +163,7 @@ Item {
                     }
 
                     ProgressBar {
-                        id: buildingProgress;
+                        id: workProgressBar;
 
                         visible: building.isInProgress;
 
@@ -139,17 +171,54 @@ Item {
                         Layout.rightMargin: 10;
                     }
 
-                    Label {
-                        Layout.alignment: Qt.AlignRight;
-                        Layout.rightMargin: 10;
+                    Item {
+                        id: workGroup
 
-                        text: (function (timestamp) {
-                            if (building.isInProgress) {
-                                return qsTr("Done at:") + " " + timestamp;
-                            } else {
-                                return qsTr("Idle")
+                        Layout.alignment: Qt.AlignRight;
+
+                        Layout.fillHeight: true;
+                        Layout.fillWidth: true;
+
+                        Layout.rightMargin: 10;
+                        Layout.topMargin: 5;
+
+                        Label {
+                            id: workTimeoutLabel;
+
+                            property string timeLeft;
+
+                            visible: building.isInProgress;
+                            anchors {
+                                verticalCenter: parent.verticalCenter;
+                                left: parent.left;
                             }
-                        })(doneTimestamp, t.r)
+
+                            font.pixelSize: 11;
+                            text: qsTr("Ready In: ") + timeLeft;
+
+                        }
+
+                        Label {
+                            id: workPercentIndicatorLabel;
+
+                            property string percentage: "0.00";
+
+                            anchors {
+                                verticalCenter: parent.verticalCenter;
+                                right: parent.right;
+                            }
+
+                            font.pixelSize: 11;
+                            text: (function () {
+                                if (building.isInProgress) {
+                                    return qsTr("Done at: ") + " " + percentage + "%";
+                                } else {
+                                    return qsTr("Idle")
+                                }
+                            })(percentage, t.r)
+
+                        }
+
                     }
 
                 }
