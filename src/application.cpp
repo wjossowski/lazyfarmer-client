@@ -132,9 +132,7 @@ void Application::requestBuildingInfoScreen(BuildingModel *buildingModel, int bu
         }
     };
 
-    showScreen(mapToScreenType(building->type()), QVariantMap {
-                   { "Foo", "Bar" }
-               });
+    showScreen(mapToScreenType(building->type()), buildingData->toVariant());
 }
 
 void Application::showScreen(Application::Screens screenToShow, const QVariant &data) const

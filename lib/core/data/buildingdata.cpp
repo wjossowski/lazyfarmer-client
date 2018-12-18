@@ -16,30 +16,20 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#pragma once
+#include "buildingdata.h"
+#include "animalproductiondata.h"
 
-#include "iplayerdata.h"
+using namespace Core;
+using namespace Core::Data;
 
-namespace Core {
-
-    namespace Data {
-
-        class BuildingData : public IPlayerData
-        {
-            Q_OBJECT
-
-        public:
-            using Ptr = QSharedPointer<BuildingData>;
-
-            explicit BuildingData (Player *parent = nullptr) : IPlayerData (parent) { }
-            ~BuildingData() override = default;
-
-            virtual QVariant toVariant() const = 0;
-
-            static BuildingData::Ptr create(Player *player, BuildingType type);
-
-        };
-
+BuildingData::Ptr BuildingData::create(Player *player, BuildingType type)
+{
+    switch (type) {
+    case BuildingType::AnimalProduction:
+        return AnimalProductionData::Ptr::create(player);
+    case BuildingType::ResourceProduction:
+    case BuildingType::Farm:
+    default:
+        return nullptr;
     }
-
 }

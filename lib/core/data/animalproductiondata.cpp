@@ -16,30 +16,27 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#pragma once
+#include "animalproductiondata.h"
+#include <QtCore/QDebug>
 
-#include "iplayerdata.h"
+using namespace Core;
+using namespace Core::Data;
 
-namespace Core {
 
-    namespace Data {
+void AnimalProductionData::update(const QVariant &info)
+{
+    qDebug() << "Update called!" << info;
+}
 
-        class BuildingData : public IPlayerData
-        {
-            Q_OBJECT
+QString AnimalProductionData::toString() const
+{
+    return QString ("FooBarAnimalProduction");
+}
 
-        public:
-            using Ptr = QSharedPointer<BuildingData>;
-
-            explicit BuildingData (Player *parent = nullptr) : IPlayerData (parent) { }
-            ~BuildingData() override = default;
-
-            virtual QVariant toVariant() const = 0;
-
-            static BuildingData::Ptr create(Player *player, BuildingType type);
-
-        };
-
-    }
-
+QVariant AnimalProductionData::toVariant() const
+{
+    return QVariantMap {
+        { "Foo", "Bar" },
+        { "Bar", "Bar" }
+    };
 }

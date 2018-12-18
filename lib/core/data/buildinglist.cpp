@@ -35,7 +35,7 @@ Building::Ptr BuildingList::buildingAt(int farm, int position)
 Building::Ptr BuildingList::buildingAt(int index)
 {
     if (m_buildings.count() < index) {
-        return Building::Ptr();
+        return nullptr;
     } else {
         return m_buildings.at(index);
     }
