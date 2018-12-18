@@ -25,6 +25,10 @@ using namespace Core::Data;
 
 AnimalProductionData::AnimalProductionData(Player *parent)
     : BuildingData (parent)
+    , m_outputId(-1)
+    , m_totalTime(-1)
+    , m_timeLeft(-1)
+    , m_timeToRefeed (-1)
 {
 
 }
@@ -36,6 +40,13 @@ void AnimalProductionData::foo()
 
 void AnimalProductionData::update(const QVariant &info)
 {
+    const auto buildingInfo = info.toMap();
+    m_outputId      = buildingInfo.value("OutputProduct").toInt();
+    m_totalTime     = buildingInfo.value("TotalTime").toInt();
+    m_timeLeft      = buildingInfo.value("TimeLeft").toInt();
+    m_timeToRefeed  = buildingInfo.value("TimeToRefeed").toInt();
+
+    emit dataChanged();
     IPlayerData::update(info);
 }
 

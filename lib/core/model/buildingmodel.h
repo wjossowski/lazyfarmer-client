@@ -40,6 +40,7 @@ namespace Model {
             Level,
             Animals,
             DoneTimestamp,
+            BaseTimeout,
             IsSetUp,
         };
 
