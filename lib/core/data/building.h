@@ -50,7 +50,6 @@ namespace Core {
             QString name() const { return m_name; }
 
             bool isSetUp() const { return false; }
-
             bool isValid() const { return m_type != BuildingType::Unknown; }
 
             BuildingDetails details() const { return { m_farmId, m_position }; }
@@ -59,6 +58,8 @@ namespace Core {
             void updateBuildingData(const QVariant &info);
 
             QString toString() const override;
+
+            BuildingData::Ptr buildingData() const { return m_buildingData; }
 
         signals:
             void fetchBuildingRequested(BuildingDetails details, BuildingType type) const;
