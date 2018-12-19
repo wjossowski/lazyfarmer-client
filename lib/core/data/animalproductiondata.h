@@ -28,6 +28,11 @@ namespace Core {
         {
             Q_OBJECT
 
+            Q_PROPERTY(int outputProduct                    MEMBER m_outputId               NOTIFY dataChanged)
+            Q_PROPERTY(int totalTime                        MEMBER m_totalTime              NOTIFY dataChanged)
+            Q_PROPERTY(int timeLeft                         MEMBER m_timeLeft               NOTIFY dataChanged)
+            Q_PROPERTY(int timeToRefeed                     MEMBER m_timeToRefeed           NOTIFY dataChanged)
+            Q_PROPERTY(QVariantList inputProductsReduction  MEMBER m_inputProductsReduction NOTIFY dataChanged)
 
         public:
             using Ptr = QSharedPointer<AnimalProductionData>;
@@ -35,12 +40,10 @@ namespace Core {
             explicit AnimalProductionData (Player *parent = nullptr);
             ~AnimalProductionData() override = default;
 
-            Q_INVOKABLE void foo();
-
             void update(const QVariant &info) override;
             QString toString() const override;
-
             QVariant toVariant() override;
+
             int totalTime() const override { return m_totalTime; }
 
         signals:
@@ -51,6 +54,8 @@ namespace Core {
             int m_totalTime;
             int m_timeLeft;
             int m_timeToRefeed;
+
+            QVariantList m_inputProductsReduction;
 
         };
 

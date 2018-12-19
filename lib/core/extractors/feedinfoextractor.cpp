@@ -42,7 +42,7 @@ void FeedInfoExtractor::extractSpecificData()
     for (const auto &id : feed.keys()) {
         const int remaining = feed[id].toObject().value("time").toInt();
         feedInputInfo.append(QVariantMap({
-            { "In", id },
+            { "In", id.toInt() },
             { "Remaining", remaining }
         }));
     }

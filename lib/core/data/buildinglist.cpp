@@ -69,6 +69,8 @@ QString BuildingList::toString() const
     return QString("Buildings:(%1)").arg(buildingContents.join(", "));
 }
 
+
+
 void BuildingList::updateBuilding(int farm, int position, const QVariant &info)
 {
     const auto building = buildingAt(farm, position);

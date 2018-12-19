@@ -68,3 +68,8 @@ QString Storage::toString() const
 
     return QString("Storage: (%1)").arg(storageContents.join(", "));
 }
+
+QVariant Storage::toVariant()
+{
+    return QVariant::fromValue<Storage*>(this);
+}
