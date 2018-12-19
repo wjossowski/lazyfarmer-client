@@ -4,6 +4,8 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.4
 import QtQuick.Controls.Material 2.3
 
+import "qrc:///qml/Common/utils.js" as Utils
+
 Item {
     id: root;
 
@@ -12,15 +14,15 @@ Item {
     readonly property int gridWidth: 400;
     readonly property int gridHeight: 170;
 
-    function initialize (buildingModel) {
-        buildings.model = buildingModel;
-    }
+    property var buildingModel: QtObject {}
 
     GridView {
         id: buildings;
 
         cellWidth: root.gridWidth;
         cellHeight: root.gridHeight;
+
+        model: buildingModel
 
         anchors {
             fill: parent;
@@ -34,32 +36,11 @@ Item {
             width: root.gridWidth;
             height: root.gridHeight;
 
-            property bool isInProgress: !Number.isNaN(doneTimestamp) && baseTimeout > 0
-
-            function calculateTimeLeft (timestamp) {
-                return (timestamp - Date.now())/1000;
-            }
-
-            function calculateJobPercentage (millisecondsToEnd) {
-                return (baseTimeout - millisecondsToEnd) / baseTimeout;
-            }
-
-            function modifyDate (timeLeft, part, modulo) {
-                var partValue = Math.floor(timeLeft / part);
-                if (modulo) {
-                    partValue %= modulo;
-                }
-
-                timeLeft -= partValue;
-                return partValue;
-            }
+            property int timeLeft: 0;
+            property bool isInProgress: !Number.isNaN(doneTimestamp) && timeLeft >= 0;
 
             Timer {
                 id: updateTimer
-
-                readonly property int secondsInDate: 1;
-                readonly property int minutesInDate: secondsInDate * 60;
-                readonly property int hoursInDate: minutesInDate * 60;
 
                 interval: 1000
                 running: building.isInProgress
@@ -70,19 +51,12 @@ Item {
                         return;
                     }
 
-                    var timeLeft = calculateTimeLeft(doneTimestamp)
-                    var jobPercentage = calculateJobPercentage(timeLeft);
+                    var timeLeft = Utils.calculateTimeLeft(doneTimestamp)
+                    building.timeLeft = timeLeft
 
-                    var seconds = modifyDate(timeLeft, secondsInDate, 60);
-                    var minutes = modifyDate(timeLeft, minutesInDate, 60);
-                    var hours   = modifyDate(timeLeft, hoursInDate,   0 );
+                    workTimeoutLabel.timeLeft = Utils.timeLeftToString(timeLeft);
 
-                    var timeString = [ hours, minutes, seconds ]
-                        .map(function (seg) {
-                            return ("00" + seg).slice(-2);
-                        }).join(':');
-
-                    workTimeoutLabel.timeLeft = timeString;
+                    var jobPercentage = Utils.calculateJobPercentage(timeLeft, baseTimeout);
                     workProgressBar.value = jobPercentage;
                     workPercentIndicatorLabel.percentage = (100*jobPercentage).toFixed(2);
 

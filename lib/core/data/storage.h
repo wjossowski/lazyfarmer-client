@@ -45,6 +45,7 @@ namespace Core {
 
             void update(const QVariant &info = QVariant()) override;
             QString toString() const override;
+            QVariant toVariant() override;
 
         signals:
             void storageChanged() const;

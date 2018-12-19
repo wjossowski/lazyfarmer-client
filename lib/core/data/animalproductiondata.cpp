@@ -33,11 +33,6 @@ AnimalProductionData::AnimalProductionData(Player *parent)
 
 }
 
-void AnimalProductionData::foo()
-{
-    qDebug() << "Fooooooo kurwy jebane";
-}
-
 void AnimalProductionData::update(const QVariant &info)
 {
     const auto buildingInfo = info.toMap();
@@ -45,6 +40,9 @@ void AnimalProductionData::update(const QVariant &info)
     m_totalTime     = buildingInfo.value("TotalTime").toInt();
     m_timeLeft      = buildingInfo.value("TimeLeft").toInt();
     m_timeToRefeed  = buildingInfo.value("TimeToRefeed").toInt();
+
+    // Fill possible product inputs
+    m_inputProductsReduction = buildingInfo["FeedInputInfo"].toList();
 
     emit dataChanged();
     IPlayerData::update(info);

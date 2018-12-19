@@ -14,5 +14,6 @@
         <file>Common/Palette.qml</file>
         <file>Common/qmldir</file>
         <file>qtquickcontrols2.conf</file>
+        <file>Common/utils.js</file>
     </qresource>
 </RCC>

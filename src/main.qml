@@ -85,10 +85,7 @@ ApplicationWindow {
             LazyFarmer.pushToStack.connect(function(qml, data) {
                 var widget = Qt.createComponent(qml);
                 if (widget.status === Component.Ready) {
-                    var object = widget.createObject(stack)
-                    if (data && object.initialize && object.initialize instanceof Function) {
-                        object.initialize(data);
-                    }
+                    var object = widget.createObject(stack, data)
 
                     stack.push(object, {
                         destroyOnPop: true

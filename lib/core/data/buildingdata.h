@@ -34,7 +34,6 @@ namespace Core {
             explicit BuildingData (Player *parent = nullptr) : IPlayerData (parent) { }
             ~BuildingData() override = default;
 
-            virtual QVariant toVariant() = 0;
             virtual int totalTime() const = 0;
 
             static BuildingData::Ptr create(Player *player, BuildingType type);

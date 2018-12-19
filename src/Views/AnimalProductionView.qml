@@ -4,33 +4,49 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.4
 import QtQuick.Controls.Material 2.3
 
+import "qrc:///qml/Common/utils.js" as Utils
+
 Item {
     id: root;
 
-    readonly property string title: qsTr("Animals") + t.r;
+    property var building: QtObject {}
     property var animalProduction: QtObject {}
 
-    function initialize (buildingData) {
-        root.animalProduction = buildingData
-    }
+    property string title: building.name;
 
-    Rectangle {
+    Item {
         anchors.fill: parent;
 
-        Text {
-            anchors.centerIn: parent;
-            text: animalProduction.bar || "";
-        }
+        Rectangle {
+            width: 140;
+            height: 140;
 
-        MouseArea {
-            anchors.fill: parent;
+            radius: 10;
 
-            onClicked: function () {
-                animalProduction.foo();
+            border.color: "#0c0c0c";
+            color: "#0c2c2c2c";
+
+            anchors {
+                top: parent.top;
+                right: parent.right;
+                margins: 5;
             }
+
+            Image {
+                id: buildingIcon;
+
+                x: 7;
+                y: 7;
+
+                source: "image://resources/buildings/" + building.id;
+            }
+
         }
 
-        color: "#00ffaa";
+        ColumnLayout {
+            anchors.fill: parent
+        }
+
     }
 
 }

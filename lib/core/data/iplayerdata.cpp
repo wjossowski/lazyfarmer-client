@@ -36,11 +36,6 @@ void IPlayerData::update(const QVariant &info)
     m_fetchedAt = QDateTime::currentDateTime();
 }
 
-QString IPlayerData::toString() const
-{
-    return "toString() not implemented.";
-}
-
 GlobalGameData::Ptr IPlayerData::gameData() const
 {
     return m_owner->gameData();

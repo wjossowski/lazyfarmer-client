@@ -40,7 +40,8 @@ namespace Core {
             ~IPlayerData() override = default;
 
             virtual void update(const QVariant &info);
-            virtual QString toString() const;
+            virtual QString toString() const { return QString(); }
+            virtual QVariant toVariant() { return QVariant(); }
 
             GlobalGameData::Ptr gameData() const;
 

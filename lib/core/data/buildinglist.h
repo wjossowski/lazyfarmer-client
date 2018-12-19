@@ -45,6 +45,7 @@ namespace Core {
             void update(const QVariant &info) override;
 
             QString toString() const override;
+
             int size() const { return m_buildings.size(); }
 
         signals:
