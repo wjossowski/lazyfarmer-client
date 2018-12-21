@@ -28,11 +28,13 @@ namespace Core {
         {
             Q_OBJECT
 
-            Q_PROPERTY(int outputProduct                    MEMBER m_outputId               NOTIFY dataChanged)
-            Q_PROPERTY(int totalTime                        MEMBER m_totalTime              NOTIFY dataChanged)
-            Q_PROPERTY(int timeLeft                         MEMBER m_timeLeft               NOTIFY dataChanged)
-            Q_PROPERTY(int timeToRefeed                     MEMBER m_timeToRefeed           NOTIFY dataChanged)
-            Q_PROPERTY(QVariantList inputProductsReduction  MEMBER m_inputProductsReduction NOTIFY dataChanged)
+            Q_PROPERTY(int outputProduct                MEMBER m_outputId           NOTIFY dataChanged)
+            Q_PROPERTY(int totalTime                    MEMBER m_totalTime          NOTIFY dataChanged)
+            Q_PROPERTY(int timeLeft                     MEMBER m_timeLeft           NOTIFY dataChanged)
+            Q_PROPERTY(int timeToRefeed                 MEMBER m_timeToRefeed       NOTIFY dataChanged)
+            Q_PROPERTY(QVariantList inputProductsInfo   MEMBER m_inputProductsInfo  NOTIFY dataChanged)
+            Q_PROPERTY(int chosenProductIndex           READ chosenProductIndex     WRITE setChosenProductIndex NOTIFY chosenProductChanged)
+            Q_PROPERTY(int feedAmount                   MEMBER m_feedAmount         NOTIFY chosenProductChanged)
 
         public:
             using Ptr = QSharedPointer<AnimalProductionData>;
@@ -46,8 +48,13 @@ namespace Core {
 
             int totalTime() const override { return m_totalTime; }
 
+            int chosenProductIndex() const { return m_chosenProductIndex; }
+            Q_INVOKABLE bool hasChosenProduct() const { return m_chosenProductIndex != -1; }
+            void setChosenProductIndex(int chosenProductIndex);
+
         signals:
             void dataChanged() const;
+            void chosenProductChanged(int chosenIndex) const;
 
         private:
             int m_outputId;
@@ -55,8 +62,10 @@ namespace Core {
             int m_timeLeft;
             int m_timeToRefeed;
 
-            QVariantList m_inputProductsReduction;
+            QVariantList m_inputProductsInfo;
+            int m_chosenProductIndex;
 
+            int m_feedAmount;
         };
 
     }

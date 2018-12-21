@@ -26,9 +26,12 @@ using namespace Core::Data;
 AnimalProductionData::AnimalProductionData(Player *parent)
     : BuildingData (parent)
     , m_outputId(-1)
+
     , m_totalTime(-1)
     , m_timeLeft(-1)
     , m_timeToRefeed (-1)
+
+    , m_chosenProductIndex (-1)
 {
 
 }
@@ -42,7 +45,9 @@ void AnimalProductionData::update(const QVariant &info)
     m_timeToRefeed  = buildingInfo.value("TimeToRefeed").toInt();
 
     // Fill possible product inputs
-    m_inputProductsReduction = buildingInfo["FeedInputInfo"].toList();
+    m_chosenProductIndex = -1;
+
+    m_inputProductsInfo = buildingInfo["FeedInputInfo"].toList();
 
     emit dataChanged();
     IPlayerData::update(info);
@@ -56,4 +61,16 @@ QString AnimalProductionData::toString() const
 QVariant AnimalProductionData::toVariant()
 {
     return QVariant::fromValue<AnimalProductionData*>(this);
+}
+
+void AnimalProductionData::setChosenProductIndex(int chosenProduct)
+{
+    if (m_chosenProductIndex == -1) {
+
+        emit chosenProductChanged(m_chosenProductIndex);
+    } else if (m_chosenProductIndex != chosenProduct) {
+        m_chosenProductIndex = chosenProduct;
+
+        emit chosenProductChanged(m_chosenProductIndex);
+    }
 }

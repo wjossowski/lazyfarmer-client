@@ -209,6 +209,7 @@ int main(int argc, char *argv[])
     engineRootContext->setContextProperty("AvailableDomains", lazyFarmerApp.reader().availableDomains());
 
     engine.addImageProvider("resources", new ResourceImageProvider);
+    engine.addImportPath("qrc:/qml");
 
     Translator t(&lazyFarmerApp);
     engineRootContext->setContextProperty("t", &t);

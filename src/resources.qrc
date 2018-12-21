@@ -11,9 +11,9 @@
         <file>Views/AnimalProductionView.qml</file>
         <file>Views/ResourceProductionView.qml</file>
         <file>Dialogs/LoginDialog.qml</file>
-        <file>Common/Palette.qml</file>
-        <file>Common/qmldir</file>
         <file>qtquickcontrols2.conf</file>
         <file>Common/utils.js</file>
+        <file>Common/Stylesheet.qml</file>
+        <file>Common/qmldir</file>
     </qresource>
 </RCC>
