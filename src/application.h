@@ -48,6 +48,14 @@ public:
     void initializeCommandLineInterface(QCommandLineParser &parser);
     void initializeStaticGameData();
 
+    constexpr Q_INVOKABLE static bool isDebugMode () {
+#ifdef DEBUG_MODE
+        return true;
+#else
+        return false;
+#endif
+    }
+
     Core::ConfigReader &reader() { return Core::ConfigReader::instance(); }
     Model::PlayerFactoryModel &playerFactory() { return m_playerFactory; }
 

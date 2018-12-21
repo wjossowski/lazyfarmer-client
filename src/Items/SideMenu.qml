@@ -4,6 +4,8 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.4
 import QtQuick.Controls.Material 2.3
 
+import Common 1.0
+
 Drawer {
     id: sideMenu;
     
@@ -12,10 +14,10 @@ Drawer {
     ColumnLayout {
         anchors {
             fill: parent;
-            topMargin: 10
+            topMargin: Stylesheet.defaultMargin;
         }
 
-        spacing: 10
+        spacing: Stylesheet.defaultSpacing;
 
         Text {
             text: qsTr("Preferences") + t.r;
@@ -23,7 +25,7 @@ Drawer {
             Layout.alignment: Qt.AlignHCenter;
 
             font {
-                pixelSize: 20;
+                pixelSize: Stylesheet.bigFontSize;
                 bold: true;
                 capitalization: Font.AllUppercase;
             }
@@ -34,12 +36,12 @@ Drawer {
 
             Layout.alignment: Qt.AlignHCenter;
 
-            anchors.leftMargin: 20;
-            anchors.rightMargin: 20;
-            spacing: 20;
+            Layout.leftMargin: Stylesheet.bigMargin;
+            Layout.rightMargin: Stylesheet.bigMargin;
+            spacing: Stylesheet.bigSpacing;
 
             Label {
-                font.pixelSize: 16;
+                font.pixelSize: Stylesheet.defaultFontSize;
                 text: qsTr("Language") + t.r;
             }
 
@@ -78,7 +80,7 @@ Drawer {
         }
 
         Item {
-            height: 10;
+            height: Stylesheet.defaultMargin;
         }
 
     }

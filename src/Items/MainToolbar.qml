@@ -4,6 +4,8 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.1
 import QtQuick.Controls.Material 2.1
 
+import Common 1.0
+
 ToolBar {
     id: root;
 
@@ -38,7 +40,7 @@ ToolBar {
                 text: title;
 
                 font {
-                    pixelSize: 16;
+                    pixelSize: Stylesheet.defaultFontSize;
                     capitalization: Font.AllUppercase;
                 }
             }

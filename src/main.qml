@@ -10,6 +10,8 @@ import "Views"
 import "Items"
 import "Dialogs"
 
+import Common 1.0
+
 ApplicationWindow {
     id: root;
 
@@ -65,7 +67,7 @@ ApplicationWindow {
         FastBlur {
             anchors.fill: parent
             source: stack
-            radius: 64
+            radius: Stylesheet.defaultBlurRadius;
         }
 
     }
@@ -100,10 +102,12 @@ ApplicationWindow {
     }
 
     footer: Item {
+        visible: LazyFarmer.isDebugMode()
+
         Text {
             anchors.bottom: parent.bottom;
             anchors.left: parent.left;
-            anchors.margins: 10;
+            anchors.margins: Stylesheet.defaultMargin;
 
             text: root.width + ' x ' + root.height;
         }
