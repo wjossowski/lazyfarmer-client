@@ -51,12 +51,12 @@ Item {
                         return;
                     }
 
-                    var timeLeft = Utils.calculateTimeLeft(doneTimestamp)
+                    var timeLeft = Utils.TimeUtils.calculateTimeLeft(doneTimestamp)
                     building.timeLeft = timeLeft
 
-                    workTimeoutLabel.timeLeft = Utils.timeLeftToString(timeLeft);
+                    workTimeoutLabel.timeLeft = Utils.TimeUtils.timeLeftToString(timeLeft);
 
-                    var jobPercentage = Utils.calculateJobPercentage(timeLeft, baseTimeout);
+                    var jobPercentage = Utils.TimeUtils.calculateJobPercentage(timeLeft, baseTimeout);
                     workProgressBar.value = jobPercentage;
                     workPercentIndicatorLabel.percentage = (100*jobPercentage).toFixed(2);
 
