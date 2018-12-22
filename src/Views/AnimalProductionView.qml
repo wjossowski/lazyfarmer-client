@@ -15,99 +15,94 @@ Item {
 
     property string title: building.name;
 
-    Item {
+    ColumnLayout {
         anchors.fill: parent;
 
-        ColumnLayout {
-            id: buildingInfoContainer
+        RowLayout {
+            id: topContainer;
 
-            Layout.preferredWidth: parent.width - iconContainer.width;
+            Layout.fillWidth: true;
+            Layout.maximumHeight: iconContainer.height
 
-            anchors {
-                top: parent.top;
-                left: parent.left;
+            ColumnLayout {
+                id: buildingInfoContainer
 
-                margins: Stylesheet.defaultMargin;
-                topMargin: Stylesheet.bigMargin;
-            }
-
-            spacing: Stylesheet.defaultSpacing;
-
-            Label {
-                text: building.name;
-
-                font.pixelSize: Stylesheet.biggerFontSize;
-
-                wrapMode: Text.WrapAnywhere;
-                maximumLineCount: 1;
-            }
-
-            Item {
                 Layout.fillWidth: true;
+                Layout.margins: Stylesheet.bigMargin;
+
+                spacing: Stylesheet.defaultSpacing;
 
                 Label {
-                    anchors.left: parent.left;
+                    text: building.name;
 
-                    text: qsTr("Level:") + " " + building.level + t.r;
-                    font.pixelSize: Stylesheet.smallFontSize;
+                    font.pixelSize: Stylesheet.biggerFontSize;
+
+                    wrapMode: Text.WrapAnywhere;
+                    maximumLineCount: 1;
                 }
 
-                Label {
-                    anchors.right: parent.right;
+                Item {
+                    Layout.fillWidth: true;
 
-                    text: qsTr("Animals:") + " " + building.animals + t.r;
-                    font.pixelSize: Stylesheet.smallFontSize;
+                    Label {
+                        anchors.left: parent.left;
+
+                        text: qsTr("Level:") + " " + building.level + t.r;
+                        font.pixelSize: Stylesheet.smallFontSize;
+                    }
+
+                    Label {
+                        anchors.right: parent.right;
+
+                        text: qsTr("Animals:") + " " + building.animals + t.r;
+                        font.pixelSize: Stylesheet.smallFontSize;
+                    }
+
                 }
+
+                Item {
+                    // Spacer
+                    Layout.fillHeight: true;
+                }
+
             }
 
-        }
+            Rectangle {
+                id: iconContainer
 
-        Rectangle {
-            id: iconContainer
+                width: Stylesheet.buildingImageContainerSize;
+                height: Stylesheet.buildingImageContainerSize;
 
-            width: Stylesheet.buildingImageContainerSize;
-            height: Stylesheet.buildingImageContainerSize;
+                radius: Stylesheet.defaultRadius;
 
-            radius: Stylesheet.defaultRadius;
+                border.color: "#0c0c0c";
+                color: "#0c2c2c2c";
 
-            border.color: "#0c0c0c";
-            color: "#0c2c2c2c";
+                Layout.margins: Stylesheet.bigMargin;
 
-            anchors {
-                top: parent.top;
-                right: parent.right;
+                Image {
+                    id: buildingIcon;
 
-                margins: Stylesheet.defaultMargin;
-                topMargin: Stylesheet.bigMargin;
-            }
+                    x: Stylesheet.buildingImageOffset;
+                    y: Stylesheet.buildingImageOffset;
 
-            Image {
-                id: buildingIcon;
+                    source: "image://resources/buildings/" + building.id;
+                }
 
-                x: Stylesheet.buildingImageOffset;
-                y: Stylesheet.buildingImageOffset;
-
-                source: "image://resources/buildings/" + building.id;
             }
 
         }
 
         ListView {
-            id: outputProductionContainer
+            id: inputProductionContainer
 
             orientation: Qt.Horizontal
 
-            anchors {
-                top: iconContainer.bottom;
-                bottom: parent.bottom;
-                left: parent.left;
-                right: parent.right;
-            }
+            Layout.margins: Stylesheet.bigMargin;
+            Layout.fillWidth: true;
 
             spacing: Stylesheet.defaultSpacing;
-            highlightFollowsCurrentItem: true;
 
-            focus: true;
             model: buildingData.inputProductsInfo;
             delegate: Rectangle {
                 id: inputDelegate
@@ -118,13 +113,14 @@ Item {
 
                 radius: Stylesheet.defaultRadius;
 
-                width: 100;
+                width: delegateStatusLabel.width + 2*Stylesheet.defaultMargin;
                 height: 50;
 
                 border.color: "#0c0c0c";
                 color: isSelected ? "#7c2c8c2c" : "#0c2c2c2c";
 
                 Label {
+                    id: delegateStatusLabel
                     anchors.centerIn: parent;
                     text: modelData.Name + " (" + storage.amount(modelData.In) + ")"
                 }
@@ -140,10 +136,11 @@ Item {
 
         }
 
-        ColumnLayout {
-            anchors.fill: parent
+        Item {
+            // Spacing item
+            Layout.fillHeight: true;
         }
-
     }
 
 }
+
