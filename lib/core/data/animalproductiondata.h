@@ -29,11 +29,14 @@ namespace Core {
             Q_OBJECT
 
             Q_PROPERTY(int outputProduct                MEMBER m_outputId           NOTIFY dataChanged)
+
             Q_PROPERTY(int totalTime                    MEMBER m_totalTime          NOTIFY dataChanged)
             Q_PROPERTY(int timeLeft                     MEMBER m_timeLeft           NOTIFY dataChanged)
             Q_PROPERTY(int timeToRefeed                 MEMBER m_timeToRefeed       NOTIFY dataChanged)
+
             Q_PROPERTY(QVariantList inputProductsInfo   MEMBER m_inputProductsInfo  NOTIFY dataChanged)
-            Q_PROPERTY(int chosenProductIndex           READ chosenProductIndex     WRITE setChosenProductIndex NOTIFY chosenProductChanged)
+
+            Q_PROPERTY(int chosenProductId              MEMBER m_chosenProductId    NOTIFY chosenProductChanged)
             Q_PROPERTY(int feedAmount                   MEMBER m_feedAmount         NOTIFY chosenProductChanged)
 
         public:
@@ -48,9 +51,8 @@ namespace Core {
 
             int totalTime() const override { return m_totalTime; }
 
-            int chosenProductIndex() const { return m_chosenProductIndex; }
-            Q_INVOKABLE bool hasChosenProduct() const { return m_chosenProductIndex != -1; }
-            void setChosenProductIndex(int chosenProductIndex);
+            Q_INVOKABLE bool hasChosenProduct() const { return m_chosenProductId != -1; }
+            Q_INVOKABLE void setChosenProductId(int chosenProductId);
 
         signals:
             void dataChanged() const;
@@ -58,12 +60,15 @@ namespace Core {
 
         private:
             int m_outputId;
+
             int m_totalTime;
             int m_timeLeft;
             int m_timeToRefeed;
 
             QVariantList m_inputProductsInfo;
-            int m_chosenProductIndex;
+            QHash<int, int> m_inputProductsData;
+
+            int m_chosenProductId;
 
             int m_feedAmount;
         };

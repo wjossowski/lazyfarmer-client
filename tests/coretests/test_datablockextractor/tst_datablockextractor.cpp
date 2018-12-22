@@ -103,11 +103,13 @@ void DatablockExtractorTest::feedInfoExtractorTest()
 
     const QVariantMap expectedInfo1 = {
         { "In", "108" },
+        { "Name", ""},
         { "Remaining", "1200" }
     };
 
     const QVariantMap expectedInfo2 = {
         { "In", "109" },
+        { "Name", ""},
         { "Remaining","600" }
     };
 

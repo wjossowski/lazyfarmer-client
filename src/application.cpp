@@ -136,7 +136,8 @@ void Application::requestBuildingInfoScreen(BuildingModel *buildingModel, int bu
 
     showScreen(mapToScreenType(building->type()), QVariantMap {
         { "building", building->toVariant() },
-        { "buildingData", buildingData->toVariant() }
+        { "buildingData", buildingData->toVariant() },
+        { "storage", building->owner()->storage()->toVariant()}
     });
 }
 

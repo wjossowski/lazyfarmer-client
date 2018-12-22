@@ -56,7 +56,7 @@ Item {
 
         // Dimensions:
         readonly property int bigButtonSize:         80;
-        readonly property int bigIconContainerSize: 140;
+        readonly property int bigIconContainerSize: 145;
         readonly property int tinyWidgetSize:       100;
         readonly property int defaultWidgetSize:    400;
 

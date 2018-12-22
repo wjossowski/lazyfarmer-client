@@ -64,8 +64,9 @@ void Field::update(const QVariant &info)
 
         emit fieldChanged();
 
-        IPlayerData::update(info);
     }
+
+    IPlayerData::update(info);
 }
 
 QString Field::toString() const

@@ -83,9 +83,9 @@ void Building::update(const QVariant &info)
         emit buildingChanged();
         emit fetchBuildingRequested(details(), m_type);
 
-        IPlayerData::update(info);
     }
 
+    IPlayerData::update(info);
 }
 
 void Building::updateBuildingData(const QVariant &info)
