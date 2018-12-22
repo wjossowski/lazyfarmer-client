@@ -27,6 +27,13 @@
 using namespace Core;
 using namespace Core::Extractors;
 
+FeedInfoExtractor::FeedInfoExtractor(GlobalGameData *data)
+    : DatablockExtractor()
+    , m_gamedata(data)
+{
+
+}
+
 void FeedInfoExtractor::extractSpecificData()
 {
     const QJsonObject buildingObject = m_datablock[m_datablock.keys().first()].toObject();
@@ -41,9 +48,14 @@ void FeedInfoExtractor::extractSpecificData()
     QVariantList feedInputInfo;
     for (const auto &id : feed.keys()) {
         const int remaining = feed[id].toObject().value("time").toInt();
+
+        const int productId = id.toInt();
+        const QString name = m_gamedata ? m_gamedata->productInfo(productId).name : "";
+
         feedInputInfo.append(QVariantMap({
-            { "In", id.toInt() },
-            { "Remaining", remaining }
+            { "In", productId },
+            { "Name", name },
+            { "Remaining", remaining },
         }));
     }
 

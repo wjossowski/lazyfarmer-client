@@ -75,9 +75,6 @@ namespace Core {
             static QMap<QString, Ptr> m_baseExtractors;
             static QMap<QString, Ptr> m_constantsExtractors;
 
-            static QPixmap m_buildings;
-            static QPixmap m_products;
-
             QVariantMap m_filters;
             QVariantMap m_results;
 

@@ -18,7 +18,9 @@
 
 #pragma once
 
+
 #include "datablockextractor.h"
+#include "../globalgamedata.h"
 
 namespace Core {
 
@@ -26,8 +28,15 @@ namespace Core {
 
         class FeedInfoExtractor : public DatablockExtractor
         {
+        public:
+            explicit FeedInfoExtractor(GlobalGameData *data = nullptr);
+            ~FeedInfoExtractor() override = default;
+
         private:
             void extractSpecificData() override;
+
+        private:
+            GlobalGameData *m_gamedata;
 
         };
 

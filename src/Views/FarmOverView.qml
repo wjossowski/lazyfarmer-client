@@ -12,7 +12,7 @@ Item {
     readonly property string title: qsTr("Overview") + t.r;
 
     readonly property int gridWidth: Stylesheet.defaultWidgetSize;
-    readonly property int gridHeight: Stylesheet.buildingImageContainerSize + 30;
+    readonly property int gridHeight: Stylesheet.buildingImageContainerSize + 2 * Stylesheet.defaultMargin;
 
     property var buildingModel: QtObject {}
 

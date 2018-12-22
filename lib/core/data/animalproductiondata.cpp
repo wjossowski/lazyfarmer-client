@@ -17,8 +17,9 @@
  **/
 
 #include "animalproductiondata.h"
+
 #include <QtCore/QDebug>
-#include <QtCore/QTimer>
+#include <QtCore/QtMath>
 
 using namespace Core;
 using namespace Core::Data;
@@ -31,7 +32,9 @@ AnimalProductionData::AnimalProductionData(Player *parent)
     , m_timeLeft(-1)
     , m_timeToRefeed (-1)
 
-    , m_chosenProductIndex (-1)
+    , m_chosenProductId(-1)
+
+    , m_feedAmount(0)
 {
 
 }
@@ -44,13 +47,26 @@ void AnimalProductionData::update(const QVariant &info)
     m_timeLeft      = buildingInfo.value("TimeLeft").toInt();
     m_timeToRefeed  = buildingInfo.value("TimeToRefeed").toInt();
 
-    // Fill possible product inputs
-    m_chosenProductIndex = -1;
+    if (m_inputProductsData.isEmpty()) {
+        // Fill possible product inputs
+        m_chosenProductId = -1;
 
-    m_inputProductsInfo = buildingInfo["FeedInputInfo"].toList();
+        // Store data for QML
+        m_inputProductsInfo = buildingInfo["FeedInputInfo"].toList();
 
-    emit dataChanged();
+        // Store data:
+        for (const auto &product : m_inputProductsInfo) {
+            const auto productInfo = product.toMap();
+            int productId = productInfo["In"].toInt();
+            int reduction = productInfo["Remaining"].toInt();
+
+            m_inputProductsData.insert(productId, reduction);
+        }
+
+    }
+
     IPlayerData::update(info);
+    emit dataChanged();
 }
 
 QString AnimalProductionData::toString() const
@@ -63,14 +79,19 @@ QVariant AnimalProductionData::toVariant()
     return QVariant::fromValue<AnimalProductionData*>(this);
 }
 
-void AnimalProductionData::setChosenProductIndex(int chosenProduct)
+void AnimalProductionData::setChosenProductId(int chosenProductId)
 {
-    if (m_chosenProductIndex == -1) {
+    bool isTheSameProduct = m_chosenProductId == chosenProductId;
+    bool isProductNulled = chosenProductId == -1;
 
-        emit chosenProductChanged(m_chosenProductIndex);
-    } else if (m_chosenProductIndex != chosenProduct) {
-        m_chosenProductIndex = chosenProduct;
-
-        emit chosenProductChanged(m_chosenProductIndex);
+    if (isTheSameProduct || isProductNulled) {
+        chosenProductId = -1;
+        m_feedAmount = 0;
+    } else {
+        int chosenProductReducer = m_inputProductsData.value(chosenProductId, INT_MAX);
+        m_feedAmount = qCeil(m_timeToRefeed / (chosenProductReducer));
     }
+
+    m_chosenProductId = chosenProductId;
+    emit chosenProductChanged(m_chosenProductId);
 }
