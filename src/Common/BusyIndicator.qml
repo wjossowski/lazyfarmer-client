@@ -9,13 +9,13 @@ import Common 1.0
 ColumnLayout {
     id: root;
     
-    property var doneDate: new Date();
+    property var doneDate: null;
     property int totalInterval: NaN;
     
     property double percentDone: 0.0
     property int timeLeft: 0;
 
-    property bool isInProgress: !Number.isNaN(totalInterval) && root.timeLeft >= 0;
+    property bool isInProgress: Number.isFinite(root.totalInterval) && root.timeLeft >= 0;
     
     Timer {
         id: workTimer;
@@ -24,15 +24,18 @@ ColumnLayout {
         repeat: true;
 
         running: root.isInProgress
-        
-        onTriggered: function () {
+
+        function updateProgress () {
             if (!root.isInProgress) {
                 return;
             }
-            
+
             root.timeLeft = Utils.TimeUtils.calculateTimeLeft(root.doneDate)
             root.percentDone = Utils.TimeUtils.calculateJobPercentage(root.timeLeft, root.totalInterval);
         }
+        
+        onTriggered: updateProgress();
+        Component.onCompleted: updateProgress();
         
     }
     
@@ -48,6 +51,7 @@ ColumnLayout {
     Item {
         id: workInfoGroup
         
+        Layout.topMargin: Stylesheet.smallMargin;
         Layout.fillWidth: true;
         
         Label {
