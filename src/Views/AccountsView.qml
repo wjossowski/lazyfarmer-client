@@ -4,6 +4,8 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.4
 import QtQuick.Controls.Material 2.3
 
+import Common 1.0
+
 Item {
     id: root;
 
@@ -21,24 +23,24 @@ Item {
             right: parent.right
             bottom: addButton.top
 
-            margins: 10;
-            topMargin: 20;
-            bottomMargin: 20;
+            margins: Stylesheet.defaultMargin;
+            topMargin: Stylesheet.bigMargin;
+            bottomMargin: Stylesheet.bigMargin;
         }
 
         delegate: Item {
             id: player;
 
             width: parent.width;
-            height: 100;
+            height: Stylesheet.tinyWidgetSize;
 
             readonly property bool isReady: !!level
 
             ColumnLayout {
-                spacing: 10;
+                spacing: Stylesheet.defaultSpacing;
 
                 anchors.top: parent.top;
-                anchors.topMargin: 15;
+                anchors.topMargin: Stylesheet.defaultMargin;
 
                 Label {
                     text: description + "(" + level + ")";
@@ -54,7 +56,7 @@ Item {
                 anchors.right: parent.right;
                 anchors.verticalCenter: parent.verticalCenter;
 
-                spacing: 5;
+                spacing: Stylesheet.smallSpacing;
 
                 Label {
                     Layout.fillWidth: true;
@@ -67,7 +69,7 @@ Item {
                 RowLayout {
                     Layout.alignment: Qt.AlignRight;
 
-                    spacing: 10;
+                    spacing: Stylesheet.defaultSpacing;
 
                     RoundButton {
                         id: showButton;
@@ -144,13 +146,13 @@ Item {
         anchors {
             bottom: parent.bottom;
             right: parent.right;
-            margins: 10;
+            margins: Stylesheet.defaultMargin;
         }
 
         Material.background: Material.primary;
 
-        width: 80;
-        height: 80;
+        width: Stylesheet.bigButtonRadius;
+        height: Stylesheet.bigButtonRadius;
 
         text: "+";
 

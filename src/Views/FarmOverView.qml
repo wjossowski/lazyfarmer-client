@@ -4,17 +4,17 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.4
 import QtQuick.Controls.Material 2.3
 
+import Common 1.0
+
 Item {
     id: root;
 
     readonly property string title: qsTr("Overview") + t.r;
 
-    readonly property int gridWidth: 400;
-    readonly property int gridHeight: 170;
+    readonly property int gridWidth: Stylesheet.defaultWidgetSize;
+    readonly property int gridHeight: Stylesheet.buildingImageContainerSize + 2 * Stylesheet.defaultMargin;
 
-    function initialize (buildingModel) {
-        buildings.model = buildingModel;
-    }
+    property var buildingModel: QtObject {}
 
     GridView {
         id: buildings;
@@ -22,10 +22,12 @@ Item {
         cellWidth: root.gridWidth;
         cellHeight: root.gridHeight;
 
+        model: buildingModel
+
         anchors {
             fill: parent;
 
-            margins: 10;
+            margins: Stylesheet.defaultMargin;
         }
 
         delegate: Item {
@@ -44,45 +46,45 @@ Item {
             Rectangle {
                 anchors {
                     fill: parent;
-                    margins: 5;
+                    margins: Stylesheet.smallMargin;
                 }
 
-                radius: 10;
+                radius: Stylesheet.defaultRadius;
 
                 border.color: "#0c0c0c";
                 color: "#0c2c2c2c";
 
-                RowLayout {
-                    spacing: 10;
+                Item {
+                    id: iconContainer
 
-                    Item {
-                        anchors.margins: 10;
+                    width: Stylesheet.buildingImageContainerSize;
+                    height: Stylesheet.buildingImageContainerSize;
 
-                        Image {
-                            x: 10;
-                            y: 10;
-                            source: "image://resources/buildings/" + id;
-                        }
+                    anchors.margins: Stylesheet.defaultMargin;
+
+                    Image {
+                        x: Stylesheet.buildingImageOffset;
+                        y: Stylesheet.buildingImageOffset;
+
+                        source: "image://resources/buildings/" + id;
                     }
-
                 }
 
                 ColumnLayout {
-                    spacing: 5;
+                    spacing: Stylesheet.smallSpacing;
 
                     anchors {
                         top: parent.top;
+                        left: iconContainer.right;
                         right: parent.right;
                     }
 
                     Label {
                         Layout.alignment: Qt.AlignRight;
-                        Layout.topMargin: 10;
-                        Layout.rightMargin: 10;
+                        Layout.topMargin: Stylesheet.defaultMargin;
+                        Layout.rightMargin: Stylesheet.defaultMargin;
 
-                        Layout.maximumWidth: root.gridWidth - root.gridHeight;
-
-                        font.pixelSize: 28;
+                        font.pixelSize: Stylesheet.biggerFontSize;
 
                         wrapMode: Text.WrapAnywhere;
                         maximumLineCount: 1;
@@ -92,7 +94,7 @@ Item {
 
                     Label {
                         Layout.alignment: Qt.AlignRight;
-                        Layout.rightMargin: 10;
+                        Layout.rightMargin: Stylesheet.defaultMargin;
 
                         text: qsTr("Level:") + " " + level + t.r;
                     }
@@ -101,26 +103,41 @@ Item {
                         visible: animals > 0;
 
                         Layout.alignment: Qt.AlignRight;
-                        Layout.rightMargin: 10;
+                        Layout.rightMargin: Stylesheet.defaultMargin;
 
-                        font.pixelSize: 10;
+                        font.pixelSize: Stylesheet.smallerFontSize;
                         text: qsTr("Animals:") + " " + animals + t.r;
+                    }
+
+                    BusyIndicator {
+                        id: workGroup
+
+                        doneDate: doneTimestamp;
+                        totalInterval: baseTimeout;
+
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
+
+                        Layout.leftMargin: Stylesheet.bigMargin;
+                        Layout.rightMargin: Stylesheet.defaultMargin;
+
+                        Layout.topMargin: Stylesheet.smallerMargin
                     }
 
                 }
 
                 ColumnLayout {
-                    spacing: 5;
+                    spacing: Stylesheet.smallFontSize;
 
                     anchors {
                         bottom: parent.bottom;
                         right: parent.right;
 
-                        margins: 10;
+                        margins: Stylesheet.defaultMargin;
                     }
 
                     Label {
-                        font.pixelSize: 10;
+                        font.pixelSize: Stylesheet.smallerFontSize;
 
                         Layout.alignment: Qt.AlignRight;
 
@@ -128,7 +145,7 @@ Item {
                     }
 
                     Label {
-                        font.pixelSize: 10;
+                        font.pixelSize: Stylesheet.smallerFontSize;
 
                         Layout.alignment: Qt.AlignRight;
 

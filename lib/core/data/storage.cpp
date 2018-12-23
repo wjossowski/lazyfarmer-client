@@ -47,6 +47,7 @@ void Storage::update(const QVariant &info)
         m_products.insert(id, amount);
     }
 
+    IPlayerData::update(info);
     emit storageChanged();
 }
 
@@ -66,4 +67,9 @@ QString Storage::toString() const
     }
 
     return QString("Storage: (%1)").arg(storageContents.join(", "));
+}
+
+QVariant Storage::toVariant()
+{
+    return QVariant::fromValue<Storage*>(this);
 }

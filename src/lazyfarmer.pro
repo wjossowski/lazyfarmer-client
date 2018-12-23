@@ -49,6 +49,9 @@ DISTFILES += \
 
 RESOURCES += resources.qrc
 
+QML_IMPORT_PATH += \
+    $$PWD/.
+
 OTHER_FILES += \
     qtquickcontrols2.conf
 

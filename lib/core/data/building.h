@@ -23,6 +23,7 @@
 #include "buildingdata.h"
 
 #include <QtCore/QVariantMap>
+#include <QtCore/QDateTime>
 
 namespace Core {
 
@@ -33,6 +34,20 @@ namespace Core {
         class Building : public IPlayerData
         {
             Q_OBJECT
+
+            Q_PROPERTY(int id                       MEMBER m_id             NOTIFY buildingChanged)
+            Q_PROPERTY(BuildingType type            MEMBER m_type           NOTIFY buildingChanged)
+
+            Q_PROPERTY(int farm                     MEMBER m_farmId         NOTIFY buildingChanged)
+            Q_PROPERTY(int position                 MEMBER m_position       NOTIFY buildingChanged)
+            Q_PROPERTY(int level                    MEMBER m_level          NOTIFY buildingChanged)
+            Q_PROPERTY(int animals                  MEMBER m_animals        NOTIFY buildingChanged)
+            Q_PROPERTY(int remaining                MEMBER m_remaining      NOTIFY buildingChanged)
+
+            Q_PROPERTY(QDateTime doneTimestamp      MEMBER m_doneTimestamp  NOTIFY buildingChanged)
+            Q_PROPERTY(int baseTimeout              READ   baseTimeout      NOTIFY buildingChanged)
+
+            Q_PROPERTY(QString name                 MEMBER m_name           NOTIFY buildingChanged)
 
         public:
             using Ptr = QSharedPointer<Building>;
@@ -47,6 +62,10 @@ namespace Core {
             int level() const { return m_level; }
             int animals() const { return m_animals; }
             int remaining() const { return m_remaining; }
+
+            QDateTime doneTimestamp() const { return m_doneTimestamp; }
+            int baseTimeout() const { return (m_buildingData) ? m_buildingData->totalTime() : -1; }
+
             QString name() const { return m_name; }
 
             bool isSetUp() const { return false; }
@@ -58,6 +77,7 @@ namespace Core {
             void updateBuildingData(const QVariant &info);
 
             QString toString() const override;
+            QVariant toVariant() override;
 
             BuildingData::Ptr buildingData() const { return m_buildingData; }
 
@@ -76,6 +96,8 @@ namespace Core {
             int m_level;
             int m_animals;
             int m_remaining;
+
+            QDateTime m_doneTimestamp;
             QString m_name;
 
             BuildingData::Ptr m_buildingData;

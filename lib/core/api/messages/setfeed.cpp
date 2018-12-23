@@ -41,6 +41,7 @@ const QList<QPair<QString, QString> > SetFeed::constructedMessageData() const
         { "position", QString::number(m_buildingData.positionId) },
         { "pid", QString::number(m_productData.productId) },
         { "c", QString("%1_9|").arg(m_productData.productId) },
+//        { "amount", QString("%1_9|").arg(m_productData.productId) }, // TODO: Ilość można od razu
         { "guildjob", "0" }
     };
 }

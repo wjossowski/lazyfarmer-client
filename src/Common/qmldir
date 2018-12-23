@@ -1,2 +1,4 @@
 module src.Common
-singleton Palette 1.0 qml://Common/Palette.qml
+singleton Stylesheet 1.0 Stylesheet.qml
+Utils 1.0 utils.js
+BusyIndicator 1.0 BusyIndicator.qml

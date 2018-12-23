@@ -20,6 +20,8 @@
 #include "player.h"
 #include "configreader.h"
 
+#include <QtCore/QTimer>
+
 using namespace Core;
 using namespace Core::Data;
 
@@ -70,14 +72,20 @@ void Building::update(const QVariant &info)
         m_position = position;
         m_level = level;
         m_animals = animals;
+
         m_remaining = remaining;
+        m_doneTimestamp = (remaining <= 0)
+                ? QDateTime()
+                : QDateTime::currentDateTime().addSecs(remaining);
 
         m_name = m_owner->gameData()->buildingInfo(m_id).name;
 
         emit buildingChanged();
         emit fetchBuildingRequested(details(), m_type);
+
     }
 
+    IPlayerData::update(info);
 }
 
 void Building::updateBuildingData(const QVariant &info)
@@ -97,6 +105,11 @@ QString Building::toString() const
             .arg(m_position)
             .arg(m_level)
             .arg(m_remaining);
+}
+
+QVariant Building::toVariant()
+{
+    return QVariant::fromValue<Building*>(this);
 }
 
 void Building::initializeConnections() const

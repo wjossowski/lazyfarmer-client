@@ -47,7 +47,7 @@ const QUrl GetFeedInfo::url() const
 
 void GetFeedInfo::handleResponse(QNetworkReply *reply)
 {
-    FeedInfoExtractor extractor;
+    FeedInfoExtractor extractor(&*m_gateway->gameData());
     extractor.extract(reply->readAll());
 
     m_gateway->handleBuildingUpdate(m_buildingData.farmId,

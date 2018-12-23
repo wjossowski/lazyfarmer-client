@@ -102,9 +102,11 @@ void Application::requestOverviewScreen(int playerId)
     auto playerVariant = m_playerFactory.at(playerId);
     if (playerVariant.isValid()) {
         Core::Player *player = playerVariant.value<Core::Player*>();
-        QVariant buildingInfo = QVariant::fromValue(player->buildingModel().data());
+        QVariant buildingModel = QVariant::fromValue(player->buildingModel().data());
 
-        showScreen(Screens::FarmOverviewScreen, buildingInfo);
+        showScreen(Screens::FarmOverviewScreen, QVariantMap {
+            { "buildingModel", buildingModel }
+        });
     }
 }
 
@@ -133,8 +135,10 @@ void Application::requestBuildingInfoScreen(BuildingModel *buildingModel, int bu
     };
 
     showScreen(mapToScreenType(building->type()), QVariantMap {
-                   { "Foo", "Bar" }
-               });
+        { "building", building->toVariant() },
+        { "buildingData", buildingData->toVariant() },
+        { "storage", building->owner()->storage()->toVariant()}
+    });
 }
 
 void Application::showScreen(Application::Screens screenToShow, const QVariant &data) const

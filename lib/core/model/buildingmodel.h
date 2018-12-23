@@ -39,7 +39,8 @@ namespace Model {
             Position,
             Level,
             Animals,
-            Remaining,
+            DoneTimestamp,
+            BaseTimeout,
             IsSetUp,
         };
 

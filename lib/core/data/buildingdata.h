@@ -19,7 +19,6 @@
 #pragma once
 
 #include "iplayerdata.h"
-#include <QtCore/QDebug>
 
 namespace Core {
 
@@ -35,13 +34,10 @@ namespace Core {
             explicit BuildingData (Player *parent = nullptr) : IPlayerData (parent) { }
             ~BuildingData() override = default;
 
-            static Ptr create(Player *player, BuildingType type) {
-                Q_UNUSED(player) Q_UNUSED(type)
-                return Ptr();
-            }
+            virtual int totalTime() const = 0;
 
-        public:
-            void update(const QVariant &) override = 0;
+            static BuildingData::Ptr create(Player *player, BuildingType type);
+
         };
 
     }

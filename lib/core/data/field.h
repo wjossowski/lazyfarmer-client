@@ -52,6 +52,7 @@ namespace Core {
             void update(const QVariant &info) override;
 
             QString toString() const override;
+            QVariant toVariant() override;
 
         signals:
             void fieldChanged() const;

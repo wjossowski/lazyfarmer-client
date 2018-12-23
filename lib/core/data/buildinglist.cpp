@@ -35,7 +35,7 @@ Building::Ptr BuildingList::buildingAt(int farm, int position)
 Building::Ptr BuildingList::buildingAt(int index)
 {
     if (m_buildings.count() < index) {
-        return Building::Ptr();
+        return nullptr;
     } else {
         return m_buildings.at(index);
     }
@@ -54,6 +54,8 @@ void BuildingList::update(const QVariant &info)
         auto building = buildingAt(farm, position);
         building->update(buildingInfoMap);
     }
+
+    IPlayerData::update(info);
 }
 
 QString BuildingList::toString() const
@@ -66,6 +68,8 @@ QString BuildingList::toString() const
 
     return QString("Buildings:(%1)").arg(buildingContents.join(", "));
 }
+
+
 
 void BuildingList::updateBuilding(int farm, int position, const QVariant &info)
 {

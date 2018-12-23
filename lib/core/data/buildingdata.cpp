@@ -16,27 +16,20 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "iplayerdata.h"
-#include "../player.h"
-#include "../globalgamedata.h"
+#include "buildingdata.h"
+#include "animalproductiondata.h"
 
 using namespace Core;
 using namespace Core::Data;
 
-IPlayerData::IPlayerData(Player *parent)
-    : QObject(parent)
-    , m_owner(parent)
+BuildingData::Ptr BuildingData::create(Player *player, BuildingType type)
 {
-
-}
-
-void IPlayerData::update(const QVariant &info)
-{
-    Q_UNUSED(info);
-    m_fetchedAt = QDateTime::currentDateTime();
-}
-
-GlobalGameData::Ptr IPlayerData::gameData() const
-{
-    return m_owner->gameData();
+    switch (type) {
+    case BuildingType::AnimalProduction:
+        return AnimalProductionData::Ptr::create(player);
+    case BuildingType::ResourceProduction:
+    case BuildingType::Farm:
+    default:
+        return nullptr;
+    }
 }

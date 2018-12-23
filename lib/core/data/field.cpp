@@ -63,7 +63,10 @@ void Field::update(const QVariant &info)
         m_isWater = isWater;
 
         emit fieldChanged();
+
     }
+
+    IPlayerData::update(info);
 }
 
 QString Field::toString() const
@@ -74,4 +77,9 @@ QString Field::toString() const
             .arg(m_fieldNo)
             .arg(m_isWater ? "Yes" : "No")
             .arg(m_remaining);
+}
+
+QVariant Field::toVariant()
+{
+    return QVariant::fromValue<Field*>(this);
 }

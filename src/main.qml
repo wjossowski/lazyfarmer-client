@@ -10,12 +10,14 @@ import "Views"
 import "Items"
 import "Dialogs"
 
+import Common 1.0
+
 ApplicationWindow {
     id: root;
 
     visible: true
 
-    minimumHeight: 480;
+    minimumHeight: 530;
     minimumWidth: 420;
 
     Material.theme: Material.Light;
@@ -65,7 +67,7 @@ ApplicationWindow {
         FastBlur {
             anchors.fill: parent
             source: stack
-            radius: 64
+            radius: Stylesheet.defaultBlurRadius;
         }
 
     }
@@ -85,10 +87,7 @@ ApplicationWindow {
             LazyFarmer.pushToStack.connect(function(qml, data) {
                 var widget = Qt.createComponent(qml);
                 if (widget.status === Component.Ready) {
-                    var object = widget.createObject(stack)
-                    if (data && object.initialize && object.initialize instanceof Function) {
-                        object.initialize(data);
-                    }
+                    var object = widget.createObject(stack, data)
 
                     stack.push(object, {
                         destroyOnPop: true
@@ -103,10 +102,12 @@ ApplicationWindow {
     }
 
     footer: Item {
+        visible: LazyFarmer.isDebugMode()
+
         Text {
             anchors.bottom: parent.bottom;
             anchors.left: parent.left;
-            anchors.margins: 10;
+            anchors.margins: Stylesheet.defaultMargin;
 
             text: root.width + ' x ' + root.height;
         }
