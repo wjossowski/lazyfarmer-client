@@ -32,7 +32,7 @@ Item {
             id: player;
 
             width: parent.width;
-            height: Stylesheet.accountListItemSize;
+            height: Stylesheet.tinyWidgetSize;
 
             readonly property bool isReady: !!level
 

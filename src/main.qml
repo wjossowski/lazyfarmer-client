@@ -17,7 +17,7 @@ ApplicationWindow {
 
     visible: true
 
-    minimumHeight: 480;
+    minimumHeight: 530;
     minimumWidth: 420;
 
     Material.theme: Material.Light;

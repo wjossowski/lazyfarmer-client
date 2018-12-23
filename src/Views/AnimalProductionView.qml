@@ -104,13 +104,25 @@ Item {
 
         }
 
+        Label {
+            Layout.margins: Stylesheet.smallMargin;
+            Layout.leftMargin: Stylesheet.bigMargin;
+
+            font.pixelSize: Stylesheet.bigFontSize;
+
+            text: qsTr("Choose Forage:") + t.r;
+        }
+
         ListView {
             id: inputProductionContainer
 
             orientation: Qt.Horizontal
 
-            Layout.margins: Stylesheet.bigMargin;
+            Layout.margins: Stylesheet.smallMargin;
+            Layout.leftMargin: Stylesheet.biggerMargin;
+
             Layout.fillWidth: true;
+            Layout.minimumHeight: Stylesheet.tinyWidgetSize;
 
             spacing: Stylesheet.defaultSpacing;
 
@@ -124,15 +136,26 @@ Item {
 
                 radius: Stylesheet.defaultRadius;
 
-                width: delegateStatusLabel.width + 2*Stylesheet.defaultMargin;
-                height: 50;
+                width: delegateStatusLabel.width + 2*Stylesheet.bigMargin;
+                height: Stylesheet.tinyWidgetSize;
 
                 border.color: "#0c0c0c";
                 color: isSelected ? "#7c2c8c2c" : "#0c2c2c2c";
 
+                Image {
+                    anchors.centerIn: parent;
+                    source: "image://resources/products/" + modelData.In;
+                }
+
                 Label {
                     id: delegateStatusLabel
-                    anchors.centerIn: parent;
+
+                    anchors {
+                        bottom: parent.bottom;
+                        horizontalCenter: parent.horizontalCenter;
+                        margins: Stylesheet.tinyMargin;
+                    }
+
                     text: modelData.Name + " (" + storage.amount(modelData.In) + ")"
                 }
 
@@ -145,6 +168,47 @@ Item {
 
             }
 
+        }
+
+        Label {
+            Layout.margins: Stylesheet.smallMargin;
+            Layout.leftMargin: Stylesheet.bigMargin;
+
+            font.pixelSize: Stylesheet.bigFontSize;
+
+            text: qsTr("Output Product:") + t.r;
+        }
+
+        Rectangle {
+            id: outputProductContainer;
+
+            Layout.margins: Stylesheet.smallMargin;
+            Layout.leftMargin: Stylesheet.biggerMargin;
+
+            radius: Stylesheet.defaultRadius;
+
+            width: outputStatusLabel.width + 2*Stylesheet.bigMargin;
+            height: Stylesheet.tinyWidgetSize;
+
+            border.color: "#0c0c0c";
+            color: "#0c2c2c2c";
+
+            Image {
+                anchors.centerIn: parent;
+                source: "image://resources/products/" + buildingData.outputProduct;
+            }
+
+            Label {
+                id: outputStatusLabel
+
+                anchors {
+                    bottom: parent.bottom;
+                    horizontalCenter: parent.horizontalCenter;
+                    margins: Stylesheet.tinyMargin;
+                }
+
+                text: buildingData.outputProductName + " (" + storage.amount(buildingData.outputProduct) + ")"
+            }
         }
 
         Item {
