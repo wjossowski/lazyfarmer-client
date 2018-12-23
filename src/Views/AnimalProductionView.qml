@@ -81,8 +81,6 @@ Item {
                 Layout.margins: Stylesheet.bigMargin;
 
                 Image {
-                    id: buildingIcon;
-
                     x: Stylesheet.buildingImageOffset;
                     y: Stylesheet.buildingImageOffset;
 

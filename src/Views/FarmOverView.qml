@@ -36,33 +36,6 @@ Item {
             width: root.gridWidth;
             height: root.gridHeight;
 
-            property int timeLeft: 0;
-            property bool isInProgress: !Number.isNaN(doneTimestamp) && timeLeft >= 0;
-
-            Timer {
-                id: updateTimer
-
-                interval: 1000
-                running: building.isInProgress
-                repeat: true;
-
-                onTriggered: function () {
-                    if (!building.isInProgress) {
-                        return;
-                    }
-
-                    var timeLeft = Utils.TimeUtils.calculateTimeLeft(doneTimestamp)
-                    building.timeLeft = timeLeft
-
-                    workTimeoutLabel.timeLeft = Utils.TimeUtils.timeLeftToString(timeLeft);
-
-                    var jobPercentage = Utils.TimeUtils.calculateJobPercentage(timeLeft, baseTimeout);
-                    workProgressBar.value = jobPercentage;
-                    workPercentIndicatorLabel.percentage = (100*jobPercentage).toFixed(2);
-
-                }
-            }
-
             MouseArea {
                 anchors.fill: parent;
                 onClicked: function () {
@@ -81,19 +54,20 @@ Item {
                 border.color: "#0c0c0c";
                 color: "#0c2c2c2c";
 
-                RowLayout {
-                    spacing: Stylesheet.defaultSpacing;
+                Item {
+                    id: iconContainer
 
-                    Item {
-                        anchors.margins: Stylesheet.defaultMargin;
+                    width: Stylesheet.buildingImageContainerSize;
+                    height: Stylesheet.buildingImageContainerSize;
 
-                        Image {
-                            x: Stylesheet.buildingImageOffset;
-                            y: Stylesheet.buildingImageOffset;
-                            source: "image://resources/buildings/" + id;
-                        }
+                    anchors.margins: Stylesheet.defaultMargin;
+
+                    Image {
+                        x: Stylesheet.buildingImageOffset;
+                        y: Stylesheet.buildingImageOffset;
+
+                        source: "image://resources/buildings/" + id;
                     }
-
                 }
 
                 ColumnLayout {
@@ -101,6 +75,7 @@ Item {
 
                     anchors {
                         top: parent.top;
+                        left: iconContainer.right;
                         right: parent.right;
                     }
 
@@ -108,8 +83,6 @@ Item {
                         Layout.alignment: Qt.AlignRight;
                         Layout.topMargin: Stylesheet.defaultMargin;
                         Layout.rightMargin: Stylesheet.defaultMargin;
-
-                        Layout.maximumWidth: root.gridWidth - root.gridHeight;
 
                         font.pixelSize: Stylesheet.biggerFontSize;
 
@@ -136,63 +109,19 @@ Item {
                         text: qsTr("Animals:") + " " + animals + t.r;
                     }
 
-                    ProgressBar {
-                        id: workProgressBar;
-
-                        visible: building.isInProgress;
-
-                        Layout.alignment: Qt.AlignRight;
-                        Layout.rightMargin: Stylesheet.defaultMargin;
-                    }
-
-                    Item {
+                    BusyIndicator {
                         id: workGroup
 
-                        Layout.alignment: Qt.AlignRight;
+                        doneDate: doneTimestamp;
+                        totalInterval: baseTimeout;
 
-                        Layout.fillHeight: true;
-                        Layout.fillWidth: true;
+                        Layout.fillHeight: true
+                        Layout.fillWidth: true
 
+                        Layout.leftMargin: Stylesheet.bigMargin;
                         Layout.rightMargin: Stylesheet.defaultMargin;
-                        Layout.topMargin: Stylesheet.smallMargin;
 
-                        Label {
-                            id: workTimeoutLabel;
-
-                            property string timeLeft;
-
-                            visible: building.isInProgress;
-                            anchors {
-                                verticalCenter: parent.verticalCenter;
-                                left: parent.left;
-                            }
-
-                            font.pixelSize: Stylesheet.smallFontSize;
-                            text: qsTr("Ready In: ") + timeLeft;
-
-                        }
-
-                        Label {
-                            id: workPercentIndicatorLabel;
-
-                            property string percentage: "0.00";
-
-                            anchors {
-                                verticalCenter: parent.verticalCenter;
-                                right: parent.right;
-                            }
-
-                            font.pixelSize: Stylesheet.smallFontSize;
-                            text: (function () {
-                                if (building.isInProgress) {
-                                    return qsTr("Done at: ") + " " + percentage + "%";
-                                } else {
-                                    return qsTr("Idle")
-                                }
-                            })(percentage, t.r)
-
-                        }
-
+                        Layout.topMargin: Stylesheet.smallerMargin
                     }
 
                 }
