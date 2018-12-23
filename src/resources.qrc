@@ -14,6 +14,7 @@
         <file>qtquickcontrols2.conf</file>
         <file>Common/utils.js</file>
         <file>Common/Stylesheet.qml</file>
+        <file>Common/BusyIndicator.qml</file>
         <file>Common/qmldir</file>
     </qresource>
 </RCC>
