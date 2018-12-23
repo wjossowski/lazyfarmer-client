@@ -37,12 +37,16 @@ namespace Core {
 
             Q_PROPERTY(int id                       MEMBER m_id             NOTIFY buildingChanged)
             Q_PROPERTY(BuildingType type            MEMBER m_type           NOTIFY buildingChanged)
+
             Q_PROPERTY(int farm                     MEMBER m_farmId         NOTIFY buildingChanged)
             Q_PROPERTY(int position                 MEMBER m_position       NOTIFY buildingChanged)
             Q_PROPERTY(int level                    MEMBER m_level          NOTIFY buildingChanged)
             Q_PROPERTY(int animals                  MEMBER m_animals        NOTIFY buildingChanged)
             Q_PROPERTY(int remaining                MEMBER m_remaining      NOTIFY buildingChanged)
+
             Q_PROPERTY(QDateTime doneTimestamp      MEMBER m_doneTimestamp  NOTIFY buildingChanged)
+            Q_PROPERTY(int baseTimeout              READ   baseTimeout      NOTIFY buildingChanged)
+
             Q_PROPERTY(QString name                 MEMBER m_name           NOTIFY buildingChanged)
 
         public:
@@ -60,7 +64,7 @@ namespace Core {
             int remaining() const { return m_remaining; }
 
             QDateTime doneTimestamp() const { return m_doneTimestamp; }
-            Q_INVOKABLE int baseTimeout() const { return (m_buildingData) ? m_buildingData->totalTime() : -1; }
+            int baseTimeout() const { return (m_buildingData) ? m_buildingData->totalTime() : -1; }
 
             QString name() const { return m_name; }
 

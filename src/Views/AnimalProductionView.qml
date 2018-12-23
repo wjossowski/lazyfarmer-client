@@ -60,6 +60,19 @@ Item {
 
                 }
 
+                BusyIndicator {
+                    id: workGroup
+
+                    doneDate: building.doneTimestamp;
+                    totalInterval: building.baseTimeout;
+
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+
+                    Layout.topMargin: Stylesheet.bigMargin;
+                    Layout.bottomMargin: Stylesheet.bigMargin;
+                }
+
                 Item {
                     // Spacer
                     Layout.fillHeight: true;
