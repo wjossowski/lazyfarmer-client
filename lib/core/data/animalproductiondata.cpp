@@ -17,6 +17,7 @@
  **/
 
 #include "animalproductiondata.h"
+#include "player.h"
 
 #include <QtCore/QDebug>
 #include <QtCore/QtMath>
@@ -94,4 +95,9 @@ void AnimalProductionData::setChosenProductId(int chosenProductId)
 
     m_chosenProductId = chosenProductId;
     emit chosenProductChanged(m_chosenProductId);
+}
+
+QString AnimalProductionData::outputProductName() const
+{
+    return m_owner->gameData()->productInfo(m_outputId).name;
 }

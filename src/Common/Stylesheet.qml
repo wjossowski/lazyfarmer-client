@@ -9,6 +9,7 @@ Item {
     readonly property alias smallerMargin: __sizes.smallerSize;
     readonly property alias defaultMargin: __sizes.defaultSize;
     readonly property alias bigMargin:     __sizes.bigSize;
+    readonly property alias biggerMargin:  __sizes.biggerSize;
 
     // Spacings:
     readonly property alias smallSpacing:   __sizes.smallSize;
@@ -31,7 +32,7 @@ Item {
 
     // Widget dimensions:
     readonly property alias defaultWidgetSize:   __sizes.defaultWidgetSize;
-    readonly property alias accountListItemSize: __sizes.tinyWidgetSize;
+    readonly property alias tinyWidgetSize:      __sizes.tinyWidgetSize;
     readonly property alias bigButtonRadius:     __sizes.bigButtonSize;
 
     // GraphicsProperties:
@@ -46,6 +47,7 @@ Item {
         readonly property int smallerSize:  7;
         readonly property int defaultSize:  10;
         readonly property int bigSize:      20;
+        readonly property int biggerSize:   30;
 
         // Font sizes:
         readonly property int smallerFontSize:  10;

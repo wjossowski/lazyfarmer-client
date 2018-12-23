@@ -11,8 +11,8 @@
             "erase-at": [ 6, 7, 8, 9, 10 ]
         },
         "products": {
-            "url": "http://mff.wavecdn.de/mff/maps/tafel_map.32.jpg",
-            "size": 40
+            "url": "http://mff.wavecdn.de/mff/maps/tt_map.33.jpg",
+            "size": 50
         }
     },
     "available-domains": [
