@@ -16,33 +16,25 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#pragma once
+#include "resourceproductiondata.h"
 
-#include "iplayerdata.h"
+#include <QtCore/QDebug>
 
-namespace Core {
+using namespace Core;
+using namespace Core::Data;
 
-    namespace Data {
+ResourceProductionData::ResourceProductionData(Player *parent)
+    : BuildingData (parent)
+{
 
-        class BuildingData : public IPlayerData
-        {
-            Q_OBJECT
+}
 
-        public:
-            using Ptr = QSharedPointer<BuildingData>;
+void ResourceProductionData::update(const QVariant &info)
+{
+    qDebug() << info;
+}
 
-            explicit BuildingData (Player *parent = nullptr);
-            ~BuildingData() override = default;
-
-            virtual int totalTime() const { return m_totalTime; }
-
-            static BuildingData::Ptr create(Player *player, BuildingType type);
-
-        protected:
-            int m_totalTime;
-
-        };
-
-    }
-
+QVariant ResourceProductionData::toVariant()
+{
+    return QVariant::fromValue<ResourceProductionData*>(this);
 }

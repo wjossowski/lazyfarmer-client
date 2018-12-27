@@ -18,28 +18,24 @@
 
 #pragma once
 
-#include "iplayerdata.h"
+#include "buildingdata.h"
 
 namespace Core {
 
     namespace Data {
 
-        class BuildingData : public IPlayerData
+        class ResourceProductionData: public BuildingData
         {
             Q_OBJECT
 
         public:
-            using Ptr = QSharedPointer<BuildingData>;
+            using Ptr = QSharedPointer<ResourceProductionData>;
 
-            explicit BuildingData (Player *parent = nullptr);
-            ~BuildingData() override = default;
+            explicit ResourceProductionData (Player *parent = nullptr);
+            ~ResourceProductionData() override = default;
 
-            virtual int totalTime() const { return m_totalTime; }
-
-            static BuildingData::Ptr create(Player *player, BuildingType type);
-
-        protected:
-            int m_totalTime;
+            void update(const QVariant &info) override;
+            QVariant toVariant() override;
 
         };
 

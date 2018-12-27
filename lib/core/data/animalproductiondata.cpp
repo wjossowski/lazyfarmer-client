@@ -29,7 +29,6 @@ AnimalProductionData::AnimalProductionData(Player *parent)
     : BuildingData (parent)
     , m_outputId(-1)
 
-    , m_totalTime(-1)
     , m_timeLeft(-1)
     , m_timeToRefeed (-1)
 
@@ -68,11 +67,6 @@ void AnimalProductionData::update(const QVariant &info)
 
     IPlayerData::update(info);
     emit dataChanged();
-}
-
-QString AnimalProductionData::toString() const
-{
-    return QString ("FooBarAnimalProduction");
 }
 
 QVariant AnimalProductionData::toVariant()
