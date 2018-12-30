@@ -40,3 +40,13 @@ GlobalGameData::Ptr IPlayerData::gameData() const
 {
     return m_owner->gameData();
 }
+
+QString IPlayerData::productName(int productId) const
+{
+    return gameData()->productInfo(productId).name;
+}
+
+QString IPlayerData::buildingName(int buildingId) const
+{
+    return gameData()->buildingInfo((buildingId)).name;
+}

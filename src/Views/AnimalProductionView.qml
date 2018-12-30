@@ -110,7 +110,7 @@ Item {
 
             font.pixelSize: Stylesheet.bigFontSize;
 
-            text: qsTr("Choose Forage:") + t.r;
+            text: qsTr("Select Forage:") + t.r;
         }
 
         ListView {
@@ -127,45 +127,18 @@ Item {
             spacing: Stylesheet.defaultSpacing;
 
             model: buildingData.inputProductsInfo;
-            delegate: Rectangle {
-                id: inputDelegate
+            delegate: ProductDelegate {
+                productId: modelData.In;
+                productsStorage: storage;
 
-                property bool isSelected: buildingData.chosenProductId === modelData.In;
-
-                anchors.margins: Stylesheet.defaultMargin;
-
-                radius: Stylesheet.defaultRadius;
-
-                width: delegateStatusLabel.width + 2*Stylesheet.bigMargin;
-                height: Stylesheet.tinyWidgetSize;
-
-                border.color: "#0c0c0c";
-                color: isSelected ? "#7c2c8c2c" : "#0c2c2c2c";
-
-                Image {
-                    anchors.centerIn: parent;
-                    source: "image://resources/products/" + modelData.In;
-                }
-
-                Label {
-                    id: delegateStatusLabel
-
-                    anchors {
-                        bottom: parent.bottom;
-                        horizontalCenter: parent.horizontalCenter;
-                        margins: Stylesheet.tinyMargin;
-                    }
-
-                    text: modelData.Name + " (" + storage.amount(modelData.In) + ")"
-                }
+                isSelected: buildingData.chosenProductId === productId;
 
                 MouseArea {
                     anchors.fill: parent;
                     onClicked: function () {
-                        root.buildingData.setChosenProductId(modelData.In);
+                        root.buildingData.setChosenProductId(productId);
                     }
                 }
-
             }
 
         }
@@ -179,36 +152,14 @@ Item {
             text: qsTr("Output Product:") + t.r;
         }
 
-        Rectangle {
+        ProductDelegate {
             id: outputProductContainer;
+
+            productId: buildingData.outputProduct;
+            productsStorage: storage;
 
             Layout.margins: Stylesheet.smallMargin;
             Layout.leftMargin: Stylesheet.biggerMargin;
-
-            radius: Stylesheet.defaultRadius;
-
-            width: outputStatusLabel.width + 2*Stylesheet.bigMargin;
-            height: Stylesheet.tinyWidgetSize;
-
-            border.color: "#0c0c0c";
-            color: "#0c2c2c2c";
-
-            Image {
-                anchors.centerIn: parent;
-                source: "image://resources/products/" + buildingData.outputProduct;
-            }
-
-            Label {
-                id: outputStatusLabel
-
-                anchors {
-                    bottom: parent.bottom;
-                    horizontalCenter: parent.horizontalCenter;
-                    margins: Stylesheet.tinyMargin;
-                }
-
-                text: buildingData.outputProductName + " (" + storage.amount(buildingData.outputProduct) + ")"
-            }
         }
 
         Item {

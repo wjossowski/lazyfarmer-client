@@ -78,7 +78,7 @@ void Building::update(const QVariant &info)
                 ? QDateTime()
                 : QDateTime::currentDateTime().addSecs(remaining);
 
-        m_name = m_owner->gameData()->buildingInfo(m_id).name;
+        m_name = buildingName(id);
 
         emit buildingChanged();
         emit fetchBuildingRequested(details(), m_type);

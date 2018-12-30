@@ -50,11 +50,9 @@ void FeedInfoExtractor::extractSpecificData()
         const int remaining = feed[id].toObject().value("time").toInt();
 
         const int productId = id.toInt();
-        const QString name = m_gamedata ? m_gamedata->productInfo(productId).name : "";
 
         feedInputInfo.append(QVariantMap({
             { "In", productId },
-            { "Name", name },
             { "Remaining", remaining },
         }));
     }
