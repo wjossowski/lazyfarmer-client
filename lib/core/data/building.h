@@ -77,7 +77,6 @@ namespace Core {
             void updateBuildingData(const QVariant &info);
 
             QString toString() const override;
-            QVariant toVariant() override;
 
             BuildingData::Ptr buildingData() const { return m_buildingData; }
 

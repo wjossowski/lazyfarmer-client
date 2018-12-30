@@ -69,11 +69,6 @@ void AnimalProductionData::update(const QVariant &info)
     emit dataChanged();
 }
 
-QVariant AnimalProductionData::toVariant()
-{
-    return QVariant::fromValue<AnimalProductionData*>(this);
-}
-
 void AnimalProductionData::setChosenProductId(int chosenProductId)
 {
     bool isTheSameProduct = m_chosenProductId == chosenProductId;

@@ -41,7 +41,7 @@ namespace Core {
 
             virtual void update(const QVariant &info);
             virtual QString toString() const { return QString(); }
-            virtual QVariant toVariant() { return QVariant(); }
+            virtual QVariant toVariant() { return QVariant::fromValue<QObject*>(this); }
 
             GlobalGameData::Ptr gameData() const;
 

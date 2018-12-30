@@ -47,7 +47,6 @@ namespace Core {
             ~AnimalProductionData() override = default;
 
             void update(const QVariant &info) override;
-            QVariant toVariant() override;
 
             Q_INVOKABLE bool hasChosenProduct() const { return m_chosenProductId != -1; }
             Q_INVOKABLE void setChosenProductId(int chosenProductId);
@@ -55,7 +54,7 @@ namespace Core {
 
         signals:
             void dataChanged() const;
-            void chosenProductChanged(int chosenIndex) const;
+            void chosenProductChanged(int chosenId) const;
 
         private:
             int m_outputId;
