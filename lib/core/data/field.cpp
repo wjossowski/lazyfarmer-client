@@ -78,8 +78,3 @@ QString Field::toString() const
             .arg(m_isWater ? "Yes" : "No")
             .arg(m_remaining);
 }
-
-QVariant Field::toVariant()
-{
-    return QVariant::fromValue<Field*>(this);
-}

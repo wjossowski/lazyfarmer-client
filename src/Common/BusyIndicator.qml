@@ -16,6 +16,7 @@ ColumnLayout {
     property int timeLeft: 0;
 
     property bool isInProgress: Number.isFinite(root.totalInterval) && root.timeLeft >= 0;
+    property bool showIdleStatus: true;
     
     Timer {
         id: workTimer;
@@ -81,7 +82,7 @@ ColumnLayout {
                 if (root.isInProgress) {
                     return qsTr("Done at: ") + " " + (100 * percent).toFixed(2) + "%";
                 } else {
-                    return qsTr("Idle")
+                    return showIdleStatus ? qsTr("Idle") : "";
                 }
             }) (root.percentDone, t.r)
             

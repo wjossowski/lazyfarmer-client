@@ -107,11 +107,6 @@ QString Building::toString() const
             .arg(m_remaining);
 }
 
-QVariant Building::toVariant()
-{
-    return QVariant::fromValue<Building*>(this);
-}
-
 void Building::initializeConnections() const
 {
     connect(this,       &Building::fetchBuildingRequested,

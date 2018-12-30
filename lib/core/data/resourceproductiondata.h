@@ -28,6 +28,13 @@ namespace Core {
         {
             Q_OBJECT
 
+            Q_PROPERTY(int totalTime        MEMBER m_totalTime          NOTIFY  dataChanged)
+
+            Q_PROPERTY(int outputProduct    MEMBER m_outputProductId    WRITE   setOutputProductId NOTIFY chosenProductChanged)
+
+            Q_PROPERTY(int inputProduct     MEMBER m_inputProductId     NOTIFY  chosenProductChanged)
+            Q_PROPERTY(int productAmount    MEMBER m_productAmount      NOTIFY  chosenProductChanged)
+
         public:
             using Ptr = QSharedPointer<ResourceProductionData>;
 
@@ -35,7 +42,20 @@ namespace Core {
             ~ResourceProductionData() override = default;
 
             void update(const QVariant &info) override;
-            QVariant toVariant() override;
+
+            void setOutputProductId(int outputProductId);
+
+        signals:
+            void dataChanged() const;
+            void chosenProductChanged(int chosenId) const;
+
+        private:
+            QVariantList m_inputProductInfos;
+
+            int m_outputProductId;
+
+            int m_inputProductId;
+            int m_productAmount;
 
         };
 

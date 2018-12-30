@@ -25,16 +25,54 @@ using namespace Core::Data;
 
 ResourceProductionData::ResourceProductionData(Player *parent)
     : BuildingData (parent)
+
+    , m_outputProductId(-1)
+
+    , m_inputProductId(-1)
+    , m_productAmount(-1)
 {
 
 }
 
 void ResourceProductionData::update(const QVariant &info)
 {
-    qDebug() << info;
+    const auto resourceProductionInfo = info.toMap();
+
+    m_inputProductInfos = resourceProductionInfo.value("ProductionInfo").toList();
+
+    int outputProductId = resourceProductionInfo.value("CurrentProduction", -1).toInt();
+    setOutputProductId(outputProductId);
 }
 
-QVariant ResourceProductionData::toVariant()
+void ResourceProductionData::setOutputProductId(int outputProductId)
 {
-    return QVariant::fromValue<ResourceProductionData*>(this);
+    bool isTheSameProduct = m_outputProductId == outputProductId;
+    bool isProductNulled = outputProductId == -1;
+
+    if (isTheSameProduct || isProductNulled) {
+        m_outputProductId = -1;
+        m_inputProductId = -1;
+
+        m_productAmount = -1;
+
+        return;
+    }
+
+    m_outputProductId = outputProductId;
+
+    QListIterator<QVariant> productsIterator(m_inputProductInfos);
+    while (productsIterator.hasNext()) {
+        const auto productObject = productsIterator.next().toMap();
+        int storedOutputProduct = productObject.value("Out", -1).toInt();
+
+        if (storedOutputProduct == outputProductId) {
+            m_inputProductId = productObject.value("In", -1).toInt();
+            m_productAmount = productObject.value("Need", -1).toInt();
+            m_totalTime = productObject.value("Remaining", -1).toInt();
+
+            break;
+        }
+
+    }
+
 }

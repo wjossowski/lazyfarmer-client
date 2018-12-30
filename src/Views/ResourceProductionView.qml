@@ -58,6 +58,7 @@ Item {
 
                     doneDate: building.doneTimestamp;
                     totalInterval: building.baseTimeout;
+                    showIdleStatus: false;
 
                     Layout.fillHeight: true
                     Layout.fillWidth: true
