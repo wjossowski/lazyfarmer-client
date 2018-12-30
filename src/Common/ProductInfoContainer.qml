@@ -9,13 +9,16 @@ import Common 1.0
 Rectangle {
     id: root;
 
+    property int productId: -1;
     property bool isSelected: false;
 
     anchors.margins: Stylesheet.defaultMargin;
 
     radius: Stylesheet.defaultRadius;
 
-    border.color: "#0c0c0c";
-    color: isSelected ? "#7c2c8c2c" : "#0c2c2c2c";
+    border.color: Stylesheet.defaultBorderColor;
+    color: isSelected
+             ? Stylesheet.defaultBackgroundActiveColor
+             : Stylesheet.defaultBackgroundNormalColor;
 
 }

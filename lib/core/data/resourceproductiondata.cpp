@@ -76,6 +76,6 @@ void ResourceProductionData::setOutputProductId(int outputProductId)
     }
 
 
-    emit outputProductChanged(outputProductId);
+    emit outputProductChanged(m_outputProductId);
 
 }

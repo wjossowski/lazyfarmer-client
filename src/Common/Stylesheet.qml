@@ -29,14 +29,24 @@ Item {
     // Image offsets:
     readonly property alias buildingImageOffset:        __sizes.defaultSize;
     readonly property alias buildingImageContainerSize: __sizes.bigIconContainerSize;
+    readonly property alias inputProductContainerSize:  __sizes.bigIconContainerSize;
 
     // Widget dimensions:
-    readonly property alias defaultWidgetSize:   __sizes.defaultWidgetSize;
-    readonly property alias tinyWidgetSize:      __sizes.tinyWidgetSize;
-    readonly property alias bigButtonRadius:     __sizes.bigButtonSize;
+    readonly property alias smallIconContainerSize:     __sizes.smallIconContainerSize;
+    readonly property alias defaultIconContainerSize:   __sizes.bigButtonSize;
+    readonly property alias defaultWidgetSize:          __sizes.defaultWidgetSize;
+    readonly property alias tinyWidgetSize:             __sizes.tinyWidgetSize;
+    readonly property alias bigButtonRadius:            __sizes.bigButtonSize;
 
     // GraphicsProperties:
     readonly property int   defaultBlurRadius: 64;
+
+    // Colors:
+    readonly property color defaultBorderColor:             __colors.lightGrey;
+    readonly property color defaultBackgroundNormalColor:   __colors.transparentGrey;
+    readonly property color defaultBackgroundActiveColor:   __colors.transparentLightGreen;
+    readonly property color transparentColor:              "transparent";
+    readonly property color warningColor:                  "#ad2c2c";
 
     QtObject {
         id: __sizes;
@@ -57,10 +67,11 @@ Item {
         readonly property int biggerFontSize:   28;
 
         // Dimensions:
-        readonly property int bigButtonSize:         80;
-        readonly property int bigIconContainerSize: 145;
-        readonly property int tinyWidgetSize:       100;
-        readonly property int defaultWidgetSize:    400;
+        readonly property int smallIconContainerSize:   60;
+        readonly property int bigButtonSize:            80;
+        readonly property int bigIconContainerSize:    145;
+        readonly property int tinyWidgetSize:          100;
+        readonly property int defaultWidgetSize:       400;
 
     }
 
@@ -68,10 +79,12 @@ Item {
         id: __colors;
 
         // Default colors:
-        readonly property color transparentLightGrey: "#0c0c0c0c";
-        readonly property color transparentGrey:      "#0c2c2c2c";
-        readonly property color lightGrey:            "#0c0c0c";
-        readonly property color grey:                 "#2c2c2c";
+        readonly property color transparentLightGrey:   "#0c0c0c0c";
+        readonly property color transparentGrey:        "#0c2c2c2c";
+        readonly property color lightGrey:              "#0c0c0c";
+        readonly property color grey:                   "#2c2c2c";
+
+        readonly property color transparentLightGreen:  "#7c2c8c2c";
     }
 
 }
