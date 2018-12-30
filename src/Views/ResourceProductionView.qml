@@ -156,6 +156,8 @@ Item {
             Layout.minimumHeight: Stylesheet.inputProductContainerSize;
 
             RowLayout {
+                id: productionInfoContainer;
+
                 anchors.fill: parent;
 
                 visible: buildingData.inputProduct !== -1;
@@ -202,14 +204,26 @@ Item {
                         visible: productionInfo.isOutOfResources;
 
                         Layout.margins: Stylesheet.tinyMargin;
+
+                        color: Stylesheet.warningColor;
+
                         font.pixelSize: Stylesheet.defaultFontSize;
                         font.bold: true;
-                        color: Stylesheet.warningColor;
 
                         text: qsTr("Out of products.") + t.r;
                     }
                 }
 
+            }
+
+            Label {
+                anchors.centerIn: parent;
+
+                visible: !productionInfoContainer.visible;
+
+                font.pixelSize: Stylesheet.biggerFontSize;
+
+                text: qsTr("Production not set up.") + t.r;
             }
 
         }
