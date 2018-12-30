@@ -8,8 +8,7 @@ import Common 1.0
 
 ProductInfoContainer {
     id: root;
-    
-    property int productId: -1;
+
     property var productsStorage: QtObject {
         readonly property int amount: 0
     }

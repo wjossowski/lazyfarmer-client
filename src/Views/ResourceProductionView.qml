@@ -13,8 +13,6 @@ Item {
     property var buildingData;
     property var storage;
 
-    property var resourceOption;
-
     property string title: building.name;
 
     ColumnLayout {
@@ -84,8 +82,8 @@ Item {
 
                 radius: Stylesheet.defaultRadius;
 
-                border.color: "#0c0c0c";
-                color: "#0c2c2c2c";
+                border.color: Stylesheet.defaultBorderColor;
+                color: Stylesheet.defaultBackgroundNormalColor;
 
                 Layout.margins: Stylesheet.bigMargin;
 
@@ -150,14 +148,69 @@ Item {
         }
 
         ProductInfoContainer {
-            id: productionInfo;
-
             Layout.margins: Stylesheet.smallMargin;
             Layout.leftMargin: Stylesheet.biggerMargin;
             Layout.rightMargin: Stylesheet.biggerMargin;
 
             Layout.fillWidth: true;
-            Layout.minimumHeight: Stylesheet.tinyWidgetSize;
+            Layout.minimumHeight: Stylesheet.inputProductContainerSize;
+
+            RowLayout {
+                anchors.fill: parent;
+
+                visible: buildingData.inputProduct !== -1;
+
+                ProductDelegate {
+                    productId: buildingData.inputProduct;
+                    productsStorage: storage;
+
+                    Layout.margins: Stylesheet.tinyMargin;
+
+                    border.color: Stylesheet.transparentColor;
+                    color: Stylesheet.transparentColor;
+                }
+
+                ColumnLayout {
+                    id: productionInfo;
+
+                    property bool isOutOfResources: buildingData.productAmount > storage.amount(buildingData.inputProduct);
+
+                    Layout.margins: Stylesheet.defaultMargin;
+
+                    Label {
+                        Layout.margins: Stylesheet.tinyMargin;
+                        font.pixelSize: Stylesheet.defaultFontSize;
+
+                        text: (function (required, owns) {
+                            return qsTr("Required: %1 (owns %2)").arg(required).arg(owns)
+                        }) (buildingData.productAmount, storage.amount(buildingData.inputProduct)) + t.r;
+                    }
+
+                    Label {
+                        Layout.margins: Stylesheet.tinyMargin;
+                        font.pixelSize: Stylesheet.defaultFontSize;
+
+                        text: qsTr("Lasts for:") + " " + Utils.TimeUtils.timeLeftToString(buildingData.totalTime) + t.r;
+                    }
+
+                    Item {
+                        // Spacing item
+                        Layout.fillHeight: true;
+                    }
+
+                    Label {
+                        visible: productionInfo.isOutOfResources;
+
+                        Layout.margins: Stylesheet.tinyMargin;
+                        font.pixelSize: Stylesheet.defaultFontSize;
+                        font.bold: true;
+                        color: Stylesheet.warningColor;
+
+                        text: qsTr("Out of products.") + t.r;
+                    }
+                }
+
+            }
 
         }
 

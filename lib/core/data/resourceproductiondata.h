@@ -28,7 +28,7 @@ namespace Core {
         {
             Q_OBJECT
 
-            Q_PROPERTY(int totalTime                    MEMBER m_totalTime          NOTIFY  dataChanged)
+            Q_PROPERTY(int totalTime                    MEMBER m_totalTime          NOTIFY  outputProductChanged)
 
             Q_PROPERTY(int outputProduct                MEMBER m_outputProductId    NOTIFY  outputProductChanged)
 
