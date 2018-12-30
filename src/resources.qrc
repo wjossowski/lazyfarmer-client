@@ -16,5 +16,7 @@
         <file>Common/Stylesheet.qml</file>
         <file>Common/BusyIndicator.qml</file>
         <file>Common/qmldir</file>
+        <file>Common/ProductDelegate.qml</file>
+        <file>Common/ProductInfoContainer.qml</file>
     </qresource>
 </RCC>

@@ -29,7 +29,6 @@ namespace Core {
             Q_OBJECT
 
             Q_PROPERTY(int outputProduct                MEMBER m_outputId           NOTIFY dataChanged)
-            Q_PROPERTY(QString outputProductName        READ   outputProductName    NOTIFY dataChanged)
 
             Q_PROPERTY(int totalTime                    MEMBER m_totalTime          NOTIFY dataChanged)
             Q_PROPERTY(int timeLeft                     MEMBER m_timeLeft           NOTIFY dataChanged)
@@ -50,7 +49,6 @@ namespace Core {
 
             Q_INVOKABLE bool hasChosenProduct() const { return m_chosenProductId != -1; }
             Q_INVOKABLE void setChosenProductId(int chosenProductId);
-            QString outputProductName() const;
 
         signals:
             void dataChanged() const;

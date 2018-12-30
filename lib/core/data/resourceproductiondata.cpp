@@ -42,6 +42,8 @@ void ResourceProductionData::update(const QVariant &info)
 
     int outputProductId = resourceProductionInfo.value("CurrentProduction", -1).toInt();
     setOutputProductId(outputProductId);
+
+    emit dataChanged();
 }
 
 void ResourceProductionData::setOutputProductId(int outputProductId)
@@ -54,25 +56,26 @@ void ResourceProductionData::setOutputProductId(int outputProductId)
         m_inputProductId = -1;
 
         m_productAmount = -1;
+    } else {
+        m_outputProductId = outputProductId;
 
-        return;
-    }
+        QListIterator<QVariant> productsIterator(m_inputProductInfos);
+        while (productsIterator.hasNext()) {
+            const auto productObject = productsIterator.next().toMap();
+            int storedOutputProduct = productObject.value("Out", -1).toInt();
 
-    m_outputProductId = outputProductId;
+            if (storedOutputProduct == outputProductId) {
+                m_inputProductId = productObject.value("In", -1).toInt();
+                m_productAmount = productObject.value("Need", -1).toInt();
+                m_totalTime = productObject.value("Remaining", -1).toInt();
 
-    QListIterator<QVariant> productsIterator(m_inputProductInfos);
-    while (productsIterator.hasNext()) {
-        const auto productObject = productsIterator.next().toMap();
-        int storedOutputProduct = productObject.value("Out", -1).toInt();
+                break;
+            }
 
-        if (storedOutputProduct == outputProductId) {
-            m_inputProductId = productObject.value("In", -1).toInt();
-            m_productAmount = productObject.value("Need", -1).toInt();
-            m_totalTime = productObject.value("Remaining", -1).toInt();
-
-            break;
         }
-
     }
+
+
+    emit outputProductChanged(outputProductId);
 
 }

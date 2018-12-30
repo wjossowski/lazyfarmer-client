@@ -13,6 +13,8 @@ Item {
     property var buildingData;
     property var storage;
 
+    property var resourceOption;
+
     property string title: building.name;
 
     ColumnLayout {
@@ -104,7 +106,38 @@ Item {
 
             font.pixelSize: Stylesheet.bigFontSize;
 
-            text: qsTr("Input Product:") + t.r;
+            text: qsTr("Select Output Product:") + t.r;
+        }
+
+        ListView {
+            id: productionSettings
+
+            orientation: Qt.Horizontal
+
+            Layout.margins: Stylesheet.smallMargin;
+            Layout.leftMargin: Stylesheet.biggerMargin;
+
+            Layout.fillWidth: true;
+            Layout.minimumHeight: Stylesheet.tinyWidgetSize;
+
+            spacing: Stylesheet.defaultSpacing;
+
+            model: buildingData.inputProductsInfo;
+            delegate: ProductDelegate {
+                productId: modelData.Out;
+                productsStorage: storage;
+
+                isSelected: buildingData.outputProduct === productId;
+
+                MouseArea {
+                    anchors.fill: parent;
+                    onClicked: function () {
+                        buildingData.setOutputProductId(productId);
+                    }
+                }
+
+            }
+
         }
 
         Label {
@@ -113,7 +146,19 @@ Item {
 
             font.pixelSize: Stylesheet.bigFontSize;
 
-            text: qsTr("Output Product:") + t.r;
+            text: qsTr("Production Details:") + t.r;
+        }
+
+        ProductInfoContainer {
+            id: productionInfo;
+
+            Layout.margins: Stylesheet.smallMargin;
+            Layout.leftMargin: Stylesheet.biggerMargin;
+            Layout.rightMargin: Stylesheet.biggerMargin;
+
+            Layout.fillWidth: true;
+            Layout.minimumHeight: Stylesheet.tinyWidgetSize;
+
         }
 
         Item {
