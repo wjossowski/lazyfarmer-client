@@ -104,7 +104,7 @@ Item {
 
             font.pixelSize: Stylesheet.bigFontSize;
 
-            text: qsTr("Select Output Product:") + t.r;
+            text: qsTr("Select output product:") + t.r;
         }
 
         ListView {
@@ -144,7 +144,7 @@ Item {
 
             font.pixelSize: Stylesheet.bigFontSize;
 
-            text: qsTr("Production Details:") + t.r;
+            text: qsTr("Production details:") + t.r;
         }
 
         ProductInfoContainer {

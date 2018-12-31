@@ -110,7 +110,7 @@ Item {
 
             font.pixelSize: Stylesheet.bigFontSize;
 
-            text: qsTr("Select Forage:") + t.r;
+            text: qsTr("Select forage:") + t.r;
         }
 
         ListView {
@@ -149,7 +149,7 @@ Item {
 
             font.pixelSize: Stylesheet.bigFontSize;
 
-            text: qsTr("Output Product:") + t.r;
+            text: qsTr("Output product:") + t.r;
         }
 
         ProductDelegate {
