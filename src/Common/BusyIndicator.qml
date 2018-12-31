@@ -65,7 +65,7 @@ ColumnLayout {
             }
             
             font.pixelSize: Stylesheet.smallFontSize;
-            text: qsTr("Ready In: ") + Utils.TimeUtils.timeLeftToString(root.timeLeft) + t.r;
+            text: qsTr("Ready in: ") + Utils.TimeUtils.timeLeftToString(root.timeLeft) + t.r;
             
         }
         
