@@ -51,8 +51,8 @@ Item {
 
                 radius: Stylesheet.defaultRadius;
 
-                border.color: "#0c0c0c";
-                color: "#0c2c2c2c";
+                border.color: Stylesheet.defaultBorderColor;
+                color: Stylesheet.defaultBackgroundNormalColor;
 
                 Item {
                     id: iconContainer

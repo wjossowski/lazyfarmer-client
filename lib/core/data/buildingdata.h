@@ -31,12 +31,15 @@ namespace Core {
         public:
             using Ptr = QSharedPointer<BuildingData>;
 
-            explicit BuildingData (Player *parent = nullptr) : IPlayerData (parent) { }
+            explicit BuildingData (Player *parent = nullptr);
             ~BuildingData() override = default;
 
-            virtual int totalTime() const = 0;
+            virtual int totalTime() const { return m_totalTime; }
 
             static BuildingData::Ptr create(Player *player, BuildingType type);
+
+        protected:
+            int m_totalTime;
 
         };
 

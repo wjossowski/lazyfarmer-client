@@ -29,7 +29,6 @@ AnimalProductionData::AnimalProductionData(Player *parent)
     : BuildingData (parent)
     , m_outputId(-1)
 
-    , m_totalTime(-1)
     , m_timeLeft(-1)
     , m_timeToRefeed (-1)
 
@@ -70,16 +69,6 @@ void AnimalProductionData::update(const QVariant &info)
     emit dataChanged();
 }
 
-QString AnimalProductionData::toString() const
-{
-    return QString ("FooBarAnimalProduction");
-}
-
-QVariant AnimalProductionData::toVariant()
-{
-    return QVariant::fromValue<AnimalProductionData*>(this);
-}
-
 void AnimalProductionData::setChosenProductId(int chosenProductId)
 {
     bool isTheSameProduct = m_chosenProductId == chosenProductId;
@@ -95,9 +84,4 @@ void AnimalProductionData::setChosenProductId(int chosenProductId)
 
     m_chosenProductId = chosenProductId;
     emit chosenProductChanged(m_chosenProductId);
-}
-
-QString AnimalProductionData::outputProductName() const
-{
-    return m_owner->gameData()->productInfo(m_outputId).name;
 }

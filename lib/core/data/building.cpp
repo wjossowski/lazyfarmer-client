@@ -78,7 +78,7 @@ void Building::update(const QVariant &info)
                 ? QDateTime()
                 : QDateTime::currentDateTime().addSecs(remaining);
 
-        m_name = m_owner->gameData()->buildingInfo(m_id).name;
+        m_name = buildingName(id);
 
         emit buildingChanged();
         emit fetchBuildingRequested(details(), m_type);
@@ -105,11 +105,6 @@ QString Building::toString() const
             .arg(m_position)
             .arg(m_level)
             .arg(m_remaining);
-}
-
-QVariant Building::toVariant()
-{
-    return QVariant::fromValue<Building*>(this);
 }
 
 void Building::initializeConnections() const

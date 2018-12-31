@@ -41,9 +41,12 @@ namespace Core {
 
             virtual void update(const QVariant &info);
             virtual QString toString() const { return QString(); }
-            virtual QVariant toVariant() { return QVariant(); }
+            virtual QVariant toVariant() { return QVariant::fromValue<QObject*>(this); }
 
             GlobalGameData::Ptr gameData() const;
+
+            Q_INVOKABLE QString productName(int productId) const;
+            Q_INVOKABLE QString buildingName(int buildingId) const;
 
             Player *owner() const { return m_owner; }
             QDateTime fetchedAt() const { return m_fetchedAt; }
