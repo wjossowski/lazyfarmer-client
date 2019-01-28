@@ -48,7 +48,8 @@ namespace Model {
                                QObject *parent = nullptr);
         ~BuildingModel() override = default;
 
-        int rowCount(const QModelIndex &) const override;
+        int rowCount(const QModelIndex &) const override { return m_buildings->size(); }
+
         QVariant data(const QModelIndex &index, int role) const override;
         QHash<int, QByteArray> roleNames() const override;
 

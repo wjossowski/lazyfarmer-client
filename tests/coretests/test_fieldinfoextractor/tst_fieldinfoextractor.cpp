@@ -66,12 +66,12 @@ void FieldInfoExtractorTest::extractorTest()
         int id = infoData["Id"].toString().toInt();
         int fieldId = infoData["FieldId"].toString().toInt();
         int remaining = infoData["Remaining"].toString().toInt();
-        int isWater = infoData["IsWater"].toString().toInt();
+        int isWatered = infoData["IsWatered"].toString().toInt();
 
         QVERIFY2(id != 0, "Id should be correct");
         QVERIFY2(fieldId > 0 && fieldId <= 120, "FieldId has to be correct");
         QVERIFY2(remaining >= -1, "Remaining time has to be correct");
-        QVERIFY2(isWater == 1 || isWater == 0, "IsWater has to be correct");
+        QVERIFY2(isWatered == 1 || isWatered == 0, "IsWater has to be correct");
     }
 }
 

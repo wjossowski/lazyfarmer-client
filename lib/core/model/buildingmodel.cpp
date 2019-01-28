@@ -28,15 +28,12 @@ BuildingModel::BuildingModel(const Data::BuildingList::Ptr &buildings, QObject *
     : QAbstractListModel (parent)
     , m_buildings(buildings)
 {
-    connect(&*buildings,    &Data::BuildingList::buildingChanged, [&] (int row) {
+    connect(&*m_buildings, &Data::BuildingList::buildingChanged, [&] (int row) {
         emit dataChanged(index(row), index(row));
     });
 }
 
-int BuildingModel::rowCount(const QModelIndex &) const
-{
-    return m_buildings->size();
-}
+
 
 QVariant BuildingModel::data(const QModelIndex &index, int role) const
 {

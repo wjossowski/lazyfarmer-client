@@ -126,7 +126,7 @@ void Application::requestBuildingInfoScreen(BuildingModel *buildingModel, int bu
 
     const auto mapToScreenType = [] (BuildingType type) {
         switch (type) {
-        case BuildingType::Farm:                return Screens::FieldScreen;
+        case BuildingType::Field:                return Screens::FieldScreen;
         case BuildingType::AnimalProduction:    return Screens::AnimalsProductionScreen;
         case BuildingType::ResourceProduction:  return Screens::ResourceProductionScreen;
 
