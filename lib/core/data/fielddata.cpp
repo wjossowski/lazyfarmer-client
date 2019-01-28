@@ -33,7 +33,7 @@ FieldData::FieldData(Player *parent)
 
 void FieldData::update(const QVariant &info)
 {
-    qDebug() << "Updating FieldsInfo" << info;
+    m_fieldGrid->update(info);
 
     BuildingData::update(info);
 }

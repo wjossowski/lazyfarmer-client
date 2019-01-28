@@ -37,13 +37,17 @@ namespace Core {
         public:
             using Ptr = QSharedPointer<Field>;
 
-            explicit Field (Player *parent = nullptr);
+            explicit Field (int fieldNo, Player *parent = nullptr);
             ~Field() override = default;
 
+            int fieldNo() const { return m_fieldNo; }
+
             int id() const { return m_id; }
-            int fieldId() const { return m_fieldNo; }
             int remaining() const { return m_remaining; }
             bool isWatered() const { return m_isWatered; }
+
+            QString name() const { return gameData()->productInfo(m_id).name; }
+            int size() const { return gameData()->productInfo(m_id).size; }
 
             bool isEmpty() const { return m_id == 0; }
 
@@ -57,9 +61,9 @@ namespace Core {
             void fieldChanged() const;
 
         private:
+            int m_fieldNo;
             int m_id;
             QString m_name;
-            int m_fieldNo;
             int m_remaining;
             bool m_isWatered;
         };
