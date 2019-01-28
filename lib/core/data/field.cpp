@@ -67,7 +67,7 @@ void Field::update(const QVariant &info)
 QString Field::toString() const
 {
     return QString("Field: %1 (id: %2) (fieldNo: %3), Watered: %4, Remaining: %5")
-            .arg(m_name)
+            .arg(gameData()->productInfo(m_id).name)
             .arg(m_id)
             .arg(m_fieldNo)
             .arg(m_isWatered ? "Yes" : "No")
