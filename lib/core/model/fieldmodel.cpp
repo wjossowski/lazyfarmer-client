@@ -48,8 +48,17 @@ QVariant Model::FieldModel::data(const QModelIndex &index, int role) const
     case FieldRoles::FieldNo: return field->fieldNo();
     case FieldRoles::DoneTimestamp: return field->remaining();
     case FieldRoles::BaseTimestamp: return field->remaining();
+    case FieldRoles::IsMainFieldBlock: return field->isMainBlock();
+    case FieldRoles::IsNotEmpty: return !field->isEmpty();
     case FieldRoles::IsWatered: return field->isWatered();
-    case FieldRoles::Size: return field->size();
+    case FieldRoles::RowSpan: {
+        int size = field->size();
+        return (size == 2 || size == 4) ? 2 : 1;
+    }
+    case FieldRoles::ColumnSpan: {
+        int size = field->size();
+        return (size == 4) ? 2 : 1;
+    }
     }
 
     return QVariant();
@@ -67,12 +76,15 @@ bool Model::FieldModel::setData(const QModelIndex &index, const QVariant &value,
 QHash<int, QByteArray> Model::FieldModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
-    roles.insert(static_cast<int>(FieldRoles::Name),            "name");
-    roles.insert(static_cast<int>(FieldRoles::Id),              "id");
-    roles.insert(static_cast<int>(FieldRoles::FieldNo),         "fieldNo");
-    roles.insert(static_cast<int>(FieldRoles::DoneTimestamp),   "doneTimestamp");
-    roles.insert(static_cast<int>(FieldRoles::BaseTimestamp),   "baseTimeout");
-    roles.insert(static_cast<int>(FieldRoles::IsWatered),       "isWatered");
-    roles.insert(static_cast<int>(FieldRoles::Size),            "size");
+    roles.insert(static_cast<int>(FieldRoles::Name),                "name");
+    roles.insert(static_cast<int>(FieldRoles::Id),                  "id");
+    roles.insert(static_cast<int>(FieldRoles::FieldNo),             "fieldNo");
+    roles.insert(static_cast<int>(FieldRoles::DoneTimestamp),       "doneTimestamp");
+    roles.insert(static_cast<int>(FieldRoles::BaseTimestamp),       "baseTimeout");
+    roles.insert(static_cast<int>(FieldRoles::IsMainFieldBlock),    "isMainFieldBlock");
+    roles.insert(static_cast<int>(FieldRoles::IsNotEmpty),          "isNotEmpty");
+    roles.insert(static_cast<int>(FieldRoles::IsWatered),           "isWatered");
+    roles.insert(static_cast<int>(FieldRoles::RowSpan),             "rowSpan");
+    roles.insert(static_cast<int>(FieldRoles::ColumnSpan),          "columnSpan");
     return roles;
 }

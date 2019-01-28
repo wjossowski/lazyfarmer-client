@@ -35,8 +35,11 @@ namespace Model {
             FieldNo,
             DoneTimestamp,
             BaseTimestamp,
+            IsMainFieldBlock,
+            IsNotEmpty,
             IsWatered,
-            Size
+            RowSpan,
+            ColumnSpan
         };
 
         explicit FieldModel(Core::Data::FieldGrid::Ptr fieldGrid,

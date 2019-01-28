@@ -50,12 +50,11 @@ namespace Core {
             int size() const { return gameData()->productInfo(m_id).size; }
 
             bool isEmpty() const { return m_id == 0; }
+            bool isMainBlock() const { return m_id != -1; }
 
             ProductDetails details() const;
 
             void update(const QVariant &info) override;
-
-            QString toString() const override;
 
         signals:
             void fieldChanged() const;
