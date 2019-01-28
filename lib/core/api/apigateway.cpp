@@ -448,7 +448,7 @@ void ApiGateway::requestBuildingUpdate(const Data::BuildingDetails &details,
                                        const Data::BuildingType &type)
 {
     switch (type) {
-    case Data::BuildingType::Farm:
+    case Data::BuildingType::Field:
         queueMessage(GetFieldInfo::Ptr(new GetFieldInfo(this, details)));
         break;
     case Data::BuildingType::AnimalProduction:

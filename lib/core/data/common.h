@@ -32,7 +32,7 @@ namespace Core {
         static const int MAX_PLANT_ROWS = 10;
 
         enum class BuildingType {
-            Farm                    = 1,
+            Field                    = 1,
             AnimalProduction,
             ResourceProduction,
 
@@ -44,7 +44,7 @@ namespace Core {
             static QString toString(BuildingType type)
             {
                 switch (type) {
-                case BuildingType::Farm: return "Farm";
+                case BuildingType::Field: return "Field";
                 case BuildingType::AnimalProduction: return "AnimalProduction";
                 case BuildingType::ResourceProduction: return "ResourceProduction";
                 default: return "Unknown";
@@ -59,7 +59,7 @@ namespace Core {
             static BuildingType fromString (const QString &buildingType)
             {
                 if (buildingType == "Field") {
-                    return BuildingType::Farm;
+                    return BuildingType::Field;
                 } else if (buildingType == "AnimalProduction") {
                     return BuildingType::AnimalProduction;
                 } else if (buildingType == "ResourceProduction") {

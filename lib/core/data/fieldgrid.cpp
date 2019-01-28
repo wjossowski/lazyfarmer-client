@@ -1,6 +1,6 @@
 /**
  ** This file is part of the LazyFarmer project.
- ** Copyright 2018 Wojciech Ossowski <w.j.ossowski@gmail.com>.
+ ** Copyright 2019 Wojciech Ossowski <w.j.ossowski@gmail.com>.
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU Lesser General Public License as
@@ -16,30 +16,31 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "animalproductiondata.h"
-#include "resourceproductiondata.h"
-#include "fielddata.h"
+#include "fieldgrid.h"
 
 using namespace Core;
 using namespace Core::Data;
 
-BuildingData::BuildingData(Player *parent)
-    : IPlayerData (parent)
-    , m_totalTime(-1)
+FieldGrid::FieldGrid(Core::Player *parent)
+    : IPlayerData(parent)
 {
-
+    for (int i = 0; i < MAX_GRID_SIZE; i++) {
+        m_fields.append(Field::Ptr::create());
+    }
 }
 
-BuildingData::Ptr BuildingData::create(Player *player, BuildingType type)
+Field::Ptr FieldGrid::fieldAt(int index) const
 {
-    switch (type) {
-    case BuildingType::AnimalProduction:
-        return AnimalProductionData::Ptr::create(player);
-    case BuildingType::ResourceProduction:
-        return ResourceProductionData::Ptr::create(player);
-    case BuildingType::Field:
-        return FieldData::Ptr::create(player);
-    default:
+    if (m_fields.count() < index) {
         return nullptr;
+    } else {
+        return m_fields.at(index);
     }
+}
+
+void FieldGrid::update(const QVariant &info)
+{
+    const auto fieldList = info.toList();
+    
+    IPlayerData::update(info);
 }

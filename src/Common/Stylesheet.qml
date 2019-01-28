@@ -47,6 +47,7 @@ Item {
     readonly property color defaultBackgroundActiveColor:   __colors.transparentLightGreen;
     readonly property color transparentColor:              "transparent";
     readonly property color warningColor:                  "#ad2c2c";
+    readonly property color placeholderColor:              "#eee";
 
     QtObject {
         id: __sizes;

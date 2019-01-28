@@ -88,7 +88,7 @@ void FieldInfoExtractor::extractSpecificData()
             { "Id", info["inhalt"].toString().toInt() },
             { "FieldId", info["teil_nr"].toString().toInt() },
             { "Remaining", QString::number(qMax(qint64(-1), remaining)).toInt() },
-            { "IsWater", QString::number(info["iswater"].toBool()).toInt() }
+            { "IsWatered", QString::number(info["iswater"].toBool()).toInt() }
         }));
 
     }

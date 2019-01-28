@@ -50,8 +50,6 @@ QVariant StorageModel::data(const QModelIndex &index, int role) const
     case StorageRoles::Name:     return m_storage->nameAtRow(row);
     case StorageRoles::Amount:   return m_storage->amountAtRow(row);
     }
-
-    return QVariant();
 }
 
 QHash<int, QByteArray> StorageModel::roleNames() const

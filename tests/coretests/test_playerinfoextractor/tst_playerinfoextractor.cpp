@@ -245,8 +245,6 @@ void PlayerInfoExtractorTest::playerInfo()
     Player player;
     const auto contents = siteFile.readAll();
     player.update(contents);
-    qDebug() << "ASDF";
-    player.update(contents);
 }
 
 QTEST_APPLESS_MAIN(PlayerInfoExtractorTest)

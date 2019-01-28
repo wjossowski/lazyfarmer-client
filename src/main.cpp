@@ -91,12 +91,6 @@ void handleMessage(QtMsgType type,
 
 Api::ApiOptions extractApiOptions(const QCommandLineParser &parser)
 {
-    qDebug() << "Selected following configuration:";
-    qDebug() << "Domain:  " << parser.value("domain");
-    qDebug() << "Server:  " << parser.value("server");
-    qDebug() << "Login:   " << parser.value("login");
-    qDebug() << "Password:" << parser.value("password");
-
     return {
         parser.value("server"),
         parser.value("domain"),

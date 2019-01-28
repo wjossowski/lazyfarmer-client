@@ -1,6 +1,6 @@
 /**
  ** This file is part of the LazyFarmer project.
- ** Copyright 2018 Wojciech Ossowski <w.j.ossowski@gmail.com>.
+ ** Copyright 2019 Wojciech Ossowski <w.j.ossowski@gmail.com>.
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU Lesser General Public License as
@@ -16,52 +16,38 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "common.h"
-#include "iplayerdata.h"
-
-#include <QtCore/QVariantMap>
-#include <QtCore/QObject>
-
 #pragma once
+
+#include "field.h"
 
 namespace Core {
 
-    class Player;
-
     namespace Data {
 
-        class Field : public IPlayerData
+        class FieldGrid : public IPlayerData
         {
             Q_OBJECT
 
         public:
-            using Ptr = QSharedPointer<Field>;
+            static constexpr int MAX_GRID_COLUMNS = 12;
+            static constexpr int MAX_GRID_ROWS = 10;
+            static constexpr int MAX_GRID_SIZE = MAX_GRID_COLUMNS * MAX_GRID_ROWS;
 
-            explicit Field (Player *parent = nullptr);
-            ~Field() override = default;
+            using Ptr = QSharedPointer<FieldGrid>;
 
-            int id() const { return m_id; }
-            int fieldId() const { return m_fieldNo; }
-            int remaining() const { return m_remaining; }
-            bool isWatered() const { return m_isWatered; }
+            explicit FieldGrid (Player *parent = nullptr);
+            ~FieldGrid() override = default;
 
-            bool isEmpty() const { return m_id == 0; }
-
-            ProductDetails details() const;
+            Field::Ptr fieldAt(int index) const;
 
             void update(const QVariant &info) override;
 
-            QString toString() const override;
-
         signals:
-            void fieldChanged() const;
+            void fieldChanged(int index) const;
 
         private:
-            int m_id;
-            QString m_name;
-            int m_fieldNo;
-            int m_remaining;
-            bool m_isWatered;
+            QList<Field::Ptr> m_fields;
+
         };
 
     }

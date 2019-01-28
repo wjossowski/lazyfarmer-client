@@ -28,7 +28,7 @@ Field::Field(Player *parent)
     , m_id(0)
     , m_fieldNo(0)
     , m_remaining(0)
-    , m_isWater(false)
+    , m_isWatered(false)
 {
 
 }
@@ -49,18 +49,18 @@ void Field::update(const QVariant &info)
     int id = fieldInfo["Id"].toInt();
     int fieldId = fieldInfo["FieldId"].toInt();
     int remaining = fieldInfo["Remaining"].toInt();
-    bool isWater = fieldInfo["IsWater"].toBool();
+    bool isWatered = fieldInfo["IsWatered"].toBool();
 
     if (m_id != id
         || m_fieldNo != fieldId
         || m_remaining != remaining
-        || m_isWater != isWater)
+        || m_isWatered != isWatered)
     {
         m_id = id;
         m_name = m_owner->gameData()->productInfo(m_id).name;
         m_fieldNo = fieldId;
         m_remaining = remaining;
-        m_isWater = isWater;
+        m_isWatered = isWatered;
 
         emit fieldChanged();
 
@@ -75,6 +75,6 @@ QString Field::toString() const
             .arg(m_name)
             .arg(m_id)
             .arg(m_fieldNo)
-            .arg(m_isWater ? "Yes" : "No")
+            .arg(m_isWatered ? "Yes" : "No")
             .arg(m_remaining);
 }
