@@ -13,6 +13,10 @@
         "products": {
             "url": "http://mff.wavecdn.de/mff/maps/tt_map.33.jpg",
             "size": 50
+        },
+        "watered-indicator": {
+            "url": "http://mff.wavecdn.de/mff/garten/gegossen.gif",
+            "size": 40
         }
     },
     "available-domains": [

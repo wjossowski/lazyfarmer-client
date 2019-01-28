@@ -83,12 +83,16 @@ void FieldInfoExtractor::extractSpecificData()
         int storedRemaining = info["zeit"].toString().toInt();
         qint64 remaining = storedRemaining - ((storedRemaining == 0) ? 0 : m_timestamp);
 
+        bool isWater = info["iswater"].toBool();
+        int storedWateredTime = info["wasser"].toString().toInt();
+        bool hasWateredRecord = storedWateredTime > 0 && isWater;
+
         // Build FieldInfo object
         fieldsInfo.append(QVariantMap({
             { "Id", info["inhalt"].toString().toInt() },
             { "FieldId", info["teil_nr"].toString().toInt() },
             { "Remaining", QString::number(qMax(qint64(-1), remaining)).toInt() },
-            { "IsWatered", QString::number(info["iswater"].toBool()).toInt() }
+            { "IsWatered", QString::number(hasWateredRecord).toInt() }
         }));
 
     }

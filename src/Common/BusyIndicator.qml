@@ -17,6 +17,7 @@ ColumnLayout {
 
     property bool isInProgress: Number.isFinite(root.totalInterval) && root.timeLeft >= 0;
     property bool showIdleStatus: true;
+    property bool displayText: true;
     
     Timer {
         id: workTimer;
@@ -51,6 +52,8 @@ ColumnLayout {
     
     Item {
         id: workInfoGroup
+
+        visible: root.displayText;
         
         Layout.topMargin: Stylesheet.smallMargin;
         Layout.fillWidth: true;
@@ -58,7 +61,7 @@ ColumnLayout {
         Label {
             id: workTimeoutLabel;
             
-            visible: root.isInProgress
+            visible: root.isInProgress;
             anchors {
                 verticalCenter: parent.verticalCenter;
                 left: parent.left;
@@ -71,7 +74,7 @@ ColumnLayout {
         
         Label {
             id: workPercentIndicatorLabel;
-            
+
             anchors {
                 verticalCenter: parent.verticalCenter;
                 right: parent.right;

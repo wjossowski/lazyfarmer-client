@@ -39,27 +39,48 @@ Item {
             model: field.model;
 
             delegate: Rectangle {
-                id: fieldMiniature
+                id: fieldDelegate
+
+                visible: isMainFieldBlock;
+
                 radius: 2;
 
                 Layout.fillWidth: true;
                 Layout.fillHeight: true;
 
-                Layout.columnSpan: [2, 4].indexOf(size) > -1 ? 2 : 1;
-                Layout.rowSpan: size === 4 ? 2 : 1;
-
-                visible: id !== -1;
+                Layout.columnSpan: columnSpan;
+                Layout.rowSpan: rowSpan;
 
                 color: Stylesheet.placeholderColor;
 
                 Image {
-                    visible: id !== 0;
+                    visible: isNotEmpty;
 
                     anchors.centerIn: parent
                     source: "image://resources/products/" + id;
 
-                    scale: fieldMiniature.height / Stylesheet.smallIconContainerSize
+                    scale: fieldDelegate.height / Stylesheet.smallIconContainerSize
                 }
+
+                Image {
+                    visible: isWatered;
+
+                    anchors {
+                        bottom: parent.bottom;
+                        left: parent.left;
+                        margins: Stylesheet.tinyMargin
+                    }
+
+                    source: "image://resources/watered-indicator/1";
+                }
+
+                BusyIndicator {
+
+                    displayText: false;
+
+                    anchors.fill: parent;
+                }
+
             }
         }
 

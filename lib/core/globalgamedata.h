@@ -55,7 +55,7 @@ namespace Core {
         }
 
         const ProductInfo productInfo (const int productId) const {
-            return m_productInfos.value(productId, { "Unknown", 0, 0, UINT32_MAX });
+            return m_productInfos.value(productId, { "Unknown", 1, 0, UINT32_MAX });
         }
         int productSize(const int productId) {
             return productInfo(productId).size;
