@@ -43,12 +43,13 @@ QVariant Model::FieldModel::data(const QModelIndex &index, int role) const
 
     auto dataRole = static_cast<FieldRoles>(role);
     switch (dataRole) {
-    case FieldRoles::Name: return "";
+    case FieldRoles::Name: return field->name();
     case FieldRoles::Id: return field->id();
+    case FieldRoles::FieldNo: return field->fieldNo();
     case FieldRoles::DoneTimestamp: return field->remaining();
     case FieldRoles::BaseTimestamp: return field->remaining();
     case FieldRoles::IsWatered: return field->isWatered();
-    case FieldRoles::Size: return 1;
+    case FieldRoles::Size: return field->size();
     }
 
     return QVariant();
@@ -68,6 +69,7 @@ QHash<int, QByteArray> Model::FieldModel::roleNames() const
     QHash<int, QByteArray> roles;
     roles.insert(static_cast<int>(FieldRoles::Name),            "name");
     roles.insert(static_cast<int>(FieldRoles::Id),              "id");
+    roles.insert(static_cast<int>(FieldRoles::FieldNo),         "fieldNo");
     roles.insert(static_cast<int>(FieldRoles::DoneTimestamp),   "doneTimestamp");
     roles.insert(static_cast<int>(FieldRoles::BaseTimestamp),   "baseTimeout");
     roles.insert(static_cast<int>(FieldRoles::IsWatered),       "isWatered");

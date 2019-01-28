@@ -23,10 +23,10 @@
 using namespace Core;
 using namespace Core::Data;
 
-Field::Field(Player *parent)
+Field::Field(int fieldNo, Player *parent)
     : IPlayerData(parent)
+    , m_fieldNo(fieldNo)
     , m_id(0)
-    , m_fieldNo(0)
     , m_remaining(0)
     , m_isWatered(false)
 {
@@ -47,23 +47,18 @@ void Field::update(const QVariant &info)
     const QVariantMap fieldInfo = info.toMap();
 
     int id = fieldInfo["Id"].toInt();
-    int fieldId = fieldInfo["FieldId"].toInt();
     int remaining = fieldInfo["Remaining"].toInt();
     bool isWatered = fieldInfo["IsWatered"].toBool();
 
     if (m_id != id
-        || m_fieldNo != fieldId
         || m_remaining != remaining
         || m_isWatered != isWatered)
     {
         m_id = id;
-        m_name = m_owner->gameData()->productInfo(m_id).name;
-        m_fieldNo = fieldId;
         m_remaining = remaining;
         m_isWatered = isWatered;
 
         emit fieldChanged();
-
     }
 
     IPlayerData::update(info);

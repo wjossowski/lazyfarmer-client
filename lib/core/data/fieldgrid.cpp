@@ -18,14 +18,21 @@
 
 #include "fieldgrid.h"
 
+#include <QtCore/QDebug>
+
 using namespace Core;
 using namespace Core::Data;
 
 FieldGrid::FieldGrid(Core::Player *parent)
     : IPlayerData(parent)
 {
-    for (int i = 0; i < MAX_GRID_SIZE; i++) {
-        m_fields.append(Field::Ptr::create());
+    for (int fieldId = 0; fieldId < MAX_GRID_SIZE; fieldId++) {
+        auto field = Field::Ptr::create(fieldId, parent);
+        connect(&*field, &Field::fieldChanged, [&] () {
+            emit fieldChanged(fieldId);
+        });
+
+        m_fields.append(field);
     }
 }
 
@@ -40,7 +47,18 @@ Field::Ptr FieldGrid::fieldAt(int index) const
 
 void FieldGrid::update(const QVariant &info)
 {
-    const auto fieldList = info.toList();
+    const auto fieldInfos = info.toMap()["FieldsInfo"].toList();
+
+    for (const auto &fieldInfoRecord : fieldInfos) {
+        const auto recordObject = fieldInfoRecord.toMap();
+        int fieldNo = recordObject["FieldId"].toInt() - 1;
+
+        auto field = fieldAt(fieldNo);
+        if (field) {
+            qDebug() << "Updating field" << fieldNo;
+            field->update(fieldInfoRecord);
+        }
+    }
     
     IPlayerData::update(info);
 }

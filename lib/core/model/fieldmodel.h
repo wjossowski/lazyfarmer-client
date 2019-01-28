@@ -32,6 +32,7 @@ namespace Model {
         enum class FieldRoles {
             Name                = Qt::DisplayRole,
             Id                  = Qt::UserRole,
+            FieldNo,
             DoneTimestamp,
             BaseTimestamp,
             IsWatered,
