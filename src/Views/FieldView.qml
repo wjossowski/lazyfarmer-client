@@ -39,6 +39,7 @@ Item {
             model: field.model;
 
             delegate: Rectangle {
+                id: fieldMiniature
                 radius: 2;
 
                 Layout.fillWidth: true;
@@ -47,7 +48,18 @@ Item {
                 Layout.columnSpan: [2, 4].indexOf(size) > -1 ? 2 : 1;
                 Layout.rowSpan: size === 4 ? 2 : 1;
 
+                visible: id !== -1;
+
                 color: Stylesheet.placeholderColor;
+
+                Image {
+                    visible: id !== 0;
+
+                    anchors.centerIn: parent
+                    source: "image://resources/products/" + id;
+
+                    scale: fieldMiniature.height / Stylesheet.smallIconContainerSize
+                }
             }
         }
 

@@ -34,6 +34,35 @@ FieldInfoExtractor::FieldInfoExtractor(qint64 timestamp, GlobalGameData *data)
                                  : timestamp;
 }
 
+QVariantList FieldInfoExtractor::filterFields(const QVariantList &fieldsInfo) const
+{
+    QMap<int, QVariant> placeholdList;
+    std::for_each(fieldsInfo.cbegin(), fieldsInfo.cend(), [&placeholdList](const QVariant& fieldInfo) {
+        int fieldNo = fieldInfo.toMap()["FieldId"].toInt();
+        placeholdList.insert(fieldNo, fieldInfo);
+    });
+
+    QMutableMapIterator<int, QVariant> iter (placeholdList);
+    QList<int> fieldsToRemove;
+    while(iter.hasNext()) {
+        const auto value = iter.next();
+        auto fieldInfo = value->toMap();
+        int fieldId = fieldInfo["FieldId"].toInt();
+        int plantId = fieldInfo["Id"].toInt();
+
+        if (fieldsToRemove.contains(fieldId)) {
+            fieldsToRemove.removeOne(fieldId);
+            fieldInfo["Id"] = -1;
+            iter.setValue(fieldInfo);
+        } else {
+            fieldsToRemove << ProductDetails::neighbours(fieldId, m_gamedata->productSize(plantId));
+        }
+
+    }
+
+    return placeholdList.values();
+}
+
 void FieldInfoExtractor::extractSpecificData()
 {
     QVariantList fieldsInfo;
@@ -64,5 +93,5 @@ void FieldInfoExtractor::extractSpecificData()
 
     }
 
-    m_data.insert("FieldsInfo", fieldsInfo);
+    m_data.insert("FieldsInfo", m_gamedata ? filterFields(fieldsInfo) : fieldsInfo);
 }

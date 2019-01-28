@@ -63,7 +63,6 @@ namespace Core {
         private:
             int m_fieldNo;
             int m_id;
-            QString m_name;
             int m_remaining;
             bool m_isWatered;
         };
