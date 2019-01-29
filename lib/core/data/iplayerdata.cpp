@@ -30,9 +30,10 @@ IPlayerData::IPlayerData(Player *parent)
 
 }
 
-QString IPlayerData::toString() const
+void IPlayerData::update(const QVariant &info)
 {
-    return "toString() not implemented.";
+    Q_UNUSED(info);
+    m_fetchedAt = QDateTime::currentDateTime();
 }
 
 GlobalGameData::Ptr IPlayerData::gameData() const
@@ -40,7 +41,12 @@ GlobalGameData::Ptr IPlayerData::gameData() const
     return m_owner->gameData();
 }
 
-Player *IPlayerData::owner() const
+QString IPlayerData::productName(int productId) const
 {
-    return m_owner;
+    return gameData()->productInfo(productId).name;
+}
+
+QString IPlayerData::buildingName(int buildingId) const
+{
+    return gameData()->buildingInfo((buildingId)).name;
 }

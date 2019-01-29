@@ -27,7 +27,17 @@
 #include <QtDebug>
 
 using namespace Core;
+using namespace Core::Data;
 using namespace Model;
+
+const QMap<Application::Screens, QString> s_screenUrls = {
+    { Application::Screens::AccountsViewScreen,          "qrc:/qml/Views/AccountsView.qml" },
+    { Application::Screens::FarmOverviewScreen,          "qrc:/qml/Views/FarmOverView.qml" },
+    { Application::Screens::FieldScreen,                 "qrc:/qml/Views/FieldView.qml" },
+    { Application::Screens::AnimalsProductionScreen,     "qrc:/qml/Views/AnimalProductionView.qml" },
+    { Application::Screens::ResourceProductionScreen,    "qrc:/qml/Views/ResourceProductionView.qml" },
+    { Application::Screens::TaskQueueScreen,             "qrc:/qml/Views/TaskQueueView.qml" },
+};
 
 Application::Application(int &argc, char **argv)
     : QGuiApplication(argc, argv)
@@ -39,10 +49,6 @@ Application::Application(int &argc, char **argv)
     setOrganizationName(COMPANY_NAME);
 
     QSettings::setDefaultFormat(QSettings::IniFormat);
-
-    QTimer::singleShot(1000, [&] () {
-        emit pushToStack("CH U J", QVariantMap { {"Foo", "Bar"} });
-    });
 }
 
 void Application::initializeCommandLineInterface(QCommandLineParser &parser)
@@ -91,14 +97,55 @@ void Application::initializeStaticGameData()
     }
 }
 
-void Application::showOverviewPage(const QVariant &playerVariant)
+void Application::requestOverviewScreen(int playerId)
 {
-    if (!playerVariant.isValid()) {
+    auto playerVariant = m_playerFactory.at(playerId);
+    if (playerVariant.isValid()) {
+        Core::Player *player = playerVariant.value<Core::Player*>();
+        QVariant buildingModel = QVariant::fromValue(player->buildingModel().data());
+
+        showScreen(Screens::FarmOverviewScreen, QVariantMap {
+            { "buildingModel", buildingModel }
+        });
+    }
+}
+
+void Application::requestBuildingInfoScreen(BuildingModel *buildingModel, int buildingId)
+{
+    const auto building = buildingModel->buildings()->buildingAt(buildingId);
+    if (!building) {
+        qWarning() << tr("Invalid building request") << buildingId;
         return;
     }
 
-    Core::Player *p = playerVariant.value<Core::Player*>();
-    QVariant value = QVariant::fromValue(p->buildingModel().data());
+    const auto buildingData = building->buildingData();
+    if (!buildingData) {
+        qWarning() << tr("This building has no BuildingData") << buildingId;
+        return;
+    }
 
-    emit pushToStack("qrc:/qml/Views/FarmView.qml", value);
+    const auto mapToScreenType = [] (BuildingType type) {
+        switch (type) {
+        case BuildingType::Farm:                return Screens::FieldScreen;
+        case BuildingType::AnimalProduction:    return Screens::AnimalsProductionScreen;
+        case BuildingType::ResourceProduction:  return Screens::ResourceProductionScreen;
+
+        default:                                return Screens::Unknown;
+        }
+    };
+
+    showScreen(mapToScreenType(building->type()), QVariantMap {
+        { "building", building->toVariant() },
+        { "buildingData", buildingData->toVariant() },
+        { "storage", building->owner()->storage()->toVariant()}
+    });
+}
+
+void Application::showScreen(Application::Screens screenToShow, const QVariant &data) const
+{
+    const QString screenUrl = s_screenUrls.value(screenToShow);
+
+    if (!screenUrl.isEmpty()) {
+        emit pushToStack(screenUrl, data);
+    }
 }

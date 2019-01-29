@@ -16,26 +16,28 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "buildingdata.h"
-
-#include <QDebug>
-#include <QJsonDocument>
+#include "animalproductiondata.h"
+#include "resourceproductiondata.h"
 
 using namespace Core;
 using namespace Core::Data;
 
 BuildingData::BuildingData(Player *parent)
     : IPlayerData (parent)
+    , m_totalTime(-1)
 {
 
 }
 
-void BuildingData::update(const QVariant &/*info*/)
+BuildingData::Ptr BuildingData::create(Player *player, BuildingType type)
 {
-    qDebug() << "Trying to update";
-}
-
-QString BuildingData::toString() const
-{
-    return "";
+    switch (type) {
+    case BuildingType::AnimalProduction:
+        return AnimalProductionData::Ptr::create(player);
+    case BuildingType::ResourceProduction:
+        return ResourceProductionData::Ptr::create(player);
+    case BuildingType::Farm:
+    default:
+        return nullptr;
+    }
 }

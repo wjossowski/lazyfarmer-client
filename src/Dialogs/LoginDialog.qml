@@ -4,18 +4,20 @@ import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.4
 import QtQuick.Controls.Material 2.3
 
+import Common 1.0
+
 Dialog {
     id: root;
     title: qsTr("Account Settings") + t.r;
     
     property var currentAccount;
 
-    property alias login: loginField.text;
+    property alias login:    loginField.text;
     property alias password: passwordField.text;
-    property alias domain: domainField.currentText;
-    property alias server: serverField.text;
+    property alias domain:   domainField.currentText;
+    property alias server:   serverField.text;
 
-    width: 350;
+    width: 0.8 * Stylesheet.defaultWidgetSize;
     
     function setUp (account) {
         currentAccount = account;
@@ -46,15 +48,15 @@ Dialog {
 
         signal submitClicked(string login, string password, string domain, string server);
 
-        anchors.margins: 10;
+        anchors.margins: Stylesheet.defaultMargin;
 
         ColumnLayout {
             anchors{
                 fill: parent;
-                margins: 3
+                margins: Stylesheet.tinyMargin;
             }
 
-            spacing: 5;
+            spacing: Stylesheet.smallSpacing;
 
             TextField {
                 id: loginField;

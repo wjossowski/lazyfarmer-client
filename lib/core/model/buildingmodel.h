@@ -39,7 +39,8 @@ namespace Model {
             Position,
             Level,
             Animals,
-            Remaining,
+            DoneTimestamp,
+            BaseTimeout,
             IsSetUp,
         };
 
@@ -50,6 +51,8 @@ namespace Model {
         int rowCount(const QModelIndex &) const override;
         QVariant data(const QModelIndex &index, int role) const override;
         QHash<int, QByteArray> roleNames() const override;
+
+        Q_INVOKABLE QVariant at(int row);
 
         Core::Data::BuildingList::Ptr buildings() const { return m_buildings; }
 

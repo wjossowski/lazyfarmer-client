@@ -51,7 +51,7 @@ void ProductionInfoExtractor::extractSpecificData()
         int inputNeeded = need.at(i).toInt();
 
         const QJsonObject availableOutput = out.at(i).toObject();
-        if (availableOutput.isEmpty()){
+        if (availableOutput.isEmpty()) {
             continue;
         }
 

@@ -58,13 +58,13 @@ QVariant PlayerFactoryModel::data(const QModelIndex &index, int role) const
 QHash<int, QByteArray> PlayerFactoryModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
-    roles.insert(static_cast<int>(PlayerRoles::Level), "level");
-    roles.insert(static_cast<int>(PlayerRoles::LevelDescription), "levelDescription");
-    roles.insert(static_cast<int>(PlayerRoles::LevelPercentage), "levelPercentage");
-    roles.insert(static_cast<int>(PlayerRoles::Money), "money");
-    roles.insert(static_cast<int>(PlayerRoles::Description), "description");
-    roles.insert(static_cast<int>(PlayerRoles::CurrentJob), "job");
-    roles.insert(static_cast<int>(PlayerRoles::LastError), "lastError");
+    roles.insert(static_cast<int>(PlayerRoles::Level),              "level");
+    roles.insert(static_cast<int>(PlayerRoles::LevelDescription),   "levelDescription");
+    roles.insert(static_cast<int>(PlayerRoles::LevelPercentage),    "levelPercentage");
+    roles.insert(static_cast<int>(PlayerRoles::Money),              "money");
+    roles.insert(static_cast<int>(PlayerRoles::Description),        "description");
+    roles.insert(static_cast<int>(PlayerRoles::CurrentJob),         "job");
+    roles.insert(static_cast<int>(PlayerRoles::LastError),          "lastError");
     return roles;
 }
 

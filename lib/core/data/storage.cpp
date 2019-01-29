@@ -47,6 +47,7 @@ void Storage::update(const QVariant &info)
         m_products.insert(id, amount);
     }
 
+    IPlayerData::update(info);
     emit storageChanged();
 }
 

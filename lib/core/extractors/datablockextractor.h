@@ -41,6 +41,8 @@ namespace Core {
         protected:
             QVariantMap m_data;
             QJsonObject m_datablock;
+
+
         };
 
     }

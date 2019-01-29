@@ -40,10 +40,10 @@ namespace Core {
             QString nameAtRow(int row) const;
             int amountAtRow(int row) const { return m_products.values().at(row); }
 
-            int amount(int id) const { return m_products.value(id, 0); }
+            Q_INVOKABLE int amount(int id) const { return m_products.value(id, 0); }
             int size() const { return m_products.size(); }
 
-            void update(const QVariant &info) override;
+            void update(const QVariant &info = QVariant()) override;
             QString toString() const override;
 
         signals:

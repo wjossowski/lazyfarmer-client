@@ -30,10 +30,13 @@ class Application : public QGuiApplication
 
 public:
     enum class Screens {
-        OverviewScreen  =   1,
+        AccountsViewScreen = 1,
+        FarmOverviewScreen,
         FieldScreen,
         AnimalsProductionScreen,
         ResourceProductionScreen,
+
+        TaskQueueScreen,
 
         Unknown
     };
@@ -45,13 +48,25 @@ public:
     void initializeCommandLineInterface(QCommandLineParser &parser);
     void initializeStaticGameData();
 
+    constexpr Q_INVOKABLE static bool isDebugMode () {
+#ifdef DEBUG_MODE
+        return true;
+#else
+        return false;
+#endif
+    }
+
     Core::ConfigReader &reader() { return Core::ConfigReader::instance(); }
     Model::PlayerFactoryModel &playerFactory() { return m_playerFactory; }
 
-    Q_INVOKABLE void showOverviewPage(const QVariant &playerVariant);
+    Q_INVOKABLE void requestOverviewScreen(int playerId);
+    Q_INVOKABLE void requestBuildingInfoScreen(Model::BuildingModel *buildingModel, int buildingId);
 
 signals:
     void pushToStack(const QString &qml, const QVariant &data) const;
+
+private:
+    void showScreen(Screens screenToShow, const QVariant &data) const;
 
 private:
     Model::PlayerFactoryModel m_playerFactory;

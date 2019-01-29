@@ -5,11 +5,18 @@
         <file>Items/SideMenu.qml</file>
         <file>Items/MainToolbar.qml</file>
         <file>Views/AccountsView.qml</file>
-        <file>Views/FarmView.qml</file>
+        <file>Views/FarmOverView.qml</file>
         <file>Views/StorageView.qml</file>
+        <file>Views/FieldView.qml</file>
+        <file>Views/AnimalProductionView.qml</file>
+        <file>Views/ResourceProductionView.qml</file>
         <file>Dialogs/LoginDialog.qml</file>
-        <file>Common/Palette.qml</file>
-        <file>Common/qmldir</file>
         <file>qtquickcontrols2.conf</file>
+        <file>Common/utils.js</file>
+        <file>Common/Stylesheet.qml</file>
+        <file>Common/BusyIndicator.qml</file>
+        <file>Common/qmldir</file>
+        <file>Common/ProductDelegate.qml</file>
+        <file>Common/ProductInfoContainer.qml</file>
     </qresource>
 </RCC>

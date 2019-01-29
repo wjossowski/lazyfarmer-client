@@ -29,12 +29,18 @@ namespace Core {
             Q_OBJECT
 
         public:
+            using Ptr = QSharedPointer<BuildingData>;
+
             explicit BuildingData (Player *parent = nullptr);
             ~BuildingData() override = default;
 
-        public:
-            void update(const QVariant &) override;
-            QString toString() const override;
+            virtual int totalTime() const { return m_totalTime; }
+
+            static BuildingData::Ptr create(Player *player, BuildingType type);
+
+        protected:
+            int m_totalTime;
+
         };
 
     }

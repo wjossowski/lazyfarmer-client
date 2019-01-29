@@ -20,6 +20,8 @@
 #include "player.h"
 #include "configreader.h"
 
+#include <QtCore/QTimer>
+
 using namespace Core;
 using namespace Core::Data;
 
@@ -35,8 +37,6 @@ Building::Building(Player *parent)
     , m_level(0)
     , m_animals(0)
     , m_remaining(0)
-
-    , m_buildingData(parent)
 {
     initializeConnections();
 }
@@ -61,25 +61,38 @@ void Building::update(const QVariant &info)
     {
         m_id = id;
 
-        m_type = ConfigReader::instance().buildingType(id);
+        // Lazy-load for BuildingDetails object
+        BuildingType type = ConfigReader::instance().buildingType(id);
+        if (m_type != type) {
+            m_type = type;
+            m_buildingData = BuildingData::create(m_owner, type);
+        }
 
         m_farmId = farmId;
         m_position = position;
         m_level = level;
         m_animals = animals;
-        m_remaining = remaining;
 
-        m_name = m_owner->gameData()->buildingInfo(m_id).name;
+        m_remaining = remaining;
+        m_doneTimestamp = (remaining <= 0)
+                ? QDateTime()
+                : QDateTime::currentDateTime().addSecs(remaining);
+
+        m_name = buildingName(id);
 
         emit buildingChanged();
         emit fetchBuildingRequested(details(), m_type);
+
     }
 
+    IPlayerData::update(info);
 }
 
 void Building::updateBuildingData(const QVariant &info)
 {
-    m_buildingData.update(info);
+    if (m_buildingData) {
+        m_buildingData->update(info);
+    }
 }
 
 QString Building::toString() const

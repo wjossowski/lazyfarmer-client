@@ -19,11 +19,11 @@
 #pragma once
 
 #include "../globalgamedata.h"
-//#include "../configreader.h"
 
 #include <QtCore/QObject>
 #include <QtCore/QVariant>
 #include <QtCore/QSharedPointer>
+#include <QtCore/QDateTime>
 
 namespace Core {
 
@@ -39,15 +39,21 @@ namespace Core {
             explicit IPlayerData(Player *parent = nullptr);
             ~IPlayerData() override = default;
 
-            virtual void update(const QVariant &info) = 0;
-            virtual QString toString() const;
+            virtual void update(const QVariant &info);
+            virtual QString toString() const { return QString(); }
+            virtual QVariant toVariant() { return QVariant::fromValue<QObject*>(this); }
 
             GlobalGameData::Ptr gameData() const;
 
-            Player *owner() const;
+            Q_INVOKABLE QString productName(int productId) const;
+            Q_INVOKABLE QString buildingName(int buildingId) const;
+
+            Player *owner() const { return m_owner; }
+            QDateTime fetchedAt() const { return m_fetchedAt; }
 
         protected:
             Player *m_owner;
+            QDateTime m_fetchedAt;
 
         };
 
