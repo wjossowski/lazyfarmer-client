@@ -42,18 +42,18 @@ QVariantList FieldInfoExtractor::filterFields(const QVariantList &fieldsInfo) co
         placeholdList.insert(fieldNo, fieldInfo);
     });
 
-
     QMutableMapIterator<int, QVariant> iter (placeholdList);
     QList<int> fieldsToRemove;
     while(iter.hasNext()) {
         const auto value = iter.next();
-        const auto fieldInfo = value->toMap();
+        auto fieldInfo = value->toMap();
         int fieldId = fieldInfo["FieldId"].toInt();
         int plantId = fieldInfo["Id"].toInt();
 
         if (fieldsToRemove.contains(fieldId)) {
             fieldsToRemove.removeOne(fieldId);
-            iter.remove();
+            fieldInfo["Id"] = -1;
+            iter.setValue(fieldInfo);
         } else {
             fieldsToRemove << ProductDetails::neighbours(fieldId, m_gamedata->productSize(plantId));
         }
@@ -83,12 +83,16 @@ void FieldInfoExtractor::extractSpecificData()
         int storedRemaining = info["zeit"].toString().toInt();
         qint64 remaining = storedRemaining - ((storedRemaining == 0) ? 0 : m_timestamp);
 
+        bool isWater = info["iswater"].toBool();
+        int storedWateredTime = info["wasser"].toString().toInt();
+        bool hasWateredRecord = storedWateredTime > 0 && isWater;
+
         // Build FieldInfo object
         fieldsInfo.append(QVariantMap({
             { "Id", info["inhalt"].toString().toInt() },
             { "FieldId", info["teil_nr"].toString().toInt() },
             { "Remaining", QString::number(qMax(qint64(-1), remaining)).toInt() },
-            { "IsWater", QString::number(info["iswater"].toBool()).toInt() }
+            { "IsWatered", QString::number(hasWateredRecord).toInt() }
         }));
 
     }

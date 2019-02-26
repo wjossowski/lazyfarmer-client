@@ -32,6 +32,7 @@ Item {
     readonly property alias inputProductContainerSize:  __sizes.bigIconContainerSize;
 
     // Widget dimensions:
+    readonly property alias tinyIconContainerSize:      __sizes.tinyIconContainerSize;
     readonly property alias smallIconContainerSize:     __sizes.smallIconContainerSize;
     readonly property alias defaultIconContainerSize:   __sizes.bigButtonSize;
     readonly property alias defaultWidgetSize:          __sizes.defaultWidgetSize;
@@ -47,6 +48,7 @@ Item {
     readonly property color defaultBackgroundActiveColor:   __colors.transparentLightGreen;
     readonly property color transparentColor:              "transparent";
     readonly property color warningColor:                  "#ad2c2c";
+    readonly property color placeholderColor:              "#eee";
 
     QtObject {
         id: __sizes;
@@ -67,6 +69,7 @@ Item {
         readonly property int biggerFontSize:   28;
 
         // Dimensions:
+        readonly property int tinyIconContainerSize:    10;
         readonly property int smallIconContainerSize:   60;
         readonly property int bigButtonSize:            80;
         readonly property int bigIconContainerSize:    145;

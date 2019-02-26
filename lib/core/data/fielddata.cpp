@@ -1,6 +1,6 @@
 /**
  ** This file is part of the LazyFarmer project.
- ** Copyright 2018 Wojciech Ossowski <w.j.ossowski@gmail.com>.
+ ** Copyright 2019 Wojciech Ossowski <w.j.ossowski@gmail.com>.
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU Lesser General Public License as
@@ -16,30 +16,24 @@
  ** along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "animalproductiondata.h"
-#include "resourceproductiondata.h"
 #include "fielddata.h"
+
+#include <QDebug>
 
 using namespace Core;
 using namespace Core::Data;
 
-BuildingData::BuildingData(Player *parent)
-    : IPlayerData (parent)
-    , m_totalTime(-1)
+FieldData::FieldData(Player *parent)
+    : BuildingData(parent)
+    , m_fieldGrid(FieldGrid::Ptr::create(parent))
+    , m_fieldModel(m_fieldGrid)
 {
 
 }
 
-BuildingData::Ptr BuildingData::create(Player *player, BuildingType type)
+void FieldData::update(const QVariant &info)
 {
-    switch (type) {
-    case BuildingType::AnimalProduction:
-        return AnimalProductionData::Ptr::create(player);
-    case BuildingType::ResourceProduction:
-        return ResourceProductionData::Ptr::create(player);
-    case BuildingType::Field:
-        return FieldData::Ptr::create(player);
-    default:
-        return nullptr;
-    }
+    m_fieldGrid->update(info);
+
+    BuildingData::update(info);
 }

@@ -50,11 +50,7 @@ GameInfoExtractor::GameInfoExtractor(const QVariantMap &filters,
     : m_filters(std::move(filters))
     , m_domain(domain)
 {
-#ifdef DEBUG_MODE
-    qDebug() << "Constructing GameInfoExtractor";
-    qDebug() << "Domain: " << domain;
-    qDebug() << "Filters:"<< filters;
-#endif
+
 }
 
 GameInfoExtractor::Ptr GameInfoExtractor::baseExtractor(const QString &domain)
