@@ -9,79 +9,114 @@ import Common 1.0
 Item {
     id: root;
 
+    readonly property int baseSize: root.width;
+
     property var building;
     property var buildingData;
     property var storage;
 
     readonly property string title: building.name;
 
-    GridLayout {
-        id: field;
+    ColumnLayout {
+        anchors.fill: parent;
 
-        property var model: buildingData.fieldModel;
-        property int baseSize: 400;
+        GridLayout {
+            id: field;
 
-        anchors {
-            top: parent.top;
-            horizontalCenter: parent.horizontalCenter;
-            margins: Stylesheet.defaultMargin;
-        }
+            property var model: buildingData.fieldModel;
+            property int maxSize: Math.min(root.width, root.height);
 
-        width:  baseSize;
-        height: (field.rows/field.columns) * baseSize;
+            Layout.maximumWidth: maxSize;
+            Layout.maximumHeight: maxSize;
 
-        Component.onCompleted: function () {
-            field.rows = field.model.maxRows();
-            field.columns = field.model.maxColumns();
-        }
+            Layout.margins: Stylesheet.bigMargin;
+            Layout.alignment: Qt.AlignCenter;
 
-        Repeater {
-            model: field.model;
+            Component.onCompleted: function () {
+                field.rows = field.model.maxRows();
+                field.columns = field.model.maxColumns();
+            }
 
-            delegate: Rectangle {
-                id: fieldDelegate
+            Repeater {
+                model: field.model;
 
-                visible: isMainFieldBlock;
+                delegate: Rectangle {
+                    id: fieldDelegate
 
-                radius: 2;
+                    visible: isMainFieldBlock;
 
-                Layout.fillWidth: true;
-                Layout.fillHeight: true;
+                    radius: 2;
 
-                Layout.columnSpan: columnSpan;
-                Layout.rowSpan: rowSpan;
+                    Layout.fillWidth: true;
+                    Layout.fillHeight: true;
 
-                color: Stylesheet.placeholderColor;
+                    Layout.columnSpan: columnSpan;
+                    Layout.rowSpan: rowSpan;
 
-                Image {
-                    visible: isNotEmpty;
+                    color: Stylesheet.placeholderColor;
 
-                    anchors.centerIn: parent
-                    source: "image://resources/products/" + id;
+                    Image {
+                        visible: isNotEmpty;
 
-                    scale: fieldDelegate.height / Stylesheet.smallIconContainerSize
-                }
+                        anchors.centerIn: parent
+                        source: "image://resources/products/" + id;
 
-                Image {
-                    visible: isWatered;
-
-                    anchors {
-                        bottom: parent.bottom;
-                        left: parent.left;
-                        margins: Stylesheet.tinyMargin
+                        scale: fieldDelegate.height / Stylesheet.smallIconContainerSize
                     }
 
-                    source: "image://resources/watered-indicator/1";
-                }
+                    Rectangle {
+                        id: wateringIndicator;
 
-                BusyIndicator {
+                        property int baseSize: Stylesheet.tinyIconContainerSize;
 
-                    displayText: false;
+                        visible: isWatered;
+                        color: "green";
 
-                    anchors.fill: parent;
+                        anchors {
+                            top: parent.top;
+                            left: parent.left;
+                        }
+
+                        NumberAnimation {
+                            target: wateringIndicator
+
+                            properties: "height,width"
+
+                            from: wateringIndicator.baseSize * 0.7
+                            to: wateringIndicator.baseSize * 1.1
+
+                            duration: 200
+                            loops: Animation.Infinite
+                            easing.type: Easing.InOutQuad
+                        }
+
+                    }
+
+                    BusyIndicator {
+                        displayText: false;
+                        anchors.fill: parent;
+                    }
+
                 }
 
             }
+
+        }
+
+        RowLayout {
+            id: fieldActions
+
+            Layout.fillWidth: true;
+            Layout.fillHeight: true;
+
+            Layout.margins: Stylesheet.defaultMargin;
+            Layout.rightMargin: Stylesheet.biggerMargin;
+            Layout.alignment: Qt.AlignVCenter | Qt.AlignRight;
+
+            Button {
+                text: "Edit"
+            }
+
         }
 
     }
