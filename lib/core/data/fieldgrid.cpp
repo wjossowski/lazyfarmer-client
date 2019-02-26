@@ -55,7 +55,6 @@ void FieldGrid::update(const QVariant &info)
 
         auto field = fieldAt(fieldNo);
         if (field) {
-            qDebug() << "Updating field" << fieldNo;
             field->update(fieldInfoRecord);
         }
     }
